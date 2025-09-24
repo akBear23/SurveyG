@@ -7,8 +7,6 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '../'))
 import json
 import networkx as nx
 from src.models.LLM.ChatAgent import ChatAgent
-import igraph as ig
-import leidenalg
 import requests
 from pdf_downloader import download_paper
 # Load the graph from JSON
@@ -162,17 +160,6 @@ def generate_survey_outline(taxonomy, develop_direction, improvement_suggestions
 def get_layer_subgraph(G, layer):
     nodes = [n for n, attr in G.nodes(data=True) if attr.get('layer') == layer]
     return G.subgraph(nodes)
-
-def nx_to_igraph(nx_graph):
-    mapping = {n: i for i, n in enumerate(nx_graph.nodes())}
-    edges = [(mapping[u], mapping[v]) for u, v in nx_graph.edges()]
-    g = ig.Graph()
-    g.add_vertices(len(mapping))
-    g.add_edges(edges)
-    for n, i in mapping.items():
-        for k, v in nx_graph.nodes[n].items():
-            g.vs[i][k] = v
-    return g, mapping
 
 def summarize_layer_method_groups(G, layer, max_papers=50):
     # Get papers with new_direction=1 in this layer
