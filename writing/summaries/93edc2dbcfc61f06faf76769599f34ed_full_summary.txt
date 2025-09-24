@@ -1,0 +1,63 @@
+File: /media/aiserver/New Volume/HDD_linux/bear/SurveyX/paper_data/KNOWLEDGE_GRAPH_EMBEDDING/c1b22d1383ec17452d6f9da67d427a832f165b1c.pdf
+Created: 2025-09-20T07:24:24.363892
+Keywords: Knowledge Graph Embedding (KGE), Approximate Unlearning, Direct Preference Optimization (DPO), GraphDPO framework, Unlearning of Knowledge Graph Embedding (UKGE), Inference leakage, Forgetting boundary preservation, Graph-aware out-boundary sampling, Boundary recall mechanism, Unlearning as preference optimization, UKGE benchmark datasets, Knowledge graphs (KGs)
+==================================================
+INTRIGUING ABSTRACT:
+==================================================
+The integrity of Knowledge Graph Embeddings (KGEs) is paramount for reliable AI, yet outdated or erroneous information often necessitates efficient unlearning. Existing approximate unlearning methods for KGEs struggle with persistent *inference leakage* and detrimental degradation of *boundary knowledge*, while exact unlearning remains computationally prohibitive. We introduce **GraphDPO**, a novel approximate unlearning framework that fundamentally redefines KGE unlearning as a *Direct Preference Optimization (DPO)* problem.
+
+GraphDPO innovatively trains KGEs to prefer reconstructed alternative triples over forgotten ones, directly penalizing reliance on targeted knowledge. This is achieved through a *graph-aware out-boundary sampling strategy* for robust preference pair generation and a unique *boundary recall mechanism* that explicitly preserves retained knowledge. Our theoretical justifications underpin this novel approach. Extensive experiments on eight new benchmark datasets demonstrate GraphDPO's superior performance, achieving up to 14.0% gains in MRR F1 over state-of-the-art baselines. GraphDPO offers a powerful, lightweight solution to maintain dynamic KGEs, mitigating inference leakage and safeguarding knowledge integrity, thereby advancing robust machine unlearning for graph-structured data and critical AI applications.
+
+==================================================
+FULL SUMMARY:
+==================================================
+Here's a focused summary of the technical paper for a literature review:
+
+### Focused Summary for Literature Review: Unlearning of Knowledge Graph Embedding via Preference Optimization \cite{liu2025}
+
+1.  **Research Problem & Motivation**
+    *   **Specific Technical Problem**: Existing Knowledge Graph Embedding (KGE) models inevitably contain outdated or erroneous knowledge that needs to be removed. Current approximate unlearning methods for KGs suffer from two main issues: (1) incomplete forgetting, where targeted triples can still be inferred due to KG connectivity, and (2) weakening of remaining knowledge in the "forgetting boundary" due to a focus on local data for removal.
+    *   **Importance & Challenge**: KGEs are crucial for many knowledge-driven AI applications (e.g., question answering, semantic search, LLMs). Incorrect or outdated knowledge degrades model performance. The inherent connectivity of KGs makes unlearning challenging, as removing one piece of information can inadvertently affect related, retained knowledge or allow the "forgotten" information to be re-inferred. Exact unlearning is computationally prohibitive.
+
+2.  **Related Work & Positioning**
+    *   **Relation to Existing Approaches**: This work builds upon existing knowledge unlearning methods (exact and approximate) and leverages Direct Preference Optimization (DPO) techniques, primarily developed for LLMs.
+    *   **Limitations of Previous Solutions**:
+        *   **Exact Unlearning**: Requires high training costs by retraining the entire dataset \cite{liu2025}.
+        *   **Approximate Unlearning (for KGs)**: Fails to fully remove targeted information (inference leakage) and weakens remaining knowledge in the forgetting boundary due to the interconnected nature of KGs \cite{liu2025}.
+        *   **Existing KGE Unlearning Methods (e.g., schema, meta-learning)**: Struggle to effectively forget while preserving remaining knowledge due to KG connectivity \cite{liu2025}.
+        *   **LLM-based KGE Approaches**: Primarily focus on knowledge addition/modification, overlook unlearning, and incur significant computational costs and retraining requirements \cite{liu2025}.
+
+3.  **Technical Approach & Innovation**
+    *   **Core Technical Method**: GraphDPO, a novel approximate unlearning framework for KGEs based on Direct Preference Optimization (DPO). It operates in three stages: Dataset Transfer, Graph-Aware Direct Preference Optimization, and Boundary-Aware Knowledge Recall \cite{liu2025}.
+    *   **Novelty**:
+        *   **Reframing Unlearning as Preference Optimization**: Unlearning is reformulated as a preference optimization problem where the model is trained by DPO to prefer reconstructed alternative triples over the original forgetting triples. This directly penalizes reliance on forgettable knowledge, mitigating incomplete forgetting \cite{liu2025}.
+        *   **Graph-Aware Out-Boundary Sampling Strategy**: To construct preference pairs, this strategy samples preferred entities (`yw`) that are structurally distant from the dis-preferred entities (`yl`), minimizing semantic and relational overlap with retained knowledge and enhancing discriminative preference signals \cite{liu2025}.
+        *   **Boundary Recall Mechanism**: Introduces a mechanism combining knowledge replay and distillation to explicitly preserve knowledge near the forgetting boundary, ensuring minimal degradation of remaining knowledge both within a single time step and across multiple time steps \cite{liu2025}.
+
+4.  **Key Technical Contributions**
+    *   **Novel Algorithms/Methods**:
+        *   GraphDPO framework, integrating DPO with graph-specific strategies for KGE unlearning \cite{liu2025}.
+        *   A novel formulation of the Unlearning in Knowledge Graph Embedding (UKGE) task as a preference optimization problem, with theoretical justification for objective equivalence (Theorem 1 and Theorem 2) \cite{liu2025}.
+        *   An out-boundary sampling strategy to generate effective preferred samples for DPO in KGs \cite{liu2025}.
+        *   A boundary recall mechanism, combining replay and distillation, to protect retained knowledge at the forgetting boundary \cite{liu2025}.
+    *   **System Design/Architectural Innovations**: A three-stage framework (Dataset Transfer, Graph-Aware DPO, Boundary-Aware Knowledge Recall) designed for efficient and effective KGE unlearning \cite{liu2025}.
+    *   **Theoretical Insights/Analysis**: Proofs (Theorem 1 and Theorem 2) demonstrating the approximate equivalence between the unlearning objective and the preference optimization objective, even with out-boundary sampling, justifying the task transfer \cite{liu2025}.
+    *   **Dataset Contribution**: Construction and release of eight benchmark datasets for UKGE, derived from four popular KGs (FB15K-237, WN18RR, CoDEx-L, Yago3-10) with varying unlearning rates (10% and 20%) \cite{liu2025}.
+
+5.  **Experimental Validation**
+    *   **Experiments Conducted**: GraphDPO was evaluated against state-of-the-art approximate unlearning baselines on the novel UKGE task \cite{liu2025}.
+    *   **Key Performance Metrics**: Mean Reciprocal Rank Average (MRR Avg) and MRR F1 \cite{liu2025}.
+    *   **Comparison Results**: GraphDPO consistently outperformed strong approximate unlearning baselines, achieving gains of up to 10.1% in MRR Avg and 14.0% in MRR F1 on most datasets \cite{liu2025}.
+    *   **Further Analysis**: Confirmed that GraphDPO more effectively removes target knowledge while preserving surrounding context, validating its design principles \cite{liu2025}.
+
+6.  **Limitations & Scope**
+    *   **Technical Limitations/Assumptions**: GraphDPO is an *approximate* unlearning method, not exact unlearning. Its effectiveness relies on the theoretical equivalence between unlearning and preference optimization objectives. The paper focuses on KGE models and does not address unlearning in other types of machine learning models.
+    *   **Scope of Applicability**: Primarily applicable to the Unlearning of Knowledge Graph Embedding (UKGE) task. It offers a lightweight alternative to LLM-based unlearning methods in scenarios with limited computational resources \cite{liu2025}.
+
+7.  **Technical Significance**
+    *   **Advancement of State-of-the-Art**: GraphDPO represents a significant advancement by proposing the first DPO-based framework for KGE unlearning, effectively addressing the critical issues of inference leakage and degradation of boundary knowledge that plague previous approximate methods \cite{liu2025}.
+    *   **Potential Impact on Future Research**:
+        *   Provides a robust and efficient method for maintaining the integrity and relevance of KGEs, crucial for real-world applications.
+        *   Opens new avenues for applying preference optimization techniques to other graph-structured data unlearning problems.
+        *   The released benchmark datasets will facilitate standardized evaluation and accelerate future research in UKGE \cite{liu2025}.
+        *   Offers a lightweight and scalable alternative for knowledge unlearning in KGs compared to computationally intensive LLM-based approaches \cite{liu2025}.

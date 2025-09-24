@@ -1,0 +1,36 @@
+File: /media/aiserver/New Volume/HDD_linux/bear/SurveyX/paper_data/KNOWLEDGE_GRAPH_EMBEDDING/82ca372cdb6d4a13004486e6fccf54faf8191315.pdf
+Created: 2025-09-20T07:19:22.160961
+Keywords: Temporal knowledge graphs, Temporal link prediction, Temporal regularisation, Tensor factorisation models, Temporal smoothing regularisers, Lp and Np norms, Recurrent architectures, Predictive accuracy improvement, State-of-the-art results, Linear regularisers effectiveness, Nuclear norms, Mean Reciprocal Rank (MRR), Hyperparameter tuning
+==================================================
+INTRIGUING ABSTRACT:
+==================================================
+Unlocking unprecedented accuracy in temporal knowledge graph completion, this study systematically investigates the profound impact of diverse temporal regularisation terms on neural link predictors. We challenge the notion that complex architectures are always superior, demonstrating that carefully selected *linear smoothing regularisers*, particularly those based on nuclear norms (Lp/Np families), dramatically enhance predictive performance. Our comprehensive experimental design extends state-of-the-art tensor factorization models, TNTComplEx and ChronoR, revealing that these simple regularisers consistently and significantly improve accuracy across three benchmark datasets (ICEWS14, ICEWS05-15, YAGO15K). Notably, TNTComplEx, augmented with optimal linear regularisation, achieves new state-of-the-art results, surpassing previous methods with an MRR of 61.80 on ICEWS14, 67.70 on ICEWS05-15, and 37.05 on YAGO15K. In contrast, recurrent architectures (RNN, LSTM, GRU) struggled with long sequence timestamp embeddings, highlighting the efficacy of simpler approaches. This work provides critical empirical evidence that optimizing temporal regularisation, rather than solely developing novel complex models, offers a powerful and often overlooked pathway to achieving superior temporal link prediction. It opens new avenues for research in temporal knowledge graph completion by identifying highly effective, computationally efficient smoothing techniques.
+
+==================================================
+FULL SUMMARY:
+==================================================
+Here is a focused summary of the empirical study by \cite{dileo2023} for a literature review:
+
+1.  **Research Questions & Hypotheses**
+    This study investigates the impact of various temporal regularisation terms on the performance of neural link predictors for temporal knowledge graphs. The core empirical question is how different temporal smoothing regularisers, including linear functions and recurrent architectures, affect predictive accuracy. The implicit hypothesis is that carefully selected temporal regularisers can significantly improve the accuracy of existing temporal link prediction models.
+
+2.  **Study Design & Methodology**
+    The study employs an experimental design to systematically analyze a comprehensive array of temporal regularisers. It evaluates their impact on two state-of-the-art tensor factorisation models, TNTComplEx and ChronoR, for the temporal link prediction task. The methodology involves extending these models with various temporal smoothing regularisers (Lp and Np norms, Linear3, and recurrent architectures like RNN, LSTM, GRU) and comparing their performance.
+
+3.  **Data & Participants**
+    The research utilizes three widely-used benchmark datasets for temporal knowledge graph completion: ICEWS14, ICEWS05-15, and YAGO15K. These datasets consist of positive temporal quadruples, with varying characteristics: ICEWS14 (7,128 entities, 230 relations, 365 timestamps, 90,730 facts), ICEWS05-15 (10,488 entities, 251 relations, 4,017 timestamps, 479,329 facts), and YAGO15K (15,403 entities, 34 relations, 198 timestamps, 138,056 facts).
+
+4.  **Key Empirical Findings**
+    *   By carefully selecting temporal smoothing regularisers and weights, TNTComplEx \cite{dileo2023} achieved significantly more accurate results, surpassing state-of-the-art methods on all three datasets (e.g., MRR of 61.80 on ICEWS14, 67.70 on ICEWS05-15, and 37.05 on YAGO15K).
+    *   Linear regularisers for temporal smoothing, particularly those based on specific nuclear norms (Np/Lp families), consistently and significantly improved the predictive accuracy of both TNTComplEx and ChronoR.
+    *   Linear regularisers that introduce smaller loss penalties for closer timestamp representations yielded the best performance.
+    *   Recurrent architectures (RNN, LSTM, GRU) struggled to effectively generate long sequences of timestamp embeddings, indicating limitations for this type of temporal regularisation.
+
+5.  **Statistical Analysis**
+    Performance was assessed using standard temporal link prediction metrics: Hits@k (for k=1, 3, 10) and filtered Mean Reciprocal Rank (MRR). Hyperparameters, including regularisation weights (λ1, λ2), p-values for norms, and embedding dimensions, were tuned via grid search on a validation set. Models were trained using mini-batch stochastic gradient descent with the Adam optimizer, a learning rate of 0.1, and a batch size of 1000.
+
+6.  **Validity & Limitations**
+    The study's internal validity is supported by the systematic comparison of various regularisers under controlled conditions. A limitation noted is that recurrent architectures struggled with generating long sequences of timestamps. The generalizability (external validity) is enhanced by using widely accepted benchmark datasets, though all datasets consist exclusively of positive triples.
+
+7.  **Empirical Contribution**
+    This work empirically demonstrates that simple tensor factorisation models can achieve new state-of-the-art results in temporal link prediction by systematically optimizing temporal regularisation terms \cite{dileo2023}. It contributes new knowledge by identifying specific linear regularisers based on nuclear norms as highly effective for temporal smoothing, offering a promising avenue for future research in temporal knowledge graph completion.

@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html prefix="og: https://ogp.me/ns#" xmlns="http://www.w3.org/1999/xhtml" lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+        <title>CSSE | Future Event Prediction Based on Temporal Knowledge Graph Embedding</title>
+        <meta name="keywords"    content="Event prediction; temporal knowledge graph; graph representation learning; knowledge embedding" />
+                    
+            <meta name="title" content="Future Event Prediction Based on Temporal Knowledge Graph Embedding" />
+<meta name="description" content="Accurate prediction of future events brings great benefits and reduces losses for society in many domains, such as civil unrest, pandemics, and crimes. Knowledge graph is a general language for describing and modeling complex... | Find, read and cite all the research you need on Tech Science Press" />
+<meta name="dc.identifier" content="doi:10.32604/csse.2023.026823"/>
+<meta name="DOI" content="10.32604/csse.2023.026823"/>
+<meta property="twitter:site" content="@TechScience_TSP"/>
+<meta property="twitter:creator" content="@TechScience_TSP"/>
+<meta property="twitter:card" content="summary"/>
+<meta property="twitter:url" content="https://www.techscience.com/csse/v44n3/49146"/>
+<meta property="og:site" content="Tech Science Press"/>
+<meta property="og:site_name" content="Tech Science Press"/>
+<meta property="og:type" content="website"/>
+<meta property="og:title" content="Future Event Prediction Based on Temporal Knowledge Graph Embedding"/>
+<meta property="og:description" content="Accurate prediction of future events brings great benefits and reduces losses for society in many domains, such as civil unrest, pandemics, and crimes. Knowledge graph is a general language for describing and modeling complex... | Find, read and cite all the research you need on Tech Science Press"/>
+<meta property="og:url" content="https://www.techscience.com/csse/v44n3/49146"/>
+<meta property="og:image" content="https://www.techscience.com/static/images/logo/logo-200.png?t=20230215"/>
+<meta name="citation_title" content="Future Event Prediction Based on Temporal Knowledge Graph Embedding"/>
+<meta name="citation_author" content="Zhipeng Li"/>
+<meta name="citation_author" content="Shanshan Feng"/>
+<meta name="citation_author" content="Jun Shi"/>
+<meta name="citation_author" content="Yang Zhou"/>
+<meta name="citation_author" content="Yong Liao"/>
+<meta name="citation_author" content="Yangzhao Yang"/>
+<meta name="citation_author" content="Yangyang Li"/>
+<meta name="citation_author" content="Nenghai Yu"/>
+<meta name="citation_author" content="Xun Shao"/>
+<meta name="citation_publication_date" content="2022/08/01"/>
+<meta name="citation_online_date" content=""/>
+<meta name="citation_journal_title" content="Computer Systems Science and Engineering"/>
+<meta name="citation_year" content="2023"/>
+<meta name="citation_volume" content="44"/>
+<meta name="citation_issue" content="3"/>
+<meta name="citation_firstpage" content="2411"/>
+<meta name="citation_lastpage" content="2423"/>
+<meta name="citation_article_type" content="ARTICLE"/>
+<meta name="citation_fulltext_world_readable" content=""/>
+<meta name="citation_pdf_url" content="https://cdn.techscience.press/ueditor/files/csse/TSP_CSSE-44-3/TSP_CSSE_26823/TSP_CSSE_26823.pdf" />
+<meta name="citation_publisher" content="Tech Science Press"/>
+<meta name="citation_public_url" content="https://www.techscience.com/csse/v44n3/49146" />
+<meta name="citation_abstract_html_url" content="https://www.techscience.com/csse/v44n3/49146"/>
+<meta name="citation_fulltext_html_url" content="https://www.techscience.com/csse/v44n3/49146/html"/>
+<meta name="citation_issn" content="0267-6192"/>
+<meta name="citation_doi" content="10.32604/csse.2023.026823"/>
+<meta name="citation_journal_abbrev" content="CSSE" />
+<meta name="citation_language" content="en" />
+<meta name="citation_date" content="2022"/>
+<meta name="citation_reference" content="Zhao, L. (2021). Event prediction in the big data era: A systematic survey. ACM Computing Surveys, 54(5), 1-37."/>
+<meta name="citation_reference" content="Lazer, D., Pentland, A., Adamic, L., Aral, S., &amp; Barabasi, A. L. (2009). Computational social science. Science, 323(5915), 721-723."/>
+<meta name="citation_reference" content="Lazer, D., Pentland, A., Watts, D. J., Aral, S., &amp; Athey, S. (2020). Computational social science: Obstacles and opportunities. Science, 369(6507), 1060-1062."/>
+<meta name="citation_reference" content="O’Brien, S. P. (2010). Crisis early warning and decision support: Contemporary approaches and thoughts on future research. International Studies Review, 12(1), 87-104."/>
+<meta name="citation_reference" content="N. Ramakrishnan, P. Butler, S. Muthiah, N. Self, R. Khandpur et al., “Beating the news’ with EMBERS: Forecasting civil unrest using open source indicators,” in Proc. SIGKDD, New York, NY, USA, pp. 1799–1808, 2014."/>
+<meta name="citation_reference" content="S. Muthiah, P. Butler, R. P. Khandpur, P. Saraf, N. Self et al., “EMBERS at 4 years: Eperiences operating an open source indicators forecasting system,” in Proc. SIGKDD, New York, NY, USA, pp. 205–214, 2016."/>
+<meta name="citation_reference" content="K. Leetaru and P. A. Schrodt, “GDELT: Global data on events, location, and tone, 1979–2012.” in ISA Annual Convention, San Francisco, CA, USA, pp. 1–49, 2013."/>
+<meta name="citation_reference" content="Yue, Q., Li, X., &amp; Li, D. (2021). Chinese relation extraction on forestry knowledge graph construction. Computer Systems Science and Engineering, 37(3), 423-442."/>
+<meta name="citation_reference" content="Zhou, H. J., Shen, T. T., Liu, X. L., Zhang, Y. R., &amp; Guo, P. (2020). Survey of knowledge graph approaches and applications. Journal on Artificial Intelligence, 2(2), 89-101."/>
+<meta name="citation_reference" content="Zhang, X., Sun, X., Sun, X., Sun, W., &amp; Jha, S. K. (2022). Robust reversible audio watermarking scheme for telemedicine and privacy protection. Computers, Materials &amp; Continua, 71(2), 3035-3050."/>
+<meta name="citation_reference" content="Zhang, D., Jia, Q., Yang, S., Han, X., &amp; Xu, C. (2022). Traditional Chinese medicine automated diagnosis based on knowledge graph reasoning. Computers, Materials &amp; Continua, 71(1), 159-170."/>
+<meta name="citation_reference" content="Yang, C. R., Bu, R. J., Kang, Y., Zhang, Y. C., &amp; Li, H. (2020). An importance assessment model of open-source community java projects based on domain knowledge graph. Journal on Big Data, 2(4), 135-144."/>
+<meta name="citation_reference" content="W. Jin, M. Qu, X. Jin and X. Ren, “Recurrent event network: Autoregressive structure inference over temporal knowledge graphs,” in Proc. EMNLP, Virtual Conference, Online, pp. 6669–6683, 2020."/>
+<meta name="citation_reference" content="C. Zhu, M. Chen, C. Fan, G. Cheng and Y. Zhang, “Learning from history: Modeling temporal knowledge graphs with sequential copy-generation networks,” in Proc. AAAI, Virtual Conference, Online, pp. 4732–4740, 2021."/>
+<meta name="citation_reference" content="Z. Wang, J. Zhang, J. Feng and Z. Chen, “Knowledge graph embedding by translating on hyperplanes,” in Proc. AAAI, Québec City, Québec, Canada, pp. 1112–1119, 2014."/>
+<meta name="citation_reference" content="A. Bordes, N. Usunier, A. Garcia-Duran, J. Weston and O. Yakhnenko, “Translating embeddings for modeling multi-relational data,” in Proc. NeurIPS, Lake Tahoe, Nevada, USA, pp. 1–9, 2013."/>
+<meta name="citation_reference" content="G. Ji, S. He, L. Xu, K. Liu and J. Zhao, “Knowledge graph embedding via dynamic mapping matrix,” in Proc. ACL, Beijing, China, pp. 687–696, 2015."/>
+<meta name="citation_reference" content="G. Ji, K. Liu, S. He and J. Zhao, “Knowledge graph completion with adaptive sparse transfer matrix,” in Proc. AAAI, Phoenix, Arizona, USA, pp. 985–991, 2016."/>
+<meta name="citation_reference" content="Z. Sun, Z. Deng, J. Nie and J. Tang, “RotatE: Knowledge graph embedding by relational rotation in complex space,” in Proc. ICLR, New Orleans, Louisiana, USA, pp. 1–18, 2019."/>
+<meta name="citation_reference" content="B. Yang, W. Yih, X. He, J. Gao and L. Deng, “Embedding entities and relations for learning and inference in knowledge bases,” in Proc. ICLR, San Diego, CA, USA, pp. 1–12, 2015."/>
+<meta name="citation_reference" content="T. Trouillon, J. Welbl, S. Riedel, E. Gaussier and G. Bouchard, “Complex embeddings for simple link prediction,” in Proc. ICML, New York City, NY, USA, pp. 2071–2080, 2016."/>
+<meta name="citation_reference" content="T. Dettmers, P. Minervini, P. Stenetorp and S. Riedel, “Convolutional 2d knowledge graph embeddings,” in Proc. AAAI, New Orleans, Louisiana, USA, pp. 1811–1818, 2018."/>
+<meta name="citation_reference" content="M. Schlichtkrull, T. N. Kipf, P. Bloem, R. van den Berg, I. Titov et al., “Modeling relational data with graph convolutional networks,” in Proc. ESWC, Heraklion, Crete, Greece, pp. 593–607, 2018."/>
+<meta name="citation_reference" content="C. Shang, Y. Tang, J. Huang, J. Bi, X. He et al., “End-to-end structure-aware convolutional networks for knowledge base completion,” in Proc. AAAI, Honolulu, Hawaii, USA, pp. 3060–3067, 2019."/>
+<meta name="citation_reference" content="T. Jiang, T. Liu, T. Ge, L. Sha, B. Chang et al., “Towards time-aware knowledge graph completion,” in Proc. COLING, Osaka, Japan, pp. 1715–1724, 2016."/>
+<meta name="citation_reference" content="S. S. Dasgupta, S. N. Ray and P. Talukdar, “HyTE: Hyperplane-based temporally aware knowledge graph embedding,” in Proc. EMNLP, Brussels, Belgium, pp. 2001–2011, 2018."/>
+<meta name="citation_reference" content="R. Goel, S. M. Kazemi, M. Brubaker and P. Poupart, “Diachronic embedding for temporal knowledge graph completion,” in Proc. AAAI, New York, New York, USA, pp. 3988–3995, 2020."/>
+<meta name="citation_reference" content="R. Trivedi, M. Farajtabar, P. Biswal and H. Zha, “DyREP: Learning representations over dynamic graphs,” in Proc. ICLR, New Orleans, Louisiana, USA, pp. 1–25, 2019."/>
+<meta name="citation_reference" content="Y. He, P. Zhang, L. Liu, Q. Liang, W. Zhang et al., “HIP network: Historical information passing network for extrapolation reasoning on temporal knowledge graph,” in Proc. IJCAI, Montreal, Canada, pp. 1915–1921, 2021."/>
+<meta name="citation_reference" content="Z. Li, X. Jin, W. Li, S. Guan, J. Guo et al., “Temporal knowledge graph reasoning based on evolutional representation learning,” in Proc. SIGIR, Virtual Conference, Online, pp. 408–417, 2021."/>
+<meta name="citation_reference" content="De Caigny, A., Coussement, K., &amp; De Bock, K. W. (2018). A new hybrid classification algorithm for customer churn prediction based on logistic regression and decision trees. European Journal of Operational Research, 269(2), 760-772."/>
+<meta name="citation_reference" content="G. Korkmaz, J. Cadena, C. J. Kuhlman, A. Marathe, A. Vullikanti et al., “Combining heterogeneous data sources for civil unrest forecasting,” in Proc. ASONAM, New York, NY, USA, pp. 258–265, 2015."/>
+<meta name="citation_reference" content="S. Santiso, A. Casillas, A. Perez, M. Oronoz and K. Gojenola, “Adverse drug event prediction combining shallow analysis and machine learning,” in Proc. Louhi, Gothenburg, Sweden, pp. 85–89, 2014."/>
+<meta name="citation_reference" content="S. Zhao, Q. Wang, S. Massung, B. Qin, T. Liu et al., “Constructing and embedding abstract event causality networks from text snippets,” in Proc. WSDM, Cambridge, UK, pp. 335–344, 2017."/>
+<meta name="citation_reference" content="S. Deng, H. Rangwala and Y. Ning, “Learning dynamic context graphs for predicting social events,” in Proc. SIGKDD, Anchorage, Alaska, USA, pp. 1007–1016, 2019."/>
+<meta name="citation_reference" content="S. Deng, H. Rangwala and Y. Ning, “Dynamic knowledge graph based multi-event forecasting,” in Proc. SIGKDD, San Diego, California, USA, pp. 1585–1595, 2020."/>
+<meta name="citation_reference" content="S. Vashishth, S. Sanyal, V. Nitin and P. Talukdar, “Composition-based multi-relational graph convolutional networks,” in Proc. ICLR, Addis Ababa, Ethiopia, pp. 1–16, 2020."/>
+<meta name="citation_reference" content="K. Xu, W. Hu, J. Leskovec and S. Jegelka, “How powerful are graph neural networks?,” in Proc. ICLR, New Orleans, Louisiana, USA, pp. 1–17, 2019."/>
+<meta name="citation_reference" content="J. You, Z. Ying and J. Leskovec, “Design space for graph neural networks,” in Proc. NeuIPS, Virtual Conference, Online, pp. 17009–17021, 2020."/>
+<meta name="citation_reference" content="Wu, Z., Pan, S., Chen, F., Long, G., &amp; Zhang, C. (2021). A comprehensive survey on graph neural networks. IEEE Transactions on Neural Networks and Learning Systems, 32(1), 4-24."/>
+<meta name="citation_reference" content="P. Veličković, G. Cucurull, A. Casanova, A. Romero, P. Liò et al., “Graph attention networks,” in Proc. ICLR, Vancouver, BC, Canada, pp. 1–12, 2018."/>
+<meta name="citation_reference" content="K. Wang, W. Shen, Y. Yang, X. Quan and R. Wang, “Relational graph attention network for aspect-based sentiment analysis,” in Proc. ACL, Seattle, Washington, USA, pp. 3229–3238, 2020."/>
+<meta name="citation_reference" content="Xie, Y., Zhang, Y., Gong, M., Tang, Z., &amp; Han, C. (2020). MGAT: Multi-view graph attention networks. Neural Networks, 132, 180-189."/>
+<meta name="citation_reference" content="T. N. Kipf and M. Welling, “Semi-supervised classification with graph convolutional networks,” in Proc. ICLR, Toulon, France, pp. 1–14, 2017."/>
+<meta name="citation_reference" content="P. Ren, Z. Chen, J. Li, Z. Ren, J. Ma et al., “RepeatNet: A repeat aware neural recommendation machine for session-based recommendation,” in Proc. AAAI, Honolulu, Hawaii, USA, pp. 4806–4813, 2019."/>
+<meta name="citation_reference" content="Y. Zhang and Q. Yang, “A survey on multi-task learning,” IEEE Transactions on Knowledge and Data Engineering, Early Access, 2021. https://dx.doi.org/10.1109/TKDE.2021.3070203."/>
+<meta name="citation_reference" content="A. García-Durán, S. Dumančić and M. Niepert, “Learning sequence encoders for temporal knowledge graph completion,” in Proc. EMNLP, Brussels, Belgium, pp. 4816–4821, 2018."/>
+<meta name="citation_reference" content="A. Shilliday and J. Lautenschlager, “Data for a worldwide ICEWS and ongoing research.” in Advances in Design for Cross-Cultural Activities, 1st ed, Part I. Boca Raton, FL, USA: CRC Press, pp. 455–465, 2012."/>
+<meta name="citation_reference" content="Z. Han, P. Chen, Y. Ma and V. Tresp, “Explainable subgraph reasoning for forecasting on temporal knowledge graphs,” in Proc. ICLR, Vienna, Austria, pp. 1–24, 2021."/>
+<meta name="citation_reference" content="P. Jain, S. Rathi, Mausam and S. Chakrabarti, “Temporal knowledge base completion: New algorithms and evaluation protocols,” in Proc. EMNLP, Virtual Conference, Online, pp. 3733–3747, 2020."/>
+<meta name="citation_keywords" content="Event prediction; temporal knowledge graph; graph representation learning; knowledge embedding" />
+<meta name="citation_id" content="49146" />
+<meta name="citation_state" content="" />
+<meta name="DC.Contributor" content="Zhipeng Li"/>
+<meta name="DC.Creator" content="Zhipeng Li"/>
+<meta name="DC.Contributor" content="Shanshan Feng"/>
+<meta name="DC.Creator" content="Shanshan Feng"/>
+<meta name="DC.Contributor" content="Jun Shi"/>
+<meta name="DC.Creator" content="Jun Shi"/>
+<meta name="DC.Contributor" content="Yang Zhou"/>
+<meta name="DC.Creator" content="Yang Zhou"/>
+<meta name="DC.Contributor" content="Yong Liao"/>
+<meta name="DC.Creator" content="Yong Liao"/>
+<meta name="DC.Contributor" content="Yangzhao Yang"/>
+<meta name="DC.Creator" content="Yangzhao Yang"/>
+<meta name="DC.Contributor" content="Yangyang Li"/>
+<meta name="DC.Creator" content="Yangyang Li"/>
+<meta name="DC.Contributor" content="Nenghai Yu"/>
+<meta name="DC.Creator" content="Nenghai Yu"/>
+<meta name="DC.Contributor" content="Xun Shao"/>
+<meta name="DC.Creator" content="Xun Shao"/>
+<meta name="DC.Created" content="2022-08-01"/>
+<meta name="DC.Date" content="2022-08-01"/>
+<meta name="DC.Format" content="text/html" />
+<meta name="DC.Type" content="text" />
+<meta name="DC.Title" content="Future Event Prediction Based on Temporal Knowledge Graph Embedding"/>
+<meta name="DC.Description" content="Accurate prediction of future events brings great benefits and reduces losses for society in many domains, such as civil unrest, pandemics, and crimes. Knowledge graph is a general language for describing and modeling complex... | Find, read and cite all the research you need on Tech Science Press"/>
+<meta name="DC.Publisher" content="Tech Science Press"/>
+<meta name="dc.subject" content="ARTICLE"/>
+
+<script type="application/ld+json">{"@context":"https:\/\/schema.org","@id":"https:\/\/www.techscience.com\/csse\/v44n3\/49146","@type":"ScholarlyArticle","headline":"Future Event Prediction Based on Temporal Knowledge Graph Embedding","author":[{"@type":"Person","name":"Li, Zhipeng"},{"@type":"Person","name":"Feng, Shanshan"},{"@type":"Person","name":"Shi, Jun"},{"@type":"Person","name":"Zhou, Yang"},{"@type":"Person","name":"Liao, Yong"},{"@type":"Person","name":"Yang, Yangzhao"},{"@type":"Person","name":"Li, Yangyang"},{"@type":"Person","name":"Yu, Nenghai"},{"@type":"Person","name":"Shao, Xun"}],"datePublished":"2022\/08\/01","publisher":{"@id":"https:\/\/www.techscience.com\/ndetail\/abt","@type":"NewsMediaOrganization","name":"Tech Science Press","logo":{"@type":"ImageObject","url":"https:\/\/www.techscience.com\/static\/images\/logo.png"}},"name":"Future Event Prediction Based on Temporal Knowledge Graph Embedding","keywords":"Event prediction, temporal knowledge graph, graph representation learning, knowledge embedding","articleSection":"Computer Systems Science and Engineering","interactionStatistic":[{"@type":"InteractionCounter","interactionType":"http:\/\/schema.org\/ReadAction","userInteractionCount":"4914"},{"@type":"InteractionCounter","interactionType":"http:\/\/schema.org\/DownloadAction","userInteractionCount":"2180"}],"sameAs":"https:\/\/doi.org\/10.32604\/csse.2023.026823"}</script>
+
+        </head><body id="pdf-view">
+    <style>
+        body,html{
+            padding: 0;margin: 0;
+        }
+        h3 {
+            font-weight: bold;
+            color: #2e3092;
+            font-size: 17px;
+            margin: 5px 0;
+            line-height: 1.4em;
+        }
+        body#pdf-view {
+            background: none;
+        }
+
+        body#pdf-view a.btn {
+            color: white;
+        }
+
+        body#pdf-view .pdf {
+            height: 100%;
+            width: auto;
+            overflow: auto;
+        }
+
+        body#pdf-view .sidebar {
+            width: 200px;
+            float: right;
+        }
+
+        body#pdf-view #container {
+            width: 100%;
+        }
+
+        body#pdf-view #wrapper {
+            width: 100%;
+        }
+
+        body#pdf-view #header {
+            height: 80px;
+        }
+
+        body#pdf-view #articlePdf {
+            height: 1450px
+        }
+        
+        body#pdf-view .gallerys-block{
+            margin-left: 20px;
+        }
+        body#pdf-view .sidebar  a#mPdfDownloadLink {
+            display: none;
+        }
+        @media(max-width: 1199px) {
+            #header div[name^="ame-ad"],
+            div#footer-ame-ad[name^="ame-ad"]{
+                max-width: 100%;
+                margin: auto;
+            }
+            #header div[name^="ame-ad"] img,
+            div#footer-ame-ad[name^="ame-ad"] img{
+                max-width: 100%;
+                max-height: 140px;
+                margin: 10px auto;
+            }
+        }
+
+        @media(min-width: 979px) and (max-width: 1199px) {
+            .controller-index.action-index #container #wrapper .container div[name^="ame-ad"] img{
+                max-width: 100%;
+                max-height: 1000px;
+            }
+        }
+
+        @media(min-width: 768px) and (max-width: 978px) {
+            .controller-index.action-index #container #wrapper .container div[name^="ame-ad"] img{
+                max-width: 100%;
+                max-height: 1000px;
+            }
+        }
+
+        @media(max-width: 767px) {
+            .controller-index.action-index #container #wrapper .container div[name^="ame-ad"] img{
+                max-width: 270px;
+                max-height: 1000px;
+            }
+            body#pdf-view #wrapper{
+                width: 100%;
+            }
+            body#pdf-view .sidebar{
+                width: 100%;
+                float: none;
+                border-bottom: 1px solid #e0e0e0;
+            }
+            body#pdf-view .gallerys-block{
+                display: flex;
+                margin:0;
+                padding: 5px 10px;
+            }
+            body#pdf-view .gallerys-block h3{
+                display: none;
+            }
+            body#pdf-view .sidebar ul{
+                position: relative;
+                width: calc(100vw - 60px);
+                list-style: none;
+                display: flex;
+                flex-wrap: nowrap;
+                align-items: center;
+                margin: 0 10px 3px 0;
+                padding: 0;
+                font-size: 12px;
+                overflow-x: scroll;
+            }
+            body#pdf-view .sidebar ul::-webkit-scrollbar{
+                display: none;
+            }
+            body#pdf-view .sidebar ul li{
+                display: inline-block;
+                white-space: nowrap;
+                margin-right: 10px;
+                padding: 10px 5px;
+                text-decoration: none;
+                border-bottom: 1px solid #e0e0e0;
+                text-align: center;
+            }
+
+            body#pdf-view .sidebar ul li a,
+            body#pdf-view .sidebar ul li a:hover,
+            body#pdf-view .sidebar ul li a:focus{
+                display: block;
+                text-decoration: none;
+                color: #333;
+            }
+            body#pdf-view .sidebar ul li a:hover,
+            body#pdf-view .sidebar ul li a:focus{
+                text-decoration: none;
+            }
+            body#pdf-view .sidebar ul li.checked,
+            body#pdf-view .sidebar ul li.checked a,
+            body#pdf-view .sidebar ul li a:hover,
+            body#pdf-view .sidebar ul li a:focus
+            {
+                color: #990b04;
+                border-color: #990b04;
+            }
+            body#pdf-view .sidebar ul li > strong {
+                color: #990b04;
+                border-color: #990b04;
+            }
+            body#pdf-view .sidebar  ul li#pdfDownloadLinkLi,
+            body#pdf-view .sidebar  ul li#pdfDownloadLinkLi2{
+                display: none;
+            }
+            body#pdf-view .sidebar  a#mPdfDownloadLink,
+            body#pdf-view .sidebar  a#mPdfDownloadLink2{
+                text-shadow: none;
+                padding: 0;
+                border-radius:0;
+                display: block;
+                background: url('https://cdn.amegroups.cn/static/image/1598412802eb21abddc6c3aa4cf9d541/1598412802eb21abddc6c3aa4cf9d541.png');
+                background-position: center;
+                background-size: 75%;
+                background-repeat: no-repeat;
+                width: 40px;
+                height: 38px;
+            }
+        }
+        
+        .gallerys-block{ }
+        .gallerys-block ul{  }
+
+        .gallerys-block ul li{ font-size:14px; position:relative;}
+        .gallerys-block ul li a{ line-height:23px; padding-left:0px; color:#666; transition:all 0.6s; margin-top:5px; text-decoration: none;}
+        .gallerys-block ul li a:hover{ color:#a40000;transition:all 0.6s}
+        
+        .btn {
+            display: inline-block;
+            *display: inline;
+            /* IE7 inline-block hack */
+
+            *zoom: 1;
+            padding: 4px 10px 4px;
+            margin-bottom: 0;
+            font-size: 13px;
+            line-height: 18px;
+            color: #333333;
+            text-align: center;
+            text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+            vertical-align: middle;
+            background-color: #f5f5f5;
+            background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);
+            background-image: -ms-linear-gradient(top, #ffffff, #e6e6e6);
+            background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#e6e6e6));
+            background-image: -webkit-linear-gradient(top, #ffffff, #e6e6e6);
+            background-image: -o-linear-gradient(top, #ffffff, #e6e6e6);
+            background-image: linear-gradient(top, #ffffff, #e6e6e6);
+            background-repeat: repeat-x;
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#e6e6e6', GradientType=0);
+            border-color: #e6e6e6 #e6e6e6 #bfbfbf;
+            border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+            filter: progid:dximagetransform.microsoft.gradient(enabled=false);
+            border: 1px solid #cccccc;
+            border-bottom-color: #b3b3b3;
+            -webkit-border-radius: 4px;
+            -moz-border-radius: 4px;
+            border-radius: 4px;
+            -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+            -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+            cursor: pointer;
+            *margin-left: .3em;
+          }
+          .btn:hover,
+          .btn:active,
+          .btn.active,
+          .btn.disabled,
+          .btn[disabled] {
+            background-color: #e6e6e6;
+          }
+          .btn:active,
+          .btn.active {
+            background-color: #cccccc \9;
+          }
+          .btn:first-child {
+            *margin-left: 0;
+          }
+          .btn:hover {
+            color: #333333;
+            text-decoration: none;
+            background-color: #e6e6e6;
+            background-position: 0 -15px;
+            -webkit-transition: background-position 0.1s linear;
+            -moz-transition: background-position 0.1s linear;
+            -ms-transition: background-position 0.1s linear;
+            -o-transition: background-position 0.1s linear;
+            transition: background-position 0.1s linear;
+          }
+          .btn-primary {
+            color: #ffffff;
+            text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+            background-color: #973c36;
+            background-image: -moz-linear-gradient(top, #cc6a60, #640b10);
+            background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#cc6a60), to(#640b10));
+            background-image: -webkit-linear-gradient(top, #cc6a60, #640b10);
+            background-image: -o-linear-gradient(top, #cc6a60, #640b10);
+            background-image: linear-gradient(to bottom, #cc6a60, #640b10);
+            border-color: #640b10;
+            border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+            filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#ffcc6a60', endColorstr='#ff640b10', GradientType=0);
+            filter: progid: DXImageTransform.Microsoft.gradient(enabled=false);
+            border-collapse: collapse;
+        }
+        .btn-primary:hover,
+        .btn-primary:focus,
+        .btn-primary:active,
+        .btn-primary.active,
+        .btn-primary.disabled,
+        .btn-primary[disabled] {
+            color: #ffffff;
+            background-color: #640b10;
+        }
+        #pdfDownloadLink, #pdfDownloadLink2 {
+            padding: 0px 10px;
+        }
+        .nbt {
+            line-height: 37px;
+            margin: 10px 0;
+            font-size: 20px;
+            font-weight: bold;
+            color: #323232;
+            padding-left: 15px;
+            box-sizing: border-box;
+        }
+    </style>
+    
+    <div id="container">
+        <div id="wrapper" role="main">
+
+            <div class="sidebar">
+
+                <div class="gallerys-block">
+                    <h3 class="title nbt">Article Options</h3>
+                    <ul id="pdf-article-tabs">
+                        <li class="active checked">
+                            <strong>
+                                PDF
+                            </strong>
+                        </li>
+                                                <li class=" ">
+                            <a class="full-text"
+                               target="_blank"
+                               href="https://www.techscience.com/csse/v44n3/49146/html">
+                                <strong>
+                                    Full Text
+                                </strong>
+                            </a>
+                        </li>
+                                                <li id="pdfDownloadLinkLi">
+                            <a class="btn btn-primary" id="pdfDownloadLink" onclick="handleClickPDfLink(event);return false;" href="https://cdn.techscience.cn/ueditor/files/csse/TSP_CSSE-44-3/TSP_CSSE_26823/TSP_CSSE_26823.pdf">Download</a>
+                        </li>
+                        <li id="pdfDownloadLinkLi2">
+                            <a class="btn btn-primary" id="pdfDownloadLink2" onclick="handleClickPDfLink(event);return false;" href="https://cdn.techscience.press/ueditor/files/csse/TSP_CSSE-44-3/TSP_CSSE_26823/TSP_CSSE_26823.pdf">Download (CDN)</a>
+                        </li>
+
+                    </ul>
+                    <a id="mPdfDownloadLink" onclick="handleClickPDfLink(event);return false;" href="https://cdn.techscience.cn/ueditor/files/csse/TSP_CSSE-44-3/TSP_CSSE_26823/TSP_CSSE_26823.pdf"></a>
+                    <a id="mPdfDownloadLink2" onclick="handleClickPDfLink(event);return false;" href="https://cdn.techscience.press/ueditor/files/csse/TSP_CSSE-44-3/TSP_CSSE_26823/TSP_CSSE_26823.pdf"></a>
+                </div>
+            </div>
+            <div class="pdf">
+                <script src="https://www.techscience.com/static/js/jquery-1.8.3.min.js?t=20230215" type="text/javascript" /></script>
+                <script type="text/javascript">
+
+                    function getElementWidth(elem) {
+                        return elem.getBoundingClientRect().width
+                    }
+
+                    function getOffsetLeft(elem) {
+                        return elem.offsetLeft
+                    }
+
+                    function getScreenWidth() {
+                        return document.body.clientWidth
+                    }
+
+                    function removeActiveTab() {
+                        let elem = document.getElementById("pdf-article-tabs")
+                        let liElems = elem.querySelectorAll("li")
+                        Array.from(liElems).forEach((item, index) => {
+                            console.log(item)
+                            item.classList.remove("checked")
+                        })
+                    }
+
+                    function handleClickPDfLink(event) {
+                        downloadPdfFile(event.target.href)
+                    }
+
+                    function downloadPdfFile(url) {
+                        if (!url) {
+                            return
+                        }
+                        let array = url.split("/")
+                        if (!array || !array.length) {
+                            return
+                        }
+                        let fileName = array.pop()
+                        downloadAttachment(url, fileName)
+                    }
+
+                    function downloadAttachment(url, fileName, callback) {
+                        let xhr = new XMLHttpRequest()
+                        xhr.open("get", url, true)
+                        xhr.responseType = "blob"
+                        xhr.onload = function (e) {
+                            let file = URL.createObjectURL(xhr.response)
+                            let elem = document.createElement('a')
+                            elem.download = fileName// url.match(/\w+.\w+$/)
+                            elem.href = file
+                            elem.style.display = 'none'
+                            document.body.appendChild(elem)
+                            elem.click()
+                            document.body.removeChild(elem)
+                            callback && callback()
+                        }
+                        xhr.send()
+                    }
+
+                    function handleTabEvent() {
+                        let elem = document.getElementById("pdf-article-tabs")
+                        let liElems = elem.querySelectorAll("li a")
+                        let mDownloadElem = document.getElementById("mPdfDownloadLink")
+                        if ($('#mPdfDownloadLink').css("display") == "none") {
+                            return;
+                        }
+                        let screenWidth = getScreenWidth()
+                        Array.from(liElems).forEach((item, index) => {
+                            item.addEventListener('click', (event) => {
+                                let widthOffset = screenWidth - getElementWidth(mDownloadElem) - 30 - getElementWidth(item.parentNode)
+                                let offsetLeft = getOffsetLeft(item.parentNode) - widthOffset / 2
+                                elem.scrollLeft = offsetLeft
+                                removeActiveTab()
+                                item.parentNode.classList.add("checked")
+                                if (item.id != "pdfDownloadLink") {
+                                    window.open(item.href, "_self")
+                                }
+                                return false;
+                            })
+                        })
+                        //初始化选中元素定位
+                        let checkedElem = elem.querySelector("li.checked")
+                        if (checkedElem) {
+                            let widthOffset = screenWidth - getElementWidth(mDownloadElem) - 30 - getElementWidth(checkedElem)
+                            let offsetLeft = getOffsetLeft(checkedElem) - widthOffset / 2
+                            elem.scrollLeft = offsetLeft
+                        }
+                    }
+                    document.addEventListener('readystatechange', () => {
+                        if (document.readyState === "complete") {
+                            handleTabEvent()
+                        }
+                    })
+                    $(document).ready(function () {
+                        var embedCode = '<iframe id="pdfViewer" style="vertical-align: bottom;" sandbox="allow-scripts allow-top-navigation allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-downloads" src="https://cdn.techscience.cn/static/pdfjs/web/viewer.html?v=' + (new Date()).getTime().toString() + '&file=https://cdn.techscience.cn/ueditor/files/csse/TSP_CSSE-44-3/TSP_CSSE_26823/TSP_CSSE_26823.pdf" frameborder="0"></iframe>';
+                        $("#articlePdf").html(embedCode);
+                        $('#fullscreenShow').show();
+                        let elem = document.getElementById("articlePdf")
+                        $('#pdfViewer').width(elem.clientWidth + 'px');
+                        $('#pdfViewer').height(window.innerHeight + 'px');
+                    });
+                    window.onresize = function () {
+                        let elem = document.getElementById("articlePdf")
+                        $('#pdfViewer').width(elem.clientWidth + 'px')
+                        $('#pdfViewer').height(window.innerHeight + 'px')
+                    }
+
+                </script>
+                <div id="articlePdfResizer">
+                    <div id="articlePdf" class="ui-widget-content" style="height: 100%">
+                        <p>The PDF file you selected should load here if your Web browser has a PDF reader plug-in installed (for example, a recent version of <a href="http://www.adobe.com/products/acrobat/readstep2.html">Adobe Acrobat Reader</a>).</p> <p>Alternatively, you can also download the PDF file directly to your computer, from where it can be opened using a PDF reader. To download the PDF, click the Download link below.</p> <p>If you would like more information about how to print, save, and work with PDFs, Highwire Press provides a helpful <a href="http://highwire.stanford.edu/help/pdf-faq.dtl">Frequently Asked Questions about PDFs</a>.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- Google tag (gtag.js) -->
+<script async="true" src="https://www.googletagmanager.com/gtag/js?id=G-PD3QTEE3HW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PD3QTEE3HW');
+</script>
+<script src="https://web.cmp.usercentrics.eu/modules/autoblocker.js"></script>
+<script id="usercentrics-cmp" src="https://web.cmp.usercentrics.eu/ui/loader.js" data-settings-id="hGjI_wnNp25nVw" async></script></body>
+</html>  
