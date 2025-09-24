@@ -467,7 +467,7 @@ class LiteratureReviewGenerator:
         7. Include specific examples and evidence with proper citations
         8. Provide critical evaluation and comparative analysis
         9. Ensure coherent organization and logical flow, make sure to include the taxonomies summaries and development directions in the section.
-        10. No need to add the section number and subsection numbers, just use \section{{}} and \subsection{{}} directly.
+        10. Only add the content do not need to add the numbering inside the section or subsection titles.
 
         **Available Citations:**
         {citations_info}
@@ -1043,7 +1043,7 @@ def process_papers_from_directory():
     lit_review_gen = LiteratureReviewGenerator(API_KEY)
     
     # Get all PDF files from a directory
-    papers_directory = "/media/aiserver/New Volume/HDD_linux/bear/SurveyX/paper_data/KNOWLEDGE_GRAPH_EMBEDDING"
+    papers_directory = "paper_data/knowledge_graph_embedding"  
  
     # Generate review with self-reflection
     review_data = lit_review_gen.generate_complete_literature_review(
