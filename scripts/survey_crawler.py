@@ -31,29 +31,19 @@ import re
 import math
 import hashlib
 
-# Try to import available APIs
-try:
-    from resp.apis.semantic_s import Semantic_Scholar
-    SEMANTIC_AVAILABLE = True
-except ImportError:
-    SEMANTIC_AVAILABLE = False
-
-
 class SurveyOptimizedCrawler:
     """
     Survey-optimized paper crawler that ensures comprehensive coverage
     for LLM-generated research surveys
     """
     
-    def __init__(self, api_key: str = None, verbose: bool = True):
+    def __init__(self, verbose: bool = True):
         """
         Initialize the survey-optimized crawler
         
         Args:
-            api_key: Optional API key for enhanced services
             verbose: Enable detailed output
         """
-        self.api_key = api_key
         self.verbose = verbose
         self.session = requests.Session()
         self.session.headers.update({
@@ -88,18 +78,12 @@ class SurveyOptimizedCrawler:
             'reference_follow_depth': 2,
         }
         
-        # Initialize available APIs
-        self.apis = {}
-        if SEMANTIC_AVAILABLE:
-            self.apis['semantic'] = Semantic_Scholar()
-        
         # Paper storage and deduplication
         self.papers = {}
         self.title_signatures = set()
         self.author_paper_map = defaultdict(list)
         
         self._log("Survey-Optimized Crawler initialized")
-        self._log(f"Available APIs: {list(self.apis.keys())}")
     
     def collect_survey_papers(self, query: str, target_papers: int = 300) -> List[Dict[str, Any]]:
         """
@@ -326,15 +310,13 @@ class SurveyOptimizedCrawler:
         all_results = []
         
         # Primary Source: Semantic Scholar (comprehensive academic database)
-        if 'semantic' in self.apis:
-            try:
-                semantic_results = self._search_semantic_scholar(query, year_range, min_citations)
-                all_results.extend(semantic_results)
-                self._log(f" Semantic Scholar: {len(semantic_results)} papers")
-            except Exception as e:
-                self._log(f" Semantic Scholar error: {e}")
-        else:
-            self._log(f" Semantic Scholar API not available")
+        try:
+            semantic_results = self._search_semantic_scholar(query, year_range, min_citations)
+            all_results.extend(semantic_results)
+            self._log(f" Semantic Scholar: {len(semantic_results)} papers")
+        except Exception as e:
+            self._log(f" Semantic Scholar error: {e}")
+
         
         # Deduplicate and return top results
         deduplicated = self._deduplicate_papers(all_results)
@@ -796,8 +778,8 @@ def main():
     
     # 1. Check for the two required arguments (query and count)
     if len(sys.argv) != 3:
-        print("Usage: python survey_crawler.py \"your research query\" target_paper_count")
-        print("Example: python survey_crawler.py \"federated learning privacy\" 500")
+        print("Usage: python scripts/survey_crawler.py \"your research query\" target_paper_count")
+        print("Example: python scripts/survey_crawler.py \"federated learning privacy\" 500")
         return
     
     # Argument 1 (index 1) is the entire research query (since it was quoted)
