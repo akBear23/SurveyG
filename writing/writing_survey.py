@@ -642,6 +642,8 @@ class LiteratureReviewGenerator:
             skip_existing=True,  # Skip already processed files
             delay_seconds=0.0
         )
+        print(core_papers)
+        print(all_papers)
         # Fix: ensure both are lists before concatenation
         all_processed_papers = core_papers + all_papers
         # print(all_processed_papers[0]['metadata'].keys())
@@ -1043,7 +1045,7 @@ def process_papers_from_directory():
     lit_review_gen = LiteratureReviewGenerator(API_KEY)
     
     # Get all PDF files from a directory
-    papers_directory = "paper_data/knowledge_graph_embedding"  
+    papers_directory = "../paper_data/knowledge_graph_embedding"  
  
     # Generate review with self-reflection
     review_data = lit_review_gen.generate_complete_literature_review(
