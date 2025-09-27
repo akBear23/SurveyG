@@ -3,12 +3,13 @@ import os
 # sys.path.append(os.path.join(os.path.dirname(__file__), '../'))
 import requests
 import json
-from pdf_downloader import download_paper
 
 SEMANTIC_SCHOLAR_BATCH_URL = "https://api.semanticscholar.org/graph/v1/paper/batch"
-FIELDS = "paperId,title,authors,year,citationCount,abstract,url,venue,publicationDate,fieldsOfStudy,influentialCitationCount,externalIds"
+FIELDS = "paperId,title,authors,year,citationCount,abstract,url,venue,publicationDate,externalIds"
+PRESTIGIOUS_VENUES = ['nature', 'science', 'cell', 'neurips', 'icml', 'iclr', 'aaai', 'ijcai', 'acl', 'emnlp']
 
 def load_cited_by_paper_ids(json_path):
+    main_paper_id = load_main_paper_id(json_path)
     with open(json_path, 'r') as f:
         papers = json.load(f)
     # Support both dict and list formats
@@ -20,8 +21,7 @@ def load_cited_by_paper_ids(json_path):
     else:
         cited_by = []
     # Only keep those with paperId
-    # print(f"Found {len(cited_by)} total cited_by entries.")
-    return list({p['paperId'] for p in cited_by if 'paperId' in p})
+    return list({p['paperId'] for p in cited_by if 'paperId' in p and p['paperId'] not in main_paper_id})
 
 def load_main_paper_id(json_path):
     with open(json_path, 'r') as f:
@@ -152,10 +152,8 @@ def generate_llm_summary(title, abstract, url):
         paper_type = 'Unknown'
     return summary, new_direction, paper_type
 
-
 def get_pdf_link(paper):
-    # Try direct PDF link from Semantic Scholar
-    pdf_url = paper.get('pdfUrl') or paper.get('pdf_url')
+    pdf_url = None
     # Try arXiv if available
     arxiv_id = None
     external_ids = paper.get('externalIds', {})
@@ -167,11 +165,17 @@ def get_pdf_link(paper):
     doi = external_ids.get('DOI') if isinstance(external_ids, dict) else None
     if doi and not pdf_url:
         pdf_url = f"https://doi.org/{doi}"
-    # Do NOT fallback to Semantic Scholar page
     return pdf_url
 
 def main():
-    json_path = "survey_papers_knowledge_graph_embedding.json"
+    if len(sys.argv) != 2:
+        print("Usage: python scripts/fetch_cited_by_batch.py \"your research query\"")
+        print("Example: python scripts/fetch_cited_by_batch.py \"federated learning privacy\"")
+        return
+    
+    query = sys.argv[1]
+    json_path = f"paper_data/{query.replace(' ', '_')}/info/crawl_papers.json"
+
     papers, main_paper_ids = load_main_paper_id(json_path)
     print(f"Found {len(main_paper_ids)} main paper IDs.")
     # if paper in papers already has externalIds, skip
@@ -194,46 +198,56 @@ def main():
     print(f"Found {len(paper_ids)} cited_by paper IDs.")
     batch_info = fetch_batch_info_batched(paper_ids)
     print(f"Fetched info for {len(batch_info)} papers.")
-    # Extract citationCount, abstract, and generate summary
-    processed = []
-    # print("Sample paper keys:", batch_info[0].keys())
-    # # return
+    papers = []
+    
     for paper in batch_info:
+        if paper is None:
+            continue
         citation_count = paper.get('citationCount', None)
         abstract = paper.get('abstract', '')
         title = paper.get('title', '')
         url = paper.get('url', '')
+        venue = paper.get('venue', '')
+        year = paper.get('year', 0)
+        if year == None:
+            continue
+        if any(v in venue for v in PRESTIGIOUS_VENUES):
+            in_prestigious_venues = True
+        else: in_prestigious_venues = False
+        if int(year) < 2025 and in_prestigious_venues == False:
+            continue
         pdf_link = get_pdf_link(paper)
-        # summary, new_direction, paper_type = generate_llm_summary(title, abstract, url)
         if abstract is not None:
-            processed.append({
-                'paperId': paper.get('paperId', ''),
+            papers.append({
+                'id': paper.get('paperId', ''),
                 'title': title,
                 'authors': [author.get('name', '') for author in paper.get('authors', [])],
-                'keywords': paper.get('keywords', []),
+                'year': year,
                 'citationCount': citation_count,
                 'abstract': abstract,
-                'publicationDate': paper.get('publicationDate', ''),
-                'venue': paper.get('venue', ''),
-                'summary': paper.get('summary', ''),
-                # 'new_direction': paper.get('new_direction', ''),
-                'paper_type': paper.get('paper_type', ''),
                 'url': url,
                 'pdf_link': pdf_link,
-                'influentialCitations': paper.get('influentialCitationCount', 0),
-                'year': paper.get('year', 0),
+                'venue': paper.get('venue', ''),
+                'publicationDate': paper.get('publicationDate', ''),
+                'paper_type': paper.get('paper_type', ''),
                 'externalIds': paper.get('externalIds', {}),
-                'pdf_link': pdf_link,
-                # 'openAccessPdf': paper.get('openAccessPdf', {}),
-                
-                # 'summary': summary,
-                # 'new_direction': new_direction,
-                # 'paper_type': paper_type
             })
+    for paper in papers:
+        # Calculate score
+        year = int(paper.get('year', 2025))
+        citations = paper.get('citationCount', 0)
+        score = citations * (1 / max(1, (2025 - year)))
+        paper['score'] = score
+    
+    papers.sort(key=lambda x: x.get('score', 0), reverse=True)
+    papers = papers[:max(1, int(len(papers) * 0.2))]
+
     # Save results
-    with open("cited_by_batch_info_processed.json", "w") as f:
-        json.dump(processed, f, indent=2)
-    print("Saved processed info to cited_by_batch_info_processed.json")
+    output_file = f"paper_data/{query.replace(' ', '_')}/info/cited_papers.json"
+    with open(output_file, "w") as f:
+        json.dump(papers, f, indent=2)
+    print(f"Saved processed info to {output_file}")
+    print(f" Collected {len(papers)} cited papers ready for survey generation")
 
 if __name__ == "__main__":
     main()

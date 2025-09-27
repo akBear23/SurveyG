@@ -3,6 +3,7 @@ import networkx as nx
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import re
+import sys 
 
 def load_json_data(filepath):
     with open(filepath, 'r', encoding='utf-8') as f:
@@ -24,23 +25,21 @@ def detect_experiment_mention(abstract):
     pattern = '|'.join(experiment_keywords)
     return bool(re.search(pattern, abstract.lower()))
 
-def create_paper_graph(survey_papers_path, cited_papers_path):
-    survey_papers = load_json_data(survey_papers_path)
-    cited_papers = load_json_data(cited_papers_path)
-    layers = assign_layers(survey_papers, cited_papers, K=20)
+def create_paper_graph(metadata_path, crawl_papers_path):
+    survey_papers = load_json_data(metadata_path)
+    crawl_papers = load_json_data(crawl_papers_path)
+    layers = assign_layers(survey_papers, K=20)
     paper_abstracts = {}
-    for paper in survey_papers:
-        paper_abstracts[paper['id']] = preprocess_abstract(paper.get('abstract', ''))
-    for paper in cited_papers:
-        paper_abstracts[paper['paperId']] = preprocess_abstract(paper.get('abstract', ''))
+    for paper_id, paper in survey_papers.items():
+        paper_abstracts[paper_id] = preprocess_abstract(paper.get('abstract', ''))
     valid_papers = {pid: abstract for pid, abstract in paper_abstracts.items() if abstract.strip()}
     paper_ids = list(valid_papers.keys())
     abstracts = [valid_papers[pid] for pid in paper_ids]
     tfidf = TfidfVectorizer(stop_words='english')
     tfidf_matrix = tfidf.fit_transform(abstracts)
     G = nx.DiGraph()
-    for paper in survey_papers:
-        pid = paper['id']
+    for paper_id, paper in survey_papers.items():
+        pid = paper_id
         G.add_node(
             pid,
             title=paper.get('title', ''),
@@ -54,31 +53,18 @@ def create_paper_graph(survey_papers_path, cited_papers_path):
             pdf_link=paper.get('pdf_link', ''),
             venue=paper.get('venue', ''), 
             paper_type=paper.get('paper_type', ''),
-            summary=paper.get('summary', '')
+            summary=paper.get('summary', ''),
+            keywords=paper.get('keywords', []),
+            is_new_direction = paper.get('is_new_direction', '0')
         )
-    for paper in cited_papers:
-        pid = paper['paperId']
-        if pid not in G:
-            G.add_node(
-                pid,
-                title=paper.get('title', ''),
-                abstract=paper.get('abstract', ''),
-                authors=paper.get('authors', []),
-                year=paper.get('year', ''),
-                citation_count=paper.get('citationCount', 0),
-                layer=layers.get(pid, 3),
-                new_direction=paper.get('new_direction', 0),
-                pdf_link=paper.get('pdf_link', ''),
-                venue=paper.get('venue', ''),
-                paper_type=paper.get('paper_type', ''),
-                summary=paper.get('summary', '')
-            )
-    for paper in survey_papers:
-        paper_id = paper['id']
+    for paper in crawl_papers:
+        paper_id = paper['id'] + '.pdf'
         if 'cited_by' not in paper:
             continue
         for cited in paper['cited_by']:
-            cited_id = cited['paperId']
+            if cited['paperId'] is None:
+                continue
+            cited_id = cited['paperId'] + '.pdf'
             if paper_id not in valid_papers or cited_id not in valid_papers:
                 continue
             try:
@@ -109,56 +95,40 @@ def save_graph(G, output_path):
     print(f"Average in-degree: {sum(dict(G.in_degree()).values()) / G.number_of_nodes():.2f}")
     print(f"Average out-degree: {sum(dict(G.out_degree()).values()) / G.number_of_nodes():.2f}")
 
-def assign_layers(survey_papers, cited_papers, K=20):
-    # Build a map for cited paper years
-    cited_paper_year_map = {}
-    for paper in cited_papers:
-        cited_paper_year_map[paper['paperId']] = paper.get('year', 2025)
-    # Calculate score for foundation layer
+def assign_layers(survey_papers, K=20):
     foundation_scores = []
-    for paper in survey_papers:
+    for paper_id, paper in survey_papers.items():
         year = paper.get('year', 2025)
-        citation_count = paper.get('citationCount', 0)
-        score = citation_count * (1 / max(1, (2025 - year)))
-        foundation_scores.append((score, paper['id']))
+        score = paper.get('score', 0)
+        foundation_scores.append((score, paper_id))
     # Get top K papers for foundation layer
     foundation_scores.sort(reverse=True)
     foundation_ids = set([pid for _, pid in foundation_scores[:K]])
     # Layer assignment
     layers = {}
-    for paper in survey_papers:
+    for paper_id, paper in survey_papers.items():
         year = paper.get('year', 2025)
-        pid = paper['id']
+        pid = paper_id
         if pid in foundation_ids:
             layers[pid] = 1
         elif year >= 2024:
             layers[pid] = 3
         else:
             layers[pid] = 2
-    # Assign layers to cited_by papers
-    cited_layers = {}
-    for paper in survey_papers:
-        pid = paper['id']
-        paper_layer = layers.get(pid, 2)
-        if 'cited_by' in paper:
-            for cited in paper['cited_by']:
-                cited_id = cited['paperId']
-                cited_year = cited_paper_year_map.get(cited_id, 2025)
-                if cited_year >= 2024 or paper_layer == 3:
-                    cited_layers[cited_id] = 3
-                else:
-                    cited_layers[cited_id] = min(paper_layer + 1, 3)
-    # Merge cited_layers into layers
-    for pid, layer in cited_layers.items():
-        layers[pid] = layer
     return layers
 
 def main():
-    survey_papers_path = "survey_papers_knowledge_graph_embedding.json"
-    cited_papers_path = "cited_by_batch_info_processed.json"
-    output_path = "paper_citation_graph.json"
+    if len(sys.argv) != 2:
+        print("Usage: python scripts/pdf_downloader.py \"your research query\"")
+        print("Example: python scripts/pdf_downloader.py \"federated learning privacy\"")
+        return
+    query = sys.argv[1]
+    save_dir = f"paper_data/{query.replace(' ', '_')}/info"
+    metadata_path = f"{save_dir}/metadata.json"
+    crawl_papers_path = f"{save_dir}/crawl_papers.json"
+    output_path = f"{save_dir}/paper_citation_graph.json"
     try:
-        G = create_paper_graph(survey_papers_path, cited_papers_path)
+        G = create_paper_graph(metadata_path, crawl_papers_path)
         save_graph(G, output_path)
         print(f"Graph saved successfully to {output_path}")
     except Exception as e:

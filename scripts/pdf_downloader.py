@@ -3,6 +3,8 @@ from bs4 import BeautifulSoup
 import os
 import re
 import urllib.parse
+import sys 
+import json 
 
 def _download_pdf_content(url, file_path, headers):
     """
@@ -105,14 +107,97 @@ def download_paper(filename, url):
     except requests.exceptions.RequestException as e:
         print(f"Error resolving URL or downloading PDF: {e}")
 
-# Example usage
+# # Example usage
+# if __name__ == "__main__":
+#     # Example 1: Direct PDF link
+#     direct_pdf_url = "https://arxiv.org/pdf/1811.01399.pdf"
+#     download_paper('Graph_Attention_Networks.pdf', direct_pdf_url)
+
+#     print("\n" + "="*50 + "\n")
+
+#     # Example 2: DOI link resolving to a journal landing page
+#     doi_landing_page = "https://doi.org/10.1609/aaai.v28i1.8870"
+#     download_paper('Knowledge_Graph_Embedding.pdf', doi_landing_page)
+
+
+def save_papers_info_json(paper_ids, G, save_dir, output_path):
+    metadata = {}
+
+    # Process each paper entry
+    for pid in paper_ids:
+        attr = G.nodes[pid]
+        # Generate a sanitized filename from the paper title
+        id = pid
+        filename = f"{id}.pdf"
+        paper_dir = "paper_data/knowledge_graph_embedding/core_papers/"
+        # Create a dictionary for the paper's metadata
+        paper_metadata = {
+            "title": attr.get('title'),
+            "authors": attr.get('authors', []),
+            "published_date": str(attr.get('year', '')),
+            # "venue": attr.get('venue'),
+            # "journal": attr.get('journal'),
+            "abstract": attr.get('abstract'),
+            "keywords": attr.get("survey_keywords", []),  # Assuming no keywords in the source data
+            "paper_type": attr.get('paper_type'),
+            "summary": attr.get('summary'),
+            "file_path": os.path.join(paper_dir, filename), 
+            "journal": attr.get('venue', ''),
+        }
+        
+        # Add the metadata to the main dictionary using the filename as the key
+        metadata[filename] = paper_metadata
+
+    # Write the new metadata to an output JSON file
+    with open(output_path, 'w', encoding='utf-8') as f:
+        json.dump(metadata, f, indent=4)
+
+    print(f"Saved {len(metadata)} papers to {output_path}")
+
+def main():
+    if len(sys.argv) != 2:
+        print("Usage: python scripts/pdf_downloader.py \"your research query\"")
+        print("Example: python scripts/pdf_downloader.py \"federated learning privacy\"")
+        return
+    query = sys.argv[1]
+    save_dir = f"paper_data/{query.replace(' ', '_')}"
+    save_dir_core = f"paper_data/{query.replace(' ', '_')}/core_papers"
+    metadata_path = f"paper_data/{query.replace(' ', '_')}/info/metadata.json"
+    metadata = {}
+    query = sys.argv[1]
+    crawl_paper_json_path = f"paper_data/{query.replace(' ', '_')}/info/crawl_papers.json"
+    cited_paper_json_path = f"paper_data/{query.replace(' ', '_')}/info/cited_papers.json"
+    all_papers = []
+    with open(crawl_paper_json_path, 'r') as f:
+        crawl_papers = json.load(f)
+    with open(cited_paper_json_path, 'r') as f:
+        cited_papers = json.load(f)
+    all_papers.extend(crawl_papers)
+    all_papers.extend(cited_papers)
+    
+    for paper in all_papers:
+        id = paper.get('id', '')
+        save_path = os.path.join(save_dir, f"{id}.pdf")
+        if os.path.exists(save_path):
+            print(f"PDF for paper ID {id} already exists, skipping download.")
+            continue
+        else: download_paper(save_path, paper.get('pdf_link'))
+        if os.path.exists(save_path):
+            filename = f"{id}.pdf"
+            paper_metadata = {
+                "title": paper.get('title'),
+                "authors": paper.get('authors', []),
+                "published_date": str(paper.get('year', '')),
+                "abstract": paper.get('abstract'),
+                "file_path": save_path, 
+                "venue": paper.get('venue', ''),
+                "citationCount": paper.get('citationCount', 0), 
+                "score": paper.get('score', 0)
+            }
+            metadata[filename] = paper_metadata
+
+    with open(metadata_path, 'w', encoding='utf-8') as f:
+        json.dump(metadata, f, indent=4)
+    print(f"Saved {len(metadata)} papers to {metadata_path}")
 if __name__ == "__main__":
-    # Example 1: Direct PDF link
-    direct_pdf_url = "https://arxiv.org/pdf/1811.01399.pdf"
-    download_paper('Graph_Attention_Networks.pdf', direct_pdf_url)
-
-    print("\n" + "="*50 + "\n")
-
-    # Example 2: DOI link resolving to a journal landing page
-    doi_landing_page = "https://doi.org/10.1609/aaai.v28i1.8870"
-    download_paper('Knowledge_Graph_Embedding.pdf', doi_landing_page)
+    main()

@@ -9,9 +9,9 @@ import pandas as pd
 from datetime import datetime
 import networkx as nx
 from writing.summarize import PaperSummarizerRAG
-
+import sys 
 class LiteratureReviewGenerator:
-    def __init__(self, api_key: str):
+    def __init__(self, query, api_key: str):
         """
         Initialize Literature Review Generator with Gemini API key
         
@@ -19,14 +19,16 @@ class LiteratureReviewGenerator:
             api_key (str): Gemini API key
         """
         genai.configure(api_key=api_key)
+        self.query = query
+        self.save_dir = f"paper_data/{self.query.replace(' ', '_')}/literature_review_output"
         self.model = genai.GenerativeModel('gemini-2.5-flash')
         self.papers_data = []
         self.citations_map = {}  # Map paper names to citation keys
-        self.summarizer = PaperSummarizerRAG(api_key)
+        self.summarizer = PaperSummarizerRAG(query, api_key)
         self.max_improvement_iterations = 10  # Maximum iterations for section improvement
-        self.layer_method_group_json = json.load(open("../layer_method_group_summary.json", "r", encoding="utf-8"))
-        self.develop_direction = json.load(open("../layer1_seed_taxonomy.json", "r", encoding="utf-8"))
-        self.graph_path = "../paper_citation_graph.json"
+        self.layer_method_group_json = json.load(open(f"paper_data/{self.query.replace(' ', '_')}/paths/layer_method_group_summary.json", "r", encoding="utf-8"))
+        self.develop_direction = json.load(open(f"paper_data/{self.query.replace(' ', '_')}/paths/layer1_seed_taxonomy.json", "r", encoding="utf-8"))
+        self.graph_path = f"paper_data/{self.query.replace(' ', '_')}/info/paper_citation_graph.json"
         self.G = self.load_graph(self.graph_path)
     def load_graph(self, json_path):
         with open(json_path, 'r', encoding='utf-8') as f:
@@ -397,6 +399,10 @@ class LiteratureReviewGenerator:
         """
         proofs_text = ''
         for proof in proof_ids:
+            proof = proof.lower().strip()
+            if 'layer' in proof:
+                proof.replace('layer', '').strip()
+                
             if proof in self.develop_direction.keys():
                 direction_dict = self.develop_direction[proof]
                 proofs_text += 'Development direction: \n'
@@ -695,7 +701,7 @@ class LiteratureReviewGenerator:
                 pre_section = sections[section_title_list[ii-1]]
             else:
                 pre_section = ""
-            checkpoint_dir = "literature_review_output/knowledge_graph_embedding"
+            checkpoint_dir = f"{self.save_dir}"
             os.makedirs(checkpoint_dir, exist_ok=True)
             # make sure the section title is valid for filename
             checkpoint_path = os.path.join(checkpoint_dir, f"section_{section_title.replace(' ', '_').replace('/', '_').replace(':', '').lower()}_checkpoint.txt")
@@ -992,8 +998,9 @@ class LiteratureReviewGenerator:
     #endregion
     
     # region save literature review
-    def save_literature_review(self, review_data: Dict, output_dir: str = "literature_review_output"):
+    def save_literature_review(self, review_data: Dict):
         """Save the literature review to files"""
+        output_dir = self.save_dir
         os.makedirs(output_dir, exist_ok=True)
         
         # Save LaTeX file
@@ -1041,8 +1048,13 @@ class LiteratureReviewGenerator:
 
 # Example usage
 def process_papers_from_directory():
+    if len(sys.argv) != 2:
+        print("Usage: python writing/writing_survey.py \"your research query\"")
+        print("Example: python writing/writing_survey.py \"federated learning privacy\"")
+        return
+    query = sys.argv[1]
     API_KEY = "AIzaSyAfJUma4sY-txDBAs2vKeCxljVB1dRdC5A"   # Replace with your actual API key
-    lit_review_gen = LiteratureReviewGenerator(API_KEY)
+    lit_review_gen = LiteratureReviewGenerator(query, API_KEY)
     
     # Get all PDF files from a directory
     papers_directory = "../paper_data/knowledge_graph_embedding"  

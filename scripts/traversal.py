@@ -164,6 +164,12 @@ def get_layer_subgraph(G, layer):
 def summarize_layer_method_groups(G, layer, max_papers=50):
     # Get papers with new_direction=1 in this layer
     papers = [n for n, attr in G.nodes(data=True) if attr.get('layer') == layer and attr.get('new_direction') == 1]
+
+    # If layer == 3, include highly cited papers in this layer?
+    # if layer == 3:
+    #     additional_papers = [n for n, attr in G.nodes(data=True) if attr.get('layer') == layer and attr.get('citation_count', 0) >= 50]
+    #     papers = list(set(papers) | set(additional_papers))
+    
     # If more than max_papers, select those with highest citation count
     if len(papers) > max_papers:
         papers = sorted(papers, key=lambda n: G.nodes[n].get('citation_count', 0), reverse=True)[:max_papers]
@@ -206,7 +212,7 @@ def save_papers_info_json(paper_ids, G, save_dir, output_path):
             "authors": attr.get('authors', []),
             "published_date": str(attr.get('year', '')),
             # "venue": attr.get('venue'),
-            "journal": attr.get('journal'),
+            # "journal": attr.get('journal'),
             "abstract": attr.get('abstract'),
             "keywords": attr.get("survey_keywords", []),  # Assuming no keywords in the source data
             "paper_type": attr.get('paper_type'),
@@ -275,17 +281,19 @@ def evaluate_outline(outline, max_iterations=3):
     outline_text = ""
     for section in outline:
         outline_text += f"{section['section_outline']}\n{section['section_focus']}"
+
     evaluation_prompt = f"""
-    Evaluate the logicality and coherence of the following literature review outline. Ensure that the sections and subsections are organized in a clear and logical manner, reflecting a coherent flow of ideas. If there are any issues with the structure, suggest improvements.
+    Evaluate the logicality, coherence, and structural quality of the following literature review outline. Focus on whether the outline demonstrates meaningful organization of works rather than a simple concatenation of summaries. Suggest improvements if issues are found.
     Outline to evaluate:
     {outline_text}
     **Evaluation Criteria** (Rate each from 1-5, where 5 is excellent):
-    1. **Logical Flow** (1-5): Does the outline follow a clear and logical progression of ideas?
-    2. **Coherence** (1-5): Are the sections and subsections coherent and well-connected?
-    3. **Relevance** (1-5): Do the sections align with the overall topic and objectives of the literature review?
-    4. **Clarity** (1-5): Is the outline clear and easy to understand?
-    5. **Content Coverage** (1-5): Does the section comprehensively cover the expected focus area?
-
+    1. **Logical Flow**: Does the outline follow a clear and logical progression of ideas?
+    2. **Coherence**: Are the sections and subsections well-connected, reflecting meaningful grouping and hierarchy of ideas?
+    3. **Relevance**: Do the sections align with the overall topic and objectives?
+    4. **Clarity**: Is the outline easy to interpret, with clear section and subsection labels?
+    5. **Content Coverage**: Does the outline comprehensively address the topic’s scope?
+    6. **Relational Awareness**: Does the outline capture relationships between works (e.g., citations, methodological connections, or progression of ideas), rather than treating them as isolated?
+    
     **IMPORTANT**: 
     - Return ONLY valid JSON without any markdown formatting or code blocks
     - Escape all backslashes and quotes properly in JSON strings
@@ -300,6 +308,7 @@ def evaluate_outline(outline, max_iterations=3):
                 "relevance": <score>,
                 "clarity": <score>,
                 "content_coverage": <score>
+                "relational_awareness": <score>
             }},
             "improvement_suggestions": "<detailed suggestions for improvement>"
         }}
@@ -322,13 +331,20 @@ def evaluate_outline(outline, max_iterations=3):
     return evaluation
 
 def main():
-    save_dir = "paper_data/knowledge_graph_embedding"
+    if len(sys.argv) != 2:
+        print("Usage: python scripts/traversal.py \"your research query\"")
+        print("Example: python scripts/traversal.py \"federated learning privacy\"")
+        return
+    query = sys.argv[1]
+    info_dir = f"paper_data/{query.replace(' ', '_')}/info"
+    save_dir = f"paper_data/{query.replace(' ', '_')}/paths"
     # if dir not exist, create it
     os.makedirs(save_dir, exist_ok=True)
 
-    graph_path = "paper_citation_graph.json"
-    output_txt_path = "layer1_seed_taxonomy.txt"
-    output_json_path = "layer1_seed_taxonomy.json"
+    graph_path = f"{info_dir}/paper_citation_graph.json"
+
+    output_txt_path = f"{save_dir}/layer1_seed_taxonomy.txt"
+    output_json_path = f"{save_dir}/layer1_seed_taxonomy.json"
 
     G = load_graph(graph_path)
     # Count the number of nodes in each layer
@@ -385,7 +401,7 @@ def main():
         # Download papers in this layer's method group
         for n in papers:
             paper_attr = G.nodes[n]
-            save_dir_core_paper = "/media/aiserver/New Volume/HDD_linux/bear/SurveyX/paper_data/KNOWLEDGE_GRAPH_EMBEDDING/core_papers"
+            save_dir_core_paper = "paper_data/knowledge_graph_embedding/core_papers"
             os.makedirs(save_dir_core_paper, exist_ok=True)
             save_path = os.path.join(save_dir_core_paper, f"{n}.pdf")
             if os.path.exists(save_path):

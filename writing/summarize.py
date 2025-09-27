@@ -14,11 +14,12 @@ import glob
 from pathlib import Path
 import time
 import re
+import sys
 
 #region PaperSummarizerRAG Class Definition
 class PaperSummarizerRAG:
     #region Constructor and Initialization
-    def __init__(self, api_key: str, rag_db_path: str = "./rag_database"):
+    def __init__(self, query: str, api_key: str, rag_db_path: str = "./rag_database"):
         """
         Khởi tạo Paper Summarizer với RAG System
         
@@ -26,6 +27,7 @@ class PaperSummarizerRAG:
             api_key (str): Gemini API key
             rag_db_path (str): Đường dẫn đến database RAG
         """
+        self.query = query
         genai.configure(api_key=api_key)
         self.model = genai.GenerativeModel('gemini-2.5-flash')
         
@@ -57,7 +59,7 @@ class PaperSummarizerRAG:
             'position': 'Position Paper',
             'short': 'Short Paper/Workshop Paper'
         }
-        self.metadata_file_path = '/media/aiserver/New Volume/HDD_linux/bear/SurveyX/paper_data/KNOWLEDGE_GRAPH_EMBEDDING/metadata.json'
+        self.metadata_file_path = f"paper_data/{query.replace(' ', '_')}/info/metadata.json"
         self.metadata_cache = None
         self._load_metadata()
     #endregion
@@ -345,7 +347,7 @@ class PaperSummarizerRAG:
         """
         
         detection_prompt = f"""
-        Based on the abstract and introduction below, classify this paper into ONE type:
+        Based on the abstract and introduction below, classify this paper into ONE type and identify whether the paper proposes a new direction or not:
         
         **CLASSIFICATION CRITERIA:**
         
@@ -383,7 +385,10 @@ class PaperSummarizerRAG:
         **CONTENT:**
         {structured_content}
         
-        Respond with ONLY the paper type.
+        Respond with the paper type and 1 or 0 depending on whether the paper proposes a new direction or not, separated by a comman ','.
+        Example responses: 
+        "survey,0"
+        "theoretical,1"
         """
         return detection_prompt
     
@@ -762,7 +767,7 @@ class PaperSummarizerRAG:
                 )
             )
         
-        paper_type = response.text
+        paper_type, is_new_direction = response.text.replace("'", "").replace('"', '').replace(" ", '').split(',')
         # paper_type = response.candidates[0].content.parts.text.strip().lower()
         print(f"Detected paper type: {paper_type}")
         # For now, return both detection and summary prompts
@@ -776,7 +781,7 @@ class PaperSummarizerRAG:
                 )
             )
             
-        return response.text
+        return response.text, paper_type, is_new_direction
     #endregion
     
     #region Document Management Methods    
@@ -858,7 +863,7 @@ class PaperSummarizerRAG:
             f.write(summary)
         
         # Save all keywords to a single JSON file
-        all_keywords_json = "keywords/all_paper_keywords.json"
+        all_keywords_json = f"paper_data/{self.query.replace(' ', '_')}/keywords/all_paper_keywords.json"
         # Load existing data if present
         if os.path.exists(all_keywords_json):
             try:
@@ -939,7 +944,7 @@ class PaperSummarizerRAG:
                     return metadata['full_summary']
             
             # Fallback: đọc từ file nếu không có trong database
-            summary_file = f"summaries/{doc_id}_full_summary.txt"
+            summary_file = f"paper_data/{self.query.replace(' ', '_')}/summaries/{doc_id}_full_summary.txt"
             if os.path.exists(summary_file):
                 with open(summary_file, 'r', encoding='utf-8') as f:
                     return f.read()
@@ -994,7 +999,7 @@ class PaperSummarizerRAG:
             self.collection.delete(ids=[doc_id])
             
             # Xóa file backup nếu có
-            summary_file = f"summaries/{doc_id}_full_summary.txt"
+            summary_file = f"paper_data/{self.query.replace(' ', '_')}/summaries/{doc_id}_full_summary.txt"
             if os.path.exists(summary_file):
                 os.remove(summary_file)
             
@@ -1084,7 +1089,7 @@ class PaperSummarizerRAG:
         If missing, fill from original metadata source and log a warning.
         """
         required_fields = [
-            'title', 'authors', 'published_date', 'venue', 'journal', 'abstract', 'keywords', 'file_path'
+            'title', 'authors', 'published_date', 'venue', 'abstract', 'file_path'
         ]
         # If metadata is None, try to load
         if metadata is None:
@@ -1105,7 +1110,7 @@ class PaperSummarizerRAG:
                     metadata[field] = [] if field == 'keywords' or field == 'authors' else 'Not available'
                     print(f"⚠️  Warning: metadata['{field}'] is missing/null for {file_path} and could not be filled. Set to default.")
         return metadata
-
+    
     def summarize_paper(self, file_path: str) -> Dict[str, Any]:
         """
         Tóm tắt paper và lưu vào RAG system
@@ -1131,7 +1136,7 @@ class PaperSummarizerRAG:
         
         # if len(chunks) == 1:
         #     # Paper ngắn, tóm tắt trực tiếp
-        summary = self.analyze_paper_with_type_detection(citation_key, metadata, paper_text)
+        summary, paper_type, is_new_direction = self.analyze_paper_with_type_detection(citation_key, metadata, paper_text)
         
         # else:
         #     # Paper dài, tóm tắt từng phần rồi tổng hợp
@@ -1157,6 +1162,10 @@ class PaperSummarizerRAG:
         # Lưu vào RAG system
         doc_id = self.save_to_rag(file_path, summary, intriguing_abstract, keywords)
         
+        metadata['summary'] = summary
+        metadata['keywords'] = keywords
+        metadata['is_new_direction'] = is_new_direction
+        metadata['paper_type'] = paper_type
         return {
             "success": True,
             "doc_id": doc_id,
@@ -1206,7 +1215,7 @@ class PaperSummarizerRAG:
         print("=" * 80)
         
         processed_results = []
-        checkpoint_file = "keywords/processed_checkpoint.json"
+        checkpoint_file = f"paper_data/{self.query.replace(' ', '_')}/keywords/processed_checkpoint.json"
         # Load checkpoint if exists
         already_processed_files = set()
         if os.path.exists(checkpoint_file):
@@ -1263,6 +1272,11 @@ class PaperSummarizerRAG:
                     json.dump(processed_results, cp, ensure_ascii=False, indent=2)
                 continue
             result = self.summarize_paper(file_path)
+            # print(file_name)
+            file_metadata = result['metadata']
+            self.metadata_cache[file_name] = file_metadata
+            with open(self.metadata_file_path, 'w', encoding='utf-8') as f:
+                json.dump(self.metadata_cache, f, indent=4)
             if result.get("success"):
                 print(f"  ✅ Xử lý thành công - ID: {result['doc_id']}")
                 print(f"     Keywords: {', '.join(result['keywords'][:3])}...")
@@ -1292,14 +1306,22 @@ class PaperSummarizerRAG:
 #region Main Function and Usage Example    
 # Ví dụ sử dụng
 def main():
+    if len(sys.argv) != 2:
+        print("Usage: python writing/summarize.py \"your research query\"")
+        print("Example: python writing/summarize.py \"federated learning privacy\"")
+        return
+    query = sys.argv[1]
     # Thay thế bằng Gemini API key của bạn
     API_KEY = "AIzaSyAfJUma4sY-txDBAs2vKeCxljVB1dRdC5A"  #'AIzaSyAapRz2IcwXD06sJ3OxU4--F-TY8Y5Ipq0'
-    
+    rag_db_path = f"paper_data/{query.replace(' ', '_')}/rag_database"
+    os.makedirs(f"paper_data/{query.replace(' ', '_')}/summaries/", exist_ok=True)
+    os.makedirs(f"paper_data/{query.replace(' ', '_')}/keywords/", exist_ok=True)
+    os.makedirs(f"paper_data/{query.replace(' ', '_')}/rag_database/", exist_ok=True)
     # Khởi tạo summarizer với RAG
-    summarizer = PaperSummarizerRAG(API_KEY)
+    summarizer = PaperSummarizerRAG(query, API_KEY, rag_db_path)
     
     # Đường dẫn đến folder chứa papers
-    papers_folder = "/media/aiserver/New Volume/HDD_linux/bear/SurveyX/paper_data/KNOWLEDGE_GRAPH_EMBEDDING"
+    papers_folder = f"paper_data/{query.replace(' ', '_')}"
     
     # Xử lý tất cả papers trong folder
     result = summarizer.process_folder(
@@ -1307,6 +1329,6 @@ def main():
         skip_existing=True,  # Bỏ qua file đã xử lý
         delay_seconds=0.0    # Chờ 2 giây giữa các lần xử lý
     )
-# if __name__ == "__main__":
-#     main()
+if __name__ == "__main__":
+    main()
 #endregion
