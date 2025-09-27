@@ -352,7 +352,7 @@ class PaperSummarizerRAG:
         detection_prompt = f"""
         Based on the abstract and introduction below, classify this paper into ONE type and identify whether the paper proposes a new direction or not:
         
-        **CLASSIFICATION CRITERIA:**
+        **PAPER TYPE CLASSIFICATION CRITERIA:**
         
         1. **survey** - Reviews existing literature comprehensively
            - Abstract mentions: "survey", "review", "comprehensive analysis", "state-of-the-art"
@@ -380,7 +380,23 @@ class PaperSummarizerRAG:
         
         7. **short** - Brief communication or work-in-progress
            - Paper length indicators, workshop venue, preliminary results
+
+        **INDICATORS OF NEW DIRECTIONS (Look for these):**
+        - Explicit statements like "we propose a new framework", "this paper introduces a novel approach"
+        - Claims of "first study" or "first investigation" into something
+        - Introduction of new terminology or concepts that didn't exist before
+        - Significant departure from established methodologies
+        - Creation of new research problems or questions
+        - Claims of opening up "new avenues for research"
+        - Foundational work that others are likely to build upon
         
+        **INDICATORS OF INCREMENTAL WORK (Not new directions):**
+        - Improvements to existing methods (faster, more accurate, etc.)
+        - Applications of known methods to new but similar problems
+        - Comparative studies or surveys
+        - Minor extensions of previous work
+        - Reproductions or validations of existing approaches
+
         **METADATA:**
         Title: {paper_metadata.get('title', 'Not available')}
         Venue: {paper_metadata.get('venue', 'Not available')}
