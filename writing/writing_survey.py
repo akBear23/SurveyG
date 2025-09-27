@@ -23,6 +23,7 @@ class LiteratureReviewGenerator:
         genai.configure(api_key=api_key)
         self.query = query
         self.save_dir = f"paper_data/{self.query.replace(' ', '_')}/literature_review_output"
+        os.makedirs(self.save_dir, exist_ok=True)
         self.model = genai.GenerativeModel('gemini-2.5-flash')
         self.papers_data = []
         self.citations_map = {}  # Map paper names to citation keys
@@ -685,7 +686,7 @@ class LiteratureReviewGenerator:
         #                       "Future Research Directions", "Conclusion"]
         # Load outline from generated txt file
         
-        outline_path = "../survey_outline_v2.json"
+        outline_path = f"{self.save_dir}/survey_outline_v3.json"
         # read outline file
         with open(outline_path, 'r', encoding='utf-8') as f:
             outline = json.load(f)
@@ -1060,7 +1061,7 @@ def process_papers_from_directory():
     lit_review_gen = LiteratureReviewGenerator(query, API_KEY)
     
     # Get all PDF files from a directory
-    papers_directory = "../paper_data/knowledge_graph_embedding"  
+    papers_directory = f"paper_data/{query.replace(' ', '_')}"  
  
     # Generate review with self-reflection
     review_data = lit_review_gen.generate_complete_literature_review(

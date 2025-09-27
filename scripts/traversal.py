@@ -86,7 +86,7 @@ def summarize_with_gemini(paper_infos, path):
         summary = "LLM summary placeholder for direction."
     return summary
 
-def generate_survey_outline(taxonomy, develop_direction, improvement_suggestions=''):
+def generate_survey_outline(query, taxonomy, develop_direction, improvement_suggestions=''):
     # Combine all taxonomy summaries into one prompt
     prompt = "Create a comprehensive literature review outline based on the following taxonomy summaries for three layers (foundational, development, and recent/trending) and development directions.\n\n"
     for layer in [1, 2, 3]:
@@ -150,7 +150,7 @@ def generate_survey_outline(taxonomy, develop_direction, improvement_suggestions
         except json.JSONDecodeError as e:
             print(f"Error decoding JSON: {e}")
             print(f"Problematic string start: {json_string[:50]}...")
-            with open ("../survey_outline_v2.txt", "w", encoding="utf-8") as f:
+            with open (f"paper_data/{query.replace(' ', '_')}/literature_review_output/survey_outline_v3.txt", "w", encoding="utf-8") as f:
                 f.write(outline)
     except Exception as e:
         print(f"Error occurred while generating survey outline: {e}")
@@ -423,7 +423,7 @@ def main():
     print('Generating survey outline...')
     layer_method_group_json = json.load(open("layer_method_group_summary.json", "r", encoding="utf-8"))
     develop_direction = json.load(open("layer1_seed_taxonomy.json", "r", encoding="utf-8"))
-    outline = generate_survey_outline(layer_method_group_json, develop_direction, improvement_suggestions='')
+    outline = generate_survey_outline(query, layer_method_group_json, develop_direction, improvement_suggestions='')
     iteration = 0
     # use another LLM to evaluate the logicality of the outline
     while iteration < 3:
@@ -441,7 +441,7 @@ def main():
             break
         else:
             print("Outline needs improvement, regenerating...")
-            outline = generate_survey_outline(layer_method_group_json, develop_direction, improvement_suggestions)
+            outline = generate_survey_outline(query, layer_method_group_json, develop_direction, improvement_suggestions)
     # save outline to json file
     with open("survey_outline_v2.json", "w", encoding="utf-8") as f:
         json.dump(outline, f, ensure_ascii=False, indent=2)
