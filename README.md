@@ -15,27 +15,31 @@ python scripts/survey_crawler.py "your research topic query" number_of_paper_to_
 ```
 # 3. Fetch cited papers
 ```bash
-python scripts/fetch_cited_by_batch.py 
+python scripts/fetch_cited_by_batch.py "your research topic query"
 ```
-# 4. Create survey graph
+# 4. Summarize all papers, get metadata 
 ```bash
-python scripts/create_survey_graph.py 
+python writing/summarize.py "your research topic query"
 ```
-# 5. Travel in graph to create K + 3 summaries and create paper outline
+# 5. Create survey graph
+```bash
+python scripts/create_survey_graph.py "your research topic query"
+```
+# 6. Travel in graph to create K + 3 summaries and create paper outline
 - Create 3 taxonomy summaries (by layer) and K development direction (DFS from core papers in layer 1 to layer 2 and 3)
 - Download paper PDF files along the way 
 - Save all the paths traveled
 - Merge K + 3 summaries and create outline 
 ```bash
-python scripts/traversal.py 
+python scripts/traversal.py "your research topic query"
 ```
-# 6. Write paper
+# 7. Write paper
 ```bash
 cd writing
-python writing_survey.py 
+python writing_survey.py "your research topic query"
 ```
-# 7. Compile paper
+# 8. Compile paper
 ```bash
-cd literature_review_output
+cd paper_data/{"your research topic query"}/literature_review_output
 pdflatex literature_review.tex
 ```
