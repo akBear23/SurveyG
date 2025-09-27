@@ -50,7 +50,8 @@ def download_paper(filename, url):
     #     filename = os.path.basename(url)
     #     if not filename or not filename.endswith('.pdf'):
     #         filename = re.sub(r'[^a-zA-Z0-9\s_.-]', '', url).replace('httpsdoi.org', '').replace('http://', '').replace('/', '_').strip('_') + '.pdf'
-    
+    if url is None: 
+        return
     try:
         if url.lower().endswith('.pdf') or 'arxiv.org/pdf/' in url.lower():
             _download_pdf_content(url, filename, headers)

@@ -11,8 +11,8 @@ def main():
         print("Example: python scripts/summarize.py \"federated learning privacy\"")
         return
     query = sys.argv[1]
-    save_dir = f'paper_data/{query.replace(' ', '_')}'
-    save_dir_core = f'paper_data/{query.replace(' ', '_')}/core_papers'
+    save_dir = f"paper_data/{query.replace(' ', '_')}"
+    save_dir_core = f"paper_data/{query.replace(' ', '_')}/core_papers"
     summaries = f"paper_data/{query.replace(' ', '_')}/info/summaries.json"
 
     query = sys.argv[1]
