@@ -63,9 +63,9 @@ class SurveyOptimizedCrawler:
             'trending_min_citations': 3,       
             
             # Time ranges
-            'foundational_age_range': (2, 15),     # 2-15 years old
+            'foundational_age_range': (3, 15),     # 3-15 years old
             'recent_age_range': (1, 5),            # 1-5 years old
-            'trending_age_range': (0, 2),          # 0-2 years old
+            'trending_age_range': (0, 1),          # 0-2 years old
 
             # Quality thresholds
             'min_abstract_length': 100,
