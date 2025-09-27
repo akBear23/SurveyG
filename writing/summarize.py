@@ -866,8 +866,8 @@ class PaperSummarizerRAG:
         )
         
         # Vẫn lưu backup vào file để dễ đọc
-        summary_file = f"summaries/{doc_id}_full_summary.txt"
-        os.makedirs("summaries", exist_ok=True)
+        summary_file = f"paper_data/{self.query.replace(' ', '_')}/{doc_id}_full_summary.txt"
+        os.makedirs(f"paper_data/{self.query.replace(' ', '_')}", exist_ok=True)
         with open(summary_file, 'w', encoding='utf-8') as f:
             f.write(f"File: {file_path}\n")
             f.write(f"Created: {datetime.now().isoformat()}\n")
