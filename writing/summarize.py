@@ -786,7 +786,7 @@ class PaperSummarizerRAG:
                 )
             )
         
-        paper_type, is_new_direction = response.text.replace("'", "").replace('"', '').replace(" ", '').split(',')
+        paper_type, is_new_direction = response.text.replace("'", "").replace('"', '').replace(" ", '').split(',')[0], response.text.replace("'", "").replace('"', '').replace(" ", '').split(',')[-1]
         # paper_type = response.candidates[0].content.parts.text.strip().lower()
         print(f"Detected paper type: {paper_type}")
         # For now, return both detection and summary prompts
