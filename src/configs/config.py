@@ -4,7 +4,8 @@ import os
 
 FILE_PATH = Path(__file__).absolute()
 BASE_DIR = FILE_PATH.parent.parent.parent
-
+from dotenv import load_dotenv, find_dotenv
+from pathlib import Path
 # huggingface mirror
 # os.environ["HF_ENDPOINT"] = "https://hf-mirror.com" # Uncomment this line if you want to use a specific Hugging Face mirror
 # os.environ["HF_HOME"] = os.path.expanduser("~/hf_cache/")
@@ -17,7 +18,8 @@ DEFAULT_CHATAGENT_MODEL = "gpt-4o-mini"
 ADVANCED_CHATAGENT_MODEL = "gpt-4o"
 
 # Gemini Configuration
-GEMINI_API_KEY = 'AIzaSyAapRz2IcwXD06sJ3OxU4--F-TY8Y5Ipq0' #"AIzaSyAfJUma4sY-txDBAs2vKeCxljVB1dRdC5A" 
+load_dotenv(Path(".env"))
+GEMINI_API_KEY = os.getenv("API_KEY") 
 GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
 DEFAULT_GEMINI_MODEL = "gemini-2.5-flash"
 ADVANCED_GEMINI_MODEL = "gemini-2.5-pro"

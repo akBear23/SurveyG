@@ -15,6 +15,9 @@ from pathlib import Path
 import time
 import re
 import sys
+import os                                                                                                                                                                                                          
+from dotenv import load_dotenv, find_dotenv
+from pathlib import Path
 
 #region PaperSummarizerRAG Class Definition
 class PaperSummarizerRAG:
@@ -1312,7 +1315,8 @@ def main():
         return
     query = sys.argv[1]
     # Thay thế bằng Gemini API key của bạn
-    API_KEY = "AIzaSyAfJUma4sY-txDBAs2vKeCxljVB1dRdC5A"  #'AIzaSyAapRz2IcwXD06sJ3OxU4--F-TY8Y5Ipq0'
+    load_dotenv(Path(".env"))
+    API_KEY = os.getenv("API_KEY") 
     rag_db_path = f"paper_data/{query.replace(' ', '_')}/rag_database"
     os.makedirs(f"paper_data/{query.replace(' ', '_')}/summaries/", exist_ok=True)
     os.makedirs(f"paper_data/{query.replace(' ', '_')}/keywords/", exist_ok=True)

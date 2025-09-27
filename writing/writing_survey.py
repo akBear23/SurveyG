@@ -9,7 +9,9 @@ import pandas as pd
 from datetime import datetime
 import networkx as nx
 from writing.summarize import PaperSummarizerRAG
-import sys 
+import sys
+from dotenv import load_dotenv, find_dotenv
+from pathlib import Path 
 class LiteratureReviewGenerator:
     def __init__(self, query, api_key: str):
         """
@@ -1053,7 +1055,8 @@ def process_papers_from_directory():
         print("Example: python writing/writing_survey.py \"federated learning privacy\"")
         return
     query = sys.argv[1]
-    API_KEY = "AIzaSyAfJUma4sY-txDBAs2vKeCxljVB1dRdC5A"   # Replace with your actual API key
+    load_dotenv(Path(".env"))
+    API_KEY = os.getenv("API_KEY") 
     lit_review_gen = LiteratureReviewGenerator(query, API_KEY)
     
     # Get all PDF files from a directory
