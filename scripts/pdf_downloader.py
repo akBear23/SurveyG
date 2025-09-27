@@ -181,21 +181,19 @@ def main():
         save_path = os.path.join(save_dir, f"{id}.pdf")
         if os.path.exists(save_path):
             print(f"PDF for paper ID {id} already exists, skipping download.")
-            continue
         else: download_paper(save_path, paper.get('pdf_link'))
-        if os.path.exists(save_path):
-            filename = f"{id}.pdf"
-            paper_metadata = {
-                "title": paper.get('title'),
-                "authors": paper.get('authors', []),
-                "published_date": str(paper.get('year', '')),
-                "abstract": paper.get('abstract'),
-                "file_path": save_path, 
-                "venue": paper.get('venue', ''),
-                "citationCount": paper.get('citationCount', 0), 
-                "score": paper.get('score', 0)
-            }
-            metadata[filename] = paper_metadata
+        filename = f"{id}.pdf"
+        paper_metadata = {
+            "title": paper.get('title'),
+            "authors": paper.get('authors', []),
+            "published_date": str(paper.get('year', '')),
+            "abstract": paper.get('abstract'),
+            "file_path": save_path, 
+            "venue": paper.get('venue', ''),
+            "citationCount": paper.get('citationCount', 0), 
+            "score": paper.get('score', 0)
+        }
+        metadata[filename] = paper_metadata
 
     with open(metadata_path, 'w', encoding='utf-8') as f:
         json.dump(metadata, f, indent=4)
