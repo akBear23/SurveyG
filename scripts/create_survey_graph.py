@@ -25,21 +25,26 @@ def detect_experiment_mention(abstract):
     pattern = '|'.join(experiment_keywords)
     return bool(re.search(pattern, abstract.lower()))
 
-def create_paper_graph(metadata_path, crawl_papers_path):
-    survey_papers = load_json_data(metadata_path)
+def create_paper_graph(crawl_papers_path, cited_papers_path):
+    cited_papers = load_json_data(cited_papers_path)
     crawl_papers = load_json_data(crawl_papers_path)
+    survey_papers = crawl_papers + cited_papers
+
     layers = assign_layers(survey_papers, K=20)
+    
     paper_abstracts = {}
-    for paper_id, paper in survey_papers.items():
+    for paper in survey_papers:
+        paper_id = paper.get('id', None)
         paper_abstracts[paper_id] = preprocess_abstract(paper.get('abstract', ''))
+    
     valid_papers = {pid: abstract for pid, abstract in paper_abstracts.items() if abstract.strip()}
     paper_ids = list(valid_papers.keys())
     abstracts = [valid_papers[pid] for pid in paper_ids]
     tfidf = TfidfVectorizer(stop_words='english')
     tfidf_matrix = tfidf.fit_transform(abstracts)
     G = nx.DiGraph()
-    for paper_id, paper in survey_papers.items():
-        pid = paper_id
+    for paper in survey_papers:
+        pid = paper.get('id', None)
         G.add_node(
             pid,
             title=paper.get('title', ''),
@@ -58,13 +63,13 @@ def create_paper_graph(metadata_path, crawl_papers_path):
             is_new_direction = paper.get('is_new_direction', '0')
         )
     for paper in crawl_papers:
-        paper_id = paper['id'] + '.pdf'
+        paper_id = paper['id']
         if 'cited_by' not in paper:
             continue
         for cited in paper['cited_by']:
             if cited['paperId'] is None:
                 continue
-            cited_id = cited['paperId'] + '.pdf'
+            cited_id = cited['paperId']
             if paper_id not in valid_papers or cited_id not in valid_papers:
                 continue
             try:
@@ -97,7 +102,8 @@ def save_graph(G, output_path):
 
 def assign_layers(survey_papers, K=20):
     foundation_scores = []
-    for paper_id, paper in survey_papers.items():
+    for paper in survey_papers:
+        paper_id = paper.get('id', None)
         year = paper.get('year', 2025)
         score = paper.get('score', 0)
         foundation_scores.append((score, paper_id))
@@ -106,9 +112,9 @@ def assign_layers(survey_papers, K=20):
     foundation_ids = set([pid for _, pid in foundation_scores[:K]])
     # Layer assignment
     layers = {}
-    for paper_id, paper in survey_papers.items():
+    for paper in survey_papers:
         year = paper.get('year', 2025)
-        pid = paper_id
+        pid = paper.get('id', None)
         if pid in foundation_ids:
             layers[pid] = 1
         elif year >= 2024:
@@ -126,9 +132,10 @@ def main():
     save_dir = f"paper_data/{query.replace(' ', '_')}/info"
     metadata_path = f"{save_dir}/metadata.json"
     crawl_papers_path = f"{save_dir}/crawl_papers.json"
+    cited_papers_path = f"{save_dir}/cited_papers.json"
     output_path = f"{save_dir}/paper_citation_graph.json"
     try:
-        G = create_paper_graph(metadata_path, crawl_papers_path)
+        G = create_paper_graph(crawl_papers_path, cited_papers_path)
         save_graph(G, output_path)
         print(f"Graph saved successfully to {output_path}")
     except Exception as e:

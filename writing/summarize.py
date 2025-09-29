@@ -218,10 +218,10 @@ class PaperSummarizerRAG:
             return self.read_pdf(file_path)
         elif file_extension == '.docx':
             return self.read_docx(file_path)
-        elif file_extension == '.txt':
-            return self.read_txt(file_path)
+        # elif file_extension == '.txt':
+        #     return self.read_txt(file_path)
         else:
-            print(f"Định dạng file không được hỗ trợ: {file_extension}")
+            # print(f"Định dạng file không được hỗ trợ: {file_extension}")
             return ""
     #endregion
     
@@ -866,7 +866,8 @@ class PaperSummarizerRAG:
         )
         
         # Vẫn lưu backup vào file để dễ đọc
-        summary_file = f"paper_data/{self.query.replace(' ', '_')}/{doc_id}_full_summary.txt"
+        os.makedirs(f"paper_data/{self.query.replace(' ', '_')}/full_summary", exist_ok=True)
+        summary_file = f"paper_data/{self.query.replace(' ', '_')}/full_summary/{doc_id}_full_summary.txt"
         os.makedirs(f"paper_data/{self.query.replace(' ', '_')}", exist_ok=True)
         with open(summary_file, 'w', encoding='utf-8') as f:
             f.write(f"File: {file_path}\n")
@@ -1148,7 +1149,8 @@ class PaperSummarizerRAG:
 
         
         if not paper_text:
-            return {"error": "Không thể đọc được nội dung paper.", "file_path": file_path}
+            # return {"error": "Không thể đọc được nội dung paper.", "file_path": file_path}
+            paper_text = metadata['abstract']
         
         # Chia văn bản nếu quá dài
         # chunks = self.chunk_text(paper_text)
@@ -1197,7 +1199,7 @@ class PaperSummarizerRAG:
             "file_name": os.path.basename(file_path)
         }
     
-    def process_folder(self, folder_path: str,
+    def process_folder(self, folder_path: str, 
                       skip_existing: bool = True, delay_seconds: float = 1.0) -> Dict[str, Any]:
         """
         Xử lý tất cả papers trong một folder
@@ -1224,9 +1226,10 @@ class PaperSummarizerRAG:
             return {"error": f"Thư mục không tồn tại: {folder_path}"}
         
         # Lấy danh sách file được hỗ trợ
-        supported_files = self.get_supported_files(folder_path)
+        # supported_files = self.get_supported_files(folder_path)
+        supported_files = self.metadata_cache.keys()
         self.processing_stats['total_files'] = len(supported_files)
-        
+
         if not supported_files:
             return {"error": "Không tìm thấy file được hỗ trợ trong thư mục"}
         
@@ -1247,7 +1250,7 @@ class PaperSummarizerRAG:
                     # Check for missing/null fields and fix from metadata
                     for entry in processed_results:
                         file_path = entry.get('file_path')
-                        if not file_path:
+                        if not file_path or file_path.endswith('.txt'):
                             continue
                         # Check for null or missing fields
                         fields_to_check = ['metadata', 'citation_key', 'file_name', 'keywords', 'summary', 'intriguing_abstract']
@@ -1346,6 +1349,7 @@ def main():
     # Xử lý tất cả papers trong folder
     result = summarizer.process_folder(
         folder_path=papers_folder,
+
         skip_existing=True,  # Bỏ qua file đã xử lý
         delay_seconds=0.0    # Chờ 2 giây giữa các lần xử lý
     )

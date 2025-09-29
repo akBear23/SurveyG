@@ -30,6 +30,11 @@ from pathlib import Path
 import re
 import math
 import hashlib
+from dotenv import load_dotenv, find_dotenv
+from pathlib import Path
+
+load_dotenv(Path(".env"))
+SEMANTIC_SCHOLAR_API_KEY = os.getenv("SEMANTIC_SCHOLAR_API_KEY") 
 
 class SurveyOptimizedCrawler:
     """
@@ -318,7 +323,8 @@ class SurveyOptimizedCrawler:
         
         # Semantic Scholar API endpoint
         api_url = "https://api.semanticscholar.org/graph/v1/paper/search"
-        
+        headers = {"x-api-key": SEMANTIC_SCHOLAR_API_KEY}
+          
         # Build query parameters
         params = {
             'query': query,
@@ -330,7 +336,7 @@ class SurveyOptimizedCrawler:
             params['year'] = f"{year_range[0]}-{year_range[1]}"
         
         try:
-            response = self.session.get(api_url, params=params, timeout=60)
+            response = self.session.get(api_url, params=params, timeout=120, headers=headers)
             while response.status_code == 429:
                 self._log("Rate limit exceeded")
                 # retry 

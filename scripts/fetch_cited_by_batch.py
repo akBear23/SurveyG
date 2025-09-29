@@ -3,11 +3,14 @@ import os
 # sys.path.append(os.path.join(os.path.dirname(__file__), '../'))
 import requests
 import json
+from dotenv import load_dotenv, find_dotenv
+from pathlib import Path
 
+load_dotenv(Path(".env"))
+SEMANTIC_SCHOLAR_API_KEY = os.getenv("SEMANTIC_SCHOLAR_API_KEY") 
 SEMANTIC_SCHOLAR_BATCH_URL = "https://api.semanticscholar.org/graph/v1/paper/batch"
-FIELDS = "paperId,title,authors,year,citationCount,abstract,url,venue,publicationDate,externalIds"
+FIELDS = "paperId,title,authors,year,citationCount,abstract,url,venue,publicationDate,externalIds,openAccessPdf"
 PRESTIGIOUS_VENUES = ['nature', 'science', 'cell', 'neurips', 'icml', 'iclr', 'aaai', 'ijcai', 'acl', 'emnlp']
-
 def load_cited_by_paper_ids(json_path):
     main_paper_id = load_main_paper_id(json_path)
     with open(json_path, 'r') as f:
@@ -55,11 +58,13 @@ def fetch_batch_info_batched(paper_ids, batch_size=500):
         batch = paper_ids[i:i+batch_size]
         print(f"Fetching batch {i//batch_size+1} ({len(batch)} papers)...")
         # Use the working query format for Semantic Scholar
+        headers = {"x-api-key": SEMANTIC_SCHOLAR_API_KEY}
         response = requests.post(
             SEMANTIC_SCHOLAR_BATCH_URL,
             params={'fields': FIELDS},
             json={"ids": batch},
-            timeout=60
+            timeout=120, 
+            headers=headers
         )
 
         if response.status_code == 200:
@@ -101,56 +106,6 @@ def extract_intro_method(text):
         method_section = ''
     intro_section = text[intro_start:intro_end] if intro_start != -1 and intro_end else text[intro_start:] if intro_start != -1 else ''
     return intro_section.strip() + '\n' + method_section.strip()
-
-
-def generate_llm_summary(title, abstract, url):
-    from src.models.LLM.ChatAgent import ChatAgent
-    import requests
-    import tempfile
-    try:
-        chat_agent = ChatAgent()
-    except Exception as e:
-        print(f"ChatAgent import error: {e}")
-        return "LLM not available.", 0, 'Unknown'
-    full_text = None
-    if url and url.endswith('.pdf'):
-        try:
-            response = requests.get(url, timeout=30)
-            response.raise_for_status()
-            with tempfile.NamedTemporaryFile(suffix='.pdf', delete=True) as tmp_pdf:
-                tmp_pdf.write(response.content)
-                tmp_pdf.flush()
-                from PyPDF2 import PdfReader
-                reader = PdfReader(tmp_pdf.name)
-                full_text = "\n".join(page.extract_text() or '' for page in reader.pages)
-        except Exception as e:
-            full_text = None
-    if not full_text or len(full_text) < 500:
-        full_text = abstract
-    # Extract only introduction and methodology
-    content_for_llm = extract_intro_method(full_text)
-    prompt = (
-        f"Summarize the main contribution of the following paper for a research survey, include what problem the paper addresses, the method used to solve it, the key findings, and key math equations (if applicable). "
-        f"Additionally, analyze whether this paper proposes a new research direction or method path, "
-        f"and explain your reasoning. Respond with a clear statement: 'New Direction: Yes' or 'New Direction: No'. "
-        f"Also, classify the paper as one of the following types: 'Survey', 'Empirical', 'Theoretical', or 'Methodology'. Respond with a clear statement: 'Type: <type>'.\n"
-        f"Title: {title}\nContent: {content_for_llm[:12000]}"
-    )
-    try:
-        summary = chat_agent.gemini_chat(prompt, temperature=0.3)
-        new_direction = 1 if 'new direction: yes' in summary.lower() else 0
-        paper_type = None
-        for t in ['survey', 'empirical', 'theoretical', 'methodology']:
-            if f'type: {t}' in summary.lower():
-                paper_type = t.capitalize()
-                break
-        if not paper_type:
-            paper_type = 'Unknown'
-    except Exception as e:
-        summary = f"LLM summary error: {e}"
-        new_direction = 0
-        paper_type = 'Unknown'
-    return summary, new_direction, paper_type
 
 def get_pdf_link(paper):
     pdf_url = None
@@ -231,6 +186,7 @@ def main():
                 'publicationDate': paper.get('publicationDate', ''),
                 'paper_type': paper.get('paper_type', ''),
                 'externalIds': paper.get('externalIds', {}),
+                'openAccessPdf': paper.get('openAccessPdf', {})
             })
     for paper in papers:
         # Calculate score

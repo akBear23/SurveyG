@@ -5,7 +5,7 @@ import re
 import urllib.parse
 import sys 
 import json 
-
+from selenium_crawler import download_with_selenium
 def _download_pdf_content(url, file_path, headers):
     """
     Internal helper function to download a PDF file from a given URL.
@@ -76,7 +76,8 @@ def download_paper(filename, url):
             pdf_link_element = soup.find('a', string=re.compile(r'PDF', re.I))  # Find by case-insensitive text "PDF"
         if not pdf_link_element:
             pdf_link_element = soup.find('a', href=re.compile(r'\.pdf$', re.I))  # Find by href ending in .pdf
-
+        if "mdpi" in final_url:
+            download_with_selenium(final_url, filename)
         if "ieeexplore.ieee.org" in final_url:
             pdf_link_element = soup.find('a', {'class': 'document-access-icon-pdf'})
             if pdf_link_element:
@@ -121,39 +122,6 @@ def download_paper(filename, url):
 #     download_paper('Knowledge_Graph_Embedding.pdf', doi_landing_page)
 
 
-def save_papers_info_json(paper_ids, G, save_dir, output_path):
-    metadata = {}
-
-    # Process each paper entry
-    for pid in paper_ids:
-        attr = G.nodes[pid]
-        # Generate a sanitized filename from the paper title
-        id = pid
-        filename = f"{id}.pdf"
-        paper_dir = "paper_data/knowledge_graph_embedding/core_papers/"
-        # Create a dictionary for the paper's metadata
-        paper_metadata = {
-            "title": attr.get('title'),
-            "authors": attr.get('authors', []),
-            "published_date": str(attr.get('year', '')),
-            # "venue": attr.get('venue'),
-            # "journal": attr.get('journal'),
-            "abstract": attr.get('abstract'),
-            "keywords": attr.get("survey_keywords", []),  # Assuming no keywords in the source data
-            "paper_type": attr.get('paper_type'),
-            "summary": attr.get('summary'),
-            "file_path": os.path.join(paper_dir, filename), 
-            "journal": attr.get('venue', ''),
-        }
-        
-        # Add the metadata to the main dictionary using the filename as the key
-        metadata[filename] = paper_metadata
-
-    # Write the new metadata to an output JSON file
-    with open(output_path, 'w', encoding='utf-8') as f:
-        json.dump(metadata, f, indent=4)
-
-    print(f"Saved {len(metadata)} papers to {output_path}")
 
 def main():
     if len(sys.argv) != 2:
