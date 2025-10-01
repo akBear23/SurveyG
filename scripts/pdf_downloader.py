@@ -134,16 +134,18 @@ def main():
     metadata_path = f"paper_data/{query.replace(' ', '_').replace(':', '')}/info/metadata.json"
     metadata = {}
     query = sys.argv[1]
-    crawl_paper_json_path = f"paper_data/{query.replace(' ', '_').replace(':', '')}/info/crawl_papers.json"
-    cited_paper_json_path = f"paper_data/{query.replace(' ', '_').replace(':', '')}/info/cited_papers.json"
-    all_papers = []
-    with open(crawl_paper_json_path, 'r') as f:
-        crawl_papers = json.load(f)
-    with open(cited_paper_json_path, 'r') as f:
-        cited_papers = json.load(f)
-    all_papers.extend(crawl_papers)
-    all_papers.extend(cited_papers)
-    
+    # crawl_paper_json_path = f"paper_data/{query.replace(' ', '_').replace(':', '')}/info/crawl_papers.json"
+    # cited_paper_json_path = f"paper_data/{query.replace(' ', '_').replace(':', '')}/info/cited_papers.json"
+    # all_papers = []
+    # with open(crawl_paper_json_path, 'r') as f:
+    #     crawl_papers = json.load(f)
+    # with open(cited_paper_json_path, 'r') as f:
+    #     cited_papers = json.load(f)
+    # all_papers.extend(crawl_papers)
+    # all_papers.extend(cited_papers)
+    selected_papers_path = f"paper_data/{query.replace(' ', '_').replace(':', '')}/info/selected_papers.json"
+    with open(selected_papers_path, "r") as f:
+        all_papers = json.load(f)
     for paper in all_papers:
         id = paper.get('id', '')
         save_path = os.path.join(save_dir, f"{id}.pdf")
