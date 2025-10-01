@@ -207,7 +207,7 @@ def main():
             selected_papers.extend(before_2025_big_venues_papers)
             x = (120 - len(before_2025_big_venues_papers)) / (len(before_2025_papers) + len(after_2025_papers))
             selected_papers.extend(before_2025_papers[:int(x * len(before_2025_papers))])
-            selected_papers.extend(after_2025_papers[:int(x * len(after_2025_papers))])
+            selected_papers.extend(after_2025_papers[:120 - len(selected_papers)])
         else:
             x = 120 / (len(before_2025_papers) + len(after_2025_papers))     
             selected_papers.extend(after_2025_papers[:int(x*len(after_2025_papers))])
