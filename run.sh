@@ -1,13 +1,14 @@
 #!/bin/bash
 
 # Check if both arguments are provided
-if [ $# -ne 2 ]; then
-    echo "Usage: $0 \"research topic query\" number_of_papers"
+if [ $# -ne 3 ]; then
+    echo "Usage: $0 \"research topic query\" \"your research keywords\" number_of_papers"
     exit 1
 fi
 
 ORIGINAL_QUERY="$1"
-NUM_PAPERS="$2"
+KEYWORDS="$2"
+NUM_PAPERS="$3"
 
 # Convert query to directory-friendly format (replace spaces with underscores)
 DIR_QUERY=$(echo "$ORIGINAL_QUERY" | tr ' ' '_')
@@ -18,7 +19,7 @@ echo "Using directory name: $DIR_QUERY"
 
 # Step 2: Crawl papers
 echo "Step 2: Running crawler..."
-python "$BASE_DIR/scripts/survey_crawler.py" "$ORIGINAL_QUERY" "$NUM_PAPERS"
+python "$BASE_DIR/scripts/survey_crawler.py" "$ORIGINAL_QUERY" "$KEYWORDS" "$NUM_PAPERS"
 
 # Step 3: Fetch cited papers
 echo "Step 3: Fetching cited papers..."

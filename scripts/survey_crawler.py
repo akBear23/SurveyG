@@ -556,33 +556,30 @@ def main():
     """Main function for standalone usage"""
     
     # 1. Check for the two required arguments (query and count)
-    # if len(sys.argv) != 3:
-    #     print("Usage: python scripts/survey_crawler.py \"your research query\" target_paper_count")
-    #     print("Example: python scripts/survey_crawler.py \"federated learning privacy\" 500")
-    #     return
+    if len(sys.argv) != 4:
+        print("Usage: python scripts/survey_crawler.py \"your research query\" \"your research keywords\" target_paper_count")
+        print("Example: python scripts/survey_crawler.py \"federated learning privacy\" \"adversarial attacks, recommender systems, adversarial ML\" 500")
+        return
     
     # Argument 1 (index 1) is the entire research query (since it was quoted)
-    # query = sys.argv[1]
-    topic = 'A SURVEY ON ADVERSARIAL RECOMMENDER SYSTEMS'
-    user_kws = 'adversarial attacks, recommender systems, adversarial ML'
-
-    # Argument 2 (index 2) is the paper count
-    # target_papers_arg = sys.argv[2]
-    #
-    # Initialize the default target papers count
-    target_papers = 300 
+    topic = sys.argv[1]
+    user_kws = sys.argv[2]
+    target_papers_arg = sys.argv[3]
+    # topic = 'A SURVEY ON ADVERSARIAL RECOMMENDER SYSTEMS'
+    # user_kws = 'adversarial attacks, recommender systems, adversarial ML'   
     
     # 2. Convert the paper count argument to an integer
-    # try:
-    #     target_papers = int(target_papers_arg)
+    try:
+        target_papers = int(target_papers_arg)
         
-    #     # Optional check for non-positive numbers
-    #     if target_papers <= 0:
-    #         print(f"Warning: Target paper count must be positive. Resetting to 300.")
-    #         target_papers = 300
+        # Optional check for non-positive numbers
+        if target_papers <= 0:
+            print(f"Warning: Target paper count must be positive. Resetting to 100.")
+            target_papers = 100
             
-    # except ValueError:
-    #     print(f"Error: Invalid count '{target_papers_arg}'. Target paper count must be an integer. Using default (300).")
+    except ValueError:
+        target_papers = 100
+        print(f"Error: Invalid count '{target_papers_arg}'. Target paper count must be an integer. Using default (300).")
     
     # Initialize crawler
     crawler = SurveyOptimizedCrawler(verbose=True)
