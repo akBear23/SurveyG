@@ -588,7 +588,7 @@ def main():
     papers = crawler.collect_survey_papers(topic, user_kws, target_papers)
     
     # Save results
-    save_dir = f"paper_data/{topic.replace(' ', '_')}/info"
+    save_dir = f"paper_data/{topic.replace(' ', '_').replace(':', '')}/info"
     os.makedirs(save_dir, exist_ok=True)
 
     output_file = f"{save_dir}/crawl_papers.json"

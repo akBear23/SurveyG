@@ -129,7 +129,7 @@ def main():
         print("Example: python scripts/pdf_downloader.py \"federated learning privacy\"")
         return
     query = sys.argv[1]
-    save_dir = f"paper_data/{query.replace(' ', '_')}/info"
+    save_dir = f"paper_data/{query.replace(' ', '_').replace(':', '')}/info"
     metadata_path = f"{save_dir}/metadata.json"
     crawl_papers_path = f"{save_dir}/crawl_papers.json"
     cited_papers_path = f"{save_dir}/cited_papers.json"

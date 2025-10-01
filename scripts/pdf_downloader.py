@@ -129,13 +129,13 @@ def main():
         print("Example: python scripts/pdf_downloader.py \"federated learning privacy\"")
         return
     query = sys.argv[1]
-    save_dir = f"paper_data/{query.replace(' ', '_')}"
-    save_dir_core = f"paper_data/{query.replace(' ', '_')}/core_papers"
-    metadata_path = f"paper_data/{query.replace(' ', '_')}/info/metadata.json"
+    save_dir = f"paper_data/{query.replace(' ', '_').replace(':', '')}"
+    save_dir_core = f"paper_data/{query.replace(' ', '_').replace(':', '')}/core_papers"
+    metadata_path = f"paper_data/{query.replace(' ', '_').replace(':', '')}/info/metadata.json"
     metadata = {}
     query = sys.argv[1]
-    crawl_paper_json_path = f"paper_data/{query.replace(' ', '_')}/info/crawl_papers.json"
-    cited_paper_json_path = f"paper_data/{query.replace(' ', '_')}/info/cited_papers.json"
+    crawl_paper_json_path = f"paper_data/{query.replace(' ', '_').replace(':', '')}/info/crawl_papers.json"
+    cited_paper_json_path = f"paper_data/{query.replace(' ', '_').replace(':', '')}/info/cited_papers.json"
     all_papers = []
     with open(crawl_paper_json_path, 'r') as f:
         crawl_papers = json.load(f)

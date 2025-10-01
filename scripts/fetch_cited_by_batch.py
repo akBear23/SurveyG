@@ -129,7 +129,7 @@ def main():
         return
     
     query = sys.argv[1]
-    json_path = f"paper_data/{query.replace(' ', '_')}/info/crawl_papers.json"
+    json_path = f"paper_data/{query.replace(' ', '_').replace(':', '')}/info/crawl_papers.json"
 
     papers, main_paper_ids = load_main_paper_id(json_path)
     print(f"Found {len(main_paper_ids)} main paper IDs.")
@@ -199,7 +199,7 @@ def main():
     papers = papers[:max(1, int(len(papers) * 0.2))]
 
     # Save results
-    output_file = f"paper_data/{query.replace(' ', '_')}/info/cited_papers.json"
+    output_file = f"paper_data/{query.replace(' ', '_').replace(':', '')}/info/cited_papers.json"
     with open(output_file, "w") as f:
         json.dump(papers, f, indent=2)
     print(f"Saved processed info to {output_file}")

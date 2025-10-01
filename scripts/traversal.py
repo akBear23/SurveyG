@@ -166,7 +166,7 @@ def generate_survey_outline(query, taxonomy, develop_direction, previous_outline
         except json.JSONDecodeError as e:
             print(f"Error decoding JSON: {e}")
             print(f"Problematic string start: {json_string[:50]}...")
-            with open (f"paper_data/{query.replace(' ', '_')}/literature_review_output/survey_outline_v3.txt", "w", encoding="utf-8") as f:
+            with open (f"paper_data/{query.replace(' ', '_').replace(':', '')}/literature_review_output/survey_outline_v3.txt", "w", encoding="utf-8") as f:
                 f.write(outline)
     except Exception as e:
         print(f"Error occurred while generating survey outline: {e}")
@@ -469,9 +469,9 @@ def main():
         print("Example: python scripts/traversal.py \"federated learning privacy\"")
         return
     query = sys.argv[1]
-    info_dir = f"paper_data/{query.replace(' ', '_')}/info"
-    save_dir = f"paper_data/{query.replace(' ', '_')}/paths"
-    save_dir_core_paper = f"paper_data/{query.replace(' ', '_')}/core_papers"
+    info_dir = f"paper_data/{query.replace(' ', '_').replace(':', '')}/info"
+    save_dir = f"paper_data/{query.replace(' ', '_').replace(':', '')}/paths"
+    save_dir_core_paper = f"paper_data/{query.replace(' ', '_').replace(':', '')}/core_papers"
 
     # if dir not exist, create it
     os.makedirs(save_dir, exist_ok=True)
@@ -482,7 +482,7 @@ def main():
     seed_taxonomy_output_path = f"{save_dir}/layer1_seed_taxonomy.json"
     layer_summary_output_path = f"{save_dir}/layer_method_group_summary.json"
 
-    save_outline_dir = f"paper_data/{query.replace(' ', '_')}/literature_review_output"
+    save_outline_dir = f"paper_data/{query.replace(' ', '_').replace(':', '')}/literature_review_output"
     os.makedirs(save_outline_dir, exist_ok=True)
     survey_outline_path = f"{save_outline_dir}/survey_outline.json"
     

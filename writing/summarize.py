@@ -62,7 +62,7 @@ class PaperSummarizerRAG:
             'position': 'Position Paper',
             'short': 'Short Paper/Workshop Paper'
         }
-        self.metadata_file_path = f"paper_data/{query.replace(' ', '_')}/info/metadata.json"
+        self.metadata_file_path = f"paper_data/{query.replace(' ', '_').replace(':', '')}/info/metadata.json"
         self.metadata_cache = None
         self._load_metadata()
     #endregion
@@ -866,9 +866,9 @@ class PaperSummarizerRAG:
         )
         
         # Vẫn lưu backup vào file để dễ đọc
-        os.makedirs(f"paper_data/{self.query.replace(' ', '_')}/full_summary", exist_ok=True)
-        summary_file = f"paper_data/{self.query.replace(' ', '_')}/full_summary/{doc_id}_full_summary.txt"
-        os.makedirs(f"paper_data/{self.query.replace(' ', '_')}", exist_ok=True)
+        os.makedirs(f"paper_data/{self.query.replace(' ', '_').replace(':', '')}/full_summary", exist_ok=True)
+        summary_file = f"paper_data/{self.query.replace(' ', '_').replace(':', '')}/full_summary/{doc_id}_full_summary.txt"
+        os.makedirs(f"paper_data/{self.query.replace(' ', '_').replace(':', '')}", exist_ok=True)
         with open(summary_file, 'w', encoding='utf-8') as f:
             f.write(f"File: {file_path}\n")
             f.write(f"Created: {datetime.now().isoformat()}\n")
@@ -883,7 +883,7 @@ class PaperSummarizerRAG:
             f.write(summary)
         
         # Save all keywords to a single JSON file
-        all_keywords_json = f"paper_data/{self.query.replace(' ', '_')}/keywords/all_paper_keywords.json"
+        all_keywords_json = f"paper_data/{self.query.replace(' ', '_').replace(':', '')}/keywords/all_paper_keywords.json"
         # Load existing data if present
         if os.path.exists(all_keywords_json):
             try:
@@ -964,7 +964,7 @@ class PaperSummarizerRAG:
                     return metadata['full_summary']
             
             # Fallback: đọc từ file nếu không có trong database
-            summary_file = f"paper_data/{self.query.replace(' ', '_')}/full_summaries/{doc_id}_full_summary.txt"
+            summary_file = f"paper_data/{self.query.replace(' ', '_').replace(':', '')}/full_summaries/{doc_id}_full_summary.txt"
             if os.path.exists(summary_file):
                 with open(summary_file, 'r', encoding='utf-8') as f:
                     return f.read()
@@ -1019,7 +1019,7 @@ class PaperSummarizerRAG:
             self.collection.delete(ids=[doc_id])
             
             # Xóa file backup nếu có
-            summary_file = f"paper_data/{self.query.replace(' ', '_')}/full_summary/{doc_id}_full_summary.txt"
+            summary_file = f"paper_data/{self.query.replace(' ', '_').replace(':', '')}/full_summary/{doc_id}_full_summary.txt"
             if os.path.exists(summary_file):
                 os.remove(summary_file)
             
@@ -1260,7 +1260,7 @@ class PaperSummarizerRAG:
         print("=" * 80)
         
         processed_results = []
-        checkpoint_file = f"paper_data/{self.query.replace(' ', '_')}/keywords/processed_checkpoint.json"
+        checkpoint_file = f"paper_data/{self.query.replace(' ', '_').replace(':', '')}/keywords/processed_checkpoint.json"
         # Load checkpoint if exists
         already_processed_files = set()
         if os.path.exists(checkpoint_file):
@@ -1360,15 +1360,15 @@ def main():
     # Thay thế bằng Gemini API key của bạn
     load_dotenv(Path(".env"))
     API_KEY = os.getenv("API_KEY") 
-    rag_db_path = f"paper_data/{query.replace(' ', '_')}/rag_database"
-    os.makedirs(f"paper_data/{query.replace(' ', '_')}/full_summary/", exist_ok=True)
-    os.makedirs(f"paper_data/{query.replace(' ', '_')}/keywords/", exist_ok=True)
-    os.makedirs(f"paper_data/{query.replace(' ', '_')}/rag_database/", exist_ok=True)
+    rag_db_path = f"paper_data/{query.replace(' ', '_').replace(':', '')}/rag_database"
+    os.makedirs(f"paper_data/{query.replace(' ', '_').replace(':', '')}/full_summary/", exist_ok=True)
+    os.makedirs(f"paper_data/{query.replace(' ', '_').replace(':', '')}/keywords/", exist_ok=True)
+    os.makedirs(f"paper_data/{query.replace(' ', '_').replace(':', '')}/rag_database/", exist_ok=True)
     # Khởi tạo summarizer với RAG
     summarizer = PaperSummarizerRAG(query, API_KEY, rag_db_path)
     
     # Đường dẫn đến folder chứa papers
-    papers_folder = f"paper_data/{query.replace(' ', '_')}"
+    papers_folder = f"paper_data/{query.replace(' ', '_').replace(':', '')}"
     
     # Xử lý tất cả papers trong folder
     result = summarizer.process_folder(

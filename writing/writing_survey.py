@@ -32,19 +32,19 @@ class LiteratureReviewGenerator:
         """
         genai.configure(api_key=api_key)
         self.query = query
-        self.save_dir = f"paper_data/{self.query.replace(' ', '_')}/literature_review_output"
+        self.save_dir = f"paper_data/{self.query.replace(' ', '_').replace(':', '')}/literature_review_output"
         os.makedirs(self.save_dir, exist_ok=True)
         self.model = genai.GenerativeModel('gemini-2.5-flash')
         self.papers_data = []
         self.citations_map = {}  # Map paper names to citation keys
-        rag_db_path = f"paper_data/{query.replace(' ', '_')}/rag_database"
-        os.makedirs(f"paper_data/{query.replace(' ', '_')}/rag_database/", exist_ok=True)
+        rag_db_path = f"paper_data/{query.replace(' ', '_').replace(':', '')}/rag_database"
+        os.makedirs(f"paper_data/{query.replace(' ', '_').replace(':', '')}/rag_database/", exist_ok=True)
 
         self.summarizer = PaperSummarizerRAG(query, api_key, rag_db_path)
         self.max_improvement_iterations = 10  # Maximum iterations for section improvement
-        self.layer_method_group_json = json.load(open(f"paper_data/{self.query.replace(' ', '_')}/paths/layer_method_group_summary.json", "r", encoding="utf-8"))
-        self.develop_direction = json.load(open(f"paper_data/{self.query.replace(' ', '_')}/paths/layer1_seed_taxonomy.json", "r", encoding="utf-8"))
-        self.graph_path = f"paper_data/{self.query.replace(' ', '_')}/info/paper_citation_graph.json"
+        self.layer_method_group_json = json.load(open(f"paper_data/{self.query.replace(' ', '_').replace(':', '')}/paths/layer_method_group_summary.json", "r", encoding="utf-8"))
+        self.develop_direction = json.load(open(f"paper_data/{self.query.replace(' ', '_').replace(':', '')}/paths/layer1_seed_taxonomy.json", "r", encoding="utf-8"))
+        self.graph_path = f"paper_data/{self.query.replace(' ', '_').replace(':', '')}/info/paper_citation_graph.json"
         self.G = self.load_graph(self.graph_path)
     def load_graph(self, json_path):
         with open(json_path, 'r', encoding='utf-8') as f:
@@ -1088,7 +1088,7 @@ def process_papers_from_directory():
     lit_review_gen = LiteratureReviewGenerator(query, API_KEY)
     
     # Get all PDF files from a directory
-    papers_directory = f"paper_data/{query.replace(' ', '_')}"  
+    papers_directory = f"paper_data/{query.replace(' ', '_').replace(':', '')}"  
  
     # Generate review with self-reflection
     review_data = lit_review_gen.generate_complete_literature_review(
