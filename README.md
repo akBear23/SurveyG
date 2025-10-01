@@ -5,6 +5,12 @@
 - Step 4: Travel in graph to get taxonomies and development directions, download papers PDF along the way, create outline with proofs
 - Step 5: Write paper from outline and proofs
 
+RUN SCRIPTS FOR FULL PIPELINE:
+```bash
+./run.sh "your research topic query" number_of_paper_to_crawl
+# example
+./run.sh "A SURVEY ON ADVERSARIAL RECOMMENDER SYSTEMS" 300
+```
 # 1. Setup environment
 ```bash
 pip install -r requirements.txt
