@@ -1,7 +1,7 @@
 # Workflow
 - Step 1: Crawl papers related to the topic with semantic scholar search api (with constraints to speed up the process)
 - Step 2: Crawl papers that cited crawled papers from step 1, merge all papers together into a pool
-- Step 3: Create survey graph from pool of papers
+- Step 3: Download, summarize, and create survey graph from pool of papers
 - Step 4: Travel in graph to get taxonomies and development directions, download papers PDF along the way, create outline with proofs
 - Step 5: Write paper from outline and proofs
 
