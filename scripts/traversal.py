@@ -391,6 +391,7 @@ def evaluate_outline(query, outline, save_dir, max_iterations=3):
     Evaluate the quality and structure of the following literature review outline for the topic {query}. Assess whether the outline demonstrates meaningful organization of works rather than a simple concatenation of summaries. Your feedback should include:
     • Strengths of the outline
     • Weaknesses or issues (if any)
+    • The outline structure MUST include Introduction and Conclusion, check if the given outline have these sections and suggest improvement if missing.
     • Specific suggestions for improvement (only if issues are found).
     Outline to evaluate: {outline_text}
 

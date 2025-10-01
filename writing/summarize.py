@@ -1130,6 +1130,14 @@ class PaperSummarizerRAG:
                     metadata[field] = [] if field == 'keywords' or field == 'authors' else 'Not available'
                     print(f"⚠️  Warning: metadata['{field}'] is missing/null for {file_path} and could not be filled. Set to default.")
         return metadata
+        
+    def clean_text(self, text):
+        """Remove surrogate characters and other problematic Unicode sequences"""
+        # Remove surrogate characters
+        text = re.sub(r'[\ud800-\udfff]', '', text)
+        # Replace other problematic characters if needed
+        text = text.replace('\ufffd', '')  # Replacement character
+        return text
     
     def summarize_paper(self, file_path: str) -> Dict[str, Any]:
         """
@@ -1157,6 +1165,7 @@ class PaperSummarizerRAG:
         
         # if len(chunks) == 1:
         #     # Paper ngắn, tóm tắt trực tiếp
+        paper_text = self.clean_text(paper_text)
         summary, paper_type, is_new_direction = self.analyze_paper_with_type_detection(citation_key, metadata, paper_text)
         
         # else:

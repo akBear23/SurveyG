@@ -25,11 +25,11 @@ def detect_experiment_mention(abstract):
     pattern = '|'.join(experiment_keywords)
     return bool(re.search(pattern, abstract.lower()))
 
-def create_paper_graph(crawl_papers_path, cited_papers_path):
-    cited_papers = load_json_data(cited_papers_path)
-    crawl_papers = load_json_data(crawl_papers_path)
-    survey_papers = crawl_papers + cited_papers
-
+def create_paper_graph(seleceted_papers_path):
+    # cited_papers = load_json_data(cited_papers_path)
+    # crawl_papers = load_json_data(crawl_papers_path)
+    # survey_papers = crawl_papers + cited_papers
+    survey_papers = load_json_data(seleceted_papers_path)
     layers = assign_layers(survey_papers, K=20)
     
     paper_abstracts = {}
@@ -62,7 +62,7 @@ def create_paper_graph(crawl_papers_path, cited_papers_path):
             keywords=paper.get('keywords', []),
             is_new_direction = paper.get('is_new_direction', '0')
         )
-    for paper in crawl_papers:
+    for paper in survey_papers:
         paper_id = paper['id']
         if 'cited_by' not in paper:
             continue
@@ -117,7 +117,7 @@ def assign_layers(survey_papers, K=20):
         pid = paper.get('id', None)
         if pid in foundation_ids:
             layers[pid] = 1
-        elif year >= 2024:
+        elif year >= 2025:
             layers[pid] = 3
         else:
             layers[pid] = 2
@@ -131,11 +131,12 @@ def main():
     query = sys.argv[1]
     save_dir = f"paper_data/{query.replace(' ', '_').replace(':', '')}/info"
     metadata_path = f"{save_dir}/metadata.json"
-    crawl_papers_path = f"{save_dir}/crawl_papers.json"
-    cited_papers_path = f"{save_dir}/cited_papers.json"
+    # crawl_papers_path = f"{save_dir}/crawl_papers.json"
+    # cited_papers_path = f"{save_dir}/cited_papers.json"
+    selected_papers_path = f"{save_dir}/selected_papers.json"
     output_path = f"{save_dir}/paper_citation_graph.json"
     try:
-        G = create_paper_graph(crawl_papers_path, cited_papers_path)
+        G = create_paper_graph(selected_papers_path)
         save_graph(G, output_path)
         print(f"Graph saved successfully to {output_path}")
     except Exception as e:

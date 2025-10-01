@@ -17,11 +17,11 @@ BASE_DIR="/media/aiserver/New Volume/HDD_linux/bear/SurveyG"
 echo "Starting survey generation for: '$ORIGINAL_QUERY'"
 echo "Using directory name: $DIR_QUERY"
 
-# Step 2: Crawl papers
+# # Step 2: Crawl papers
 echo "Step 2: Running crawler..."
 python "$BASE_DIR/scripts/survey_crawler.py" "$ORIGINAL_QUERY" "$KEYWORDS" "$NUM_PAPERS"
 
-# Step 3: Fetch cited papers
+# # Step 3: Fetch cited papers
 echo "Step 3: Fetching cited papers..."
 python "$BASE_DIR/scripts/fetch_cited_by_batch.py" "$ORIGINAL_QUERY"
 
