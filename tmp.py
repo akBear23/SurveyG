@@ -35,17 +35,7 @@ from pathlib import Path
 
 load_dotenv(Path(".env"))
 SEMANTIC_SCHOLAR_API_KEY = os.getenv("SEMANTIC_SCHOLAR_API_KEY") 
-from dataclasses import dataclass
-from src.models.LLM.ChatAgent import ChatAgent
 
-@dataclass
-class SearchKeywords:
-    primary_keywords: List[str]
-    secondary_keywords: List[str]
-    boolean_queries: List[str]
-    synonyms: Dict[str, List[str]]
-    technical_terms: List[str]
-    domain_specific: List[str]
 class SurveyOptimizedCrawler:
     """
     Survey-optimized paper crawler that ensures comprehensive coverage
@@ -97,80 +87,8 @@ class SurveyOptimizedCrawler:
         self.author_paper_map = defaultdict(list)
         
         self._log("Survey-Optimized Crawler initialized")
-        self.chat_agent = ChatAgent()
-    def _create_keyword_prompt(self, topic,user_keywords, max_keywords):
-        """Create prompt for keyword generation"""
-        # field_context = f" in the field of {field}" if field else ""
-        
-        return f"""
-        You are an expert research librarian. Generate comprehensive search keywords for academic papers in Computer Science.
-
-        USER INPUT:
-        - Topic: {topic}
-        - Initial Keywords: {', '.join(user_keywords)}
-        
-        Generate response in JSON format:
-        {{
-            "primary_keywords": [list of {max_keywords//2} most important keywords],
-            "secondary_keywords": [list of {max_keywords//4} supporting keywords],
-            "boolean_queries": [list of 5-7 boolean search strings using AND, OR],
-            "synonyms": {{"keyword1": ["synonym1", "synonym2"]}},
-            "technical_terms": [domain-specific technical terms],
-            "domain_specific": [field-specific terminology and acronyms]
-        }}
-        
-        Focus on terms used in academic paper titles, abstracts, and keywords.
-        """
     
-    def _parse_gemini_response(self, response_text):
-        """Parse Gemini response to extract keywords"""
-        try:
-            json_match = re.search(r'\{.*\}', response_text, re.DOTALL)
-            # print(json_match)
-            if json_match:
-                data = json.loads(json_match.group())
-                # print(data)
-                return SearchKeywords(
-                    primary_keywords=data.get('primary_keywords', []),
-                    secondary_keywords=data.get('secondary_keywords', []),
-                    boolean_queries=data.get('boolean_queries', []),
-                    synonyms=data.get('synonyms', {}),
-                    technical_terms=data.get('technical_terms', []),
-                    domain_specific=data.get('domain_specific', [])
-                )
-        except:
-            pass
-        
-        return self._fallback_keywords([], "")
-    
-    def _fallback_keywords(self, user_keywords, topic):
-        """Fallback keywords if AI generation fails"""
-        return SearchKeywords(
-            primary_keywords=user_keywords + [topic] if topic else user_keywords,
-            secondary_keywords=[],
-            boolean_queries=[f'"{topic}"' if topic else ''],
-            synonyms={},
-            technical_terms=[],
-            domain_specific=[]
-        )
-    def _prepare_search_queries(self, keywords):
-        """Prepare search queries from keywords"""
-        queries = []
-        
-        # Add boolean queries first
-        queries.extend(keywords.boolean_queries)
-        
-        # Add individual primary keywords
-        # for kw in keywords.primary_keywords[:5]:
-        #     queries.append(f'"{kw}"')
-        
-        # # Add combinations
-        if len(keywords.primary_keywords) >= 2:
-            queries.append(f'"{keywords.primary_keywords[0]}" AND "{keywords.primary_keywords[1]}"')
-        
-        return queries
-    
-    def collect_survey_papers(self, topic: str, user_kws: str, target_papers: int = 300) -> List[Dict[str, Any]]:
+    def collect_survey_papers(self, query: str, target_papers: int = 300) -> List[Dict[str, Any]]:
         """
         Collect papers optimized for survey generation
         
@@ -183,25 +101,14 @@ class SurveyOptimizedCrawler:
         """
         self._log("=" * 60)
         self._log(f" SURVEY-OPTIMIZED PAPER COLLECTION")
-        self._log(f" Topic: '{topic}'")
+        self._log(f" Query: '{query}'")
         self._log(f" Target: {target_papers} papers")
         self._log("=" * 60)
         
         # Expand query for better coverage
-        # expanded_queries = self._expand_query(query)
-        # self._log(f" Generated {len(expanded_queries)} query variations")
-        prompt_generate_kws = self._create_keyword_prompt(topic, user_kws, 10)
-        generated_text = self.chat_agent.gemini_chat(prompt_generate_kws, temperature=0.1)
-        # print(generated_text)
-        keywords = self._parse_gemini_response(generated_text)
-        print(f"Generated {len(keywords.primary_keywords)} primary keywords:")
-        expanded_queries = [topic.lower()]
-        for kw in keywords.primary_keywords:
-            print(f"  • {kw}")
-            expanded_queries.append(f'"{kw}"')
-        for kw in keywords.secondary_keywords:
-            expanded_queries.append(f'"{kw}"')
-
+        expanded_queries = self._expand_query(query)
+        self._log(f" Generated {len(expanded_queries)} query variations")
+        
         # Calculate tier targets
         foundational_target = int(target_papers * self.config['foundational_ratio'])
         recent_target = int(target_papers * self.config['recent_ratio'])
@@ -424,12 +331,12 @@ class SurveyOptimizedCrawler:
             'limit': limit,
             'fields': 'paperId,title,authors,year,citationCount,abstract,url,venue,publicationDate,externalIds,references,citations'
         }             
-        headers = {"x-api-key": 'l8YcOwyvxm7IWxaXJxAh87XhMqQQrQVg3XkPdKiF'}
+        
         if year_range:
             params['year'] = f"{year_range[0]}-{year_range[1]}"
         
         try:
-            response = self.session.get(api_url, params=params, timeout=60,headers=headers)
+            response = self.session.get(api_url, params=params, timeout=120, headers=headers)
             while response.status_code == 429:
                 self._log("Rate limit exceeded")
                 # retry 
@@ -556,42 +463,40 @@ def main():
     """Main function for standalone usage"""
     
     # 1. Check for the two required arguments (query and count)
-    # if len(sys.argv) != 3:
-    #     print("Usage: python scripts/survey_crawler.py \"your research query\" target_paper_count")
-    #     print("Example: python scripts/survey_crawler.py \"federated learning privacy\" 500")
-    #     return
+    if len(sys.argv) != 3:
+        print("Usage: python scripts/survey_crawler.py \"your research query\" target_paper_count")
+        print("Example: python scripts/survey_crawler.py \"federated learning privacy\" 500")
+        return
     
     # Argument 1 (index 1) is the entire research query (since it was quoted)
-    # query = sys.argv[1]
-    topic = 'A SURVEY ON ADVERSARIAL RECOMMENDER SYSTEMS'
-    user_kws = 'adversarial attacks, recommender systems, adversarial ML'
+    query = sys.argv[1]
 
     # Argument 2 (index 2) is the paper count
-    # target_papers_arg = sys.argv[2]
-    #
+    target_papers_arg = sys.argv[2]
+    
     # Initialize the default target papers count
-    target_papers = 1000 
+    target_papers = 300 
     
     # 2. Convert the paper count argument to an integer
-    # try:
-    #     target_papers = int(target_papers_arg)
+    try:
+        target_papers = int(target_papers_arg)
         
-    #     # Optional check for non-positive numbers
-    #     if target_papers <= 0:
-    #         print(f"Warning: Target paper count must be positive. Resetting to 300.")
-    #         target_papers = 300
+        # Optional check for non-positive numbers
+        if target_papers <= 0:
+            print(f"Warning: Target paper count must be positive. Resetting to 300.")
+            target_papers = 300
             
-    # except ValueError:
-    #     print(f"Error: Invalid count '{target_papers_arg}'. Target paper count must be an integer. Using default (300).")
+    except ValueError:
+        print(f"Error: Invalid count '{target_papers_arg}'. Target paper count must be an integer. Using default (300).")
     
     # Initialize crawler
     crawler = SurveyOptimizedCrawler(verbose=True)
     
     # Collect papers
-    papers = crawler.collect_survey_papers(topic, user_kws, target_papers)
+    papers = crawler.collect_survey_papers(query, target_papers)
     
     # Save results
-    save_dir = f"paper_data/{topic.replace(' ', '_')}/info"
+    save_dir = f"paper_data/{query.replace(' ', '_')}/info"
     os.makedirs(save_dir, exist_ok=True)
 
     output_file = f"{save_dir}/crawl_papers.json"

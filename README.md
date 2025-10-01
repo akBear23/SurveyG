@@ -11,6 +11,7 @@ pip install -r requirements.txt
 ```
 # 2. Run survey_crawler.py to crawl papers from semantic scholar
 ```bash
+cd /media/aiserver/New Volume/HDD_linux/bear/SurveyG
 python scripts/survey_crawler.py "your research topic query" number_of_paper_to_crawl
 ```
 # 3. Fetch cited papers
@@ -41,6 +42,7 @@ python scripts/traversal.py "your research topic query"
 ```bash
 cd writing
 python writing_survey.py "your research topic query"
+cd ..
 ```
 # 9. Compile paper
 ```bash

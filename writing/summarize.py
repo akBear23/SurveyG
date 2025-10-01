@@ -1200,7 +1200,7 @@ class PaperSummarizerRAG:
         }
     
     def process_folder(self, folder_path: str, 
-                      skip_existing: bool = True, delay_seconds: float = 1.0) -> Dict[str, Any]:
+                      skip_existing: bool = True, delay_seconds: float = 1.0, metadata_file='') -> Dict[str, Any]:
         """
         Xử lý tất cả papers trong một folder
         
@@ -1221,17 +1221,39 @@ class PaperSummarizerRAG:
             'start_time': datetime.now(),
             'end_time': None
         }
-        
-        if not os.path.exists(folder_path):
-            return {"error": f"Thư mục không tồn tại: {folder_path}"}
+        # if "core_papers/" in folder_path:
+        #     folder_path = folder_path.replace("core_papers/", "")
+        # if not os.path.exists(folder_path):
+        #     return {"error": f"Thư mục không tồn tại: {folder_path}"}
         
         # Lấy danh sách file được hỗ trợ
         # supported_files = self.get_supported_files(folder_path)
-        supported_files = self.metadata_cache.keys()
+
+        if metadata_file == '':
+            supported_files = self.metadata_cache.keys()
+        else:
+            try:
+                if os.path.exists(metadata_file):
+                    with open(metadata_file, 'r', encoding='utf-8') as f:
+                        data = json.load(f)
+                        # Kiểm tra cấu trúc JSON có "metadata" key không
+                        if "metadata" in data:
+                            metadata = data["metadata"]
+                        else:
+                            metadata = data
+                    print(f"✅ Loaded metadata for {len(metadata)} papers")
+                else:
+                    print(f"⚠️  Metadata file not found: {metadata_file}")
+                    metadata = {}
+            except Exception as e:
+                print(f"❌ Error loading metadata: {e}")
+            supported_files = metadata.keys()
+        print(len(supported_files))
+
         self.processing_stats['total_files'] = len(supported_files)
 
-        if not supported_files:
-            return {"error": "Không tìm thấy file được hỗ trợ trong thư mục"}
+        # if not supported_files:
+        #     return {"error": "Không tìm thấy file được hỗ trợ trong thư mục"}
         
         print(f"Tìm thấy {len(supported_files)} file được hỗ trợ trong thư mục: {folder_path}")
         print("=" * 80)
@@ -1305,11 +1327,12 @@ class PaperSummarizerRAG:
                 self.processing_stats['processed_successfully'] += 1
                 processed_results.append(result)
             else:
-                print(f"  ❌ Lỗi: {result.get('error', 'Không xác định')}")
-                self.processing_stats['failed_files'].append({
-                    'file_path': file_path,
-                    'error': result.get('error', 'Không xác định')
-                })
+                # print(f"  ❌ Lỗi: {result.get('error', 'Không xác định')}")
+                # self.processing_stats['failed_files'].append({
+                #     'file_path': file_path,
+                #     'error': result.get('error', 'Không xác định')
+                # })
+                continue
             # Save checkpoint after each iteration
             with open(checkpoint_file, 'w', encoding='utf-8') as cp:
                 json.dump(processed_results, cp, ensure_ascii=False, indent=2)
@@ -1351,7 +1374,7 @@ def main():
         folder_path=papers_folder,
 
         skip_existing=True,  # Bỏ qua file đã xử lý
-        delay_seconds=0.0    # Chờ 2 giây giữa các lần xử lý
+        delay_seconds=0.0    # Chờ 2 giây giữa các lần xử lý'
     )
 if __name__ == "__main__":
     main()

@@ -1,3 +1,4 @@
+import sys
 import google.generativeai as genai
 import PyPDF2
 import docx
@@ -8,10 +9,19 @@ from typing import Optional, Dict, List, Tuple
 import pandas as pd
 from datetime import datetime
 import networkx as nx
+import sys
+import os
+
+# Get the directory of the current script
+current_dir = os.path.dirname(os.path.abspath(__file__))
+# Add the parent directory (containing 'writing/') to sys.path
+sys.path.insert(0, os.path.join(current_dir, '../'))
+
 from writing.summarize import PaperSummarizerRAG
 import sys
 from dotenv import load_dotenv, find_dotenv
 from pathlib import Path 
+
 class LiteratureReviewGenerator:
     def __init__(self, query, api_key: str):
         """
@@ -27,7 +37,10 @@ class LiteratureReviewGenerator:
         self.model = genai.GenerativeModel('gemini-2.5-flash')
         self.papers_data = []
         self.citations_map = {}  # Map paper names to citation keys
-        self.summarizer = PaperSummarizerRAG(query, api_key)
+        rag_db_path = f"paper_data/{query.replace(' ', '_')}/rag_database"
+        os.makedirs(f"paper_data/{query.replace(' ', '_')}/rag_database/", exist_ok=True)
+
+        self.summarizer = PaperSummarizerRAG(query, api_key, rag_db_path)
         self.max_improvement_iterations = 10  # Maximum iterations for section improvement
         self.layer_method_group_json = json.load(open(f"paper_data/{self.query.replace(' ', '_')}/paths/layer_method_group_summary.json", "r", encoding="utf-8"))
         self.develop_direction = json.load(open(f"paper_data/{self.query.replace(' ', '_')}/paths/layer1_seed_taxonomy.json", "r", encoding="utf-8"))
@@ -556,6 +569,9 @@ class LiteratureReviewGenerator:
             
             # Step 4: Retrieve additional papers if needed
             suggested_queries = evaluation.get('suggested_queries', [])
+
+            with open(f"{self.save_dir}/suggested_queries.txt", "a") as f:
+                f.write(f"Suggested queries for iteration {iteration}:\n", suggested_queries)
             if suggested_queries:
                 print(f"      Retrieving additional papers for: {', '.join(suggested_queries[:2])}")
                 additional_papers = self.retrieve_additional_papers(suggested_queries[:2])
@@ -642,17 +658,26 @@ class LiteratureReviewGenerator:
         core_papers = self.summarizer.process_folder(
             folder_path=core_papers_path,
             skip_existing=True,  # Skip if already processed
-            delay_seconds=0.0
+            delay_seconds=0.0, 
+            metadata_file = os.path.join(f"paper_data/{self.query}/info", "metadata_core_papers.json")
         )
         
-        # Process all papers
+        # # Process all papers
         all_papers = self.summarizer.process_folder(
             folder_path=paper_paths,
             skip_existing=True,  # Skip already processed files
-            delay_seconds=0.0
+            delay_seconds=0.0,
         )
+        def check_variable_type(variable):
+            if isinstance(variable, dict):
+                return "dict"
+            elif isinstance(variable, list):
+                return "list"
+            else:
+                return type(variable).__name__
         print(core_papers)
-        print(all_papers)
+        # print(check_variable_type(core_papers))
+        # print(check_variable_type(all_papers))
         # Fix: ensure both are lists before concatenation
         all_processed_papers = core_papers + all_papers
         # print(all_processed_papers[0]['metadata'].keys())
@@ -686,7 +711,7 @@ class LiteratureReviewGenerator:
         #                       "Future Research Directions", "Conclusion"]
         # Load outline from generated txt file
         
-        outline_path = f"{self.save_dir}/survey_outline_v3.json"
+        outline_path = f"{self.save_dir}/survey_outline.json"
         # read outline file
         with open(outline_path, 'r', encoding='utf-8') as f:
             outline = json.load(f)
