@@ -1200,7 +1200,7 @@ class PaperSummarizerRAG:
         }
     
     def process_folder(self, folder_path: str, 
-                      skip_existing: bool = True, delay_seconds: float = 1.0, metadata_file='', max_papers=100) -> Dict[str, Any]:
+                      skip_existing: bool = True, delay_seconds: float = 1.0, metadata_file='', max_papers=120) -> Dict[str, Any]:
         """
         Xử lý tất cả papers trong một folder
         
@@ -1301,6 +1301,7 @@ class PaperSummarizerRAG:
         
         for i, file_path in enumerate(supported_files):
             file_name = os.path.basename(file_path)
+            file_path = folder_path + '/' + file_path
             if file_path in already_processed_files:
                 print(f"  ⏭️  Bỏ qua - File đã được lưu trong checkpoint")
                 self.processing_stats['skipped_files'].append(file_path)
