@@ -43,8 +43,7 @@ python "$BASE_DIR/scripts/traversal.py" "$ORIGINAL_QUERY"
 # Step 8: Write survey paper
 echo "Step 8: Writing survey paper..."
 (
-    cd "$BASE_DIR/writing" && \
-    python writing_survey.py "$ORIGINAL_QUERY"
+    python writing/writing_survey.py "$ORIGINAL_QUERY"
 )
 
 # Step 9: Compile LaTeX document

@@ -964,7 +964,7 @@ class PaperSummarizerRAG:
                     return metadata['full_summary']
             
             # Fallback: đọc từ file nếu không có trong database
-            summary_file = f"paper_data/{self.query.replace(' ', '_')}/summaries/{doc_id}_full_summary.txt"
+            summary_file = f"paper_data/{self.query.replace(' ', '_')}/full_summaries/{doc_id}_full_summary.txt"
             if os.path.exists(summary_file):
                 with open(summary_file, 'r', encoding='utf-8') as f:
                     return f.read()
@@ -1019,7 +1019,7 @@ class PaperSummarizerRAG:
             self.collection.delete(ids=[doc_id])
             
             # Xóa file backup nếu có
-            summary_file = f"paper_data/{self.query.replace(' ', '_')}/summaries/{doc_id}_full_summary.txt"
+            summary_file = f"paper_data/{self.query.replace(' ', '_')}/full_summary/{doc_id}_full_summary.txt"
             if os.path.exists(summary_file):
                 os.remove(summary_file)
             
@@ -1200,7 +1200,7 @@ class PaperSummarizerRAG:
         }
     
     def process_folder(self, folder_path: str, 
-                      skip_existing: bool = True, delay_seconds: float = 1.0, metadata_file='') -> Dict[str, Any]:
+                      skip_existing: bool = True, delay_seconds: float = 1.0, metadata_file='', max_papers=100) -> Dict[str, Any]:
         """
         Xử lý tất cả papers trong một folder
         
@@ -1230,7 +1230,7 @@ class PaperSummarizerRAG:
         # supported_files = self.get_supported_files(folder_path)
 
         if metadata_file == '':
-            supported_files = self.metadata_cache.keys()
+            supported_files = list(self.metadata_cache.keys())
         else:
             try:
                 if os.path.exists(metadata_file):
@@ -1247,9 +1247,10 @@ class PaperSummarizerRAG:
                     metadata = {}
             except Exception as e:
                 print(f"❌ Error loading metadata: {e}")
-            supported_files = metadata.keys()
-        print(len(supported_files))
-
+            supported_files = list(metadata.keys())
+        print("Total number of papers: ", len(supported_files))
+        supported_files = supported_files[:max_papers]
+        print("Handle maximum papers: ", len(supported_files))
         self.processing_stats['total_files'] = len(supported_files)
 
         # if not supported_files:
@@ -1360,7 +1361,7 @@ def main():
     load_dotenv(Path(".env"))
     API_KEY = os.getenv("API_KEY") 
     rag_db_path = f"paper_data/{query.replace(' ', '_')}/rag_database"
-    os.makedirs(f"paper_data/{query.replace(' ', '_')}/summaries/", exist_ok=True)
+    os.makedirs(f"paper_data/{query.replace(' ', '_')}/full_summary/", exist_ok=True)
     os.makedirs(f"paper_data/{query.replace(' ', '_')}/keywords/", exist_ok=True)
     os.makedirs(f"paper_data/{query.replace(' ', '_')}/rag_database/", exist_ok=True)
     # Khởi tạo summarizer với RAG

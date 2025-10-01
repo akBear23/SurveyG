@@ -415,10 +415,12 @@ class LiteratureReviewGenerator:
         """
         proofs_text = ''
         for proof in proof_ids:
-            proof = proof.lower().strip()
-            if 'layer' in proof:
-                proof.replace('layer', '').strip()
-                
+            try: 
+                proof = proof.lower().strip()
+                if 'layer' in proof:
+                    proof.replace('layer', '').strip()
+            except:
+                pass
             if proof in self.develop_direction.keys():
                 direction_dict = self.develop_direction[proof]
                 proofs_text += 'Development direction: \n'

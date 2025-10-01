@@ -170,7 +170,7 @@ class SurveyOptimizedCrawler:
         
         return queries
     
-    def collect_survey_papers(self, topic: str, user_kws: str, target_papers: int = 300) -> List[Dict[str, Any]]:
+    def collect_survey_papers(self, topic: str, user_kws: str, target_papers: int = 100) -> List[Dict[str, Any]]:
         """
         Collect papers optimized for survey generation
         
@@ -570,7 +570,7 @@ def main():
     # target_papers_arg = sys.argv[2]
     #
     # Initialize the default target papers count
-    target_papers = 1000 
+    target_papers = 300 
     
     # 2. Convert the paper count argument to an integer
     # try:

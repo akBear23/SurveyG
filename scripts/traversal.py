@@ -72,18 +72,19 @@ def bfs_one_hop_from_seed(G, seed, max_hop_papers=10):
     return info, path
 
 # Call Gemini LLM to summarize
-def summarize_with_gemini(paper_infos, path, layer_2_summary=''):
+def summarize_with_gemini(query,paper_infos, path, layer_2_summary=''):
     # Compose a prompt for taxonomy of a direction, showing the traversal path
     # prompt += "Summarize the following papers for taxonomy of a development direction, where each paper in the path cites the previous one. Make sure to highlight the development in the topic and how each paper contributes to the direction based on their methodology and publication time.\nPaper traversal path: "
     # prompt += " -> ".join([info['title'] for info in paper_infos]) + "\n\n"
     path_text = ''
     for info in paper_infos:
-        if info['summary'] != info['abstract'] and info['summary'] != '':
-            path_text += f"Title: {info['title']}\nAbstract: {info['abstract']}\nSummary: {info['summary']}\nPublication Year: {info['year']}\n\n"
-        else: path_text += f"Title: {info['title']}\nAbstract: {info['abstract']}\nPublication Year: {info['year']}\n\n-->"
+        try:
+            if info['summary'] != info['abstract'] and info['summary'] != '':
+                path_text += f"Title: {info['title']}\nAbstract: {info['abstract']}\nSummary: {info['summary']}\nPublication Year: {info['year']}\n\n"
+        except: path_text += f"Title: {info['title']}\nAbstract: {info['abstract']}\nPublication Year: {info['year']}\n\n-->"
     
     prompt = f"""
-    You are given a sequence of papers forming a citation path, where each paper cites the previous one. For each paper, describe:
+    For the research topic {query}, You are given a sequence of papers forming a citation path, where each paper cites the previous one. For each paper, describe:
     - Its main methodological contribution.
     - How it builds on the previous paper(s).
     - The role of its publication time in shaping the progression.
@@ -103,7 +104,7 @@ def summarize_with_gemini(paper_infos, path, layer_2_summary=''):
 
 def generate_survey_outline(query, taxonomy, develop_direction, previous_outline='', improvement_suggestions=''):
     # Combine all taxonomy summaries into one prompt
-    prompt = "Create a comprehensive literature review outline based on the following taxonomy summaries for three layers (foundational, development, and recent/trending) and development directions.\n\n"
+    prompt = f"Create a comprehensive literature review outline for the topic {query} based on the following taxonomy summaries for three layers (foundational, development, and recent/trending) and development directions.\n\n"
     for layer in [1, 2, 3]:
         layer_desc = {1: 'foundational papers', 2: 'development papers', 3: 'recent and trending papers'}
         summary = taxonomy.get(f"{layer}", {}).get('summary', '')
@@ -176,7 +177,7 @@ def get_layer_subgraph(G, layer):
     nodes = [n for n, attr in G.nodes(data=True) if attr.get('layer') == layer]
     return G.subgraph(nodes)
 
-def summarize_layer_method_groups(G, layer, max_papers=50):
+def summarize_layer_method_groups(query, G, layer, max_papers=50):
     # Get papers with new_direction=1 in this layer
     papers = [n for n, attr in G.nodes(data=True) if attr.get('layer') == layer and attr.get('new_direction') == 1]
     if len(papers) == 0: 
@@ -207,7 +208,7 @@ def summarize_layer_method_groups(G, layer, max_papers=50):
     # print(f"Layer {layer} - summarizing {len(infos)} papers for method group summary.")
     # Compose prompt for LLM
     layer_desc = {1: 'foundational papers', 2: 'development papers', 3: 'recent and trending papers'}
-    prompt = f"Summarize the method groups for the survey from the following {layer_desc.get(layer, '')} in layer {layer}. Divide the papers in the layer into subgroups based on their contributions and methodologies.\n\n"
+    prompt = f"Summarize the method groups for the survey topic {query} from the following {layer_desc.get(layer, '')} in layer {layer}. Divide the papers in the layer into subgroups based on their contributions and methodologies.\n\n"
     for info in infos:
         prompt += f"Title: {info['title']}\nAbstract: {info['abstract']}\nSummary: {info['summary']}\nPublication Year: {info['year']}\n\n"
     chat_agent = ChatAgent()
@@ -228,29 +229,6 @@ def save_papers_info_json(paper_ids, G, save_dir, output_path, full_metadata):
             core_metadata[pid] = full_metadata[pid]
         except:
             pass
-        # attr = G.nodes[pid]
-        # # Generate a sanitized filename from the paper title
-        # id = pid
-        # filename = f"{id}.pdf"
-        
-        # paper_dir = "paper_data/knowledge_graph_embedding/core_papers/"
-        # # Create a dictionary for the paper's metadata
-        # paper_metadata = {
-        #     "title": attr.get('title'),
-        #     "authors": attr.get('authors', []),
-        #     "published_date": str(attr.get('year', '')),
-        #     # "venue": attr.get('venue'),
-        #     # "journal": attr.get('journal'),
-        #     "abstract": attr.get('abstract'),
-        #     "keywords": attr.get("survey_keywords", []),  # Assuming no keywords in the source data
-        #     "paper_type": attr.get('paper_type'),
-        #     "summary": attr.get('summary'),
-        #     "file_path": os.path.join(paper_dir, filename), 
-        #     "journal": attr.get('venue', ''),
-        # }
-        
-        # # Add the metadata to the main dictionary using the filename as the key
-        # metadata[filename] = paper_metadata
 
     # Write the new metadata to an output JSON file
     with open(output_path, 'w', encoding='utf-8') as f:
@@ -260,7 +238,7 @@ def save_papers_info_json(paper_ids, G, save_dir, output_path, full_metadata):
 
 from collections import deque
 
-def bfs_from_seed(graph, seed, max_development_paper=20, max_frontier_paper=30):
+def bfs_from_seed(query, graph, seed, max_development_paper=20, max_frontier_paper=30):
     visited = set()
     info = []
     path = []
@@ -321,7 +299,7 @@ def bfs_from_seed(graph, seed, max_development_paper=20, max_frontier_paper=30):
             
             # Check if we should call LLM for layer 2
             if not layer_2_summary and len(layer2_papers) >= max_development_paper:
-                # layer_2_summary = summarize_with_gemini(layer1_papers + layer2_papers, path)
+                layer_2_summary = summarize_with_gemini(query, layer1_papers + layer2_papers, path)
                 continue
             
             # Get neighbors for layer 3
@@ -342,11 +320,11 @@ def bfs_from_seed(graph, seed, max_development_paper=20, max_frontier_paper=30):
             # Check if we should to travel
             if len(layer3_papers) >= max_frontier_paper:
                 break
-    # if not layer_2_summary: layer_2_summary = summarize_with_gemini(layer1_papers + layer2_papers, path)
-    # if len(layer3_papers): path_taxonomy = summarize_with_gemini(layer3_papers, path, layer_2_summary)
-    # else: 
-    #     path_taxonomy = summarize_with_gemini(layer1_papers + layer2_papers + layer3_papers, path)
-    path_taxonomy = ''
+    if not layer_2_summary: layer_2_summary = summarize_with_gemini(query, layer1_papers + layer2_papers, path)
+    if len(layer3_papers): path_taxonomy = summarize_with_gemini(query,layer3_papers, path, layer_2_summary)
+    else: 
+        path_taxonomy = summarize_with_gemini(query, layer1_papers + layer2_papers + layer3_papers, path)
+ 
     return [
         info,
         path,
@@ -393,7 +371,7 @@ def dfs_from_seed(graph, seed, last_layer, max_paper_number=50):
     summary = summarize_with_gemini(info, path)
     return info, path, summary
 
-def evaluate_outline(outline, save_dir, max_iterations=3):
+def evaluate_outline(query, outline, save_dir, max_iterations=3):
     """
         Evaluate the quality of a literature review section based on multiple criteria
         
@@ -410,7 +388,7 @@ def evaluate_outline(outline, save_dir, max_iterations=3):
     for section in outline:
         outline_text += f"{section['section_outline']}\n{section['section_focus']}"
     evaluation_prompt = f"""
-    Evaluate the quality and structure of the following literature review outline. Assess whether the outline demonstrates meaningful organization of works rather than a simple concatenation of summaries. Your feedback should include:
+    Evaluate the quality and structure of the following literature review outline for the topic {query}. Assess whether the outline demonstrates meaningful organization of works rather than a simple concatenation of summaries. Your feedback should include:
     • Strengths of the outline
     • Weaknesses or issues (if any)
     • Specific suggestions for improvement (only if issues are found).
@@ -522,57 +500,57 @@ def main():
     all_json = {}
     all_paths = []
     for seed in seeds:
-        paper_infos, path, layer1_papers, layer2_papers, layer3_papers, layer2_summary, summary = bfs_from_seed(G, seed, max_development_paper=20, max_frontier_paper=30)
+        paper_infos, path, layer1_papers, layer2_papers, layer3_papers, layer2_summary, summary = bfs_from_seed(query, G, seed, max_development_paper=20, max_frontier_paper=30)
         all_paths.extend(path)
-    #     seed_title = G.nodes[seed].get('title', '')
-    #     seed_text = f"Seed: {seed_title}\nDevelopment direction taxonomy summary:\n{summary}\nPath: {path}\n"
-    #     # print(seed_text)
-    #     all_text.append(seed_text)
-    #     all_json[seed] = {"seed_title": seed_title, "summary": summary, "path": path, "layer1_papers": layer1_papers, "layer2_papers": layer2_papers, "layer3_papers": layer3_papers, "layer2_summary": layer2_summary}
-    # with open(output_txt_path, "w", encoding="utf-8") as f:
-    #     f.write("\n".join(all_text))
-    # with open(seed_taxonomy_output_path, "w", encoding="utf-8") as f:
-    #     json.dump(all_json, f, ensure_ascii=False, indent=2)
-    # print(f"All layer 1 seed taxonomy summaries saved to {output_txt_path} and {seed_taxonomy_output_path}")
+        seed_title = G.nodes[seed].get('title', '')
+        seed_text = f"Seed: {seed_title}\nDevelopment direction taxonomy summary:\n{summary}\nPath: {path}\n"
+        # print(seed_text)
+        all_text.append(seed_text)
+        all_json[seed] = {"seed_title": seed_title, "summary": summary, "path": path, "layer1_papers": layer1_papers, "layer2_papers": layer2_papers, "layer3_papers": layer3_papers, "layer2_summary": layer2_summary}
+    with open(output_txt_path, "w", encoding="utf-8") as f:
+        f.write("\n".join(all_text))
+    with open(seed_taxonomy_output_path, "w", encoding="utf-8") as f:
+        json.dump(all_json, f, ensure_ascii=False, indent=2)
+    print(f"All layer 1 seed taxonomy summaries saved to {output_txt_path} and {seed_taxonomy_output_path}")
 
     
-    # for node_id in all_paths:
-    #     paper_attr = G.nodes[node_id]
-    #     save_path = os.path.join(save_dir_core_paper, f"{node_id}.pdf")
-    #     if os.path.exists(save_path):
-    #         print(f"PDF for paper ID {node_id} already exists, skipping download.")
-    #         continue
-    #     download_paper(save_path, paper_attr.get('pdf_link'))
+    for node_id in all_paths:
+        paper_attr = G.nodes[node_id]
+        save_path = os.path.join(save_dir_core_paper, f"{node_id}.pdf")
+        if os.path.exists(save_path):
+            print(f"PDF for paper ID {node_id} already exists, skipping download.")
+            continue
+        download_paper(save_path, paper_attr.get('pdf_link'))
 
     # --- Layer method group summaries ---
     layer_method_group_txt = ""
     layer_method_group_json = {}
     for layer in [1, 2, 3]:
-        # layer_summary, papers = summarize_layer_method_groups(G, layer, max_papers=50)
-        # layer_method_group_txt += f"Layer {layer} method group summary:\n{layer_summary}\n\n"
-        # layer_method_group_json[f"{layer}"] = {
-        #     "summary": layer_summary,
-        #     "papers": papers
-        # }
+        layer_summary, papers = summarize_layer_method_groups(query, G, layer, max_papers=50)
+        layer_method_group_txt += f"Layer {layer} method group summary:\n{layer_summary}\n\n"
+        layer_method_group_json[f"{layer}"] = {
+            "summary": layer_summary,
+            "papers": papers
+        }
         papers = [n for n, attr in G.nodes(data=True) if attr.get('layer') == layer and attr.get('new_direction') == 1]
         if len(papers) > 50:
             papers = sorted(papers, key=lambda n: G.nodes[n].get('citation_count', 0), reverse=True)[:50]
         
         all_paths.extend(papers)
         # # Download papers in this layer's method group
-        # for n in papers:
-        #     paper_attr = G.nodes[n]
-        #     os.makedirs(save_dir_core_paper, exist_ok=True)
-        #     save_path = os.path.join(save_dir_core_paper, f"{n}.pdf")
-        #     if os.path.exists(save_path):
-        #         print(f"PDF for paper ID {n} already exists, skipping download.")
-        #         continue
-        #     download_paper(save_path, paper_attr.get('pdf_link'))
+        for n in papers:
+            paper_attr = G.nodes[n]
+            os.makedirs(save_dir_core_paper, exist_ok=True)
+            save_path = os.path.join(save_dir_core_paper, f"{n}.pdf")
+            if os.path.exists(save_path):
+                print(f"PDF for paper ID {n} already exists, skipping download.")
+                continue
+            download_paper(save_path, paper_attr.get('pdf_link'))
     
     all_paths = list(set(all_paths))  # unique
 
-    # with open(layer_summary_output_path, "w", encoding="utf-8") as f:
-    #     json.dump(layer_method_group_json, f, ensure_ascii=False, indent=2)
+    with open(layer_summary_output_path, "w", encoding="utf-8") as f:
+        json.dump(layer_method_group_json, f, ensure_ascii=False, indent=2)
     print(f"Layer method group summaries saved to {layer_summary_output_path}")
     with open(f"{info_dir}/metadata.json", 'r', encoding='utf-8') as f:
         metadata = json.load(f)
@@ -588,7 +566,7 @@ def main():
     while iteration < 3:
         iteration += 1
         print(f"Ensuring outline coherence and logicality, iteration {iteration}...")
-        evaluation = evaluate_outline(outline, save_outline_dir)
+        evaluation = evaluate_outline(query, outline, save_outline_dir)
         print(evaluation)
         previous_outline = outline
 
