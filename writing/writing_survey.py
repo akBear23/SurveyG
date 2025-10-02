@@ -573,7 +573,7 @@ class LiteratureReviewGenerator:
             suggested_queries = evaluation.get('suggested_queries', [])
 
             with open(f"{self.save_dir}/suggested_queries.txt", "a") as f:
-                f.write(f"Suggested queries for iteration {iteration}:\n", suggested_queries)
+                f.write(f"Suggested queries for iteration {iteration}:\n, {suggested_queries}")
             if suggested_queries:
                 print(f"      Retrieving additional papers for: {', '.join(suggested_queries[:2])}")
                 additional_papers = self.retrieve_additional_papers(suggested_queries[:2])
