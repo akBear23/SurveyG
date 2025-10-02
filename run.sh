@@ -11,13 +11,13 @@ KEYWORDS="$2"
 NUM_PAPERS="$3"
 
 # Convert query to directory-friendly format (replace spaces with underscores)
-DIR_QUERY=$(echo "$ORIGINAL_QUERY" | tr ' ' '_')
+DIR_QUERY=$(echo "$ORIGINAL_QUERY" | tr ' ' '_' | tr -d ':')
 BASE_DIR="/media/aiserver/New Volume/HDD_linux/bear/SurveyG"
 
 echo "Starting survey generation for: '$ORIGINAL_QUERY'"
 echo "Using directory name: $DIR_QUERY"
 
-# # Step 2: Crawl papers
+# Step 2: Crawl papers
 echo "Step 2: Running crawler..."
 python "$BASE_DIR/scripts/survey_crawler.py" "$ORIGINAL_QUERY" "$KEYWORDS" "$NUM_PAPERS"
 
