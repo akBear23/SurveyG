@@ -111,22 +111,22 @@ def generate_survey_outline(query, taxonomy, develop_direction, communities_summ
         layer_desc = {1: 'foundational papers', 2: 'development papers', 3: 'recent and trending papers'}
         summary = taxonomy.get(f"{layer}", {}).get('summary', '')
         prompt += f"Layer {layer_desc.get(layer, '')} taxonomy summary:\n{summary}\n\n"
-    for key, summary in communities_summary.items():
-        prompt += f"Group of paper {key} summary:\n{summary}\n\n"
+    for key, community in communities_summary.items():
+        prompt += f"Group of papers {key} summary:\n{community.get('summary', '')}\n\n"
     # Add development direction info the develop_direction dict format {seed_id: {"seed_title": title, "summary": summary, "path": [list of paper ids]}}
     prompt += f"Development direction:\n"
     for seed_id, info in develop_direction.items():
         prompt += f"Seed ID: {seed_id}\n"
         prompt += f"Title: {info.get('seed_title', '')}\n"
         prompt += f"Summary: {info.get('summary', '')}\n"
-        prompt += f"Path: {info.get('path', [])}\n\n"
+        # prompt += f"Path: {info.get('path', [])}\n\n"
     
     prompt += "Based on the above information, create a detailed outline for a literature review paper, organizing it into sections and subsections that reflect the major themes and developments in the field. "
     prompt += "Please organize the outline in a logical flow suitable for a literature review paper, do not need to add unncessary details like layer numbers. "
     prompt += "\nRespond with the outline in json format with keys: ['section_outline', 'section_focus', 'proof_ids']."
     prompt += "\nFor each section, add the section and its subsections titles in a hierarchical manner in the same 'section_outline'; "
     prompt += "For each section, add a paragraph to the key 'section_focus' to indicate the main focus of that section; "
-    prompt += "For each section, add an id (taken from the information layer number or the development seed ids) to the key 'proof_ids' to indicate the proof for each section, if proof is from the taxonomy of layer 1, 2, or 3 put the layer number only, if the proof is from the development direction, put the seed(s) paper id."
+    prompt += "For each section, add an id (taken from the information layer number or the development seed ids) to the key 'proof_ids' to indicate the proof for each section, if proof is from the taxonomy of layer 1 put layer_1, if proof is from the summary of paper community put community_\{id\}, if the proof is from the development direction, put the seed(s) paper id."
     prompt += ".\n\nRespond with the outline in json format structure as the example below:\n"
     prompt += """ 
     {
@@ -136,7 +136,7 @@ def generate_survey_outline(query, taxonomy, develop_direction, communities_summ
     *   1.2. The Role of Knowledge Graph Embedding
     *   1.3. Scope and Organization of the Review",
         "section_focus": "This section introduces Knowledge Graphs (KGs) and the fundamental problem of Knowledge Graph Embedding (KGE). It highlights the importance of KGE for various AI tasks and outlines the scope and structure of the review.",
-        "proof_ids": [1, 2]
+        "proof_ids": [layer_1, community_1, community_2, 11e402c699bcb54d57da1a5fdbc57076d7255baf]
       ], 
       ...
     }
@@ -207,14 +207,12 @@ def summarize_community(query, G, papers):
 def summarize_layer_method_groups(query, G, layer):
     # Get papers with new_direction=1 in this layer
     papers = [n for n, attr in G.nodes(data=True) if attr.get('layer') == layer]
-    if len(papers) == 0: 
-        papers = [n for n, attr in G.nodes(data=True) if attr.get('layer') == layer]
-        papers = sorted(
-            papers,
-            key=lambda node: G.nodes[node].get('score', float('-inf')),
-            reverse=True
-        )
-    print(len(papers))
+    papers = sorted(
+        papers,
+        key=lambda node: G.nodes[node].get('score', float('-inf')),
+        reverse=True
+    )
+    
     # If layer == 3, include highly cited papers in this layer?
     # if layer == 3:
     #     additional_papers = [n for n, attr in G.nodes(data=True) if attr.get('layer') == layer and attr.get('citation_count', 0) >= 50]
@@ -523,70 +521,74 @@ def main():
             layer_counts[layer] += 1
     print(f"Layer counts: {layer_counts}")
     # --- Layer 1 seed direction summaries ---
-    seeds = get_layer_seeds(G, 1)  # Only layer 1 seeds with new_direction=1
+    # seeds = get_layer_seeds(G, 1)  # Only layer 1 seeds with new_direction=1
     all_text = []
     all_json = {}
     all_paths = []
-    for seed in seeds:
-        paper_infos, path, layer1_papers, layer2_papers, layer3_papers, layer2_summary, summary = bfs_from_seed(query, G, seed, max_development_paper=20, max_frontier_paper=30)
-        all_paths.extend(path)
-        seed_title = G.nodes[seed].get('title', '')
-        seed_text = f"Seed: {seed_title}\nDevelopment direction taxonomy summary:\n{summary}\nPath: {path}\n"
-        # print(seed_text)
-        all_text.append(seed_text)
-        all_json[seed] = {"seed_title": seed_title, "summary": summary, "path": path, "layer1_papers": layer1_papers, "layer2_papers": layer2_papers, "layer3_papers": layer3_papers, "layer2_summary": layer2_summary}
-    with open(output_txt_path, "w", encoding="utf-8") as f:
-        f.write("\n".join(all_text))
-    with open(seed_taxonomy_output_path, "w", encoding="utf-8") as f:
-        json.dump(all_json, f, ensure_ascii=False, indent=2)
-    print(f"All layer 1 seed taxonomy summaries saved to {output_txt_path} and {seed_taxonomy_output_path}")
+    # for seed in seeds:
+    #     paper_infos, path, layer1_papers, layer2_papers, layer3_papers, layer2_summary, summary = bfs_from_seed(query, G, seed, max_development_paper=20, max_frontier_paper=30)
+    #     all_paths.extend(path)
+    #     seed_title = G.nodes[seed].get('title', '')
+    #     seed_text = f"Seed: {seed_title}\nDevelopment direction taxonomy summary:\n{summary}\nPath: {path}\n"
+    #     # print(seed_text)
+    #     all_text.append(seed_text)
+    #     all_json[seed] = {"seed_title": seed_title, "summary": summary, "path": path, "layer1_papers": layer1_papers, "layer2_papers": layer2_papers, "layer3_papers": layer3_papers, "layer2_summary": layer2_summary}
+    # with open(output_txt_path, "w", encoding="utf-8") as f:
+    #     f.write("\n".join(all_text))
+    # with open(seed_taxonomy_output_path, "w", encoding="utf-8") as f:
+    #     json.dump(all_json, f, ensure_ascii=False, indent=2)
+    # print(f"All layer 1 seed taxonomy summaries saved to {output_txt_path} and {seed_taxonomy_output_path}")
 
     
-    # for node_id in all_paths:
-    #     paper_attr = G.nodes[node_id]
-    #     save_path = os.path.join(save_dir_core_paper, f"{node_id}.pdf")
-    #     if os.path.exists(save_path):
-    #         print(f"PDF for paper ID {node_id} already exists, skipping download.")
-    #         continue
-    #     download_paper(save_path, paper_attr.get('pdf_link'))
+    # # for node_id in all_paths:
+    # #     paper_attr = G.nodes[node_id]
+    # #     save_path = os.path.join(save_dir_core_paper, f"{node_id}.pdf")
+    # #     if os.path.exists(save_path):
+    # #         print(f"PDF for paper ID {node_id} already exists, skipping download.")
+    # #         continue
+    # #     download_paper(save_path, paper_attr.get('pdf_link'))
 
-    # --- Layer method group summaries ---
-    layer_method_group_txt = ""
-    layer_method_group_json = {}
-    for layer in [1]:
-        layer_summary, papers = summarize_layer_method_groups(query, G, layer)
-        layer_method_group_txt += f"Layer {layer} method group summary:\n{layer_summary}\n\n"
-        layer_method_group_json[f"{layer}"] = {
-            "summary": layer_summary,
-            "papers": papers
-        }       
-        all_paths.extend(papers)
-        # # Download papers in this layer's method group
-        # for n in papers:
-        #     paper_attr = G.nodes[n]
-            # os.makedirs(save_dir_core_paper, exist_ok=True)
-            # save_path = os.path.join(save_dir_core_paper, f"{n}.pdf")
-            # if os.path.exists(save_path):
-            #     print(f"PDF for paper ID {n} already exists, skipping download.")
-            #     continue
-            # download_paper(save_path, paper_attr.get('pdf_link'))
+    # # --- Layer method group summaries ---
+    # layer_method_group_txt = ""
+    # layer_method_group_json = {}
+    # for layer in [1]:
+    #     layer_summary, papers = summarize_layer_method_groups(query, G, layer)
+    #     layer_method_group_txt += f"Layer {layer} method group summary:\n{layer_summary}\n\n"
+    #     layer_method_group_json[f"layer_{layer}"] = {
+    #         "summary": layer_summary,
+    #         "papers": papers
+    #     }       
+    #     all_paths.extend(papers)
+    #     # # Download papers in this layer's method group
+    #     # for n in papers:
+    #     #     paper_attr = G.nodes[n]
+    #         # os.makedirs(save_dir_core_paper, exist_ok=True)
+    #         # save_path = os.path.join(save_dir_core_paper, f"{n}.pdf")
+    #         # if os.path.exists(save_path):
+    #         #     print(f"PDF for paper ID {n} already exists, skipping download.")
+    #         #     continue
+    #         # download_paper(save_path, paper_attr.get('pdf_link'))
     
-    all_paths = list(set(all_paths))  # unique
-    with open(layer_summary_output_path, "w", encoding="utf-8") as f:
-        json.dump(layer_method_group_json, f, ensure_ascii=False, indent=2)
-    print(f"Layer method group summaries saved to {layer_summary_output_path}")
+    # all_paths = list(set(all_paths))  # unique
+    # with open(layer_summary_output_path, "w", encoding="utf-8") as f:
+    #     json.dump(layer_method_group_json, f, ensure_ascii=False, indent=2)
+    # print(f"Layer method group summaries saved to {layer_summary_output_path}")
 
-    community_summaries = {}
-    Leiden_summarizer = Leiden_summarizer(graph_path)
-    communities = Leiden_summarizer.leiden_algorithm()
-    for i, community in enumerate(communities):
-        community_summaries[i] = summarize_community(community)
-    with open(community_summary_output_path, "w", encoding="utf-8") as f:
-        json.dump(community_summaries, f, ensure_ascii=False, indent=2)
-    print(f"Layer method group summaries saved to {layer_summary_output_path}")
-    # with open(f"{info_dir}/metadata.json", 'r', encoding='utf-8') as f:
-    #     metadata = json.load(f)
-    # save_papers_info_json(all_paths, G, info_dir, os.path.join(info_dir, "metadata_core_papers.json"), metadata)
+    # community_summaries = {}
+    # ls = Leiden_summarizer(graph_path)
+    # communities = ls.leiden_algorithm()
+    # for i, community in enumerate(communities):
+    #     summary, papers = summarize_community(query, G, community)
+    #     community_summaries[f"community_{i}"] = {
+    #         "summary": summary,
+    #         "papers": papers
+    #     }
+    # with open(community_summary_output_path, "w", encoding="utf-8") as f:
+    #     json.dump(community_summaries, f, ensure_ascii=False, indent=2)
+    # print(f"Layer method group summaries saved to {community_summary_output_path}")
+    # # with open(f"{info_dir}/metadata.json", 'r', encoding='utf-8') as f:
+    # #     metadata = json.load(f)
+    # # save_papers_info_json(all_paths, G, info_dir, os.path.join(info_dir, "metadata_core_papers.json"), metadata)
 
     # Generate outline for the survey
     print('Generating survey outline...')
@@ -606,7 +608,7 @@ def main():
         # else:
             # print("Outline needs improvement, regenerating...")
         print("Outline improving")
-        outline = generate_survey_outline(query, layer_method_group_json, develop_direction, previous_outline, evaluation)
+        outline = generate_survey_outline(query, layer_method_group_json, develop_direction, communities_summary, previous_outline, evaluation)
     # save outline to json file
     with open(survey_outline_path, "w", encoding="utf-8") as f:
         json.dump(outline, f, ensure_ascii=False, indent=2)

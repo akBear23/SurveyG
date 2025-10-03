@@ -33,7 +33,12 @@ def load_main_paper_id(json_path):
     if isinstance(papers, list) and len(papers) > 0:
         return papers, G, list({p['id'] for p in papers if 'id' in p})
     return None
-
+def load_all_paper_id(json_path):
+    with open(json_path, 'r') as f:
+        papers = json.load(f)
+    if isinstance(papers, list) and len(papers) > 0:
+        return papers, list({p['id'] for p in papers if 'id' in p})
+    return None
 def fetch_batch_info(paper_ids):
     if not paper_ids:
         print("No paper IDs found in cited_by.")
@@ -131,26 +136,30 @@ def main():
     
     query = sys.argv[1]
     json_path = f"paper_data/{query.replace(' ', '_').replace(':', '')}/info/paper_citation_graph.json"
+    all_paper_path = f"paper_data/{query.replace(' ', '_').replace(':', '')}/info/crawl_papers.json"
 
-    crawl_papers, G, main_paper_ids = load_main_paper_id(json_path)
-    
+    selected_papers, G, main_paper_ids = load_main_paper_id(json_path)
+
     print(f"Found {len(main_paper_ids)} main paper IDs.")
     # if paper in papers already has externalIds, skip
-    if crawl_papers and 'externalIds' in crawl_papers[0]:
+    if selected_papers and 'externalIds' in selected_papers[0]:
         print("Papers already have externalIds, skipping fetch.")
     else:
         print("Fetching batch info for main papers...")
         batch_info = fetch_batch_info_batched(main_paper_ids)
         print(f"Fetched info for {len(batch_info)} main papers.")
-        for paper in crawl_papers:
+        for paper in selected_papers:
             pid = paper.get('id')
             for info in batch_info:
                 if info.get('paperId') == pid:
                     paper['externalIds'] = info.get('externalIds', {})
                     paper['pdf_link'] = get_pdf_link(info)
-        G['nodes'] = crawl_papers
+        G['nodes'] = selected_papers
         with open(json_path, 'w') as f:
             json.dump(G, f, indent=2)
+    
+    all_papers = load_all_paper_id(all_paper_path)
+    print(f"Found {len(all_papers)} crawl paper IDs.")
     
     # paper_ids = load_cited_by_paper_ids(json_path)
     # print(f"Found {len(paper_ids)} cited_by paper IDs.")

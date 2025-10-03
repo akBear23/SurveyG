@@ -4,7 +4,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import re
 import sys 
-
+import os
 def load_json_data(filepath):
     with open(filepath, 'r', encoding='utf-8') as f:
         return json.load(f)
@@ -164,7 +164,7 @@ def save_graph(G, output_path):
             {"source": u, "target": v, **G.edges[u, v]} for u, v in G.edges()
         ]
     }
-    
+
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(graph_data, f, ensure_ascii=False, indent=2)
     print(f"Graph Statistics:")
@@ -212,11 +212,32 @@ def main():
         return
     query = sys.argv[1]
     save_dir = f"paper_data/{query.replace(' ', '_').replace(':', '')}/info"
-    # metadata_path = f"{save_dir}/metadata.json"
+    selected_papers_path = f"{save_dir}/crawl_papers.json"
+    metadata_path = f"{save_dir}/metadata_all_papers.json"
+    all_papers = json.load(open(selected_papers_path, "r", encoding="utf-8"))
+    all_metadata = {}
+    for paper in all_papers:
+        id = paper.get('id', '')
+        save_path = os.path.join(save_dir, f"{id}.pdf")
+        filename = f"{id}.pdf"
+        paper_metadata = {
+            "title": paper.get('title'),
+            "authors": paper.get('authors', []),
+            "published_date": str(paper.get('year', '')),
+            "abstract": paper.get('abstract'),
+            "file_path": save_path, 
+            "venue": paper.get('venue', ''),
+            "citationCount": paper.get('citationCount', 0), 
+            "score": paper.get('score', 0)
+        }
+        all_metadata[filename] = paper_metadata
+    with open(metadata_path, "w", encoding="utf-8") as f:
+        json.dump(all_metadata, f, indent=4)
+    print(f"Created metadata file for all papers at {metadata_path}")
     # crawl_papers_path = f"{save_dir}/crawl_papers.json"
     # cited_papers_path = f"{save_dir}/cited_papers.json"
     # selected_papers_path = f"{save_dir}/selected_papers.json"
-    selected_papers_path = f"{save_dir}/crawl_papers.json"
+    # selected_papers_path = f"{save_dir}/crawl_papers.json"
     output_path = f"{save_dir}/paper_citation_graph.json"
     try:
         G = create_paper_graph(selected_papers_path)
