@@ -785,7 +785,7 @@ class LiteratureReviewGenerator:
             title = metadata.get('title', 'Unknown Title')
             authors = metadata.get('authors', 'Unknown Authors')
             year = metadata.get('published_date', 'Unknown Year')
-            journal = metadata.get('journal', 'Unknown Venue')
+            journal = metadata.get('venue', 'Unknown Venue')
             
             # Format bibliography entry
             bibliography += f"\\bibitem{{{citation_key}}}\n"
@@ -994,7 +994,7 @@ class LiteratureReviewGenerator:
             else:
                 authors = str(authors).strip()
             year = metadata.get('published_date', 'Unknown Year').strip()
-            journal = metadata.get('journal', 'Unknown Venue').strip()
+            journal = metadata.get('venue', 'Unknown Venue').strip()
             
             # Clean up the data
             if title == "Not available" or not title:

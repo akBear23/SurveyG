@@ -9,7 +9,7 @@ RUN SCRIPTS FOR FULL PIPELINE:
 ```bash
 ./run.sh "your research topic query" \"your research keywords\"  number_of_paper_to_crawl
 # example
-./run.sh "A SURVEY ON ADVERSARIAL RECOMMENDER SYSTEMS" "adversarial attacks, recommender systems, adversarial ML" 300
+./run.sh "A SURVEY ON ADVERSARIAL RECOMMENDER SYSTEMS" "adversarial attacks, recommender systems, adversarial ML" 500
 ```
 # 1. Setup environment
 ```bash
