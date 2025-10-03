@@ -21,6 +21,10 @@ echo "Using directory name: $DIR_QUERY"
 echo "Step 2: Running crawler..."
 python "$BASE_DIR/scripts/survey_crawler.py" "$ORIGINAL_QUERY" "$KEYWORDS" "$NUM_PAPERS"
 
+# Step 6: Create survey graph
+echo "Step 6: Creating survey graph..."
+python "$BASE_DIR/scripts/create_survey_graph.py" "$ORIGINAL_QUERY"
+
 # # Step 3: Fetch cited papers
 echo "Step 3: Fetching cited papers..."
 python "$BASE_DIR/scripts/fetch_cited_by_batch.py" "$ORIGINAL_QUERY"
@@ -32,10 +36,6 @@ python "$BASE_DIR/scripts/pdf_downloader.py" "$ORIGINAL_QUERY"
 # Step 5: Generate summaries and metadata
 echo "Step 5: Generating summaries..."
 python "$BASE_DIR/writing/summarize.py" "$ORIGINAL_QUERY"
-
-# Step 6: Create survey graph
-echo "Step 6: Creating survey graph..."
-python "$BASE_DIR/scripts/create_survey_graph.py" "$ORIGINAL_QUERY"
 
 # Step 7: Traverse graph for summaries
 echo "Step 7: Traversing graph..."

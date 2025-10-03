@@ -20,10 +20,16 @@ pip install -r requirements.txt
 cd /media/aiserver/New Volume/HDD_linux/bear/SurveyG
 python scripts/survey_crawler.py "your research topic query" number_of_paper_to_crawl
 ```
+# 6. Create survey graph
+```bash
+python scripts/create_survey_graph.py "your research topic query"
+```
+
 # 3. Fetch cited papers
 ```bash
 python scripts/fetch_cited_by_batch.py "your research topic query"
 ```
+
 # 4. Download papers, prepare metadata file 
 ```bash
 python scripts/pdf_downloader.py "your research topic query"
@@ -32,10 +38,7 @@ python scripts/pdf_downloader.py "your research topic query"
 ```bash
 python writing/summarize.py "your research topic query"
 ```
-# 6. Create survey graph
-```bash
-python scripts/create_survey_graph.py "your research topic query"
-```
+
 # 7. Travel in graph to create K + 3 summaries and create paper outline
 - Create 3 taxonomy summaries (by layer) and K development direction (DFS from core papers in layer 1 to layer 2 and 3)
 - Download paper PDF files along the way 

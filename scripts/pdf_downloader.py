@@ -143,9 +143,10 @@ def main():
     #     cited_papers = json.load(f)
     # all_papers.extend(crawl_papers)
     # all_papers.extend(cited_papers)
-    selected_papers_path = f"paper_data/{query.replace(' ', '_').replace(':', '')}/info/selected_papers.json"
+    selected_papers_path = f"paper_data/{query.replace(' ', '_').replace(':', '')}/info/paper_citation_graph.json"
     with open(selected_papers_path, "r") as f:
         all_papers = json.load(f)
+    all_papers = all_papers['nodes']
     for paper in all_papers:
         id = paper.get('id', '')
         save_path = os.path.join(save_dir, f"{id}.pdf")

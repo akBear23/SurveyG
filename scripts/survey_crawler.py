@@ -190,18 +190,19 @@ class SurveyOptimizedCrawler:
         # Expand query for better coverage
         # expanded_queries = self._expand_query(query)
         # self._log(f" Generated {len(expanded_queries)} query variations")
-        prompt_generate_kws = self._create_keyword_prompt(topic, user_kws, 10)
-        generated_text = self.chat_agent.gemini_chat(prompt_generate_kws, temperature=0.1)
-        # print(generated_text)
-        keywords = self._parse_gemini_response(generated_text)
-        print(f"Generated {len(keywords.primary_keywords)} primary keywords:")
-        expanded_queries = [topic.lower()]
-        for kw in keywords.primary_keywords:
-            print(f"  • {kw}")
-            expanded_queries.append(f'"{kw}"')
-        for kw in keywords.secondary_keywords:
-            expanded_queries.append(f'"{kw}"')
 
+        # prompt_generate_kws = self._create_keyword_prompt(topic, user_kws, 10)
+        # generated_text = self.chat_agent.gemini_chat(prompt_generate_kws, temperature=0.1)
+        # # print(generated_text)
+        # keywords = self._parse_gemini_response(generated_text)
+        # print(f"Generated {len(keywords.primary_keywords)} primary keywords:")
+        # expanded_queries = [topic.lower()]
+        # for kw in keywords.primary_keywords:
+        #     print(f"  • {kw}")
+        #     expanded_queries.append(f'"{kw}"')
+        # for kw in keywords.secondary_keywords:
+        #     expanded_queries.append(f'"{kw}"')
+        expanded_queries = [topic]
         # Calculate tier targets
         foundational_target = int(target_papers * self.config['foundational_ratio'])
         recent_target = int(target_papers * self.config['recent_ratio'])
@@ -220,18 +221,21 @@ class SurveyOptimizedCrawler:
         # Tier 1: Foundational Papers
         self._log(f"\n  TIER 1: Foundational Papers")
         foundational_papers = self._collect_foundational_papers(expanded_queries, foundational_target)
+        print("Found foundation papers: ",len(foundational_papers))
         all_papers.extend(foundational_papers)
         total_collected += len(foundational_papers)
 
         # Tier 2: Recent Papers
         self._log(f"\n  TIER 2: Recent Papers")
         recent_papers = self._collect_recent_papers(expanded_queries, min(recent_target, target_papers - total_collected))
+        print("Found recent papers: ", len(recent_papers))
         all_papers.extend(recent_papers)
         total_collected += len(recent_papers)
 
         # Tier 3: Trending Papers
         self._log(f"\n  TIER 3: Trending Papers")
         trending_papers = self._collect_trending_papers(expanded_queries, min(trending_target, target_papers - total_collected))
+        print("Found trending papers: ", len(trending_papers))
         all_papers.extend(trending_papers)
         total_collected += len(trending_papers)
         
@@ -297,9 +301,23 @@ class SurveyOptimizedCrawler:
                 query, 
                 year_range=(start_year, end_year),
                 min_citations=self.config['foundational_min_citations'],
-                max_results=min(100, target//len(query) * 5)
+                # max_results=max(100, target//len(query) * 5)
+                max_results=100, 
             )
             papers.extend(query_papers)
+            while len(papers) < target:
+                offset = 100
+                query_papers = self._search_all_sources(
+                    query, 
+                    year_range=(start_year, end_year),
+                    min_citations=self.config['foundational_min_citations'],
+                    # max_results=max(100, target//len(query) * 5)
+                    max_results=100, 
+                    offset = offset
+                )
+                offset += len(papers)
+                papers.extend(query_papers)
+
         papers = self._deduplicate_papers(papers)
         # calculate score = citation_count * (1 / max(1, (2025 - year))) and take top 20% base on calculated score
         for paper in papers:
@@ -310,7 +328,7 @@ class SurveyOptimizedCrawler:
             paper['score'] = score
         
         papers.sort(key=lambda x: x.get('score', 0), reverse=True)
-        papers = papers[:max(1, int(len(papers) * 0.2))]
+        # papers = papers[:max(1, int(len(papers) * 0.2))]
 
         self._log(f" Collected {len(papers)} foundational papers")
         return papers
@@ -332,12 +350,25 @@ class SurveyOptimizedCrawler:
             
             # Search with lower citation threshold for recent work
             query_papers = self._search_all_sources(
-                query,
+                query, 
                 year_range=(start_year, end_year),
                 min_citations=self.config['recent_min_citations'],
-                max_results=min(100, target//len(query) * 5)
+                # max_results=max(100, target//len(query) * 5)
+                max_results=100, 
             )
             papers.extend(query_papers)
+            while len(papers) < target:
+                offset = 100
+                query_papers = self._search_all_sources(
+                    query, 
+                    year_range=(start_year, end_year),
+                    min_citations=self.config['recent_min_citations'],
+                    # max_results=max(100, target//len(query) * 5)
+                    max_results=100, 
+                    offset = offset
+                )
+                offset += len(papers)
+                papers.extend(query_papers)
         papers = self._deduplicate_papers(papers)
         # calculate score = citation_count * (1 / max(1, (2025 - year))) and take top 20% base on calculated score
         for paper in papers:
@@ -348,7 +379,7 @@ class SurveyOptimizedCrawler:
             paper['score'] = score
         
         papers.sort(key=lambda x: x.get('score', 0), reverse=True)
-        papers = papers[:max(1, int(len(papers) * 0.2))]
+        # papers = papers[:max(1, int(len(papers) * 0.2))]
         
         self._log(f" Collected {len(papers)} recent papers")
         return papers
@@ -370,12 +401,33 @@ class SurveyOptimizedCrawler:
             
             # Search for papers
             query_papers = self._search_all_sources(
-                query,
+                query, 
                 year_range=(start_year, end_year),
                 min_citations=self.config['trending_min_citations'],
-                max_results=min(100, target//len(query) * 5)
+                # max_results=max(100, target//len(query) * 5)
+                max_results=100, 
             )
             papers.extend(query_papers)
+            while len(papers) < target:
+                offset = 100
+                query_papers = self._search_all_sources(
+                    query, 
+                    year_range=(start_year, end_year),
+                    min_citations=self.config['trending_min_citations'],
+                    # max_results=max(100, target//len(query) * 5)
+                    max_results=100, 
+                    offset = offset
+                )
+                offset += len(papers)
+                papers.extend(query_papers)
+            # query_papers = self._search_all_sources(
+            #     query,
+            #     year_range=(start_year, end_year),
+            #     min_citations=self.config['trending_min_citations'],
+            #     # max_results=min(100, target//len(query) * 5)
+            #     max_results=100
+            # )
+            # papers.extend(query_papers)
         papers = self._deduplicate_papers(papers)
         # calculate score = citation_count * (1 / max(1, (2025 - year))) and take top 20% base on calculated score
         for paper in papers:
@@ -386,19 +438,19 @@ class SurveyOptimizedCrawler:
             paper['score'] = score
         
         papers.sort(key=lambda x: x.get('score', 0), reverse=True)
-        papers = papers[:max(1, int(len(papers) * 0.2))]
+        # papers = papers[:max(1, int(len(papers) * 0.2))]
         
         self._log(f" Collected {len(papers)} trending papers")
         return papers
     
     def _search_all_sources(self, query: str, year_range: Tuple[int, int] = None, 
-                           min_citations: int = 0, max_results: int = 100) -> List[Dict]:
+                           min_citations: int = 0, max_results: int = 100, offset=0) -> List[Dict]:
         """Search Semantic Scholar for comprehensive paper collection"""
         all_results = []
         
         # Primary Source: Semantic Scholar (comprehensive academic database)
         try:
-            semantic_results = self._search_semantic_scholar(query, year_range, min_citations, max_results)
+            semantic_results = self._search_semantic_scholar(query, year_range, min_citations, max_results, offset=offset)
             all_results.extend(semantic_results)
             self._log(f" Semantic Scholar: {len(semantic_results)} papers")
         except Exception as e:
@@ -410,7 +462,7 @@ class SurveyOptimizedCrawler:
         # return deduplicated[:max_results]
     
     def _search_semantic_scholar(self, query: str, year_range: Tuple[int, int] = None, 
-                                min_citations: int = 0, limit=100) -> List[Dict]:
+                                min_citations: int = 0, limit=100, offset=0) -> List[Dict]:
         """Search Semantic Scholar with enhanced metadata collection"""
         results = []
         
@@ -422,6 +474,7 @@ class SurveyOptimizedCrawler:
         params = {
             'query': query,
             'limit': limit,
+            'offset': offset,
             'fields': 'paperId,title,authors,year,citationCount,abstract,url,venue,publicationDate,externalIds,references,citations'
         }             
         headers = {"x-api-key": 'l8YcOwyvxm7IWxaXJxAh87XhMqQQrQVg3XkPdKiF'}

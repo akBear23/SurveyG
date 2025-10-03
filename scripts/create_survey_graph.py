@@ -58,9 +58,9 @@ def create_paper_graph(seleceted_papers_path):
             pdf_link=paper.get('pdf_link', ''),
             venue=paper.get('venue', ''), 
             paper_type=paper.get('paper_type', ''),
-            summary=paper.get('summary', ''),
+            # summary=paper.get('summary', ''),
             keywords=paper.get('keywords', []),
-            is_new_direction = paper.get('is_new_direction', '0')
+            # is_new_direction = paper.get('is_new_direction', '0')
         )
     for paper in survey_papers:
         paper_id = paper['id']
@@ -82,8 +82,80 @@ def create_paper_graph(seleceted_papers_path):
                 continue
     return G
 
+# def save_graph(G, output_path):
+#     # Save graph as JSON
+#     graph_data = {
+#         "nodes": [
+#             {"id": n, **G.nodes[n]} for n in G.nodes()
+#         ],
+#         "edges": [
+#             {"source": u, "target": v, **G.edges[u, v]} for u, v in G.edges()
+#         ]
+#     }
+#     with open(output_path, "w", encoding="utf-8") as f:
+#         json.dump(graph_data, f, ensure_ascii=False, indent=2)
+#     print(f"Graph Statistics:")
+#     print(f"Number of nodes: {G.number_of_nodes()}")
+#     print(f"Number of edges: {G.number_of_edges()}")
+#     print(f"Average in-degree: {sum(dict(G.in_degree()).values()) / G.number_of_nodes():.2f}")
+#     print(f"Average out-degree: {sum(dict(G.out_degree()).values()) / G.number_of_nodes():.2f}")
+#     n_nodes = G.number_of_nodes()
+#     n_edges = G. number_of_edges()
+#     print(f'Density score: {n_edges/(n_nodes * n_nodes - 1)}')
+import networkx as nx
+import json
+PRESTIGIOUS_VENUES = ['nature', 'science', 'cell', 'neurips', 'icml', 'iclr', 'aaai', 'ijcai', 'acl', 'emnlp', 'cvf', 'cvpr']
+
+
+def filter_top_nodes(G, top_n=120, prestigious_venues=PRESTIGIOUS_VENUES):
+    """
+    Filter graph to keep only top_n nodes with most edges.
+    Tiebreakers:
+    1. Higher degree (number of edges)
+    2. Higher score
+    3. Venue in prestigious_venues list
+    4. Node ID (as final tiebreaker)
+    
+    Args:
+        G: Input NetworkX graph
+        top_n: Number of nodes to keep (default: 120)
+        prestigious_venues: Set/list of prestigious venue names (default: empty)
+    
+    Returns:
+        Filtered NetworkX graph
+    """
+    if prestigious_venues is None:
+        prestigious_venues = set()
+    
+    # Create a list of tuples (node, degree, score, is_prestigious)
+    node_data = []
+    for node in G.nodes():
+        degree = G.degree(node)
+        score = G.nodes[node].get('score', 0)  # Default to 0 if score doesn't exist
+        venue = G.nodes[node].get('venue', None)
+        is_prestigious = False
+        if any(v in venue for v in PRESTIGIOUS_VENUES):
+            is_prestigious = True 
+        node_data.append((node, degree, score, is_prestigious))
+    
+    # Sort by:
+    # 1. Degree (descending)
+    # 2. Score (descending)
+    # 3. Prestigious venue (True first)
+    # 4. Node ID (ascending - final tiebreaker)
+    node_data.sort(key=lambda x: (-x[1], -x[2], -x[3], x[0]))
+    
+    # Get the top_n nodes
+    top_nodes = [node_data[i][0] for i in range(min(top_n, len(node_data)))]
+    
+    # Create a subgraph with only these nodes and edges between them
+    filtered_G = G.subgraph(top_nodes).copy()
+    
+    return filtered_G
+
 def save_graph(G, output_path):
     # Save graph as JSON
+    G = filter_top_nodes(G)
     graph_data = {
         "nodes": [
             {"id": n, **G.nodes[n]} for n in G.nodes()
@@ -92,6 +164,7 @@ def save_graph(G, output_path):
             {"source": u, "target": v, **G.edges[u, v]} for u, v in G.edges()
         ]
     }
+    
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(graph_data, f, ensure_ascii=False, indent=2)
     print(f"Graph Statistics:")
@@ -99,6 +172,15 @@ def save_graph(G, output_path):
     print(f"Number of edges: {G.number_of_edges()}")
     print(f"Average in-degree: {sum(dict(G.in_degree()).values()) / G.number_of_nodes():.2f}")
     print(f"Average out-degree: {sum(dict(G.out_degree()).values()) / G.number_of_nodes():.2f}")
+    n_nodes = G.number_of_nodes()
+    n_edges = G.number_of_edges()
+    print(f'Density score: {n_edges/(n_nodes * (n_nodes - 1)) if n_nodes > 1 else 0}')
+    layer_counts = {1: 0, 2: 0, 3: 0}
+    for _, attr in G.nodes(data=True):
+        layer = attr.get('layer')
+        if layer in layer_counts:
+            layer_counts[layer] += 1
+    print(f"Layer counts: {layer_counts}")
 
 def assign_layers(survey_papers, K=20):
     foundation_scores = []
@@ -117,7 +199,7 @@ def assign_layers(survey_papers, K=20):
         pid = paper.get('id', None)
         if pid in foundation_ids:
             layers[pid] = 1
-        elif year >= 2025:
+        elif year >= 2024:
             layers[pid] = 3
         else:
             layers[pid] = 2
@@ -130,10 +212,11 @@ def main():
         return
     query = sys.argv[1]
     save_dir = f"paper_data/{query.replace(' ', '_').replace(':', '')}/info"
-    metadata_path = f"{save_dir}/metadata.json"
+    # metadata_path = f"{save_dir}/metadata.json"
     # crawl_papers_path = f"{save_dir}/crawl_papers.json"
     # cited_papers_path = f"{save_dir}/cited_papers.json"
-    selected_papers_path = f"{save_dir}/selected_papers.json"
+    # selected_papers_path = f"{save_dir}/selected_papers.json"
+    selected_papers_path = f"{save_dir}/crawl_papers.json"
     output_path = f"{save_dir}/paper_citation_graph.json"
     try:
         G = create_paper_graph(selected_papers_path)

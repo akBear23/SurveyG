@@ -1,5 +1,10 @@
-import json
+import sys 
 import os
+current_dir = os.path.dirname(os.path.abspath(__file__))
+# Add the parent directory (containing 'writing/') to sys.path
+sys.path.insert(0, os.path.join(current_dir, '../'))
+import json
+
 import re
 from collections import defaultdict
 from pathlib import Path
@@ -22,18 +27,18 @@ BASE_DIR = FILE_PATH.parent
 from src.models.LLM.ChatAgent import ChatAgent
 
 
-TOPICS = """TRANSFORMERS IN VISION
-A SURVEY ON IN-CONTEXT LEARNING
-FEDERATED LEARNING IN MOBILE EDGE NETWORKS
-SURVEY OF HALLUCINATION IN NATURAL LANGUAGE GENERATION
-DEEP LEARNING FOR DEEPFAKES CREATION AND DETECTION
-EFFICIENT TRANSFORMERS
-A SURVEY ON ADVERSARIAL RECOMMENDER SYSTEMS
-THE RISE AND POTENTIAL OF LARGE LANGUAGE MODEL BASED AGENTS
-A COMPREHENSIVE SURVEY ON GRAPH NEURAL NETWORKS
-DEEP LEARNING FOR IMAGE SUPER-RESOLUTION
-""".splitlines()
-
+# TOPICS = """TRANSFORMERS IN VISION
+# A SURVEY ON IN-CONTEXT LEARNING
+# FEDERATED LEARNING IN MOBILE EDGE NETWORKS
+# SURVEY OF HALLUCINATION IN NATURAL LANGUAGE GENERATION
+# DEEP LEARNING FOR DEEPFAKES CREATION AND DETECTION
+# EFFICIENT TRANSFORMERS
+# A SURVEY ON ADVERSARIAL RECOMMENDER SYSTEMS
+# THE RISE AND POTENTIAL OF LARGE LANGUAGE MODEL BASED AGENTS
+# A COMPREHENSIVE SURVEY ON GRAPH NEURAL NETWORKS
+# DEEP LEARNING FOR IMAGE SUPER-RESOLUTION
+# """.splitlines()
+TOPICS = ["knowledge graph embedding"]
 svx_path = Path(f"{BASE_DIR}/data/svx")
 # print(remote_chat("hello"))
 
@@ -164,9 +169,10 @@ if __name__ == "__main__":
     res_per_paper = []
     for topic in tqdm(TOPICS):
         # ref_dir = Path(f"{BASE_DIR}/data/ref/{topic}")
-        file_path = f"paper_data/{topic.query.replace(' ', '_')}/literature_review_output/literature_review.tex"
+        file_path = f"paper_data/{topic.replace(' ', '_')}/literature_review_output/literature_review.tex"
         mainbody_path = Path(file_path)
-        bibname2abs = extract_from_file(f'paper_data/{topic.query.replace(' ', '_')}/keywords/processed_checkpoint.json')
+        bibname2abs = extract_from_file(f"paper_data/{topic.replace(' ', '_')}/keywords/processed_checkpoint.json")
+        
         claim2source = parse_a_paper(mainbody_path, bibname2abs)
 
         claim_TF = {}

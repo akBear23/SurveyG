@@ -28,9 +28,10 @@ def load_cited_by_paper_ids(json_path):
 
 def load_main_paper_id(json_path):
     with open(json_path, 'r') as f:
-        papers = json.load(f)
+        G = json.load(f)
+        papers = G['nodes']
     if isinstance(papers, list) and len(papers) > 0:
-        return papers, list({p['id'] for p in papers if 'id' in p})
+        return papers, G, list({p['id'] for p in papers if 'id' in p})
     return None
 
 def fetch_batch_info(paper_ids):
@@ -129,9 +130,10 @@ def main():
         return
     
     query = sys.argv[1]
-    json_path = f"paper_data/{query.replace(' ', '_').replace(':', '')}/info/crawl_papers.json"
+    json_path = f"paper_data/{query.replace(' ', '_').replace(':', '')}/info/paper_citation_graph.json"
 
-    crawl_papers, main_paper_ids = load_main_paper_id(json_path)
+    crawl_papers, G, main_paper_ids = load_main_paper_id(json_path)
+    
     print(f"Found {len(main_paper_ids)} main paper IDs.")
     # if paper in papers already has externalIds, skip
     if crawl_papers and 'externalIds' in crawl_papers[0]:
@@ -146,84 +148,85 @@ def main():
                 if info.get('paperId') == pid:
                     paper['externalIds'] = info.get('externalIds', {})
                     paper['pdf_link'] = get_pdf_link(info)
+        G['nodes'] = crawl_papers
         with open(json_path, 'w') as f:
-            json.dump(crawl_papers, f, indent=2)
+            json.dump(G, f, indent=2)
     
-    paper_ids = load_cited_by_paper_ids(json_path)
-    print(f"Found {len(paper_ids)} cited_by paper IDs.")
-    cited_path = f"paper_data/{query.replace(' ', '_').replace(':', '')}/info/cited_papers.json"
-    try: 
-        with open(cited_path) as f:
-            cited_papers = json.load(f)
-    except: 
-        batch_info = fetch_batch_info_batched(paper_ids)
-        print(f"Fetched info for {len(batch_info)} papers.")
-        cited_papers = []
+    # paper_ids = load_cited_by_paper_ids(json_path)
+    # print(f"Found {len(paper_ids)} cited_by paper IDs.")
+    # cited_path = f"paper_data/{query.replace(' ', '_').replace(':', '')}/info/cited_papers.json"
+    # try: 
+    #     with open(cited_path) as f:
+    #         cited_papers = json.load(f)
+    # except: 
+    #     batch_info = fetch_batch_info_batched(paper_ids)
+    #     print(f"Fetched info for {len(batch_info)} papers.")
+    #     cited_papers = []
         
-        for paper in batch_info:
-            if paper is None:
-                continue
-            citation_count = paper.get('citationCount', None)
-            abstract = paper.get('abstract', '')
-            title = paper.get('title', '')
-            url = paper.get('url', '')
-            venue = paper.get('venue', '')
-            year = paper.get('year', 0)
-            if year == None:
-                continue
-            if any(v in venue for v in PRESTIGIOUS_VENUES):
-                in_prestigious_venues = True
-            else: in_prestigious_venues = False
-            if int(year) < 2025 and in_prestigious_venues == False:
-                continue
-            pdf_link = get_pdf_link(paper)
-            if abstract is not None:
-                cited_papers.append({
-                    'id': paper.get('paperId', ''),
-                    'title': title,
-                    'authors': [author.get('name', '') for author in paper.get('authors', [])],
-                    'year': year,
-                    'citationCount': citation_count,
-                    'abstract': abstract,
-                    'url': url,
-                    'pdf_link': pdf_link,
-                    'venue': paper.get('venue', ''),
-                    'publicationDate': paper.get('publicationDate', ''),
-                    'paper_type': paper.get('paper_type', ''),
-                    'externalIds': paper.get('externalIds', {}),
-                    'openAccessPdf': paper.get('openAccessPdf', {})
-                })
+    #     for paper in batch_info:
+    #         if paper is None:
+    #             continue
+    #         citation_count = paper.get('citationCount', None)
+    #         abstract = paper.get('abstract', '')
+    #         title = paper.get('title', '')
+    #         url = paper.get('url', '')
+    #         venue = paper.get('venue', '')
+    #         year = paper.get('year', 0)
+    #         if year == None:
+    #             continue
+    #         if any(v in venue for v in PRESTIGIOUS_VENUES):
+    #             in_prestigious_venues = True
+    #         else: in_prestigious_venues = False
+    #         if int(year) < 2025 and in_prestigious_venues == False:
+    #             continue
+    #         pdf_link = get_pdf_link(paper)
+    #         if abstract is not None:
+    #             cited_papers.append({
+    #                 'id': paper.get('paperId', ''),
+    #                 'title': title,
+    #                 'authors': [author.get('name', '') for author in paper.get('authors', [])],
+    #                 'year': year,
+    #                 'citationCount': citation_count,
+    #                 'abstract': abstract,
+    #                 'url': url,
+    #                 'pdf_link': pdf_link,
+    #                 'venue': paper.get('venue', ''),
+    #                 'publicationDate': paper.get('publicationDate', ''),
+    #                 'paper_type': paper.get('paper_type', ''),
+    #                 'externalIds': paper.get('externalIds', {}),
+    #                 'openAccessPdf': paper.get('openAccessPdf', {})
+    #             })
         
-        for paper in cited_papers:
-            # Calculate score
-            year = int(paper.get('year', 2025))
-            citations = paper.get('citationCount', 0)
-            score = citations * (1 / max(1, (2025 - year)))
-            paper['score'] = score
-        with open(cited_path, 'w') as f:
-            json.dump(cited_papers, f, indent=2)
-    papers = cited_papers
-    papers.sort(key=lambda x: x.get('score', 0), reverse=True)
-    selected_papers = crawl_papers
-    if len(papers) > 120:
-        before_2025_big_venues_papers = [paper for paper in papers if paper.get('year', 0) < 2025]
-        after_2025_papers = [paper for paper in papers if paper.get('year', 0) >= 2025]
-        if len(before_2025_big_venues_papers) <= 120: 
-            selected_papers.extend(before_2025_big_venues_papers)
-            selected_papers.extend(after_2025_papers[:120 - len(selected_papers)])
-        else:
-            x = 120 / (len(before_2025_big_venues_papers) + len(after_2025_papers))     
-            selected_papers.extend(after_2025_papers[:int(x*len(after_2025_papers))])
-            selected_papers.extend(before_2025_big_venues_papers[:120-len(selected_papers)])                                                                                                                                                                                                                                                                                                                                                                                                                                          
-        # papers = papers[:max(1, int(len(papers) * 0.2))]
-    else:
-        selected_papers.extend(papers)
-    # Save results
-    output_file = f"paper_data/{query.replace(' ', '_').replace(':', '')}/info/selected_papers.json"
-    with open(output_file, "w") as f:
-        json.dump(selected_papers, f, indent=2)
-    print(f"Saved processed info to {output_file}")
-    print(f" Collected {len(selected_papers)} cited papers ready for survey generation")
+    #     for paper in cited_papers:
+    #         # Calculate score
+    #         year = int(paper.get('year', 2025))
+    #         citations = paper.get('citationCount', 0)
+    #         score = citations * (1 / max(1, (2025 - year)))
+    #         paper['score'] = score
+    #     with open(cited_path, 'w') as f:
+    #         json.dump(cited_papers, f, indent=2)
+    # papers = cited_papers
+    # papers.sort(key=lambda x: x.get('score', 0), reverse=True)
+    # selected_papers = crawl_papers
+    # if len(papers) > 120:
+    #     before_2025_big_venues_papers = [paper for paper in papers if paper.get('year', 0) < 2025]
+    #     after_2025_papers = [paper for paper in papers if paper.get('year', 0) >= 2025]
+    #     if len(before_2025_big_venues_papers) <= 120: 
+    #         selected_papers.extend(before_2025_big_venues_papers)
+    #         selected_papers.extend(after_2025_papers[:120 - len(selected_papers)])
+    #     else:
+    #         x = 120 / (len(before_2025_big_venues_papers) + len(after_2025_papers))     
+    #         selected_papers.extend(after_2025_papers[:int(x*len(after_2025_papers))])
+    #         selected_papers.extend(before_2025_big_venues_papers[:120-len(selected_papers)])                                                                                                                                                                                                                                                                                                                                                                                                                                          
+    #     # papers = papers[:max(1, int(len(papers) * 0.2))]
+    # else:
+    #     selected_papers.extend(papers)
+    # # Save results
+    # output_file = f"paper_data/{query.replace(' ', '_').replace(':', '')}/info/selected_papers.json"
+    # with open(output_file, "w") as f:
+    #     json.dump(selected_papers, f, indent=2)
+    # print(f"Saved processed info to {output_file}")
+    # print(f" Collected {len(selected_papers)} cited papers ready for survey generation")
 
 if __name__ == "__main__":
     main()
