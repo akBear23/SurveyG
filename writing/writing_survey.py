@@ -661,7 +661,7 @@ class LiteratureReviewGenerator:
             folder_path=core_papers_path,
             skip_existing=True,  # Skip if already processed
             delay_seconds=0.0, 
-            metadata_file = os.path.join(f"paper_data/{self.query}/info", "metadata_core_papers.json")
+            metadata_file = os.path.join(f"paper_data/{self.query}/info", "metadata_papers.json")
         )
         
         # # Process all papers
@@ -669,6 +669,7 @@ class LiteratureReviewGenerator:
             folder_path=paper_paths,
             skip_existing=True,  # Skip already processed files
             delay_seconds=0.0,
+            metadata_file = os.path.join(f"paper_data/{self.query}/info", "metadata_all_papers.json")
         )
         def check_variable_type(variable):
             if isinstance(variable, dict):
