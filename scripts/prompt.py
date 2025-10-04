@@ -184,13 +184,140 @@ CRITICAL JSON REQUIREMENTS:
 """
         
         self.EVALUATE_OUTLINE_PROMPT = """
-    Evaluate the quality and structure of the following literature review outline for the topic '{query}'. Assess whether the outline demonstrates meaningful organization of works rather than a simple concatenation of summaries. Your feedback should include:
+    Evaluate the quality and structure of the following literature review outline for the topic '[QUERY]'. Assess whether the outline demonstrates meaningful organization of works rather than a simple concatenation of summaries. Your feedback should include:
     • Strengths of the outline
     • Weaknesses or issues (if any)
     • The outline structure MUST include Introduction and Conclusion, check if the given outline have these sections and suggest improvement if missing.
     • Specific suggestions for improvement (only if issues are found).
-    Outline to evaluate: {outline_text}
+    Outline to evaluate: [OUTLINE_TEXT]
     """
+    
+        self.WRITE_INITIAL_SECTION_PROMPT = """
+        Write a comprehensive literature review section titled "[SECTION_TITLE]" in LaTeX format.
+        
+        **SECTION SPECIFIC FOCUS:** [SECTION_FOCUS]
+
+        **Section taxonomies summaries and development directions:** [PROOFS_TEXT]
+
+        **CRITICAL REQUIREMENTS:**
+        1. The generated text have to be in LaTeX, use proper LaTeX citations (\\cite{{citation_key}}) throughout the text
+        2. Focus ONLY on the specific aspect assigned to this section
+        3. Academic writing style with critical analysis
+        4. Synthesize information across papers, don't just list them
+        5. At least 500 words for this section
+        6. The sub sections and sub sub sections have to follow the given section outline, about 200 words for each sub section and each sub sub section. Before creating sub sections, ensure that the main section has provide a comprehensive overview of the content in this section, at least 100 words.
+        7. Include specific examples and evidence with proper citations
+        8. Provide critical evaluation and comparative analysis
+        9. Ensure coherent organization and logical flow, make sure to include the taxonomies summaries and development directions in the section.
+        10. Only add the content do not need to add the numbering inside the section or subsection titles.
+
+        **Available Citations:**
+        [CITATION_INFO]
+        **SECTION OUTLINE:** 
+        [OUTLINE]
+        **Papers to reference:**
+        [PAPERS_SUMMARY]
+        
+        ***Previous section if any:** [PRE_SECTION]
+        Write ONLY the content for "[SECTION_TITLE]" section. 
+        Focus specifically on: [SECTION_FOCUS]
+        
+        Ensure the section demonstrates:
+        - Comprehensive coverage of the focus area
+        - High citation density (aim for 8-10 citations minimum)
+        - Academic rigor and analytical depth
+        - Synthesis across multiple papers
+        - Critical evaluation of approaches/findings
+        """
+        self.EVALUATE_SECTION_PROMPT = """
+        Evaluate the quality of this literature review section based on the following criteria:
+        
+        **Previous section if any:** [PRE_SECTION]
+        **Section Title**: [SECTION_TITLE]
+        **Expected Focus**: [SECTION_FOCUS]
+        **Overall Review Context: Outline**: [OUTLINE]
+        
+        **Section Content**:
+        [SECTION_CONTENT]
+        
+        **Evaluation Criteria** (Rate each from 1-5, where 5 is excellent):
+        
+        1. **Content Coverage** (1-5): Does the section comprehensively cover the expected focus area?
+        2. **Citation Density** (1-5): Are there sufficient and appropriate citations throughout the text?
+        3. **Academic Rigor** (1-5): Is the writing style academic and analytical rather than descriptive?
+        4. **Synthesis Quality** (1-5): Does it synthesize information across papers rather than just listing findings?
+        5. **Critical Analysis** (1-5): Does it provide critical evaluation and comparative analysis?
+        6. **Coherence** (1-5): Is the content well-organized and logically structured?
+        7. **Depth of Analysis** (1-5): Does it provide sufficient depth rather than surface-level discussion?
+        8. **Specificity** (1-5): Does it focus specifically on the assigned scope without overlap with other sections?
+        
+        **IMPORTANT**: 
+        - Return ONLY valid JSON without any markdown formatting or code blocks
+        - Escape all backslashes and quotes properly in JSON strings
+        - Do not include any special characters that might break JSON parsing
+        
+        **Response Format** (JSON only):
+        {{
+            "overall_score": <average_score>,
+            "individual_scores": {{
+                "content_coverage": <score>,
+                "citation_density": <score>,
+                "academic_rigor": <score>,
+                "synthesis_quality": <score>,
+                "critical_analysis": <score>,
+                "coherence": <score>,
+                "depth_of_analysis": <score>,
+                "specificity": <score>
+            }},
+            "strengths": ["list of strengths"],
+            "weaknesses": ["list of weaknesses"],
+            "is_satisfactory": <true/false>,
+            "improvement_needed": ["specific areas needing improvement"],
+            "suggested_queries": ["suggested search queries to find additional relevant papers"]
+        }}
+        
+        Consider a section satisfactory if overall_score >= 3.5 and no individual score is below 3.0.
+        """
+        self.SECTION_IMPROVE_PROMPT = """
+        Improve the following literature review section based on evaluation feedback and additional papers.
+        
+        **Section Title**: [SECTION_TITLE]
+        **Section Focus**: [SECTION_FOCUS]
+        
+        **Current Section Content**:
+        [CURRENT_CONTENT]
+        
+        **Evaluation Feedback**:
+        - Overall Score: {evaluation_feedback.get('overall_score', 'N/A')}/5
+        - Strengths: {', '.join(evaluation_feedback.get('strengths', []))}
+        - Weaknesses: {', '.join(evaluation_feedback.get('weaknesses', []))}
+        - Areas for Improvement: {', '.join(evaluation_feedback.get('improvement_needed', []))}
+        
+        **Additional Papers Retrieved**:
+        {additional_info}
+        
+        **Improvement Instructions**:
+        1. Address the specific weaknesses identified in the evaluation
+        2. Incorporate relevant information from the additional papers
+        3. Improve citation density and academic rigor
+        4. Enhance synthesis and critical analysis
+        5. Ensure the content stays focused on: {section_focus}
+        6. Maintain academic writing style
+        7. Use proper LaTeX citations (\\cite{{citation_key}})
+        
+        **Requirements**:        
+        1. The generated text have to be in LaTeX, use proper LaTeX citations (\\cite{{citation_key}}) throughout the text
+        2. Focus ONLY on the specific aspect assigned to this section
+        3. Academic writing style with critical analysis
+        4. Synthesize information across papers, don't just list them
+        5. At least 800 words for this section
+        6. The sub sections and sub sub sections have to follow the given section outline, about 300-800 words for each sub section and each sub sub section. Before creating sub sections, ensure that the main section has provide a comprehensive overview of the content in this section, at least 300 words.
+        7. Include specific examples and evidence with proper citations
+        8. Provide critical evaluation and comparative analysis
+        9. Ensure coherent organization and logical flow
+
+        Write the improved section content only:
+        """
     def generate_prompt(self, template, paras):
         prompt = template
         for k in paras.keys():
