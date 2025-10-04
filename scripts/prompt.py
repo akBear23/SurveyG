@@ -85,8 +85,9 @@ PAPER INFORMATION:
 [PAPER_INFO]
 *Output your analysis in the following exact structure:*
 
-1.  Explain your reasoning for how you clustered papers into subgroups based on their methodologies, contributions, and thematic scope.
-
+1.  <think>
+Explain your reasoning for how you clustered papers into subgroups based on their methodologies, contributions, and thematic scope.
+</think>
 2.  *For each subgroup:*
     *   *Subgroup name*: [Clear descriptive name]
     *   *Papers*: [List paper titles and years]
