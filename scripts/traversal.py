@@ -109,7 +109,7 @@ def summarize_layer_method_groups(query, G, layer):
                                            paras={
                                                'QUERY': query,
                                                'LAYER_DESCRIPTION': layer_desc.get(layer, ''),
-                                               'NUMBER_OF_PAPERS': len(infos),
+                                               'NUMBER_OF_PAPERS': str(len(infos)),
                                                'PAPER_INFO': papers_info
                                            })
     placeholder = f"LLM summary placeholder for layer {layer}."
@@ -447,24 +447,24 @@ def main():
         if layer in layer_counts:
             layer_counts[layer] += 1
     print(f"Layer counts: {layer_counts}")
-    # --- Layer 1 seed direction summaries ---
+    # # --- Layer 1 seed direction summaries ---
     seeds = get_layer_seeds(G, 1)  # Only layer 1 seeds with new_direction=1
     all_text = []
     all_json = {}
     all_paths = []
-    for seed in seeds:
-        paper_infos, path, layer1_papers, layer2_papers, layer3_papers, layer2_summary, summary = bfs_from_seed(query, G, seed, max_development_paper=20, max_frontier_paper=30)
-        all_paths.extend(path)
-        seed_title = G.nodes[seed].get('title', '')
-        seed_text = f"Seed: {seed_title}\nDevelopment direction taxonomy summary:\n{summary}\nPath: {path}\n"
-        # print(seed_text)
-        all_text.append(seed_text)
-        all_json[seed] = {"seed_title": seed_title, "summary": summary, "path": path, "layer1_papers": layer1_papers, "layer2_papers": layer2_papers, "layer3_papers": layer3_papers, "layer2_summary": layer2_summary}
-    with open(output_txt_path, "w", encoding="utf-8") as f:
-        f.write("\n".join(all_text))
-    with open(seed_taxonomy_output_path, "w", encoding="utf-8") as f:
-        json.dump(all_json, f, ensure_ascii=False, indent=2)
-    print(f"All layer 1 seed taxonomy summaries saved to {output_txt_path} and {seed_taxonomy_output_path}")
+    # for seed in seeds:
+    #     paper_infos, path, layer1_papers, layer2_papers, layer3_papers, layer2_summary, summary = bfs_from_seed(query, G, seed, max_development_paper=20, max_frontier_paper=30)
+    #     all_paths.extend(path)
+    #     seed_title = G.nodes[seed].get('title', '')
+    #     seed_text = f"Seed: {seed_title}\nDevelopment direction taxonomy summary:\n{summary}\nPath: {path}\n"
+    #     # print(seed_text)
+    #     all_text.append(seed_text)
+    #     all_json[seed] = {"seed_title": seed_title, "summary": summary, "path": path, "layer1_papers": layer1_papers, "layer2_papers": layer2_papers, "layer3_papers": layer3_papers, "layer2_summary": layer2_summary}
+    # with open(output_txt_path, "w", encoding="utf-8") as f:
+    #     f.write("\n".join(all_text))
+    # with open(seed_taxonomy_output_path, "w", encoding="utf-8") as f:
+    #     json.dump(all_json, f, ensure_ascii=False, indent=2)
+    # print(f"All layer 1 seed taxonomy summaries saved to {output_txt_path} and {seed_taxonomy_output_path}")
 
     # # for node_id in all_paths:
     # #     paper_attr = G.nodes[node_id]

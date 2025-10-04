@@ -18,7 +18,8 @@ import sys
 import os                                                                                                                                                                                                          
 from dotenv import load_dotenv, find_dotenv
 from pathlib import Path
-
+import random
+import string
 #region PaperSummarizerRAG Class Definition
 class PaperSummarizerRAG:
     #region Constructor and Initialization
@@ -119,31 +120,82 @@ class PaperSummarizerRAG:
         
         return None
     
+    # def create_citation_key(self, metadata: Dict = None, file_path: str = None) -> str:
+    #     """
+    #     Create a citation key for LaTeX from metadata
+        
+    #     Args:
+    #         metadata (Dict): Metadata dict (nếu không có sẽ tìm theo file_path)
+    #         index (int): Index number for fallback
+    #         file_path (str): File path để tìm metadata
+            
+    #     Returns:
+    #         str: Citation key
+    #     """
+    #     try:
+    #         # Nếu không có metadata, tìm theo file_path
+    #         if not metadata and file_path:
+    #             metadata = self._find_metadata_by_file_path(file_path)
+    #         # print
+        
+            
+    #         # Lấy thông tin authors và year
+    #         authors_data = metadata.get('authors', [])
+    #         year_data = metadata.get('published_date')
+    #         # print(published_date)
+            
+    #         # Xử lý authors (có thể là list hoặc string)
+    #         if isinstance(authors_data, list) and authors_data:
+    #             first_author = authors_data[0]
+    #         elif isinstance(authors_data, str) and authors_data != "Not available":
+    #             first_author = authors_data.split(',')[0].strip()
+    #         else:
+    #             first_author = ""
+            
+    #         if first_author:
+    #             # Xử lý tên tác giả (lấy họ cuối)
+    #             name_parts = first_author.strip().split()
+    #             if name_parts:
+    #                 # Lấy phần cuối (họ) và loại bỏ ký tự đặc biệt
+    #                 last_name = name_parts[-1]
+    #                 last_name = re.sub(r'[^A-Za-z]', '', last_name)
+                    
+    #                 if len(last_name) > 0:
+    #                     # Tạo citation key
+    #                     year_str = re.sub(r'[^0-9]', '', str(year_data))
+    #                     citation_key = f"{last_name.lower()}{year_str}"
+                    
+            
+    #         return citation_key
+    #     except Exception as e:
+    #         print(f"❌ Error creating citation key: {e}")
     def create_citation_key(self, metadata: Dict = None, file_path: str = None) -> str:
         """
-        Create a citation key for LaTeX from metadata
+        Create a citation key for LaTeX from metadata with random suffix
         
         Args:
-            metadata (Dict): Metadata dict (nếu không có sẽ tìm theo file_path)
-            index (int): Index number for fallback
+            metadata (Dict): Metadata dict
             file_path (str): File path để tìm metadata
             
         Returns:
-            str: Citation key
+            str: Citation key (unique với random suffix)
         """
         try:
             # Nếu không có metadata, tìm theo file_path
             if not metadata and file_path:
                 metadata = self._find_metadata_by_file_path(file_path)
-            # print
-        
+            
+            if not metadata:
+                # Fallback: dùng random string
+                random_str = ''.join(random.choices(string.ascii_lowercase + string.digits, k=8))
+                return f"ref{random_str}"
             
             # Lấy thông tin authors và year
             authors_data = metadata.get('authors', [])
             year_data = metadata.get('published_date')
-            # print(published_date)
             
-            # Xử lý authors (có thể là list hoặc string)
+            # Xử lý authors
+            last_name = ""
             if isinstance(authors_data, list) and authors_data:
                 first_author = authors_data[0]
             elif isinstance(authors_data, str) and authors_data != "Not available":
@@ -152,23 +204,32 @@ class PaperSummarizerRAG:
                 first_author = ""
             
             if first_author:
-                # Xử lý tên tác giả (lấy họ cuối)
                 name_parts = first_author.strip().split()
                 if name_parts:
-                    # Lấy phần cuối (họ) và loại bỏ ký tự đặc biệt
                     last_name = name_parts[-1]
-                    last_name = re.sub(r'[^A-Za-z]', '', last_name)
-                    
-                    if len(last_name) > 0:
-                        # Tạo citation key
-                        year_str = re.sub(r'[^0-9]', '', str(year_data))
-                        citation_key = f"{last_name.lower()}{year_str}"
-                    
+                    last_name = re.sub(r'[^A-Za-z]', '', last_name).lower()
+            
+            # Xử lý year
+            year_str = re.sub(r'[^0-9]', '', str(year_data))[:4] if year_data else ""
+            
+            # Tạo random suffix (3-4 ký tự)
+            random_suffix = ''.join(random.choices(string.ascii_lowercase + string.digits, k=3))
+            
+            # Tạo citation key
+            if last_name and year_str:
+                citation_key = f"{last_name}{year_str}{random_suffix}"
+            elif last_name:
+                citation_key = f"{last_name}{random_suffix}"
+            else:
+                citation_key = f"paper{year_str}{random_suffix}" if year_str else f"paper{random_suffix}"
             
             return citation_key
+            
         except Exception as e:
             print(f"❌ Error creating citation key: {e}")
-            
+            # Emergency fallback
+            random_str = ''.join(random.choices(string.ascii_lowercase + string.digits, k=8))
+            return f"ref{random_str}"        
     #endregion
     
     #region File Reading Methods    
