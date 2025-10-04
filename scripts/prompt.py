@@ -171,15 +171,14 @@ For each section, add an id (taken from the information layer number or the deve
 Return a JSON array where each element represents ONE section:
 
 ```json
-  [
-        "section_outline": "### 1. Introduction
-    *   1.1. Background: Knowledge Graphs and Their Significance
-    *   1.2. The Role of Knowledge Graph Embedding
-    *   1.3. Scope and Organization of the Review",
-        "section_focus": "A 100-150 words paragraph",
-        "proof_ids": ["layer_1", "community_2"]
-      ], 
-      ...
+[
+  {
+    "section_outline": "### 1. Introduction\n    * 1.1. Background: Knowledge Graphs\n    * 1.2. Role of KG Embedding\n    * 1.3. Scope of Review",
+    "section_focus": "This section establishes the foundational context for knowledge graph embeddings. It begins by explaining...",
+    "proof_ids": ["layer_1", "community_2", "seed_42"]
+  },
+  ...
+]
 ```
 
 CRITICAL JSON REQUIREMENTS:
