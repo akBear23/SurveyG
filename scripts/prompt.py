@@ -8,7 +8,7 @@ class PromptHelper:
         # 5 - Evaluate 
         self.BFS_PROMPT = """You are an expert academic researcher analyzing the evolution of research in "[QUERY]".
 
-TASK: Analyze the following citation path where each paper builds upon previous work.
+TASK: Analyze the following citation path, where each paper builds upon previous work.
 
 CITATION PATH [NUMBER_OF_PAPERS] papers:
 [PAPER_INFO]
@@ -21,9 +21,9 @@ For this development path, provide:
 - What are the key methodological shifts or innovations?
 - How do methods evolve from foundational to recent work?
 
-2. **Knowledge Progression** (3-4 sentences):
+2. **Knowledge Progression** (4-6 sentences):
 - What problems are being addressed?
-- How does each paper build on limitations of previous work?
+- How does each paper build on the limitations of previous work?
 - What new capabilities or insights emerge?
 
 3. **Temporal Context** (1-2 sentences):
@@ -38,9 +38,8 @@ CONSTRAINTS:
 - Be specific and cite paper numbers (e.g., "Paper 3 introduces...")
 - Focus on connections and evolution, not just individual contributions
 - Avoid generic statements; ground analysis in actual methods/results
-- Total length: 400-600 words
-
-Provide a scholarly yet concise analysis.
+- Highlight key transitions with phrases like "building on this..." or "in contrast..."
+- Total length: 500-700 words
 """
         self.LAYER_PROMPT = """You are analyzing the [LAYER_DESCRIPTION] in "[QUERY]" research.
 
@@ -80,26 +79,29 @@ Provide a structured, analytical taxonomy."""
         self.COMMUNITY_PROMPT = """
 *Instruction:* You are a research analyst synthesizing a body of literature. Your task is to analyze the provided papers on the survey topic "[QUERY]".
 
-First, cluster the papers into distinct subgroups based on a critical analysis of their contributions, methodologies, and thematic scope. Then, provide a structured summary that not only describes these groups but also critiques and compares the papers within and across them.
+TASK: Cluster the provided papers into 2-3 distinct subgroups based on their methodologies, contributions, or thematic focus. Then provide a critical analysis of each cluster and the field overall.
 
 PAPER INFORMATION: 
 [PAPER_INFO]
 *Output your analysis in the following exact structure:*
 
-1.  <think>
-    Explain your reasoning for how you clustered papers into subgroups based on their methodologies, contributions, and thematic scope.
-    </think>
+1.  Explain your reasoning for how you clustered papers into subgroups based on their methodologies, contributions, and thematic scope.
 
 2.  *For each subgroup:*
     *   *Subgroup name*: [Clear descriptive name]
     *   *Papers*: [List paper titles and years]
-    *   *Analysis*: Provide 2-4 paragraphs covering:
+    *   *Analysis*: Provide 4-6 sentences covering:
         *   *Core methodologies and approaches*: Describe the common technical or methodological toolkit shared by these papers.
         *   *Thematic focus and key contributions*: Explain the specific problem or aspect of "[QUERY]" this group addresses and their main intellectual contributions to the field.
         *   *Critique and comparison*: Act as a critic. Compare the papers within the subgroup. How do they relate? Which one introduced a key innovation? What are the shared or individual limitations (e.g., scalability, assumptions, evaluative rigor)?
 
-3.  *Overall Perspective* (3-6 sentences):
-    Synthesize the intellectual trajectory of the research area. How have the subgroups evolved over time? How do they relate to or build upon one another? Identify the key transitions, paradigm shifts, or unresolved tensions between the methodological approaches.
+3.  *Overall Perspective* (3-4 sentences):
+    Synthesize the intellectual trajectory of the research area. How have the subgroups evolved? How do they relate to or build upon one another? Identify the key transitions, paradigm shifts, or unresolved tensions between the methodological approaches.
+GUIDELINES:
+- Reference papers specifically: "Paper X introduces..." or "Unlike Paper Y..."
+- Be critical but fair: identify limitations without dismissing contributions
+- Focus on connections, not just descriptions
+- Total target length: 500-700 words
 """
         self.OUTLINE_PROMPT = """You are creating a comprehensive literature review outline for: "[QUERY]"
 
@@ -122,6 +124,7 @@ REQUIREMENTS:
    - Must include: Introduction, Foundational Concepts, Conclusion sections
    - [MIN_MAIN_SECTIONS]-[MAX_MAIN_SECTIONS] main body sections
    - Each main section: [MIN_SUBSECTIONS]-[MAX_SUBSECTIONS] subsections
+   - Use only TWO levels of hierarchy (e.g., 2.1, 2.2). Do NOT create deeper nesting (e.g., 2.1.1, 2.1.2)
    - Balance CHRONOLOGICAL DEVELOPMENT with THEMATIC DEPTH
 
 2. **Content Principles**:
@@ -147,7 +150,7 @@ REQUIREMENTS:
    **Later Sections (Modern Developments & Impact)**:
    - Recent trends and cutting-edge innovations
    - Dedicated applications section showing real-world impact
-   - Conclusion with theoretical gaps, practical challenges, ethical considerations
+   - Conclusion with theoretical gaps, practical challenges, and ethical considerations
 
 4. **Evidence Tracking**:
    - Link each section to supporting evidence from both taxonomies and development paths
@@ -156,7 +159,7 @@ REQUIREMENTS:
    - Key papers should be distributed across relevant sections
 
 # OUTPUT FORMAT (JSON ONLY):
-For each section, add the section and its subsections titles in a hierarchical manner in the same 'section_outline'
+For each section, add the section and its subsection titles in a hierarchical manner in the same 'section_outline'
 For each section, add a paragraph to the key 'section_focus' to indicate the main focus of that section
 For each section, add an id (taken from the information layer number or the development seed ids) to the key 'proof_ids' to indicate the proof for each section, if proof is from the taxonomy of layer 1 put "layer_1", if the proof is from the paper community, put id of that community (example: community_0, community_1,...) if the proof is from the development direction, put the seed(s) paper id.
     
@@ -179,18 +182,75 @@ CRITICAL JSON REQUIREMENTS:
 - Escape special characters properly
 - Section titles should be numbered (1., 2., 3., etc.)
 - Subsections numbered relative to parent (2.1., 2.2., etc.)
-- Each section_focus should be 50-100 words
+- Each section_focus should be approximately 100-150 words
 
 """
         
         self.EVALUATE_OUTLINE_PROMPT = """
-    Evaluate the quality and structure of the following literature review outline for the topic '{query}'. Assess whether the outline demonstrates meaningful organization of works rather than a simple concatenation of summaries. Your feedback should include:
-    • Strengths of the outline
-    • Weaknesses or issues (if any)
-    • The outline structure MUST include Introduction and Conclusion, check if the given outline have these sections and suggest improvement if missing.
-    • Specific suggestions for improvement (only if issues are found).
-    Outline to evaluate: {outline_text}
-    """
+Evaluate the literature review outline for: '{query}'
+
+# EVALUATION CRITERIA
+
+## 1. Structural Requirements (CRITICAL)
+- [ ] Has a clear Introduction section establishing scope and purpose
+- [ ] Has a substantive Conclusion section with synthesis and implications  
+- [ ] Contains 6-9 main body sections
+- [ ] Each main section has 2-4 subsections
+- [ ] Uses ONLY 2-level nesting (e.g., 2.1, 2.2) - NO deeper nesting
+- [ ] Proper numbering sequence and logical hierarchy
+
+## 2. Conceptual Organization  
+- [ ] Follows logical progression appropriate for the domain
+- [ ] Early sections establish context, definitions, and foundations
+- [ ] Middle sections develop core themes/methodologies systematically
+- [ ] Later sections address applications, controversies, or future directions
+- [ ] Clear narrative arc that builds understanding progressively
+- [ ] Transitions between sections feel natural
+
+## 3. Content Quality & Coverage
+- [ ] Shows thematic organization rather than just chronological listing
+- [ ] Demonstrates awareness of connections between research streams
+- [ ] Coverage appears balanced across relevant subfields
+- [ ] Each section has a clear, focused purpose (check section_focus)
+- [ ] Avoids redundancy and shows clear section boundaries
+- [ ] Includes synthesis and critical analysis, not just summary
+
+## 4. Evidence Integration
+- [ ] Each substantive section has appropriate proof_ids
+- [ ] proof_ids correctly reference available evidence sources
+- [ ] Key words distributed logically across relevant sections
+- [ ] Evidence supports the claimed thematic organization
+
+## 5. Technical Requirements  
+- [ ] Valid JSON structure with proper escaping
+- [ ] All required fields present and properly formatted
+- [ ] Section titles are clear and descriptive
+
+# OUTPUT FORMAT
+
+**PASS/FAIL**: [Overall assessment based on CRITICAL criteria]
+
+**Critical Issues** (must fix):
+- [List any violations of structural requirements or technical validity]
+
+**Strengths**:
+- [What works well in organization and conceptual structure]
+
+**Weaknesses**:
+- [Conceptual gaps, organizational issues, or coverage problems]
+
+**Specific Recommendations**:
+1. [Most critical improvement needed]
+2. [Secondary improvements]
+3. [Optional enhancements]
+
+**Revised Section Suggestions** (if structural changes needed):
+[Provide specific rewrites for problematic sections with explanations]
+
+---
+Outline to evaluate:
+{outline_text}
+"""
     def generate_prompt(self, template, paras):
         prompt = template
         for k in paras.keys():
