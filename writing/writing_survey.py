@@ -350,8 +350,8 @@ class LiteratureReviewGenerator:
             additional_info += f"Title: {metadata.get('title', 'N/A')}\n"
             additional_info += f"Authors: {metadata.get('authors', 'N/A')}\n"
             additional_info += f"Summary: {paper.get('full_summary', paper.get('abstract', 'N/A'))}\n"
-            additional_info += f"Relevance Score: {paper.get('similarity_score', 0):.3f}\n\n"
-        
+            additional_info += f"Relevance Score: {paper.get('similarity_score', 0):.3f}\n"
+            additional_info += f"Citation Key: {paper.get('citation_key', '')}\n\n"
         improvement_prompt = f"""
         Improve the following literature review section based on evaluation feedback and additional papers.
         

@@ -1,0 +1,669 @@
+DEVELOPMENT PATH PROMPT:
+ You are an expert academic researcher analyzing the evolution of research in "knowledge graph embedding".
+
+TASK: Analyze the following citation path where each paper builds upon previous work.
+
+CITATION PATH 21 papers:
+Title: TransET: Knowledge Graph Embedding with Entity Types
+Abstract: Knowledge graph embedding aims to embed entities and relations into low-dimensional vector spaces. Most existing methods only focus on triple facts in knowledge graphs. In addition, models based on translation or distance measurement cannot fully represent complex relations. As well-constructed prior knowledge, entity types can be employed to learn the representations of entities and relations. In this paper, we propose a novel knowledge graph embedding model named TransET, which takes advantage of entity types to learn more semantic features. More specifically, circle convolution based on the embeddings of entity and entity types is utilized to map head entity and tail entity to type-specific representations, then translation-based score function is used to learn the presentation triples. We evaluated our model on real-world datasets with two benchmark tasks of link prediction and triple classification. Experimental results demonstrate that it outperforms state-of-the-art models in most cases.
+Publication Year: 2021
+
+-->Title: TranS: Transition-based Knowledge Graph Embedding with Synthetic Relation Representation
+Abstract: Knowledge graph embedding (KGE) aims to learn continuous vectors of relations and entities in knowledge graph. Recently, transition-based KGE methods have achieved promising performance, where the single relation vector learns to translate head entity to tail entity. However, this scoring pattern is not suitable for complex scenarios where the same entity pair has different relations. Previous models usually focus on the improvement of entity representation for 1-to-N, N-to-1 and N-to-N relations, but ignore the single relation vector. In this paper, we propose a novel transition-based method, TranS, for knowledge graph embedding. The single relation vector in traditional scoring patterns is replaced with synthetic relation representation, which can solve these issues effectively and efficiently. Experiments on a large knowledge graph dataset, ogbl-wikikg2, show that our model achieves state-of-the-art results.
+Publication Year: 2022
+
+-->Title: LineaRE: Simple but Powerful Knowledge Graph Embedding for Link Prediction
+Abstract: The task of link prediction for knowledge graphs is to predict missing relationships between entities. Knowledge graph embedding, which aims to represent entities and relations of a knowledge graph as low dimensional vectors in a continuous vector space, has achieved promising predictive performance. If an embedding model can cover different types of connectivity patterns and mapping properties of relations as many as possible, it will potentially bring more benefits for link prediction tasks. In this paper, we propose a novel embedding model, namely LineaRE, which is capable of modeling four connectivity patterns (i.e., symmetry, antisymmetry, inversion, and composition) and four mapping properties (i.e., one-to-one, one-to-many, many-to-one, and many-to-many) of relations. Specifically, we regard knowledge graph embedding as a simple linear regression task, where a relation is modeled as a linear function of two low-dimensional vector-presented entities with two weight vectors and a bias vector. Since the vectors are defined in a real number space and the scoring function of the model is linear, our model is simple and scalable to large knowledge graphs. Experimental results on multiple widely used real-world datasets show that the proposed LineaRE model significantly outperforms existing state-of-the-art models for link prediction tasks.
+Publication Year: 2020
+
+-->Title: CompoundE: Knowledge Graph Embedding with Translation, Rotation and Scaling Compound Operations
+Abstract: Translation, rotation, and scaling are three commonly used geometric manipulation operations in image processing. Besides, some of them are successfully used in developing effective knowledge graph embedding (KGE) models such as TransE and RotatE. Inspired by the synergy, we propose a new KGE model by leveraging all three operations in this work. Since translation, rotation, and scaling operations are cascaded to form a compound one, the new model is named CompoundE. By casting CompoundE in the framework of group theory, we show that quite a few scoring-function-based KGE models are special cases of CompoundE. CompoundE extends the simple distance-based relation to relation-dependent compound operations on head and/or tail entities. To demonstrate the effectiveness of CompoundE, we conduct experiments on three popular KG completion datasets. Experimental results show that CompoundE consistently achieves the state of-the-art performance.
+Publication Year: 2022
+
+-->Title: A Review of Knowledge Graph Embedding Methods of TransE, TransH and TransR for Missing Links
+Abstract: Knowledge representation and reasoning require knowledge graph embedding as it is crucial in the area. It involves mapping entities and relationships from a knowledge graph into vectors of lower dimensions that are continuous in nature. This encoding enables machine learning algorithms to effectively reason and make predictions on graph-structured data. This review article offers an overview and critical analysis specifically about the methods of knowledge graph embedding which are TransE, TransH, and TransR. The key concepts, methodologies, strengths, and limitations of these methods, along with examining their applications and experiments conducted by existing researchers have been studied. The motivation to conduct this study is to review the well-known and most applied knowledge embedding methods and compare the features of those methods so that a comprehensive resource for researchers and practitioners interested in delving into knowledge graph embedding techniques is delivered.
+Publication Year: 2023
+
+-->Title: Temporal Knowledge Graph Embedding Model based on Additive Time Series Decomposition
+Abstract: Knowledge Graph (KG) embedding has attracted more attention in recent years. Most KG embedding models learn from time-unaware triples. However, the inclusion of temporal information beside triples would further improve the performance of a KGE model. In this regard, we propose ATiSE, a temporal KG embedding model which incorporates time information into entity/relation representations by using Additive Time Series decomposition. Moreover, considering the temporal uncertainty during the evolution of entity/relation representations over time, we map the representations of temporal KGs into the space of multi-dimensional Gaussian distributions. The mean of each entity/relation embedding at a time step shows the current expected position, whereas its covariance (which is temporally stationary) represents its temporal uncertainty. Experimental results show that ATiSE chieves the state-of-the-art on link prediction over four temporal KGs.
+Publication Year: 2019
+
+-->Title: TeRo: A Time-aware Knowledge Graph Embedding via Temporal Rotation
+Abstract: In the last few years, there has been a surge of interest in learning representations of entities and relations in knowledge graph (KG). However, the recent availability of temporal knowledge graphs (TKGs) that contain time information for each fact created the need for reasoning over time in such TKGs. In this regard, we present a new approach of TKG embedding, TeRo, which defines the temporal evolution of entity embedding as a rotation from the initial time to the current time in the complex vector space. Specially, for facts involving time intervals, each relation is represented as a pair of dual complex embeddings to handle the beginning and the end of the relation, respectively. We show our proposed model overcomes the limitations of the existing KG embedding models and TKG embedding models and has the ability of learning and inferring various relation patterns over time. Experimental results on three different TKGs show that TeRo significantly outperforms existing state-of-the-art models for link prediction. In addition, we analyze the effect of time granularity on link prediction over TKGs, which as far as we know has not been investigated in previous literature.
+Publication Year: 2020
+
+-->Title: Meta-Knowledge Transfer for Inductive Knowledge Graph Embedding
+Abstract: Knowledge graphs (KGs) consisting of a large number of triples have become widespread recently, and many knowledge graph embedding (KGE) methods are proposed to embed entities and relations of a KG into continuous vector spaces. Such embedding methods simplify the operations of conducting various in-KG tasks (e.g., link prediction) and out-of-KG tasks (e.g., question answering). They can be viewed as general solutions for representing KGs. However, existing KGE methods are not applicable to inductive settings, where a model trained on source KGs will be tested on target KGs with entities unseen during model training. Existing works focusing on KGs in inductive settings can only solve the inductive relation prediction task. They can not handle other out-of-KG tasks as general as KGE methods since they don't produce embeddings for entities. In this paper, to achieve inductive knowledge graph embedding, we propose a model MorsE, which does not learn embeddings for entities but learns transferable meta-knowledge that can be used to produce entity embeddings. Such meta-knowledge is modeled by entity-independent modules and learned by meta-learning. Experimental results show that our model significantly outperforms corresponding baselines for in-KG and out-of-KG tasks in inductive settings.
+Publication Year: 2021
+
+-->Title: ReInceptionE: Relation-Aware Inception Network with Joint Local-Global Structural Information for Knowledge Graph Embedding
+Abstract: The goal of Knowledge graph embedding (KGE) is to learn how to represent the low dimensional vectors for entities and relations based on the observed triples. The conventional shallow models are limited to their expressiveness. ConvE (Dettmers et al., 2018) takes advantage of CNN and improves the expressive power with parameter efficient operators by increasing the interactions between head and relation embeddings. However, there is no structural information in the embedding space of ConvE, and the performance is still limited by the number of interactions. The recent KBGAT (Nathani et al., 2019) provides another way to learn embeddings by adaptively utilizing structural information. In this paper, we take the benefits of ConvE and KBGAT together and propose a Relation-aware Inception network with joint local-global structural information for knowledge graph Embedding (ReInceptionE). Specifically, we first explore the Inception network to learn query embedding, which aims to further increase the interactions between head and relation embeddings. Then, we propose to use a relation-aware attention mechanism to enrich the query embedding with the local neighborhood and global entity information. Experimental results on both WN18RR and FB15k-237 datasets demonstrate that ReInceptionE achieves competitive performance compared with state-of-the-art methods.
+Publication Year: 2020
+
+-->Title: Knowledge Graph Embedding with Atrous Convolution and Residual Learning
+Abstract: Knowledge graph embedding is an important task and it will benefit lots of downstream applications. Currently, deep neural networks based methods achieve state-of-the-art performance. However, most of these existing methods are very complex and need much time for training and inference. To address this issue, we propose a simple but effective atrous convolution based knowledge graph embedding method. Compared with existing state-of-the-art methods, our method has following main characteristics. First, it effectively increases feature interactions by using atrous convolutions. Second, to address the original information forgotten issue and vanishing/exploding gradient issue, it uses the residual learning method. Third, it has simpler structure but much higher parameter efficiency. We evaluate our method on six benchmark datasets with different evaluation metrics. Extensive experiments show that our model is very effective. On these diverse datasets, it achieves better results than the compared state-of-the-art methods on most of evaluation metrics. The source codes of our model could be found at https://github.com/neukg/AcrE.
+Publication Year: 2020
+
+-->Title: HousE: Knowledge Graph Embedding with Householder Parameterization
+Abstract: The effectiveness of knowledge graph embedding (KGE) largely depends on the ability to model intrinsic relation patterns and mapping properties. However, existing approaches can only capture some of them with insufficient modeling capacity. In this work, we propose a more powerful KGE framework named HousE, which involves a novel parameterization based on two kinds of Householder transformations: (1) Householder rotations to achieve superior capacity of modeling relation patterns; (2) Householder projections to handle sophisticated relation mapping properties. Theoretically, HousE is capable of modeling crucial relation patterns and mapping properties simultaneously. Besides, HousE is a generalization of existing rotation-based models while extending the rotations to high-dimensional spaces. Empirically, HousE achieves new state-of-the-art performance on five benchmark datasets. Our code is available at https://github.com/anrep/HousE.
+Publication Year: 2022
+
+-->Title: A Survey on Knowledge Graph Embedding
+Abstract: Knowledge graph (KG) is used to represent the relationships between different concepts in the real world. It is a special network in which nodes represent entities and edges represent relationships. KGs can intuitively model the connections between facts, but in many applications, there are certain limitations in directly using symbolic logic to represent knowledge in KGs and perform calculations, making it difficult to achieve expected results in downstream tasks. Meanwhile, with the explosive growth of Internet capacity, the traditional KG structure faces the problems of computational inefficiency and management difficulties. To alleviate these problems, Knowledge graph embedding (KGE) is proposed to improve the computational efficiency by embedding entities and relations in the KG into a low-dimensional, dense and continuous vector space, and thus the solution of some problems in the knowledge graph is transformed into vector operations. Moreover, KGE also can be used as a pre-trained model which is more beneficial to downstream applications, such as applications based on deep learning. In this paper, we classify KGE into three categories, namely translational distance models, semantic matching models and neural network based models. The advantages and disadvantages of different embedding methods are compared, while the main applications of KGE are summarized. Some current challenges of KGE are summarized, as well as some views on the future research directions of KGE.
+Publication Year: 2022
+
+-->Title: Knowledge Graph Embedding Compression
+Abstract: Knowledge graph (KG) representation learning techniques that learn continuous embeddings of entities and relations in the KG have become popular in many AI applications. With a large KG, the embeddings consume a large amount of storage and memory. This is problematic and prohibits the deployment of these techniques in many real world settings. Thus, we propose an approach that compresses the KG embedding layer by representing each entity in the KG as a vector of discrete codes and then composes the embeddings from these codes. The approach can be trained end-to-end with simple modifications to any existing KG embedding technique. We evaluate the approach on various standard KG embedding evaluations and show that it achieves 50-1000x compression of embeddings with a minor loss in performance. The compressed embeddings also retain the ability to perform various reasoning tasks such as KG inference.
+Publication Year: 2020
+
+-->Title: Joint Language Semantic and Structure Embedding for Knowledge Graph Completion
+Abstract: The task of completing knowledge triplets has broad downstream applications. Both structural and semantic information plays an important role in knowledge graph completion. Unlike previous approaches that rely on either the structures or semantics of the knowledge graphs, we propose to jointly embed the semantics in the natural language description of the knowledge triplets with their structure information. Our method embeds knowledge graphs for the completion task via fine-tuning pre-trained language models with respect to a probabilistic structured loss, where the forward pass of the language models captures semantics and the loss reconstructs structures. Our extensive experiments on a variety of knowledge graph benchmarks have demonstrated the state-of-the-art performance of our method. We also show that our method can significantly improve the performance in a low-resource regime, thanks to the better use of semantics. The code and datasets are available at https://github.com/pkusjh/LASS.
+Publication Year: 2022
+
+-->Title: CoKE: Contextualized Knowledge Graph Embedding
+Abstract: Knowledge graph embedding, which projects symbolic entities and relations into continuous vector spaces, is gaining increasing attention. Previous methods allow a single static embedding for each entity or relation, ignoring their intrinsic contextual nature, i.e., entities and relations may appear in different graph contexts, and accordingly, exhibit different properties. This work presents Contextualized Knowledge Graph Embedding (CoKE), a novel paradigm that takes into account such contextual nature, and learns dynamic, flexible, and fully contextualized entity and relation embeddings. Two types of graph contexts are studied: edges and paths, both formulated as sequences of entities and relations. CoKE takes a sequence as input and uses a Transformer encoder to obtain contextualized representations. These representations are hence naturally adaptive to the input, capturing contextual meanings of entities and relations therein. Evaluation on a wide variety of public benchmarks verifies the superiority of CoKE in link prediction and path query answering. It performs consistently better than, or at least equally well as current state-of-the-art in almost every case, in particular offering an absolute improvement of 19.7% in H@10 on path query answering. Our code is available at \url{this https URL}.
+Publication Year: 2019
+
+-->Title: Orthogonal Relation Transforms with Graph Context Modeling for Knowledge Graph Embedding
+Abstract: Distance-based knowledge graph embeddings have shown substantial improvement on the knowledge graph link prediction task, from TransE to the latest state-of-the-art RotatE. However, complex relations such as N-to-1, 1-to-N and N-to-N still remain challenging to predict. In this work, we propose a novel distance-based approach for knowledge graph link prediction. First, we extend the RotatE from 2D complex domain to high dimensional space with orthogonal transforms to model relations. The orthogonal transform embedding for relations keeps the capability for modeling symmetric/anti-symmetric, inverse and compositional relations while achieves better modeling capacity. Second, the graph context is integrated into distance scoring functions directly. Specifically, graph context is explicitly modeled via two directed context representations. Each node embedding in knowledge graph is augmented with two context representations, which are computed from the neighboring outgoing and incoming nodes/edges respectively. The proposed approach improves prediction accuracy on the difficult N-to-1, 1-to-N and N-to-N cases. Our experimental results show that it achieves state-of-the-art results on two common benchmarks FB15k-237 and WNRR-18, especially on FB15k-237 which has many high in-degree nodes.
+Publication Year: 2019
+
+-->Title: Rot-Pro: Modeling Transitivity by Projection in Knowledge Graph Embedding
+Abstract: Knowledge graph embedding models learn the representations of entities and relations in the knowledge graphs for predicting missing links (relations) between entities. Their effectiveness are deeply affected by the ability of modeling and inferring different relation patterns such as symmetry, asymmetry, inversion, composition and transitivity. Although existing models are already able to model many of these relations patterns, transitivity, a very common relation pattern, is still not been fully supported. In this paper, we first theoretically show that the transitive relations can be modeled with projections. We then propose the Rot-Pro model which combines the projection and relational rotation together. We prove that Rot-Pro can infer all the above relation patterns. Experimental results show that the proposed Rot-Pro model effectively learns the transitivity pattern and achieves the state-of-the-art results on the link prediction task in the datasets containing transitive relations.
+Publication Year: 2021
+
+-->Title: Beyond Triplets: Hyper-Relational Knowledge Graph Embedding for Link Prediction
+Abstract: Knowledge Graph (KG) embeddings are a powerful tool for predicting missing links in KGs. Existing techniques typically represent a KG as a set of triplets, where each triplet (h, r, t) links two entities h and t through a relation r, and learn entity/relation embeddings from such triplets while preserving such a structure. However, this triplet representation oversimplifies the complex nature of the data stored in the KG, in particular for hyper-relational facts, where each fact contains not only a base triplet (h, r, t), but also the associated key-value pairs (k, v). Even though a few recent techniques tried to learn from such data by transforming a hyper-relational fact into an n-ary representation (i.e., a set of key-value pairs only without triplets), they result in suboptimal models as they are unaware of the triplet structure, which serves as the fundamental data structure in modern KGs and preserves the essential information for link prediction. To address this issue, we propose HINGE, a hyper-relational KG embedding model, which directly learns from hyper-relational facts in a KG. HINGE captures not only the primary structural information of the KG encoded in the triplets, but also the correlation between each triplet and its associated key-value pairs. Our extensive evaluation shows the superiority of HINGE on various link prediction tasks over KGs. In particular, HINGE consistently outperforms not only the KG embedding methods learning from triplets only (by 0.81-41.45% depending on the link prediction tasks and settings), but also the methods learning from hyper-relational facts using the n-ary representation (by 13.2-84.1%).
+Publication Year: 2020
+
+-->Title: Knowledge Graph Embedding: An Overview
+Abstract: Many mathematical models have been leveraged to design embeddings for representing Knowledge Graph (KG) entities and relations for link prediction and many downstream tasks. These mathematically-inspired models are not only highly scalable for inference in large KGs, but also have many explainable advantages in modeling different relation patterns that can be validated through both formal proofs and empirical results. In this paper, we make a comprehensive overview of the current state of research in KG completion. In particular, we focus on two main branches of KG embedding (KGE) design: 1) distance-based methods and 2) semantic matching-based methods. We discover the connections between recently proposed models and present an underlying trend that might help researchers invent novel and more effective models. Next, we delve into CompoundE and CompoundE3D, which draw inspiration from 2D and 3D affine operations, respectively. They encompass a broad spectrum of techniques including distance-based and semantic-based methods. We will also discuss an emerging approach for KG completion which leverages pre-trained language models (PLMs) and textual descriptions of entities and relations and offer insights into the integration of KGE embedding methods with PLMs for KG completion.
+Publication Year: 2023
+
+-->Title: Cycle or Minkowski: Which is More Appropriate for Knowledge Graph Embedding?
+Abstract: Knowledge graph (KG) embedding aims to encode entities and relations into low-dimensional vector spaces, in turn, can support various machine learning models on KG related tasks with good performance. However, existing methods for knowledge graph embedding fail to consider the influence of the embedding space, which makes them still unsatisfactory in practical applications. In this study, we try to improve the expressiveness of the embedding space from the perspective of the metric. Specifically, we first point out the implications of Minkowski metric used in KG embedding and then make a quantitative analysis. To solve the limitations, we introduce a new metric, named Cycle metric, based on the oscillation property of the periodic function. Furthermore, we find that the function period has a significant influence on the expressiveness of the embedding space. Given a fully trained model, the smaller the period, the better the expressive ability. Finally, to validate the findings, we propose a new model, named CyclE by combining Cycle Metric and the popular KG embeddings models. Comprehensive experimental results show that Cycle is more appropriate than Minkowski for KG embedding.
+Publication Year: 2021
+
+-->
+
+
+
+ANALYSIS REQUIREMENTS:
+For this development path, provide:
+
+1. **Methodological Evolution** (2-3 sentences):
+- What are the key methodological shifts or innovations?
+- How do methods evolve from foundational to recent work?
+
+2. **Knowledge Progression** (3-4 sentences):
+- What problems are being addressed?
+- How does each paper build on limitations of previous work?
+- What new capabilities or insights emerge?
+
+3. **Temporal Context** (1-2 sentences):
+- How does publication timing relate to technological/theoretical advances?
+- Are there notable gaps or acceleration periods?
+
+4. **Synthesis** (2-3 sentences):
+- What unified narrative connects these works?
+- What is the collective contribution to "knowledge graph embedding"?
+
+CONSTRAINTS:
+- Be specific and cite paper numbers (e.g., "Paper 3 introduces...")
+- Focus on connections and evolution, not just individual contributions
+- Avoid generic statements; ground analysis in actual methods/results
+- Total length: 400-600 words
+
+Provide a scholarly yet concise analysis.
+DEVELOPMENT PATH PROMPT:
+ You are an expert academic researcher analyzing the evolution of research in "knowledge graph embedding".
+
+TASK: Analyze the following citation path where each paper builds upon previous work.
+
+CITATION PATH 16 papers:
+Title: Contextualized Quaternion Embedding Towards Polysemy in Knowledge Graph for Link Prediction
+Abstract: To meet the challenge of incompleteness within Knowledge Graphs, Knowledge Graph Embedding (KGE) has emerged as the fundamental methodology for predicting the missing link (Link Prediction), by mapping entities and relations as low-dimensional vectors in continuous space. However, current KGE models often struggle with the polysemy issue, where entities exhibit different semantic characteristics depending on the relations in which they participate. Such limitation stems from weak interactions between entities and their relation contexts, leading to low expressiveness in modeling complex structures and resulting in inaccurate predictions. To address this, we propose Contextualized Quaternion Embedding (ConQuatE), a model that enhances the representation learning of entities across multiple semantic dimensions by leveraging quaternion rotation to capture diverse relational contexts. In specific, ConQuatE incorporates contextual cues from various connected relations to enrich the original entity representations. Notably, this is achieved through efficient vector transformations in quaternion space, without any extra information required other than original triples. Experimental results demonstrate that our model outperforms state-of-the-art models for Link Prediction on four widely recognized datasets: FB15k-237, WN18RR, FB15k, and WN18.
+Publication Year: 2025
+
+-->Title: MADE: Multicurvature Adaptive Embedding for Temporal Knowledge Graph Completion
+Abstract: Temporal knowledge graphs (TKGs) are receiving increased attention due to their time-dependent properties and the evolving nature of knowledge over time. TKGs typically contain complex geometric structures, such as hierarchical, ring, and chain structures, which can often be mixed together. However, embedding TKGs into Euclidean space, as is typically done with TKG completion (TKGC) models, presents a challenge when dealing with high-dimensional nonlinear data and complex geometric structures. To address this issue, we propose a novel TKGC model called multicurvature adaptive embedding (MADE). MADE models TKGs in multicurvature spaces, including flat Euclidean space (zero curvature), hyperbolic space (negative curvature), and hyperspherical space (positive curvature), to handle multiple geometric structures. We assign different weights to different curvature spaces in a data-driven manner to strengthen the ideal curvature spaces for modeling and weaken the inappropriate ones. Additionally, we introduce the quadruplet distributor (QD) to assist the information interaction in each geometric space. Ultimately, we develop an innovative temporal regularization to enhance the smoothness of timestamp embeddings by strengthening the correlation of neighboring timestamps. Experimental results show that MADE outperforms the existing state-of-the-art TKGC models.
+Publication Year: 2024
+
+-->Title: IME: Integrating Multi-curvature Shared and Specific Embedding for Temporal Knowledge Graph Completion
+Abstract: Temporal Knowledge Graphs (TKGs) incorporate a temporal dimension, allowing for a precise capture of the evolution of knowledge and reflecting the dynamic nature of the real world. Typically, TKGs contain complex geometric structures, with various geometric structures interwoven. However, existing Temporal Knowledge Graph Completion (TKGC) methods either model TKGs in a single space or neglect the heterogeneity of different curvature spaces, thus constraining their capacity to capture these intricate geometric structures. In this paper, we propose a novel Integrating Multi-curvature shared and specific Embedding (IME) model for TKGC tasks. Concretely, IME models TKGs into multi-curvature spaces, including hyperspherical, hyperbolic, and Euclidean spaces. Subsequently, IME incorporates two key properties, namely space-shared property and space-specific property. The space-shared property facilitates the learning of commonalities across different curvature spaces and alleviates the spatial gap caused by the heterogeneous nature of multi-curvature spaces, while the space-specific property captures characteristic features. Meanwhile, IME proposes an Adjustable Multi-curvature Pooling (AMP) approach to effectively retain important information. Furthermore, IME innovatively designs similarity, difference, and structure loss functions to attain the stated objective. Experimental results clearly demonstrate the superior performance of IME over existing state-of-the-art TKGC models.
+Publication Year: 2024
+
+-->Title: FSTRE: Fuzzy Spatiotemporal RDF Knowledge Graph Embedding Using Uncertain Dynamic Vector Projection and Rotation
+Abstract: Knowledge graphs (KGs) use resource description framework (RDF) triples to model various crisp and static resources in the world. Meanwhile, knowledge embedded into vector space can imply more meanings. Much real-world information, however, is often uncertain and dynamic. Existing KG embedding (KGE) models are insufficient to deal with uncertain dynamic knowledge in vector spaces. To overcome this drawback, this article concentrates on an embedding module for the distributed representation of uncertain dynamic knowledge and proposes a strongly adaptive fuzzy spatiotemporal RDF embedding model (FSTRE). Specifically, we first propose a fine-grained fuzzy spatiotemporal RDF model, which provides the underlying representation framework for FSTRE. Then, within the complex vector space, spatial and temporal information is embedded by projection and rotation, respectively. Fine-grained fuzziness penetrates each element of the spatiotemporal five-tuples by a modal length of the anisotropic vectors. By using geometric operations as its transformation operator, FSTRE can capture the rich interaction between crisp and static knowledge and fuzzy spatiotemporal knowledge. We performed an experimental evaluation of FSTRE based on the built fuzzy spatiotemporal KG. It was shown that our FSTRE model is superior to state-of-the-art methods and can handle complex fuzzy spatiotemporal knowledge.
+Publication Year: 2024
+
+-->Title: Multihop Fuzzy Spatiotemporal RDF Knowledge Graph Query via Quaternion Embedding
+Abstract: The proliferation of uncertain spatiotemporal data has led to an increasing demand for fuzzy spatiotemporal knowledge modeling in various applications. However, performing multihop query modeling on incomplete fuzzy spatiotemporal knowledge graphs (KGs) poses significant challenges. Recently, embedding-based multihop KG querying approaches have gained attention. Yet, these approaches often overlook KG uncertainty and spatiotemporal sensitivity, resulting in the neglect of fuzzy spatiotemporal information during multihop path reasoning. To address these challenges, we propose an embedding-based multihop query model for fuzzy spatiotemporal KG. We use quaternion to jointly embed spatiotemporal entities, and relations are represented as rotations from spatiotemporal subject to object. We incorporate uncertainty by the scoring function's bias factor, allowing for relaxation embedding. This approach facilitates the learning of a richer representation of fuzzy spatiotemporal KGs in vector space. By exploiting the inherent noncommutative compositional pattern of quaternions, we construct more accurate multihop paths within fuzzy spatiotemporal KGs, thus improving path reasoning performance. To evaluate the effectiveness of our model, we conduct experiments on two fuzzy spatiotemporal KG datasets, focusing on link prediction and path query answering. Results show that our proposed method significantly outperforms several state-of-the-art baselines in terms of performance metrics.
+Publication Year: 2024
+
+-->Title: Learning Dynamic Knowledge Graph Embedding in Evolving Service Ecosystems via Meta-Learning
+Abstract: In the context of dynamic service ecosystems, the inability of conventional knowledge graph embedding (KGE) methods to efficiently update incremental knowledge poses a significant challenge for the effectiveness of intelligent web applications. To address the continuous updating challenges of service knowledge, this paper introduces MetaHG, a meta-learning strategy for KGE. Unlike existing meta-learning KGE studies that focus solely on local entity information, MetaHG incorporates both local and potential global structural information from current snapshot’s seen knowledge graphs (KGs) to mitigate issues such as spatial deformation and enhance the representation of unseen entities. Our approach initializes entity embeddings using ‘in’ and ‘out’ relationship matrices and refines them through a hybrid graph neural network (GNN) framework, which includes a GNN layer for local information and a hypergraph neural network (HGNN) layer for potential global information. The meta-learning strategy embedded in MetaHG effectively transfers meta-knowledge for the accurate representation of emerging entities. Extensive experiments are conducted on a self-collected clothing industry service dataset and two publicly available open-source KG datasets. By comparing with several baselines, experiment results demonstrate the superior performance of MetaHG in generating high-quality embeddings for emerging entities and dynamically updating service knowledge.
+Publication Year: 2024
+
+-->Title: Knowledge graph embedding closed under composition
+Abstract: Knowledge Graph Embedding (KGE) has attracted increasing attention. Relation patterns, such as symmetry and inversion, have received considerable focus. Among them, composition patterns are particularly important, as they involve nearly all relations in KGs. However, prior KGE approaches often consider relations to be compositional only if they are well-represented in the training data. Consequently, it can lead to performance degradation, especially for under-represented composition patterns. To this end, we propose HolmE, a general form of KGE with its relation embedding space closed under composition, namely that the composition of any two given relation embeddings remains within the embedding space. This property ensures that every relation embedding can compose, or be composed by other relation embeddings. It enhances HolmE’s capability to model under-represented (also called long-tail) composition patterns with limited learning instances. To our best knowledge, our work is pioneering in discussing KGE with this property of being closed under composition. We provide detailed theoretical proof and extensive experiments to demonstrate the notable advantages of HolmE in modelling composition patterns, particularly for long-tail patterns. Our results also highlight HolmE’s effectiveness in extrapolating to unseen relations through composition and its state-of-the-art performance on benchmark datasets.
+Publication Year: 2024
+
+-->Title: Poisoning Attack on Federated Knowledge Graph Embedding
+Abstract: Federated Knowledge Graph Embedding (FKGE) is an emerging collaborative learning technique for deriving expressive representations (i.e., embeddings) from client-maintained distributed knowledge graphs (KGs). However, poisoning attacks in FKGE, which lead to biased decisions by downstream applications, remain unexplored. This paper is the first work to systematize the risks of FKGE poisoning attacks, from which we develop a novel framework for poisoning attacks that force the victim client to predict specific false facts. Unlike centralized KGEs, FKGE maintains KGs locally, making direct injection of poisoned data challenging. Instead, attackers must create poisoned data without access to the victim's KG and inject it indirectly through FKGE aggregation. Specifically, to create poisoned data, the attacker first infers the targeted relations in the victim's local KG via a new KG component inference attack. Then, to accurately mislead the victim's embeddings via aggregation, the attacker locally trains a shadow model using the poisoned data and uses an optimized dynamic poisoning scheme to adjust the model and generate progressive poisoned updates. Our experimental results demonstrate the attack's effectiveness, achieving a remarkable success rate on various KGE models (e.g., 100% on TransE with WN18RR) while keeping the original task's performance nearly unchanged.
+Publication Year: 2024
+
+-->Title: Convolutional Neural Network-Based Entity-Specific Common Feature Aggregation for Knowledge Graph Embedding Learning
+Abstract: Deep learning models present impressive capability for automatic feature extraction, where common features-based aggregation have demonstrated valuable potential in improving the model performance on text classification, sentiment analysis, etc. However, leveraging entity-specific common feature aggregation for enhancing knowledge graph representation learning has not been fully explored yet, though diverse strategies in knowledge graph embedding models have been developed in recent years. This paper proposes an innovative Convolutional Neural Network-based Entity-specific Common Feature Aggregation strategy named CNN-ECFA. Besides, a new universal framework based on the CNN-ECFA strategy is introduced for knowledge graph embedding learning. Experiments are conducted on publicly-available standard datasets for a link prediction task including WN18RR, YAGO3-10 and NELL-995. Results show that the CNN-ECFA strategy outperforms the state-of-the-art feature projection strategies with average improvements of 0.6% and 0.7% of MRR and Hits@1 on all the datasets, demonstrating our CNN-ECFA strategy is more effective for knowledge graph embedding learning. In addition, our universal framework significantly outperforms a generalized relation learning framework on WN18RR and NELL-995 with average improvements of 1.7% and 1.9% on MRR and Hits@1. The source code is publicly available at https://github.com/peterhu95/ConvE-CNN-ECFA.
+Publication Year: 2024
+
+-->Title: A Semantic Enhanced Knowledge Graph Embedding Model With AIGC Designed for Healthcare Prediction
+Abstract: AI technology has been often employed to establish knowledge graph embedding (KGE) model, which can be used for link prediction on medical knowledge graph to help medical decision-making and disease prediction. However, traditional knowledge graph completion models usually focus on exploiting simple structural features during the phase of feature learning while neglecting the complex structural feature. Considering AI-generated content (AIGC) has shown great potentials for healthcare electronics (HE), a knowledge graph embedding model with AIGC called SEConv is proposed for medical knowledge graph completion. Firstly, a less resource-consuming model of self-attention mechanism is introduced to generate more expressive embedding representations, which contributes to deploying on resource-limited consumer electronics. Secondly, in order to extract more informative features from the triplets, a multilayer convolutional neural network is adopted to learn deeper structural features. Experiments have been implemented on the medical dataset of UMLS and DBpedia50, and other two benchmark datasets. And the results show that SEConv excels in learning more expressive and discriminative feature representations. Compared with the baseline models, SEConv achieves a substantial improvement, which verifies it can be used for healthcare prediction task and smart healthcare treatments.
+Publication Year: 2025
+
+-->Title: MQuinE: a Cure for “Z-paradox” in Knowledge Graph Embedding
+Abstract: Knowledge graph embedding (KGE) models achieved state-of-the-art results on many knowledge graph tasks including link prediction and information retrieval. Despite the superior performance of KGE models in practice, we discover a deficiency in the expressiveness of some popular existing KGE models called Z-paradox. Motivated by the existence of Z-paradox, we propose a new KGE model called MQuinE that does not suffer from Z-paradox while preserves strong expressiveness to model various relation patterns including symmetric/asymmetric, inverse, 1-N/N-1/N-N, and composition relations with theoretical justification. Experiments on real-world knowledge bases indicate that Z-paradox indeed degrades the performance of existing KGE models, and can cause more than 20% accuracy drop on some challenging test samples. Our experiments further demonstrate that MQuinE can mitigate the negative impact of Z-paradox and outperform existing KGE models by a visible margin on link prediction tasks.
+Publication Year: 2024
+
+-->Title: SpherE: Expressive and Interpretable Knowledge Graph Embedding for Set Retrieval
+Abstract: Knowledge graphs (KGs), which store an extensive number of relational facts (head, relation, tail), serve various applications. While many downstream tasks highly rely on the expressive modeling and predictive embedding of KGs, most of the current KG representation learning methods, where each entity is embedded as a vector in the Euclidean space and each relation is embedded as a transformation, follow an entity ranking protocol. On one hand, such an embedding design cannot capture many-to-many relations. On the other hand, in many retrieval cases, the users wish to get an exact set of answers without any ranking, especially when the results are expected to be precise, e.g., which genes cause an illness. Such scenarios are commonly referred to as "set retrieval". This work presents a pioneering study on the KG set retrieval problem. We show that the set retrieval highly depends on expressive modeling of many-to-many relations, and propose a new KG embedding model SpherE to address this problem. SpherE is based on rotational embedding methods, but each entity is embedded as a sphere instead of a vector. While inheriting the high interpretability of rotational-based models, our SpherE can more expressively model one-to-many, many-to-one, and many-to-many relations. Through extensive experiments, we show that our SpherE can well address the set retrieval problem while still having a good predictive ability to infer missing facts. The code is available at https://github.com/Violet24K/SpherE.
+Publication Year: 2024
+
+-->Title: TGformer: A Graph Transformer Framework for Knowledge Graph Embedding
+Abstract: Knowledge graph embedding is efficient method for reasoning over known facts and inferring missing links. Existing methods are mainly triplet-based or graph-based. Triplet-based approaches learn the embedding of missing entities by a single triple only. They ignore the fact that the knowledge graph is essentially a graph structure. Graph-based methods consider graph structure information but ignore the contextual information of nodes in the knowledge graph, making them unable to discern valuable entity (relation) information. In response to the above limitations, we propose a general graph transformer framework for knowledge graph embedding (TGformer). It is the first to use a graph transformer to build knowledge embeddings with triplet-level and graph-level structural features in the static and temporal knowledge graph. Specifically, a context-level subgraph is constructed for each predicted triplet, which models the relation between triplets with the same entity. Afterward, we design a knowledge graph transformer network (KGTN) to fully explore multi-structural features in knowledge graphs, including triplet-level and graph-level, boosting the model to understand entities (relations) in different contexts. Finally, semantic matching is adopted to select the entity with the highest score. Experimental results on several public knowledge graph datasets show that our method can achieve state-of-the-art performance in link prediction.
+Publication Year: 2025
+
+-->Title: Mixed Geometry Message and Trainable Convolutional Attention Network for Knowledge Graph Completion
+Abstract: Knowledge graph completion (KGC) aims to study the embedding representation to solve the incompleteness of knowledge graphs (KGs). Recently, graph convolutional networks (GCNs) and graph attention networks (GATs) have been widely used in KGC tasks by capturing neighbor information of entities. However, Both GCNs and GATs based KGC models have their limitations, and the best method is to analyze the neighbors of each entity (pre-validating), while this process is prohibitively expensive. Furthermore, the representation quality of the embeddings can affect the aggregation of neighbor information (message passing). To address the above limitations, we propose a novel knowledge graph completion model with mixed geometry message and trainable convolutional attention network named MGTCA. Concretely, the mixed geometry message function generates rich neighbor message by integrating spatially information in the hyperbolic space, hypersphere space and Euclidean space jointly. To complete the autonomous switching of graph neural networks (GNNs) and eliminate the necessity of pre-validating the local structure of KGs, a trainable convolutional attention network is proposed by comprising three types of GNNs in one trainable formulation. Furthermore, a mixed geometry scoring function is proposed, which calculates scores of triples by novel prediction function and similarity function based on different geometric spaces. Extensive experiments on three standard datasets confirm the effectiveness of our innovations, and the performance of MGTCA is significantly improved compared to the state-of-the-art approaches.
+Publication Year: 2024
+
+-->Title: Communication-Efficient Federated Knowledge Graph Embedding with Entity-Wise Top-K Sparsification
+Abstract: Federated Knowledge Graphs Embedding learning (FKGE) encounters challenges in communication efficiency stemming from the considerable size of parameters and extensive communication rounds. However, existing FKGE methods only focus on reducing communication rounds by conducting multiple rounds of local training in each communication round, and ignore reducing the size of parameters transmitted within each communication round. To tackle the problem, we first find that universal reduction in embedding precision across all entities during compression can significantly impede convergence speed, underscoring the importance of maintaining embedding precision. We then propose bidirectional communication-efficient FedS based on Entity-Wise Top-K Sparsification strategy. During upload, clients dynamically identify and upload only the Top-K entity embeddings with the greater changes to the server. During download, the server first performs personalized embedding aggregation for each client. It then identifies and transmits the Top-K aggregated embeddings to each client. Besides, an Intermittent Synchronization Mechanism is used by FedS to mitigate negative effect of embedding inconsistency among shared entities of clients caused by heterogeneity of Federated Knowledge Graph. Extensive experiments across three datasets showcase that FedS significantly enhances communication efficiency with negligible (even no) performance degradation.
+Publication Year: 2024
+
+-->Title: Personalized Federated Knowledge Graph Embedding with Client-Wise Relation Graph
+Abstract: Federated Knowledge Graph Embedding (FKGE) has recently garnered considerable interest due to its capacity to extract expressive representations from distributed knowledge graphs, while concurrently safeguarding the privacy of individual clients. Existing FKGE methods typically harness the arithmetic mean of entity embeddings from all clients as the global supplementary knowledge, and learn a replica of global consensus entities embeddings for each client. However, these methods usually neglect the inherent semantic disparities among distinct clients. This oversight not only results in the globally shared complementary knowledge being inundated with too much noise when tailored to a specific client, but also instigates a discrepancy between local and global optimization objectives. Consequently, the quality of the learned embeddings is compromised. To address this, we propose Personalized Federated knowledge graph Embedding with client-wise relation Graph (PFedEG), a novel approach that employs a client-wise relation graph to learn personalized embeddings by discerning the semantic relevance of embeddings from other clients. Specifically, PFedEG learns personalized supplementary knowledge for each client by amalgamating entity embedding from its neighboring clients based on their"affinity"on the client-wise relation graph. Each client then conducts personalized embedding learning based on its local triples and personalized supplementary knowledge. We conduct extensive experiments on four benchmark datasets to evaluate our method against state-of-the-art models and results demonstrate the superiority of our method.
+Publication Year: 2024
+
+-->
+
+PREVIOUS CONTEXT:
+This citation path reveals a dynamic evolution in "knowledge graph embedding" (KGE) research, driven by the need for more expressive, versatile, and practical models.
+
+1.  **Methodological Evolution**: The methodological journey begins with foundational translation-based models (reviewed in Paper 5 and Paper 19), which embed entities and relations into vector spaces. This quickly evolves to incorporate more complex geometric operations, moving from simple translation to combinations of translation, rotation, and scaling (Paper 4), and further to advanced transformations like Householder parameterization for superior capacity (Paper 11). Concurrently, deep learning architectures emerge, utilizing CNNs for increased feature interactions (Paper 9, Paper 10) and Transformer encoders for learning dynamic, contextualized representations (Paper 15). A significant shift also involves integrating external information, such as entity types (Paper 1), temporal data (Paper 6, Paper 7), graph context (Paper 16), and leveraging pre-trained language models for semantic enrichment (Paper 14). Finally, research delves into the fundamental properties of the embedding space itself, exploring the impact of different metrics (Paper 20).
+
+2.  **Knowledge Progression**: The core problem addressed is the efficient and effective representation of knowledge graphs for tasks like link prediction. Early limitations of simple translation models, such as their inability to fully represent complex relations and diverse mapping properties (e.g., 1-to-N, N-to-N, symmetry, transitivity), are progressively tackled by models like LineaRE (Paper 3), CompoundE (Paper 4), HousE (Paper 11), and Rot-Pro (Paper 17). The field expands beyond static KGs to address temporal dynamics (Paper 6, Paper 7) and the critical challenge of inductive settings, where models must generalize to unseen entities (Paper 8). Furthermore, the oversimplification of knowledge facts as mere triplets is overcome by models like HINGE (Paper 18), which learn from hyper-relational data. The contextual nature of entities and relations, often ignored by static embeddings, is addressed by CoKE (Paper 15) and Orthogonal Relation Transforms (Paper 16). Practical concerns like embedding compression for large KGs are also tackled (Paper 13), alongside the integration of rich language semantics to improve performance, especially in low-resource regimes (Paper 14).
+
+3.  **Temporal Context**: The publication years highlight a rapid acceleration of KGE research, particularly between 2019 and 2022. Key innovations in temporal KGE (Paper 6, Paper 7) and contextual embeddings (Paper 15, Paper 16) emerged in 2019, setting the stage for a concentrated period of development in 2020-2022 that saw the introduction of sophisticated geometric models, solutions for inductive and hyper-relational challenges, and the integration of multi-modal information. The appearance of multiple comprehensive surveys in 2022-2023 (Paper 5, Paper 12, Paper 19) signifies a maturing field, consolidating its diverse advancements and outlining future directions.
+
+4.  **Synthesis**: This collection of papers collectively narrates the evolution of KGE from rudimentary triple-based representations to highly sophisticated, context-aware, and multi-modal embedding techniques. The unified drive is towards developing increasingly expressive, adaptable, and efficient models that can capture the full spectrum of knowledge graph complexities, including diverse relation patterns, temporal dynamics, inductive scenarios, and richer data structures. This progression significantly enhances the utility and applicability of KGs across various AI tasks, pushing the boundaries of what KGE models can achieve in real-world applications.
+
+
+ANALYSIS REQUIREMENTS:
+For this development path, provide:
+
+1. **Methodological Evolution** (2-3 sentences):
+- What are the key methodological shifts or innovations?
+- How do methods evolve from foundational to recent work?
+
+2. **Knowledge Progression** (3-4 sentences):
+- What problems are being addressed?
+- How does each paper build on limitations of previous work?
+- What new capabilities or insights emerge?
+
+3. **Temporal Context** (1-2 sentences):
+- How does publication timing relate to technological/theoretical advances?
+- Are there notable gaps or acceleration periods?
+
+4. **Synthesis** (2-3 sentences):
+- What unified narrative connects these works?
+- What is the collective contribution to "knowledge graph embedding"?
+
+CONSTRAINTS:
+- Be specific and cite paper numbers (e.g., "Paper 3 introduces...")
+- Focus on connections and evolution, not just individual contributions
+- Avoid generic statements; ground analysis in actual methods/results
+- Total length: 400-600 words
+
+Provide a scholarly yet concise analysis.
+DEVELOPMENT PATH PROMPT:
+ You are an expert academic researcher analyzing the evolution of research in "knowledge graph embedding".
+
+TASK: Analyze the following citation path where each paper builds upon previous work.
+
+CITATION PATH 2 papers:
+Title: A Survey on Knowledge Graph Embedding
+Abstract: Knowledge graph (KG) is used to represent the relationships between different concepts in the real world. It is a special network in which nodes represent entities and edges represent relationships. KGs can intuitively model the connections between facts, but in many applications, there are certain limitations in directly using symbolic logic to represent knowledge in KGs and perform calculations, making it difficult to achieve expected results in downstream tasks. Meanwhile, with the explosive growth of Internet capacity, the traditional KG structure faces the problems of computational inefficiency and management difficulties. To alleviate these problems, Knowledge graph embedding (KGE) is proposed to improve the computational efficiency by embedding entities and relations in the KG into a low-dimensional, dense and continuous vector space, and thus the solution of some problems in the knowledge graph is transformed into vector operations. Moreover, KGE also can be used as a pre-trained model which is more beneficial to downstream applications, such as applications based on deep learning. In this paper, we classify KGE into three categories, namely translational distance models, semantic matching models and neural network based models. The advantages and disadvantages of different embedding methods are compared, while the main applications of KGE are summarized. Some current challenges of KGE are summarized, as well as some views on the future research directions of KGE.
+Publication Year: 2022
+
+-->
+
+
+
+ANALYSIS REQUIREMENTS:
+For this development path, provide:
+
+1. **Methodological Evolution** (2-3 sentences):
+- What are the key methodological shifts or innovations?
+- How do methods evolve from foundational to recent work?
+
+2. **Knowledge Progression** (3-4 sentences):
+- What problems are being addressed?
+- How does each paper build on limitations of previous work?
+- What new capabilities or insights emerge?
+
+3. **Temporal Context** (1-2 sentences):
+- How does publication timing relate to technological/theoretical advances?
+- Are there notable gaps or acceleration periods?
+
+4. **Synthesis** (2-3 sentences):
+- What unified narrative connects these works?
+- What is the collective contribution to "knowledge graph embedding"?
+
+CONSTRAINTS:
+- Be specific and cite paper numbers (e.g., "Paper 3 introduces...")
+- Focus on connections and evolution, not just individual contributions
+- Avoid generic statements; ground analysis in actual methods/results
+- Total length: 400-600 words
+
+Provide a scholarly yet concise analysis.
+DEVELOPMENT PATH PROMPT:
+ You are an expert academic researcher analyzing the evolution of research in "knowledge graph embedding".
+
+TASK: Analyze the following citation path where each paper builds upon previous work.
+
+CITATION PATH 2 papers:
+Title: A Survey on Knowledge Graph Embedding
+Abstract: Knowledge graph (KG) is used to represent the relationships between different concepts in the real world. It is a special network in which nodes represent entities and edges represent relationships. KGs can intuitively model the connections between facts, but in many applications, there are certain limitations in directly using symbolic logic to represent knowledge in KGs and perform calculations, making it difficult to achieve expected results in downstream tasks. Meanwhile, with the explosive growth of Internet capacity, the traditional KG structure faces the problems of computational inefficiency and management difficulties. To alleviate these problems, Knowledge graph embedding (KGE) is proposed to improve the computational efficiency by embedding entities and relations in the KG into a low-dimensional, dense and continuous vector space, and thus the solution of some problems in the knowledge graph is transformed into vector operations. Moreover, KGE also can be used as a pre-trained model which is more beneficial to downstream applications, such as applications based on deep learning. In this paper, we classify KGE into three categories, namely translational distance models, semantic matching models and neural network based models. The advantages and disadvantages of different embedding methods are compared, while the main applications of KGE are summarized. Some current challenges of KGE are summarized, as well as some views on the future research directions of KGE.
+Publication Year: 2022
+
+-->
+
+
+
+ANALYSIS REQUIREMENTS:
+For this development path, provide:
+
+1. **Methodological Evolution** (2-3 sentences):
+- What are the key methodological shifts or innovations?
+- How do methods evolve from foundational to recent work?
+
+2. **Knowledge Progression** (3-4 sentences):
+- What problems are being addressed?
+- How does each paper build on limitations of previous work?
+- What new capabilities or insights emerge?
+
+3. **Temporal Context** (1-2 sentences):
+- How does publication timing relate to technological/theoretical advances?
+- Are there notable gaps or acceleration periods?
+
+4. **Synthesis** (2-3 sentences):
+- What unified narrative connects these works?
+- What is the collective contribution to "knowledge graph embedding"?
+
+CONSTRAINTS:
+- Be specific and cite paper numbers (e.g., "Paper 3 introduces...")
+- Focus on connections and evolution, not just individual contributions
+- Avoid generic statements; ground analysis in actual methods/results
+- Total length: 400-600 words
+
+Provide a scholarly yet concise analysis.
+DEVELOPMENT PATH PROMPT:
+ You are an expert academic researcher analyzing the evolution of research in "knowledge graph embedding".
+
+TASK: Analyze the following citation path where each paper builds upon previous work.
+
+CITATION PATH 2 papers:
+Title: Knowledge Graph Embedding: An Overview
+Abstract: Many mathematical models have been leveraged to design embeddings for representing Knowledge Graph (KG) entities and relations for link prediction and many downstream tasks. These mathematically-inspired models are not only highly scalable for inference in large KGs, but also have many explainable advantages in modeling different relation patterns that can be validated through both formal proofs and empirical results. In this paper, we make a comprehensive overview of the current state of research in KG completion. In particular, we focus on two main branches of KG embedding (KGE) design: 1) distance-based methods and 2) semantic matching-based methods. We discover the connections between recently proposed models and present an underlying trend that might help researchers invent novel and more effective models. Next, we delve into CompoundE and CompoundE3D, which draw inspiration from 2D and 3D affine operations, respectively. They encompass a broad spectrum of techniques including distance-based and semantic-based methods. We will also discuss an emerging approach for KG completion which leverages pre-trained language models (PLMs) and textual descriptions of entities and relations and offer insights into the integration of KGE embedding methods with PLMs for KG completion.
+Publication Year: 2023
+
+-->
+
+
+
+ANALYSIS REQUIREMENTS:
+For this development path, provide:
+
+1. **Methodological Evolution** (2-3 sentences):
+- What are the key methodological shifts or innovations?
+- How do methods evolve from foundational to recent work?
+
+2. **Knowledge Progression** (3-4 sentences):
+- What problems are being addressed?
+- How does each paper build on limitations of previous work?
+- What new capabilities or insights emerge?
+
+3. **Temporal Context** (1-2 sentences):
+- How does publication timing relate to technological/theoretical advances?
+- Are there notable gaps or acceleration periods?
+
+4. **Synthesis** (2-3 sentences):
+- What unified narrative connects these works?
+- What is the collective contribution to "knowledge graph embedding"?
+
+CONSTRAINTS:
+- Be specific and cite paper numbers (e.g., "Paper 3 introduces...")
+- Focus on connections and evolution, not just individual contributions
+- Avoid generic statements; ground analysis in actual methods/results
+- Total length: 400-600 words
+
+Provide a scholarly yet concise analysis.
+DEVELOPMENT PATH PROMPT:
+ You are an expert academic researcher analyzing the evolution of research in "knowledge graph embedding".
+
+TASK: Analyze the following citation path where each paper builds upon previous work.
+
+CITATION PATH 2 papers:
+Title: Knowledge Graph Embedding: An Overview
+Abstract: Many mathematical models have been leveraged to design embeddings for representing Knowledge Graph (KG) entities and relations for link prediction and many downstream tasks. These mathematically-inspired models are not only highly scalable for inference in large KGs, but also have many explainable advantages in modeling different relation patterns that can be validated through both formal proofs and empirical results. In this paper, we make a comprehensive overview of the current state of research in KG completion. In particular, we focus on two main branches of KG embedding (KGE) design: 1) distance-based methods and 2) semantic matching-based methods. We discover the connections between recently proposed models and present an underlying trend that might help researchers invent novel and more effective models. Next, we delve into CompoundE and CompoundE3D, which draw inspiration from 2D and 3D affine operations, respectively. They encompass a broad spectrum of techniques including distance-based and semantic-based methods. We will also discuss an emerging approach for KG completion which leverages pre-trained language models (PLMs) and textual descriptions of entities and relations and offer insights into the integration of KGE embedding methods with PLMs for KG completion.
+Publication Year: 2023
+
+-->
+
+
+
+ANALYSIS REQUIREMENTS:
+For this development path, provide:
+
+1. **Methodological Evolution** (2-3 sentences):
+- What are the key methodological shifts or innovations?
+- How do methods evolve from foundational to recent work?
+
+2. **Knowledge Progression** (3-4 sentences):
+- What problems are being addressed?
+- How does each paper build on limitations of previous work?
+- What new capabilities or insights emerge?
+
+3. **Temporal Context** (1-2 sentences):
+- How does publication timing relate to technological/theoretical advances?
+- Are there notable gaps or acceleration periods?
+
+4. **Synthesis** (2-3 sentences):
+- What unified narrative connects these works?
+- What is the collective contribution to "knowledge graph embedding"?
+
+CONSTRAINTS:
+- Be specific and cite paper numbers (e.g., "Paper 3 introduces...")
+- Focus on connections and evolution, not just individual contributions
+- Avoid generic statements; ground analysis in actual methods/results
+- Total length: 400-600 words
+
+Provide a scholarly yet concise analysis.
+DEVELOPMENT PATH PROMPT:
+ You are an expert academic researcher analyzing the evolution of research in "knowledge graph embedding".
+
+TASK: Analyze the following citation path where each paper builds upon previous work.
+
+CITATION PATH 6 papers:
+Title: Temporal Knowledge Graph Embedding Model based on Additive Time Series Decomposition
+Abstract: Knowledge Graph (KG) embedding has attracted more attention in recent years. Most KG embedding models learn from time-unaware triples. However, the inclusion of temporal information beside triples would further improve the performance of a KGE model. In this regard, we propose ATiSE, a temporal KG embedding model which incorporates time information into entity/relation representations by using Additive Time Series decomposition. Moreover, considering the temporal uncertainty during the evolution of entity/relation representations over time, we map the representations of temporal KGs into the space of multi-dimensional Gaussian distributions. The mean of each entity/relation embedding at a time step shows the current expected position, whereas its covariance (which is temporally stationary) represents its temporal uncertainty. Experimental results show that ATiSE chieves the state-of-the-art on link prediction over four temporal KGs.
+Publication Year: 2019
+
+-->Title: Tensor Decomposition-Based Temporal Knowledge Graph Embedding
+Abstract: In order to meet the problems caused by sparse data and computational efficiency, knowledge graph (KG) is adopted to represent the semantic information of entities and relations as dense and low-dimensional vectors. While conventional KG representation methods mainly focuse on static data. These methods fail to deal with data that evolves with time which may only be valid for a certain period of time. To accommodate this problem, a temporal KG embedding model based on tensor decomposition is proposed in this paper, which regards the fact set in the KG as a fourth-order tensor including head entities, relations, tail entities and time dimensions. This method can be further generalized to other static KG embedding based on tensor decomposition. With experiments on temporal datasets extracted from real-world KG, extensive experiment results show that our approach outperforms state-of-the-art methods of KG embedding.
+Publication Year: 2020
+
+-->Title: TARGAT: A Time-Aware Relational Graph Attention Model for Temporal Knowledge Graph Embedding
+Abstract: Temporal knowledge graph embedding (TKGE) aims to learn the embedding of entities and relations in a temporal knowledge graph (TKG). Although the previous graph neural networks (GNN) based models have achieved promising results, they cannot directly capture the interactions of multi-facts at different timestamps. To address the above limitation, we propose a time-aware relational graph attention model (TARGAT), which takes the multi-facts at different timestamps as a unified graph. First, we develop a relational generator to dynamically generate a series of time-aware relational message transformation matrices, which jointly models the relations and the timestamp information into a unified way. Then, we apply the generated message transformation matrices to project the neighborhood features into different time-aware spaces and aggregate these neighborhood features to explicitly capture the interactions of multi-facts. Finally, a temporal transformer classifier is applied to learn the representation of the query quadruples and predict the missing entities. The experimental results show that our TARGAT model beats the GNN-based models by a large margin and achieves new state-of-the-art results on four popular benchmark datasets.
+Publication Year: 2023
+
+-->Title: TeRo: A Time-aware Knowledge Graph Embedding via Temporal Rotation
+Abstract: In the last few years, there has been a surge of interest in learning representations of entities and relations in knowledge graph (KG). However, the recent availability of temporal knowledge graphs (TKGs) that contain time information for each fact created the need for reasoning over time in such TKGs. In this regard, we present a new approach of TKG embedding, TeRo, which defines the temporal evolution of entity embedding as a rotation from the initial time to the current time in the complex vector space. Specially, for facts involving time intervals, each relation is represented as a pair of dual complex embeddings to handle the beginning and the end of the relation, respectively. We show our proposed model overcomes the limitations of the existing KG embedding models and TKG embedding models and has the ability of learning and inferring various relation patterns over time. Experimental results on three different TKGs show that TeRo significantly outperforms existing state-of-the-art models for link prediction. In addition, we analyze the effect of time granularity on link prediction over TKGs, which as far as we know has not been investigated in previous literature.
+Publication Year: 2020
+
+-->Title: ChronoR: Rotation Based Temporal Knowledge Graph Embedding
+Abstract: Despite the importance and abundance of temporal knowledge graphs, most of the current research has been focused on reasoning on static graphs. In this paper, we study the challenging problem of inference over temporal knowledge graphs. In particular, the task of temporal link prediction. In general, this is a difficult task due to data non-stationarity, data heterogeneity, and its complex temporal dependencies. 
+We propose Chronological Rotation embedding (ChronoR), a novel model for learning representations for entities, relations, and time. Learning dense representations is frequently used as an efficient and versatile method to perform reasoning on knowledge graphs. The proposed model learns a k-dimensional rotation transformation parametrized by relation and time, such that after each fact's head entity is transformed using the rotation, it falls near its corresponding tail entity. By using high dimensional rotation as its transformation operator, ChronoR captures rich interaction between the temporal and multi-relational characteristics of a Temporal Knowledge Graph. Experimentally, we show that ChronoR is able to outperform many of the state-of-the-art methods on the benchmark datasets for temporal knowledge graph link prediction.
+Publication Year: 2021
+
+-->
+
+
+
+ANALYSIS REQUIREMENTS:
+For this development path, provide:
+
+1. **Methodological Evolution** (2-3 sentences):
+- What are the key methodological shifts or innovations?
+- How do methods evolve from foundational to recent work?
+
+2. **Knowledge Progression** (3-4 sentences):
+- What problems are being addressed?
+- How does each paper build on limitations of previous work?
+- What new capabilities or insights emerge?
+
+3. **Temporal Context** (1-2 sentences):
+- How does publication timing relate to technological/theoretical advances?
+- Are there notable gaps or acceleration periods?
+
+4. **Synthesis** (2-3 sentences):
+- What unified narrative connects these works?
+- What is the collective contribution to "knowledge graph embedding"?
+
+CONSTRAINTS:
+- Be specific and cite paper numbers (e.g., "Paper 3 introduces...")
+- Focus on connections and evolution, not just individual contributions
+- Avoid generic statements; ground analysis in actual methods/results
+- Total length: 400-600 words
+
+Provide a scholarly yet concise analysis.
+DEVELOPMENT PATH PROMPT:
+ You are an expert academic researcher analyzing the evolution of research in "knowledge graph embedding".
+
+TASK: Analyze the following citation path where each paper builds upon previous work.
+
+CITATION PATH 4 papers:
+Title: MADE: Multicurvature Adaptive Embedding for Temporal Knowledge Graph Completion
+Abstract: Temporal knowledge graphs (TKGs) are receiving increased attention due to their time-dependent properties and the evolving nature of knowledge over time. TKGs typically contain complex geometric structures, such as hierarchical, ring, and chain structures, which can often be mixed together. However, embedding TKGs into Euclidean space, as is typically done with TKG completion (TKGC) models, presents a challenge when dealing with high-dimensional nonlinear data and complex geometric structures. To address this issue, we propose a novel TKGC model called multicurvature adaptive embedding (MADE). MADE models TKGs in multicurvature spaces, including flat Euclidean space (zero curvature), hyperbolic space (negative curvature), and hyperspherical space (positive curvature), to handle multiple geometric structures. We assign different weights to different curvature spaces in a data-driven manner to strengthen the ideal curvature spaces for modeling and weaken the inappropriate ones. Additionally, we introduce the quadruplet distributor (QD) to assist the information interaction in each geometric space. Ultimately, we develop an innovative temporal regularization to enhance the smoothness of timestamp embeddings by strengthening the correlation of neighboring timestamps. Experimental results show that MADE outperforms the existing state-of-the-art TKGC models.
+Publication Year: 2024
+
+-->Title: IME: Integrating Multi-curvature Shared and Specific Embedding for Temporal Knowledge Graph Completion
+Abstract: Temporal Knowledge Graphs (TKGs) incorporate a temporal dimension, allowing for a precise capture of the evolution of knowledge and reflecting the dynamic nature of the real world. Typically, TKGs contain complex geometric structures, with various geometric structures interwoven. However, existing Temporal Knowledge Graph Completion (TKGC) methods either model TKGs in a single space or neglect the heterogeneity of different curvature spaces, thus constraining their capacity to capture these intricate geometric structures. In this paper, we propose a novel Integrating Multi-curvature shared and specific Embedding (IME) model for TKGC tasks. Concretely, IME models TKGs into multi-curvature spaces, including hyperspherical, hyperbolic, and Euclidean spaces. Subsequently, IME incorporates two key properties, namely space-shared property and space-specific property. The space-shared property facilitates the learning of commonalities across different curvature spaces and alleviates the spatial gap caused by the heterogeneous nature of multi-curvature spaces, while the space-specific property captures characteristic features. Meanwhile, IME proposes an Adjustable Multi-curvature Pooling (AMP) approach to effectively retain important information. Furthermore, IME innovatively designs similarity, difference, and structure loss functions to attain the stated objective. Experimental results clearly demonstrate the superior performance of IME over existing state-of-the-art TKGC models.
+Publication Year: 2024
+
+-->Title: FSTRE: Fuzzy Spatiotemporal RDF Knowledge Graph Embedding Using Uncertain Dynamic Vector Projection and Rotation
+Abstract: Knowledge graphs (KGs) use resource description framework (RDF) triples to model various crisp and static resources in the world. Meanwhile, knowledge embedded into vector space can imply more meanings. Much real-world information, however, is often uncertain and dynamic. Existing KG embedding (KGE) models are insufficient to deal with uncertain dynamic knowledge in vector spaces. To overcome this drawback, this article concentrates on an embedding module for the distributed representation of uncertain dynamic knowledge and proposes a strongly adaptive fuzzy spatiotemporal RDF embedding model (FSTRE). Specifically, we first propose a fine-grained fuzzy spatiotemporal RDF model, which provides the underlying representation framework for FSTRE. Then, within the complex vector space, spatial and temporal information is embedded by projection and rotation, respectively. Fine-grained fuzziness penetrates each element of the spatiotemporal five-tuples by a modal length of the anisotropic vectors. By using geometric operations as its transformation operator, FSTRE can capture the rich interaction between crisp and static knowledge and fuzzy spatiotemporal knowledge. We performed an experimental evaluation of FSTRE based on the built fuzzy spatiotemporal KG. It was shown that our FSTRE model is superior to state-of-the-art methods and can handle complex fuzzy spatiotemporal knowledge.
+Publication Year: 2024
+
+-->Title: Multihop Fuzzy Spatiotemporal RDF Knowledge Graph Query via Quaternion Embedding
+Abstract: The proliferation of uncertain spatiotemporal data has led to an increasing demand for fuzzy spatiotemporal knowledge modeling in various applications. However, performing multihop query modeling on incomplete fuzzy spatiotemporal knowledge graphs (KGs) poses significant challenges. Recently, embedding-based multihop KG querying approaches have gained attention. Yet, these approaches often overlook KG uncertainty and spatiotemporal sensitivity, resulting in the neglect of fuzzy spatiotemporal information during multihop path reasoning. To address these challenges, we propose an embedding-based multihop query model for fuzzy spatiotemporal KG. We use quaternion to jointly embed spatiotemporal entities, and relations are represented as rotations from spatiotemporal subject to object. We incorporate uncertainty by the scoring function's bias factor, allowing for relaxation embedding. This approach facilitates the learning of a richer representation of fuzzy spatiotemporal KGs in vector space. By exploiting the inherent noncommutative compositional pattern of quaternions, we construct more accurate multihop paths within fuzzy spatiotemporal KGs, thus improving path reasoning performance. To evaluate the effectiveness of our model, we conduct experiments on two fuzzy spatiotemporal KG datasets, focusing on link prediction and path query answering. Results show that our proposed method significantly outperforms several state-of-the-art baselines in terms of performance metrics.
+Publication Year: 2024
+
+-->
+
+PREVIOUS CONTEXT:
+This citation path illustrates the evolving landscape of "knowledge graph embedding" with a specific focus on incorporating temporal information. The papers collectively demonstrate a progression from initial attempts to integrate time to sophisticated models capable of capturing dynamic interactions and uncertainty.
+
+1.  **Methodological Evolution:**
+    The methodological evolution begins with **Paper 1 (ATiSE, 2019)**, which introduces additive time series decomposition and maps entity/relation representations to multi-dimensional Gaussian distributions to model temporal uncertainty. **Paper 2 (Tensor Decomposition, 2020)** shifts to a structural approach, formalizing temporal KGs as fourth-order tensors and applying tensor decomposition. A distinct paradigm emerges with **Paper 4 (TeRo, 2020)**, which defines temporal evolution as a rotation in complex vector space, and is further refined by **Paper 5 (ChronoR, 2021)**, employing a k-dimensional rotation parametrized by both relation and time. Finally, **Paper 3 (TARGAT, 2023)** represents a significant methodological leap, leveraging Graph Neural Networks (GNNs) and attention mechanisms with a relational generator to dynamically create time-aware message transformation matrices.
+
+2.  **Knowledge Progression:**
+    The core problem addressed is the limitation of static knowledge graph embedding models in handling the dynamic and time-sensitive nature of real-world facts. **Paper 1 (ATiSE)** initiates this by incorporating time series decomposition and modeling temporal uncertainty with Gaussian distributions, providing a foundational way to represent evolving entities. **Paper 2 (Tensor Decomposition)** builds on this by offering a structured approach to temporal data, addressing sparsity and computational efficiency by generalizing static tensor-based methods. **Paper 4 (TeRo)** introduces a novel geometric perspective, defining temporal evolution as a rotation and uniquely addressing facts with time intervals through dual embeddings, also pioneering the investigation of time granularity. **Paper 5 (ChronoR)** directly advances TeRo's rotation concept, enhancing it with a more complex k-dimensional rotation parametrized by both relation and time to capture richer interactions and tackle data non-stationarity and heterogeneity. **Paper 3 (TARGAT)**, while published later, addresses the limitations of previous GNNs in capturing multi-fact interactions across different timestamps by dynamically generating time-aware relational message transformation matrices, leading to more explicit and dynamic interaction modeling. This progression yields new capabilities in modeling temporal uncertainty, handling time intervals, capturing complex temporal dependencies, and dynamically processing graph structures.
+
+3.  **Temporal Context:**
+    The initial cluster of papers (**Paper 1, 2, 4, 5**) published between 2019 and 2021, highlights a rapid period of exploration into diverse foundational approaches for temporal KGE, including decomposition, tensor factorization, and geometric transformations. The later publication of **Paper 3 (TARGAT)** in 2023 reflects the maturation and increasing adoption of Graph Neural Networks and attention mechanisms within the broader machine learning community, applying these advanced techniques to address more complex dynamic interaction modeling in temporal KGs.
+
+4.  **Synthesis:**
+    These works collectively form a unified narrative of advancing knowledge graph embedding from static representations to dynamic, time-aware models. The path demonstrates a progressive enhancement in the ability to model temporal evolution, uncertainty, and complex interactions within knowledge graphs. Their collective contribution lies in establishing diverse and increasingly sophisticated paradigms—from decomposition and tensor factorization to geometric rotations and graph neural networks—significantly improving link prediction and reasoning capabilities over time in dynamic knowledge environments.
+
+
+ANALYSIS REQUIREMENTS:
+For this development path, provide:
+
+1. **Methodological Evolution** (2-3 sentences):
+- What are the key methodological shifts or innovations?
+- How do methods evolve from foundational to recent work?
+
+2. **Knowledge Progression** (3-4 sentences):
+- What problems are being addressed?
+- How does each paper build on limitations of previous work?
+- What new capabilities or insights emerge?
+
+3. **Temporal Context** (1-2 sentences):
+- How does publication timing relate to technological/theoretical advances?
+- Are there notable gaps or acceleration periods?
+
+4. **Synthesis** (2-3 sentences):
+- What unified narrative connects these works?
+- What is the collective contribution to "knowledge graph embedding"?
+
+CONSTRAINTS:
+- Be specific and cite paper numbers (e.g., "Paper 3 introduces...")
+- Focus on connections and evolution, not just individual contributions
+- Avoid generic statements; ground analysis in actual methods/results
+- Total length: 400-600 words
+
+Provide a scholarly yet concise analysis.
+DEVELOPMENT PATH PROMPT:
+ You are an expert academic researcher analyzing the evolution of research in "knowledge graph embedding".
+
+TASK: Analyze the following citation path where each paper builds upon previous work.
+
+CITATION PATH 12 papers:
+Title: Link Prediction with Attention Applied on Multiple Knowledge Graph Embedding Models
+Abstract: Predicting missing links between entities in a knowledge graph is a fundamental task to deal with the incompleteness of data on the Web. Knowledge graph embeddings map nodes into a vector space to predict new links, scoring them according to geometric criteria. Relations in the graph may follow patterns that can be learned, e.g., some relations might be symmetric and others might be hierarchical. However, the learning capability of different embedding models varies for each pattern and, so far, no single model can learn all patterns equally well. In this paper, we combine the query representations from several models in a unified one to incorporate patterns that are independently captured by each model. Our combination uses attention to select the most suitable model to answer each query. The models are also mapped onto a non-Euclidean manifold, the Poincaré ball, to capture structural patterns, such as hierarchies, besides relational patterns, such as symmetry. We prove that our combination provides a higher expressiveness and inference power than each model on its own. As a result, the combined model can learn relational and structural patterns. We conduct extensive experimental analysis with various link prediction benchmarks showing that the combined model outperforms individual models, including state-of-the-art approaches.
+Publication Year: 2023
+
+-->Title: Weighted Knowledge Graph Embedding
+Abstract: Knowledge graph embedding (KGE) aims to project both entities and relations in a knowledge graph (KG) into low-dimensional vectors. Indeed, existing KGs suffer from the data imbalance issue, i.e., entities and relations conform to a long-tail distribution, only a small portion of entities and relations occur frequently, while the vast majority of entities and relations only have a few training samples. Existing KGE methods assign equal weights to each entity and relation during the training process. Under this setting, long-tail entities and relations are not fully trained during training, leading to unreliable representations. In this paper, we propose WeightE, which attends differentially to different entities and relations. Specifically, WeightE is able to endow lower weights to frequent entities and relations, and higher weights to infrequent ones. In such manner, WeightE is capable of increasing the weights of long-tail entities and relations, and learning better representations for them. In particular, WeightE tailors bilevel optimization for the KGE task, where the inner level aims to learn reliable entity and relation embeddings, and the outer level attempts to assign appropriate weights for each entity and relation. Moreover, it is worth noting that our technique of applying weights to different entities and relations is general and flexible, which can be applied to a number of existing KGE models. Finally, we extensively validate the superiority of WeightE against various state-of-the-art baselines.
+Publication Year: 2023
+
+-->Title: Entity-Agnostic Representation Learning for Parameter-Efficient Knowledge Graph Embedding
+Abstract: We propose an entity-agnostic representation learning method for handling the problem of inefficient parameter storage costs brought by embedding knowledge graphs. Conventional knowledge graph embedding methods map elements in a knowledge graph, including entities and relations, into continuous vector spaces by assigning them one or multiple specific embeddings (i.e., vector representations). Thus the number of embedding parameters increases linearly as the growth of knowledge graphs. In our proposed model, Entity-Agnostic Representation Learning (EARL), we only learn the embeddings for a small set of entities and refer to them as reserved entities. To obtain the embeddings for the full set of entities, we encode their distinguishable information from their connected relations, k-nearest reserved entities, and multi-hop neighbors. We learn universal and entity-agnostic encoders for transforming distinguishable information into entity embeddings. This approach allows our proposed EARL to have a static, efficient, and lower parameter count than conventional knowledge graph embedding methods. Experimental results show that EARL uses fewer parameters and performs better on link prediction tasks than baselines, reflecting its parameter efficiency.
+Publication Year: 2023
+
+-->Title: Position-Aware Relational Transformer for Knowledge Graph Embedding
+Abstract: Although Transformer has achieved success in language and vision tasks, its capacity for knowledge graph (KG) embedding has not been fully exploited. Using the self-attention (SA) mechanism in Transformer to model the subject-relation-object triples in KGs suffers from training inconsistency as SA is invariant to the order of input tokens. As a result, it is unable to distinguish a (real) relation triple from its shuffled (fake) variants (e.g., object-relation-subject) and, thus, fails to capture the correct semantics. To cope with this issue, we propose a novel Transformer architecture, namely, Knowformer, for KG embedding. It incorporates relational compositions in entity representations to explicitly inject semantics and capture the role of an entity based on its position (subject or object) in a relation triple. The relational composition for a subject (or object) entity of a relation triple refers to an operator on the relation and the object (or subject). We borrow ideas from the typical translational and semantic-matching embedding techniques to design relational compositions. We carefully design a residual block to integrate relational compositions into SA and efficiently propagate the composed relational semantics layer by layer. We formally prove that the SA with relational compositions is able to distinguish the entity roles in different positions and correctly capture relational semantics. Extensive experiments and analyses on six benchmark datasets show that Knowformer achieves state-of-the-art performance on both link prediction and entity alignment.
+Publication Year: 2023
+
+-->Title: Knowledge Graph Embedding: An Overview
+Abstract: Many mathematical models have been leveraged to design embeddings for representing Knowledge Graph (KG) entities and relations for link prediction and many downstream tasks. These mathematically-inspired models are not only highly scalable for inference in large KGs, but also have many explainable advantages in modeling different relation patterns that can be validated through both formal proofs and empirical results. In this paper, we make a comprehensive overview of the current state of research in KG completion. In particular, we focus on two main branches of KG embedding (KGE) design: 1) distance-based methods and 2) semantic matching-based methods. We discover the connections between recently proposed models and present an underlying trend that might help researchers invent novel and more effective models. Next, we delve into CompoundE and CompoundE3D, which draw inspiration from 2D and 3D affine operations, respectively. They encompass a broad spectrum of techniques including distance-based and semantic-based methods. We will also discuss an emerging approach for KG completion which leverages pre-trained language models (PLMs) and textual descriptions of entities and relations and offer insights into the integration of KGE embedding methods with PLMs for KG completion.
+Publication Year: 2023
+
+-->Title: A type-augmented knowledge graph embedding framework for knowledge graph completion
+Abstract: Knowledge graphs (KGs) are of great importance to many artificial intelligence applications, but they usually suffer from the incomplete problem. Knowledge graph embedding (KGE), which aims to represent entities and relations in low-dimensional continuous vector spaces, has been proved to be a promising approach for KG completion. Traditional KGE methods only concentrate on structured triples, while paying less attention to the type information of entities. In fact, incorporating entity types into embedding learning could further improve the performance of KG completion. To this end, we propose a universal Type-augmented Knowledge graph Embedding framework (TaKE) which could utilize type features to enhance any traditional KGE models. TaKE automatically captures type features under no explicit type information supervision. And by learning different type representations of each entity, TaKE could distinguish the diversity of types specific to distinct relations. We also design a new type-constrained negative sampling strategy to construct more effective negative samples for the training process. Extensive experiments on four datasets from three real-world KGs (Freebase, WordNet and YAGO) demonstrate the merits of our proposed framework. In particular, combining TaKE with the recent tensor factorization KGE model SimplE can achieve state-of-the-art performance on the KG completion task.
+Publication Year: 2023
+
+-->Title: Knowledge Graph Embedding with 3D Compound Geometric Transformations
+Abstract: The cascade of 2D geometric transformations were exploited to model relations between entities in a knowledge graph (KG), leading to an effective KG embedding (KGE) model, CompoundE. Furthermore, the rotation in the 3D space was proposed as a new KGE model, Rotate3D, by leveraging its non-commutative property. Inspired by CompoundE and Rotate3D, we leverage 3D compound geometric transformations, including translation, rotation, scaling, reflection, and shear and propose a family of KGE models, named CompoundE3D, in this work. CompoundE3D allows multiple design variants to match rich underlying characteristics of a KG. Since each variant has its own advantages on a subset of relations, an ensemble of multiple variants can yield superior performance. The effectiveness and flexibility of CompoundE3D are experimentally verified on four popular link prediction datasets.
+Publication Year: 2023
+
+-->Title: Modality-Aware Negative Sampling for Multi-modal Knowledge Graph Embedding
+Abstract: Negative sampling (NS) is widely used in knowledge graph embedding (KGE), which aims to generate negative triples to make a positive-negative contrast during training. However, existing NS methods are unsuitable when multi-modal information is considered in KGE models. They are also inefficient due to their complex design. In this paper, we propose Modality-Aware Negative Sampling (MANS) for multi-modal knowledge graph embedding (MMKGE) to address the mentioned problems. MANS could align structural and visual embeddings for entities in KGs and learn meaningful embeddings to perform better in multi-modal KGE while keeping lightweight and efficient. Empirical results on two benchmarks demonstrate that MANS outperforms existing NS methods. Meanwhile, we make further explorations about MANS to confirm its effectiveness.
+Publication Year: 2023
+
+-->Title: Contextualized Knowledge Graph Embedding for Explainable Talent Training Course Recommendation
+Abstract: Learning and development, or L&D, plays an important role in talent management, which aims to improve the knowledge and capabilities of employees through a variety of performance-oriented training activities. Recently, with the rapid development of enterprise management information systems, many research efforts and industrial practices have been devoted to building personalized employee training course recommender systems. Nevertheless, a widespread challenge is how to provide explainable recommendations with the consideration of different learning motivations from talents. To this end, we propose CKGE, a contextualized knowledge graph (KG) embedding approach for developing an explainable training course recommender system. A novel perspective of CKGE is to integrate both the contextualized neighbor semantics and high-order connections as motivation-aware information for learning effective representations of talents and courses. Specifically, in CKGE, for each entity pair (i.e., the talent-course pair), we first construct a meta-graph, including the neighbors of each entity and the meta-paths between entities as motivation-aware information. Then, we develop a novel KG-based Transformer, which can serialize entities and paths in the meta-graph as a sequential input, with the specially designed relational attention and structural encoding mechanisms to better model the global dependence of KG structured data. Meanwhile, the local path mask prediction can effectively reveal the importance of different paths. As a result, CKGE not only can make precise predictions but also can discriminate the saliencies of meta-paths in characterizing corresponding preferences. Extensive experiments on real-world and public datasets clearly validate the effectiveness and interpretability of CKGE compared with state-of-the-art baselines.
+Publication Year: 2023
+
+-->Title: Message Function Search for Knowledge Graph Embedding
+Abstract: Recently, many promising embedding models have been proposed to embed knowledge graphs (KGs) and their more general forms, such as n-ary relational data (NRD) and hyper-relational KG (HKG). To promote the data adaptability and performance of embedding models, KG searching methods propose to search for suitable models for a given KG data set. But they are restricted to a single KG form, and the searched models are restricted to a single type of embedding model. To tackle such issues, we propose to build a search space for the message function in graph neural networks (GNNs). However, it is a non-trivial task. Existing message function designs fix the structures and operators, which makes them difficult to handle different KG forms and data sets. Therefore, we first design a novel message function space, which enables both structures and operators to be searched for the given KG form (including KG, NRD, and HKG) and data. The proposed space can flexibly take different KG forms as inputs and is expressive to search for different types of embedding models. Especially, some existing message function designs and some classic KG embedding models can be instantiated as special cases of our space. We empirically show that the searched message functions are data-dependent, and can achieve leading performance on benchmark KGs, NRD, and HKGs.
+Publication Year: 2023
+
+-->Title: Molecular-evaluated and explainable drug repurposing for COVID-19 using ensemble knowledge graph embedding
+Abstract: The search for an effective drug is still urgent for COVID-19 as no drug with proven clinical efficacy is available. Finding the new purpose of an approved or investigational drug, known as drug repurposing, has become increasingly popular in recent years. We propose here a new drug repurposing approach for COVID-19, based on knowledge graph (KG) embeddings. Our approach learns “ensemble embeddings” of entities and relations in a COVID-19 centric KG, in order to get a better latent representation of the graph elements. Ensemble KG-embeddings are subsequently used in a deep neural network trained for discovering potential drugs for COVID-19. Compared to related works, we retrieve more in-trial drugs among our top-ranked predictions, thus giving greater confidence in our prediction for out-of-trial drugs. For the first time to our knowledge, molecular docking is then used to evaluate the predictions obtained from drug repurposing using KG embedding. We show that Fosinopril is a potential ligand for the SARS-CoV-2 nsp13 target. We also provide explanations of our predictions thanks to rules extracted from the KG and instanciated by KG-derived explanatory paths. Molecular evaluation and explanatory paths bring reliability to our results and constitute new complementary and reusable methods for assessing KG-based drug repurposing.
+Publication Year: 2023
+
+-->
+
+
+
+ANALYSIS REQUIREMENTS:
+For this development path, provide:
+
+1. **Methodological Evolution** (2-3 sentences):
+- What are the key methodological shifts or innovations?
+- How do methods evolve from foundational to recent work?
+
+2. **Knowledge Progression** (3-4 sentences):
+- What problems are being addressed?
+- How does each paper build on limitations of previous work?
+- What new capabilities or insights emerge?
+
+3. **Temporal Context** (1-2 sentences):
+- How does publication timing relate to technological/theoretical advances?
+- Are there notable gaps or acceleration periods?
+
+4. **Synthesis** (2-3 sentences):
+- What unified narrative connects these works?
+- What is the collective contribution to "knowledge graph embedding"?
+
+CONSTRAINTS:
+- Be specific and cite paper numbers (e.g., "Paper 3 introduces...")
+- Focus on connections and evolution, not just individual contributions
+- Avoid generic statements; ground analysis in actual methods/results
+- Total length: 400-600 words
+
+Provide a scholarly yet concise analysis.
+DEVELOPMENT PATH PROMPT:
+ You are an expert academic researcher analyzing the evolution of research in "knowledge graph embedding".
+
+TASK: Analyze the following citation path where each paper builds upon previous work.
+
+CITATION PATH 5 papers:
+Title: Knowledge graph embedding closed under composition
+Abstract: Knowledge Graph Embedding (KGE) has attracted increasing attention. Relation patterns, such as symmetry and inversion, have received considerable focus. Among them, composition patterns are particularly important, as they involve nearly all relations in KGs. However, prior KGE approaches often consider relations to be compositional only if they are well-represented in the training data. Consequently, it can lead to performance degradation, especially for under-represented composition patterns. To this end, we propose HolmE, a general form of KGE with its relation embedding space closed under composition, namely that the composition of any two given relation embeddings remains within the embedding space. This property ensures that every relation embedding can compose, or be composed by other relation embeddings. It enhances HolmE’s capability to model under-represented (also called long-tail) composition patterns with limited learning instances. To our best knowledge, our work is pioneering in discussing KGE with this property of being closed under composition. We provide detailed theoretical proof and extensive experiments to demonstrate the notable advantages of HolmE in modelling composition patterns, particularly for long-tail patterns. Our results also highlight HolmE’s effectiveness in extrapolating to unseen relations through composition and its state-of-the-art performance on benchmark datasets.
+Publication Year: 2024
+
+-->Title: Fast and Continual Knowledge Graph Embedding via Incremental LoRA
+Abstract: Continual Knowledge Graph Embedding (CKGE) aims to efficiently learn new knowledge and simultaneously preserve old knowledge. Dominant approaches primarily focus on alleviating catastrophic forgetting of old knowledge but neglect efficient learning for the emergence of new knowledge. However, in real-world scenarios, knowledge graphs (KGs) are continuously growing, which brings a significant challenge to fine-tuning KGE models efficiently. To address this issue, we propose a fast CKGE framework (FastKGE), incorporating an incremental low-rank adapter (IncLoRA) mechanism to efficiently acquire new knowledge while preserving old knowledge. Specifically, to mitigate catastrophic forgetting, FastKGE isolates and allocates new knowledge to specific layers based on the fine-grained influence between old and new KGs. Subsequently, to accelerate fine-tuning, FastKGE devises an efficient IncLoRA mechanism, which embeds the specific layers into incremental low-rank adapters with fewer training parameters. Moreover, IncLoRA introduces adaptive rank allocation, which makes the LoRA aware of the importance of entities and adjusts its rank scale adaptively. We conduct experiments on four public datasets and two new datasets with a larger initial scale. Experimental results demonstrate that FastKGE can reduce training time by 34%-49% while still achieving competitive link prediction performance against state-of-the-art models on four public datasets (average MRR score of 21.0% vs. 21.1%). Meanwhile, on two newly constructed datasets, FastKGE saves 51%-68% training time and improves link prediction performance by 1.5%.
+Publication Year: 2024
+
+-->Title: Integrating Entity Attributes for Error-Aware Knowledge Graph Embedding
+Abstract: Knowledge graphs (KGs) can structurally organize large-scale information in the form of triples and significantly support many real-world applications. While most KG embedding algorithms hold the assumption that all triples are correct, considerable errors were inevitably injected during the construction process. It is urgent to develop effective error-aware KG embedding, since errors in KGs would lead to significant performance degradation in downstream applications. To this end, we propose a novel framework named Attributed Error-aware Knowledge Embedding (AEKE). It leverages the semantics contained in entity attributes to guide the KG embedding model learning against the impact of erroneous triples. We design two triple-level hypergraphs to model the topological structures of the KG and its attributes, respectively. The confidence score of each triple is jointly calculated based on self-contradictory within the triple, consistency between local and global structures, and homogeneity between structures and attributes. We leverage confidence scores to adaptively update the weighted aggregation in the multi-view graph learning framework and margin loss in KG embedding, such that potential errors will contribute little to KG learning. Experiments on three real-world KGs demonstrate that AEKE outperforms state-of-the-art KG embedding and error detection algorithms.
+Publication Year: 2024
+
+-->Title: TGformer: A Graph Transformer Framework for Knowledge Graph Embedding
+Abstract: Knowledge graph embedding is efficient method for reasoning over known facts and inferring missing links. Existing methods are mainly triplet-based or graph-based. Triplet-based approaches learn the embedding of missing entities by a single triple only. They ignore the fact that the knowledge graph is essentially a graph structure. Graph-based methods consider graph structure information but ignore the contextual information of nodes in the knowledge graph, making them unable to discern valuable entity (relation) information. In response to the above limitations, we propose a general graph transformer framework for knowledge graph embedding (TGformer). It is the first to use a graph transformer to build knowledge embeddings with triplet-level and graph-level structural features in the static and temporal knowledge graph. Specifically, a context-level subgraph is constructed for each predicted triplet, which models the relation between triplets with the same entity. Afterward, we design a knowledge graph transformer network (KGTN) to fully explore multi-structural features in knowledge graphs, including triplet-level and graph-level, boosting the model to understand entities (relations) in different contexts. Finally, semantic matching is adopted to select the entity with the highest score. Experimental results on several public knowledge graph datasets show that our method can achieve state-of-the-art performance in link prediction.
+Publication Year: 2025
+
+-->Title: Negative Sampling in Knowledge Graph Representation Learning: A Review
+Abstract: Knowledge Graph Representation Learning (KGRL), or Knowledge Graph Embedding (KGE), is essential for AI applications such as knowledge construction and information retrieval. These models encode entities and relations into lower-dimensional vectors, supporting tasks like link prediction and recommendation systems. Training KGE models relies on both positive and negative samples for effective learning, but generating high-quality negative samples from existing knowledge graphs is challenging. The quality of these samples significantly impacts the model's accuracy. This comprehensive survey paper systematically reviews various negative sampling (NS) methods and their contributions to the success of KGRL. Their respective advantages and disadvantages are outlined by categorizing existing NS methods into six distinct categories. Moreover, this survey identifies open research questions that serve as potential directions for future investigations. By offering a generalization and alignment of fundamental NS concepts, this survey provides valuable insights for designing effective NS methods in the context of KGRL and serves as a motivating force for further advancements in the field.
+Publication Year: 2024
+
+-->
+
+PREVIOUS CONTEXT:
+This collection of 11 unique papers, all published in 2023, showcases a highly dynamic and rapidly evolving research landscape in knowledge graph embedding (KGE). The "citation path" reflects a conceptual progression within the field, addressing various limitations and expanding capabilities.
+
+1.  **Methodological Evolution:**
+    The methodological evolution shifts from foundational KGE approaches (implied by the context of the papers) towards more sophisticated, specialized, and generalized models. Key shifts include the integration of **advanced neural architectures** like Transformers (Paper 5) and GNNs (Paper 2), adapted to the structured nature of KGs. There's a strong emphasis on **geometric expressiveness** through 3D compound transformations (Paper 7) and non-Euclidean manifolds (Paper 1), alongside the incorporation of **richer contextual information** such as entity types (Paper 6) and multi-modal data (Paper 8). Furthermore, the field moves towards **meta-learning and ensemble methods**, exemplified by searching for optimal message functions (Paper 2) and combining multiple KGE models with attention (Paper 1).
+
+2.  **Knowledge Progression:**
+    The core problem addressed is the effective representation of knowledge graphs for tasks like link prediction and knowledge graph completion, while overcoming limitations of earlier KGE models. Paper 3 (Weighted KGE) addresses the data imbalance issue, proposing `WeightE` to learn reliable representations for long-tail entities and relations. Paper 4 (Entity-Agnostic Representation Learning) tackles parameter inefficiency by introducing `EARL`, which significantly reduces parameter count for large KGs. Paper 5 (Position-Aware Relational Transformer) enhances Transformer's applicability to KGs by making it position-aware (`Knowformer`), capturing correct relational semantics. Paper 6 (Type-augmented KGE) improves performance by incorporating entity type information, a feature often overlooked by traditional KGE methods. Paper 7 (3D Compound Geometric Transformations) extends the expressiveness of geometric models with `CompoundE3D`, capturing richer underlying KG characteristics. Paper 8 (Modality-Aware Negative Sampling) refines training for multi-modal KGE by proposing `MANS`. The progression culminates in generalized and combined approaches: Paper 2 (Message Function Search) enables automated design of GNN-based KGE models adaptable to various KG forms, and Paper 1 (Link Prediction with Attention Applied on Multiple KGE Models) demonstrates superior expressiveness by combining diverse KGE models using attention and non-Euclidean geometry, addressing the limitation that no single model excels at all patterns. Applications like explainable recommendation (Paper 10) and drug repurposing (Paper 12) showcase the practical utility and interpretability of these advanced KGE techniques.
+
+3.  **Temporal Context:**
+    The fact that all papers are published in 2023 highlights an extraordinary period of accelerated innovation and intense research activity in knowledge graph embedding. This simultaneous emergence of diverse solutions suggests a mature field where researchers are concurrently tackling multiple facets of KGE challenges—from model expressiveness and efficiency to training optimization and real-world application—rather than a linear, sequential development over years. The presence of an "Overview" paper (Paper 6) within the same year further underscores the field's rapid growth and the immediate need for synthesis and trend identification.
+
+4.  **Synthesis:**
+    Collectively, these works paint a picture of a highly advanced and specialized KGE research domain, unified by a relentless pursuit of **enhanced expressiveness, improved efficiency, and greater applicability**. The overarching narrative demonstrates a shift from developing individual, general-purpose KGE models to engineering sophisticated, context-aware, and often ensemble-based solutions that can adapt to specific data characteristics, leverage diverse information sources, and provide explainable insights. The collective contribution is a significant leap in the capability of KGE to model complex relational data, scale to real-world knowledge graphs, and drive impactful applications across various domains.
+
+
+ANALYSIS REQUIREMENTS:
+For this development path, provide:
+
+1. **Methodological Evolution** (2-3 sentences):
+- What are the key methodological shifts or innovations?
+- How do methods evolve from foundational to recent work?
+
+2. **Knowledge Progression** (3-4 sentences):
+- What problems are being addressed?
+- How does each paper build on limitations of previous work?
+- What new capabilities or insights emerge?
+
+3. **Temporal Context** (1-2 sentences):
+- How does publication timing relate to technological/theoretical advances?
+- Are there notable gaps or acceleration periods?
+
+4. **Synthesis** (2-3 sentences):
+- What unified narrative connects these works?
+- What is the collective contribution to "knowledge graph embedding"?
+
+CONSTRAINTS:
+- Be specific and cite paper numbers (e.g., "Paper 3 introduces...")
+- Focus on connections and evolution, not just individual contributions
+- Avoid generic statements; ground analysis in actual methods/results
+- Total length: 400-600 words
+
+Provide a scholarly yet concise analysis.
