@@ -57,71 +57,6 @@ class LiteratureReviewGenerator:
         for edge in data['edges']:
             G.add_edge(edge['source'], edge['target'], **edge)
         return G
-    #region generate outline
-    def generate_literature_review_outline(self, processed_papers: List[Dict]) -> str:
-        """
-        Generate a comprehensive literature review outline
-        """
-        papers_summary = ""
-        for i, paper in enumerate(processed_papers, 1):
-            summary = paper.get('summary', '')
-            papers_summary += f"**Paper {i} ({paper['citation_key']})**: {summary[:1000]}...\n\n"
-        
-        outline_prompt = f"""
-        Based on the research papers and themes analysis, create a comprehensive literature review outline.
-        
-        The outline should include:
-        
-        1. **Introduction**
-           - Problem statement and significance
-           - Scope and objectives of the review
-           
-        2. **Background and Context**
-           - Historical development
-           - Key concepts and definitions
-           
-        3. **Problem Classification and Taxonomy**
-           - Main problem categories
-           - Sub-problems and variants
-           
-        4. **Current Approaches to Each Problem Classification**
-           - Traditional methods
-           - Modern approaches
-           - Comparative analysis
-           
-        5. **Research Gaps and Challenges to Each Problem Classification**
-           - Identified limitations
-           - Unresolved issues
-           - Technical challenges
-           
-        6. **Future Research Directions**
-           - Promising approaches
-           - Emerging trends
-           - Potential breakthroughs
-           
-        7. **Conclusion**
-           - Summary of findings
-           - Recommendations
-        
-        Papers Overview:
-        {papers_summary}
-        
-        Please create a detailed outline with subsections and key points for each section.
-        """
-        
-        try:
-            response = self.model.generate_content(
-                outline_prompt,
-                generation_config=genai.types.GenerationConfig(
-                    max_output_tokens=102400,
-                    temperature=0.3,
-                )
-            )
-            return response.text
-        except Exception as e:
-            print(f"Error generating outline: {e}")
-            return ""
-    #endregion
 
     #region evaluate section quality
     def evaluate_section_quality(self, section_title: str, section_content: str, 
@@ -312,13 +247,15 @@ class LiteratureReviewGenerator:
             additional_info += f"Authors: {metadata.get('authors', 'N/A')}\n"
             additional_info += f"Summary: {paper.get('full_summary', paper.get('abstract', 'N/A'))}\n"
             additional_info += f"Relevance Score: {paper.get('similarity_score', 0):.3f}\n"
+            if paper.get('keyword', []) != []:
+                additional_info += f"Keywords: {', '.join(paper.get('keyword', []))}"
             additional_info += f"Citation Key: {paper.get('citation_key', '')}\n\n"
         improvement_prompt = self.prompt_helper.generate_prompt(self.prompt_helper.SECTION_IMPROVE_PROMPT,
                                                                 paras={
                                                                     "SECTION_TITLE": section_title,
                                                                     "SECTION_FOCUS": section_focus,
                                                                     "CURRENT_CONTENT": current_content,
-                                                                    "OVERALL_SCORE": {evaluation_feedback.get('overall_score', 'N/A')}/5,
+                                                                    "OVERALL_SCORE": {evaluation_feedback.get('overall_score', 'N/A')},
                                                                     "STRENGTHS": {', '.join(evaluation_feedback.get('strengths', []))},
                                                                     "WEAKNESS": {', '.join(evaluation_feedback.get('weaknesses', []))},
                                                                     "IMPROVEMENT_NEEDED": {', '.join(evaluation_feedback.get('improvement_needed', []))},
@@ -566,7 +503,7 @@ class LiteratureReviewGenerator:
             folder_path=core_papers_path,
             skip_existing=True,  # Skip if already processed
             delay_seconds=0.0, 
-            metadata_file = os.path.join(f"paper_data/{self.query}/info", "metadata_papers.json")
+            metadata_file = os.path.join(f"paper_data/{self.query}/info", "metadata.json")
         )
         
         # # Process all papers

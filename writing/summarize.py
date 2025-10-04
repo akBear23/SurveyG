@@ -63,7 +63,7 @@ class PaperSummarizerRAG:
             'position': 'Position Paper',
             'short': 'Short Paper/Workshop Paper'
         }
-        self.metadata_file_path = f"paper_data/{query.replace(' ', '_').replace(':', '')}/info/metadata.json"
+        self.metadata_file_path = f"paper_data/{query.replace(' ', '_').replace(':', '')}/info/metadata_all_papers.json"
         self.metadata_cache = None
         self._load_metadata()
     #endregion
@@ -119,56 +119,7 @@ class PaperSummarizerRAG:
                 return value
         
         return None
-    
-    # def create_citation_key(self, metadata: Dict = None, file_path: str = None) -> str:
-    #     """
-    #     Create a citation key for LaTeX from metadata
-        
-    #     Args:
-    #         metadata (Dict): Metadata dict (nếu không có sẽ tìm theo file_path)
-    #         index (int): Index number for fallback
-    #         file_path (str): File path để tìm metadata
-            
-    #     Returns:
-    #         str: Citation key
-    #     """
-    #     try:
-    #         # Nếu không có metadata, tìm theo file_path
-    #         if not metadata and file_path:
-    #             metadata = self._find_metadata_by_file_path(file_path)
-    #         # print
-        
-            
-    #         # Lấy thông tin authors và year
-    #         authors_data = metadata.get('authors', [])
-    #         year_data = metadata.get('published_date')
-    #         # print(published_date)
-            
-    #         # Xử lý authors (có thể là list hoặc string)
-    #         if isinstance(authors_data, list) and authors_data:
-    #             first_author = authors_data[0]
-    #         elif isinstance(authors_data, str) and authors_data != "Not available":
-    #             first_author = authors_data.split(',')[0].strip()
-    #         else:
-    #             first_author = ""
-            
-    #         if first_author:
-    #             # Xử lý tên tác giả (lấy họ cuối)
-    #             name_parts = first_author.strip().split()
-    #             if name_parts:
-    #                 # Lấy phần cuối (họ) và loại bỏ ký tự đặc biệt
-    #                 last_name = name_parts[-1]
-    #                 last_name = re.sub(r'[^A-Za-z]', '', last_name)
-                    
-    #                 if len(last_name) > 0:
-    #                     # Tạo citation key
-    #                     year_str = re.sub(r'[^0-9]', '', str(year_data))
-    #                     citation_key = f"{last_name.lower()}{year_str}"
-                    
-            
-    #         return citation_key
-    #     except Exception as e:
-    #         print(f"❌ Error creating citation key: {e}")
+
     def create_citation_key(self, metadata: Dict = None, file_path: str = None) -> str:
         """
         Create a citation key for LaTeX from metadata with random suffix
@@ -1200,6 +1151,29 @@ class PaperSummarizerRAG:
         if not paper_text:
             # return {"error": "Không thể đọc được nội dung paper.", "file_path": file_path}
             paper_text = metadata['abstract']
+            summary = paper_text
+            intriguing_abstract = summary
+        
+            # Trích xuất keywords
+            keywords = []
+            
+            # Lưu vào RAG system
+            doc_id = self.save_to_rag(file_path, summary, intriguing_abstract, keywords)
+            
+            metadata['summary'] = summary
+            metadata['keywords'] = keywords
+            # metadata['paper_type'] = paper_type
+            return {
+                "success": True,
+                "doc_id": doc_id,
+                "summary": summary,
+                "intriguing_abstract": intriguing_abstract,
+                "keywords": keywords,
+                "file_path": file_path,
+                "citation_key": citation_key,
+                "metadata": metadata,
+                "file_name": os.path.basename(file_path)
+            }
         
         # Chia văn bản nếu quá dài
         # chunks = self.chunk_text(paper_text)
@@ -1249,7 +1223,7 @@ class PaperSummarizerRAG:
         }
     
     def process_folder(self, folder_path: str, 
-                      skip_existing: bool = True, delay_seconds: float = 1.0, metadata_file='', max_papers=120) -> Dict[str, Any]:
+                      skip_existing: bool = True, delay_seconds: float = 1.0, metadata_file='') -> Dict[str, Any]:
         """
         Xử lý tất cả papers trong một folder
         
@@ -1298,8 +1272,6 @@ class PaperSummarizerRAG:
                 print(f"❌ Error loading metadata: {e}")
             supported_files = list(metadata.keys())
         print("Total number of papers: ", len(supported_files))
-        supported_files = supported_files[:max_papers]
-        print("Handle maximum papers: ", len(supported_files))
         self.processing_stats['total_files'] = len(supported_files)
 
         # if not supported_files:
@@ -1318,12 +1290,12 @@ class PaperSummarizerRAG:
                     checkpoint_data = json.load(cp)
                     # checkpoint_data is a list of dicts with 'file_path' key
                     processed_results = checkpoint_data
-                    already_processed_files = set([r.get('file_path') for r in processed_results if r.get('file_path')])
+                    already_processed_files = set([r.get('file_path') for r in processed_results if r.get('file_path') and r.get('title') != 'Not available'])
                     # Check for missing/null fields and fix from metadata
                     for entry in processed_results:
                         file_path = entry.get('file_path')
                         if not file_path or file_path.endswith('.txt'):
-                            continue
+                            break
                         # Check for null or missing fields
                         fields_to_check = ['metadata', 'citation_key', 'file_name', 'keywords', 'summary', 'intriguing_abstract']
                         for field in fields_to_check:
@@ -1340,6 +1312,8 @@ class PaperSummarizerRAG:
                                     entry['keywords'] = meta.get('keywords', []) if meta else []
                                 elif field == 'summary':
                                     entry['summary'] = ''
+                                    if 'I apologize' in entry['summary']:
+                                        continue
                                 elif field == 'intriguing_abstract':
                                     entry['intriguing_abstract'] = ''
                         # Ensure metadata completeness
@@ -1418,15 +1392,21 @@ def main():
     summarizer = PaperSummarizerRAG(query, API_KEY, rag_db_path)
     
     # Đường dẫn đến folder chứa papers
-    papers_folder = f"paper_data/{query.replace(' ', '_').replace(':', '')}"
+    # papers_folder = f"paper_data/{query.replace(' ', '_').replace(':', '')}"
     
-    # Xử lý tất cả papers trong folder
-    result = summarizer.process_folder(
-        folder_path=papers_folder,
-
-        skip_existing=True,  # Bỏ qua file đã xử lý
-        delay_seconds=0.0    # Chờ 2 giây giữa các lần xử lý'
-    )
+    # # Xử lý tất cả papers trong folder
+    # result = summarizer.process_folder(
+    #     folder_path=papers_folder,
+    #     skip_existing=True,  # Bỏ qua file đã xử lý
+    #     delay_seconds=0.0    # Chờ 2 giây giữa các lần xử lý'
+    # )
+    paper_paths = f"paper_data/{query.replace(' ', '_').replace(':', '')}"  
+    all_papers = summarizer.process_folder(
+            folder_path=paper_paths,
+            skip_existing=True,  # Skip already processed files
+            delay_seconds=0.0,
+            metadata_file = os.path.join(f"{paper_paths}/info", "metadata_all_papers.json")
+        )
 if __name__ == "__main__":
     main()
 #endregion
