@@ -79,7 +79,7 @@ class Leiden_summarizer:
         
         return g_ig
     
-    def leiden_algorithm(self, layer=None, min_community_size=8):
+    def leiden_algorithm(self, layer=None, min_community_size=5):
         """Run Leiden algorithm, optionally on a specific layer
         
         Args:
@@ -174,7 +174,7 @@ def main():
     ls = Leiden_summarizer(graph_path)
     # ls.leiden_algorithm(layer=2)
     # ls.leiden_algorithm(layer=3)
-    community = ls.leiden_algorithm(min_community_size=9)
+    community = ls.leiden_algorithm(min_community_size=5)
     # print(community)
     # print(len(community))
 if __name__ == "__main__":
