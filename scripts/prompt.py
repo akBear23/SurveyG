@@ -136,7 +136,11 @@ REQUIREMENTS:
    - **Forward-Looking**: Address emerging trends, challenges, and ethical considerations
    - Show connections and evolution between works, not just list them
 
-3. **Section Design Guidelines**:
+3. **Writing Quality Standards**:
+   - Avoid repetitive transitional phrases; use varied language
+   - Create clear section boundaries with no content overlap
+
+4. **Section Design Guidelines**:
    
    **Early Sections (Foundation Building)**:
    - Section 1: Motivation and scope
@@ -153,7 +157,7 @@ REQUIREMENTS:
    - Dedicated applications section showing real-world impact
    - Conclusion with theoretical gaps, practical challenges, and ethical considerations
 
-4. **Evidence Tracking**:
+5. **Evidence Tracking**:
    - Link each section to supporting evidence from both taxonomies and development paths
    - Use layer numbers (1,2,3) for taxonomy-based sections
    - Use seed IDs for development-path-based sections
@@ -172,8 +176,8 @@ Return a JSON array where each element represents ONE section:
     *   1.1. Background: Knowledge Graphs and Their Significance
     *   1.2. The Role of Knowledge Graph Embedding
     *   1.3. Scope and Organization of the Review",
-        "section_focus": "This section introduces Knowledge Graphs (KGs) and the fundamental problem of Knowledge Graph Embedding (KGE). It highlights the importance of KGE for various AI tasks and outlines the scope and structure of the review.",
-        "proof_ids": [layer_1, community_2]
+        "section_focus": "A 100-150 words paragraph",
+        "proof_ids": ["layer_1", "community_2"]
       ], 
       ...
 ```
@@ -183,8 +187,7 @@ CRITICAL JSON REQUIREMENTS:
 - Escape special characters properly
 - Section titles should be numbered (1., 2., 3., etc.)
 - Subsections numbered relative to parent (2.1., 2.2., etc.)
-- Each section_focus should be approximately 100-150 words
-
+- section_focus will have 100-150 words.
 """
         
         self.EVALUATE_OUTLINE_PROMPT = """
@@ -226,6 +229,12 @@ Evaluate the literature review outline for: '[QUERY]'
 - [ ] Valid JSON structure with proper escaping
 - [ ] All required fields present and properly formatted
 - [ ] Section titles are clear and descriptive
+
+## 6. Writing Quality Indicators
+- [ ] No redundant content across sections
+- [ ] Varied language (avoids formulaic phrases)
+- [ ] Clear section boundaries without overlap
+- [ ] Smooth transitions between major sections
 
 # OUTPUT FORMAT
 
@@ -415,94 +424,119 @@ Ensure the section demonstrates:
         Consider a section satisfactory if overall_score >= 3.5 and no individual score is below 3.0.
         """
         self.SECTION_IMPROVE_PROMPT = """
+Improve the following literature review section based on evaluation feedback and additional papers.
 
-  Improve the following literature review section based on evaluation feedback and additional papers.
+**Section Title**: [SECTION_TITLE]
+**Section Focus**: [SECTION_FOCUS]
 
- 
+**Current Section Content**:
+[CURRENT_CONTENT]
 
-  **Section Title**: [SECTION_TITLE]
+**Evaluation Feedback**:
+- Overall Score: [OVERALL_SCORE]
+- Synthesis Quality: [SYNTHESIS_SCORE] (Target: 4.5+)
+- Critical Analysis: [CRITICAL_SCORE] (Target: 4.5+)
+- Strengths: [STRENGTH]
+- Weaknesses: [WEAKNESS]
+- Specific Improvements Needed: [IMPROVEMENT_NEEDED]
 
-  **Section Focus**: [SECTION_FOCUS]
+**Additional Papers Retrieved**:
+[ADDITIONAL_INFO]
 
- 
+**MANDATORY IMPROVEMENT ACTIONS:**
 
-  **Current Section Content**:
+1. **Enhance Synthesis (Priority 1):**
+   - ADD 3+ explicit comparative statements per subsection using phrases like:
+     * "Unlike [A], [B] addresses X through mechanism Y"
+     * "In contrast to [A]'s approach, [B, C] adopt strategy X because Y"
+     * "[Method A] and [Method B] converge on principle X but diverge on dimension Y"
+   - IDENTIFY patterns: "[Papers A, B, C] all exhibit trade-off between X and Y, suggesting 
+     fundamental constraint Z in this problem domain"
+   - MAP evolution: "The field progressed from [early assumption/method X] (Papers A, B) to 
+     [later recognition Y] (Papers C, D) to [current approach Z] (Papers E, F)"
+   - HIGHLIGHT contradictions with analysis: "[A] reports improvement under condition X, 
+     while [B] observes degradation under condition Y, indicating sensitivity to Z"
+   - BUILD frameworks: "Approaches can be categorized along dimensions [D1, D2], with [methods X] 
+     optimizing for [D1] and [methods Y] for [D2]"
+   
+2. **Deepen Critical Analysis (Priority 2):**
+   - For EACH major approach, explain WHY limitations exist:
+     * "Cannot handle scenario X because mechanism Y relies on assumption Z, which breaks when W"
+     * Not just "has limitations" but the theoretical/practical constraint causing it
+   - QUESTION assumptions systematically:
+     * "While [Paper X] claims generalizability, it assumes [Y], limiting applicability to domains where [Y] holds"
+     * "The evaluation uses metric X, which may overestimate performance because it doesn't account for [realistic constraint Y]"
+   - ANALYZE trade-offs with specifics:
+     * "Improves accuracy by X% but increases computational cost by Y-fold and requires Z times more training data"
+     * Explain when/why trade-off is acceptable or problematic
+   - CRITIQUE methodology:
+     * "The comparison omits baseline X, making it unclear whether improvement stems from [claimed innovation] or [confounding factor]"
+     * "Sample size of N on dataset D limits generalizability to [broader population/scenario]"
+   
+3. **Add Systematic Comparisons:**
+   - Create comparison frameworks: "Three paradigms emerge—[A, B, C]—differing in [dimensions X, Y, Z]"
+   - Tabular or structured comparison: "On sparse data, Method A outperforms B (X% vs Y%) 
+     due to mechanism Z, but this reverses on dense data where B's assumption W holds"
+   - Multi-dimensional evaluation: Compare approaches on accuracy, efficiency, interpretability, 
+     scalability, assumptions, etc.
+   
+4. **Ground in Theory/Mechanisms:**
+   - Replace descriptive statements with explanatory ones:
+     * WEAK: "Method X performs well on task Y"
+     * STRONG: "Method X's use of mechanism A enables handling of task Y's characteristic B, 
+       as evidenced by C% improvement on dataset D"
+   - Explain empirical observations through underlying mechanisms or constraints
+   
+5. **Increase Specificity:**
+   - Add quantitative evidence: "achieves 87.3% accuracy", "reduces training time from X to Y hours"
+   - Specify conditions: "on datasets with density > X", "when feature Y is available"
+   - Compare numerically: "[A] reaches X% while [B] achieves Y% but with Z parameters vs W parameters"
 
-  [CURRENT_CONTENT]
+**REVISION FRAMEWORK - Apply to Each Major Approach/Finding:**
 
- 
+[TOPIC/APPROACH NAME] (typically 1-2 paragraphs per major approach)
 
-  **Evaluation Feedback**:
+**Structure:**
+1. **Context & Innovation**: What prior work motivated this? What's the key innovation? 
+   "Building on [Prior Work]'s observation that X, [This Work] introduces [innovation Y] to address 
+   [limitation Z]"
 
-  - Overall Score: [OVERALL_SCORE]
+2. **Evidence**: What empirical support exists? Under what conditions?
+   "[Paper A] demonstrates effectiveness on [dataset/scenario X], achieving [metric Y] of [value Z]"
 
-  - Strengths: [STRENGTH]
+3. **Mechanism**: How does it work? (Brief technical explanation of key idea)
+   "The core mechanism involves [brief description], which enables [capability X]"
 
-  - Weaknesses: [WEAKNESS]
+4. **Comparison**: How does it differ from alternatives?
+   "Unlike [Alternative A], which relies on [mechanism X], this approach uses [mechanism Y], 
+   trading [benefit of A] for [benefit of this work]"
 
-  - Areas for Improvement: [IMPROVEMENT_NEEDED]
+5. **Critical Evaluation**: What are theoretical and practical limitations? WHY?
+   "Cannot handle [scenario X] because [theoretical constraint Y: e.g., assumption Z must hold / 
+   complexity grows as O(N²) / requires labeled data]"
+   "While effective on [condition A], [Paper B] shows degradation under [condition C] due to [reason D]"
 
- 
+6. **Trade-offs**: What are the costs/benefits?
+   "Achieves [improvement X] but requires [cost Y: e.g., more data / computational resources / 
+   restrictive assumptions]"
 
-  **Additional Papers Retrieved**:
 
-  [ADDITIONAL_INFO]
-
- 
-
-  **Improvement Instructions**:
-
-  1. Address the specific weaknesses identified in the evaluation
-
-  2. Incorporate relevant information from the additional papers
-
-  3. Improve citation density and academic rigor
-
-  4. Enhance synthesis and critical analysis
-
-  5. Ensure the content stays focused on: [SECTION_FOCUS]
-
-  6. Maintain academic writing style
-
-  7. Use proper LaTeX citations (\\cite{{citation_key}})
-
- 
-
-  **Requirements**:
-
-  1. The generated text have to be in LaTeX, use proper LaTeX citations (\\cite{{citation_key}}) throughout the text
-
-  2. Focus ONLY on the specific aspect assigned to this section
-
-  3. Academic writing style with critical analysis
-
-  4. Synthesize information across papers, don't just list them
-
-  5. At least 800 words for this section
-
-  6. The sub sections and sub sub sections have to follow the given section outline, about 300-800 words for each sub section and each sub sub section. Before creating sub sections, ensure that the main section has provide a comprehensive overview of the content in this section, at least 300 words.
-
-  7. Include specific examples and evidence with proper citations
-
-  8. Provide critical evaluation and comparative analysis
-
-  9. Ensure coherent organization and logical flow
-
-  Ensure the section demonstrates:
-
-  - Comprehensive coverage with deep critical evaluation
-
-  - Explicit synthesis showing relationships between studies
-
-  - Analytical depth beyond mere description
-
-  - Critical comparison of approaches with justified assessments
-
-  - Discussion of WHY limitations exist, not just WHAT they are
-
-  Write the improved section content only:
-
-  """
+**Requirements for Improved Version:**
+1. LaTeX format with proper \\cite{{citation_key}} citations throughout
+2. At least 1000 words total
+3. Sub-sections: at least 500 words each with clear focus
+4. Main section overview: 300+ words providing roadmap and key themes
+5. **Minimum per subsection:**
+   - 3 explicit comparative/contrastive statements
+   - 2 limitation explanations with underlying reasons (WHY)
+   - 1 pattern identification across multiple papers
+   - 1 trade-off analysis with conditions/quantification
+   - 1 assumption questioning or methodological critique
+6. Explicitly address evaluation feedback and example revisions
+7. Incorporate relevant information from additional papers
+8. Reference and build on previous sections' insights
+Write the improved section content only (no meta-commentary):
+"""
     def generate_prompt(self, template, paras):
         prompt = template
         for k in paras.keys():

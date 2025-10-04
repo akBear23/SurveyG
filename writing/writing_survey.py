@@ -257,6 +257,8 @@ class LiteratureReviewGenerator:
                                                                     "SECTION_FOCUS": section_focus,
                                                                     "CURRENT_CONTENT": current_content,
                                                                     "OVERALL_SCORE": {evaluation_feedback.get('overall_score', 'N/A')},
+                                                                    "SYNTHESIS_SCORE": {evaluation_feedback.get('individual_scores', {}).get('synthesis_quality', 'N/A')},
+                                                                    "CRITICAL_SCORE": {evaluation_feedback.get('individual_scores', {}).get('critical_analysis', 'N/A')},
                                                                     "STRENGTHS": {', '.join(evaluation_feedback.get('strengths', []))},
                                                                     "WEAKNESS": {', '.join(evaluation_feedback.get('weaknesses', []))},
                                                                     "IMPROVEMENT_NEEDED": {', '.join(evaluation_feedback.get('improvement_needed', []))},
