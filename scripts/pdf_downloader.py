@@ -66,6 +66,11 @@ def download_paper(filename, url):
     
         # Step 3: If not a direct PDF link, scrape the page for a PDF download link (DOI case).
         # print("Final URL is not a direct PDF. Scraping for a PDF link...")
+        if "mdpi" in final_url:
+            print("Trying to download with selenium crawler")
+            download_with_selenium(final_url, filename)
+            return
+            
         soup = BeautifulSoup(response.text, 'html.parser')
         pdf_link_element = None
 
@@ -76,8 +81,7 @@ def download_paper(filename, url):
             pdf_link_element = soup.find('a', string=re.compile(r'PDF', re.I))  # Find by case-insensitive text "PDF"
         if not pdf_link_element:
             pdf_link_element = soup.find('a', href=re.compile(r'\.pdf$', re.I))  # Find by href ending in .pdf
-        if "mdpi" in final_url:
-            download_with_selenium(final_url, filename)
+        
         if "ieeexplore.ieee.org" in final_url:
             pdf_link_element = soup.find('a', {'class': 'document-access-icon-pdf'})
             if pdf_link_element:
