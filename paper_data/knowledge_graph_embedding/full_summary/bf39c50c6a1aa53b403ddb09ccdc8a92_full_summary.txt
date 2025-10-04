@@ -1,0 +1,38 @@
+File: paper_data/knowledge_graph_embedding/658702b2fa647ae7eaf1255058105da9eefe6f52.pdf
+Created: 2025-10-03T10:39:46.931329
+Keywords: knowledge graph embedding (KGE), hyperparameter importance, embedding quality, Sobol sensitivity analysis, dataset-specific tuning strategies, Mean Reciprocal Rank (MRR), knowledge graph characteristics, data leakage, UMLS-43 leakage-robust variant, hyperparameter sensitivities variability, empirical evidence, link prediction
+==================================================
+INTRIGUING ABSTRACT:
+==================================================
+Navigating the complex landscape of Knowledge Graph Embedding (KGE) hyperparameter tuning is a persistent challenge, often relying on resource-intensive trial-and-error. This study presents a groundbreaking empirical investigation into the true impact of KGE hyperparameters, revealing that their relative importance is *not universal* but profoundly *dataset-dependent*.
+
+Through tens of thousands of KGE trials and rigorous Sobol sensitivity analysis on Mean Reciprocal Rank (MRR) scores across benchmark datasets (FB15k-237, UMLS, WN18RR), we precisely quantify how hyperparameter influence varies. Our findings attribute these critical inconsistencies to distinct graph characteristics like density and node degree distribution, fundamentally challenging conventional tuning wisdom. Moreover, we identify and mitigate data leakage in the UMLS dataset, introducing UMLS-43, a novel, leakage-robust variant that significantly enhances its utility for future link prediction research. This work shifts the paradigm from 'one-size-fits-all' tuning to a more informed, dataset-specific approach, offering invaluable guidance for researchers to achieve superior KGE quality with unprecedented efficiency and rigor.
+
+==================================================
+FULL SUMMARY:
+==================================================
+Here is a focused summary of the empirical study by \cite{lloyd2022} for a literature review:
+
+1.  **Research Questions & Hypotheses**
+    This study empirically investigates the relative importance of hyperparameters in knowledge graph embedding (KGE) quality. It aims to determine how tuning different hyperparameters affects the variance of embedding quality and if this importance varies across different knowledge graphs. The implicit hypothesis is that not all hyperparameters contribute equally to embedding quality, and their impact is dataset-dependent.
+
+2.  **Study Design & Methodology**
+    The study employed an experimental design involving tens of thousands of KGE trials across various datasets and methods. Data collection involved running 13,450 embedding trials with hyperparameter values chosen by Sobol sequence. A Sobol sensitivity analysis was then performed on linear regression models, which regressed embedding quality (measured by MRR) on hyperparameter configurations.
+
+3.  **Data & Participants**
+    The study utilized three well-known benchmark knowledge graphs: FB15k-237, UMLS, and WN18RR, which vary in node count, edge count, density, and other structural characteristics. A total of 13,450 embedding trials were successfully completed across 167 valid jobs, using various KGE methods available in the LibKGE library.
+
+4.  **Key Empirical Findings**
+    *   There is substantial variability in hyperparameter sensitivities between knowledge graphs, suggesting that optimal tuning strategies are dataset-specific.
+    *   Differing dataset characteristics, such as graph density and node degree distribution, are identified as probable causes for these inconsistencies in hyperparameter importance.
+    *   The UMLS dataset consistently yielded higher Mean Reciprocal Rank (MRR) scores compared to FB15k-237 and WN18RR, indicating it presents an "easier" link prediction problem.
+    *   The authors identified several inverse relations in the UMLS knowledge graph (e.g., 'degree_of', 'precedes', 'derivative_of') that could cause data leakage, leading to the derivation of UMLS-43, a leakage-robust variant.
+
+5.  **Statistical Analysis**
+    For each knowledge graph, the top 5% of trials by embedding quality had their MRR scores regressed on corresponding hyperparameter configurations using linear regression. A Sobol sensitivity analysis was then applied to these models to calculate first-order, second-order, and total-order Sobol indices, indicating the proportion of output variance attributable to individual inputs or their interactions. Pairwise Pearson's correlation was used to quantify agreement between sensitivities across datasets.
+
+6.  **Validity & Limitations**
+    A limitation is that the MRR metric used for embedding quality does not allow for direct comparisons of quality *between* different knowledge graphs, only within them. Additionally, some KGE methods (e.g., RotatE, TransH) failed to complete trials on larger datasets, potentially due to computational demands or implementation inefficiencies.
+
+7.  **Empirical Contribution**
+    This study provides novel empirical evidence on the varying importance of KGE hyperparameters across diverse knowledge graphs, which can inform more efficient and targeted hyperparameter tuning strategies. It also contributes UMLS-43, a new leakage-robust variant of the UMLS knowledge graph, enhancing its utility for future research.

@@ -1,0 +1,69 @@
+File: paper_data/knowledge_graph_embedding/cc6282f0e8a864a1a3aca18036b45c899b0098b7.pdf
+Created: 2025-10-01T23:00:06.523317
+Keywords: Large Multimodal Models (LMMs), Hallucination mitigation, Video understanding, HAVEN Benchmark, Video-thinking model, Supervised Reasoning Fine-Tuning (SRFT), Thinking-based Direct Preference Optimization (TDPO), Temporal dynamics, Chain-of-Thought reasoning, Multi-dimensional benchmark design, Quantitative evaluation, Influential factors on hallucinations, Model reliability, Trustworthy AI
+==================================================
+INTRIGUING ABSTRACT:
+==================================================
+The pervasive challenge of hallucination in Large Multimodal Models (LMMs) critically undermines their trustworthiness, particularly in the dynamic and complex domain of video understanding. We introduce **HAVEN**, the first comprehensive, multi-dimensional benchmark meticulously designed to quantitatively evaluate LMM hallucinations across causes (e.g., prior knowledge conflict), aspects (object, scene, event), and question formats. HAVEN exposes the nuanced failure modes of 16 diverse LMMs, revealing critical insights into influencing factors like video duration and question complexity.
+
+To combat these inaccuracies, we propose a novel **video-thinking model**, employing a two-stage training strategy: Supervised Reasoning Fine-Tuning (SRFT) to instill Chain-of-Thought reasoning, followed by Thinking-based Direct Preference Optimization (TDPO) to ground fabricated reasoning with stronger factual feedback. Our model significantly reduces hallucination rates by 7.65% and improves response consistency by 4.5%. This work establishes a vital standard for rigorous evaluation and offers a powerful mitigation strategy, paving the way for more reliable and trustworthy LMMs in high-stakes video applications.
+
+==================================================
+FULL SUMMARY:
+==================================================
+This paper by \cite{gao2025} addresses the critical issue of hallucination in Large Multimodal Models (LMMs) specifically within the dynamic and complex domain of video understanding.
+
+Here's a focused summary for literature review:
+
+*   **Research Problem & Motivation**
+    *   **Specific technical problem**: LMMs exhibit hallucinations, generating responses that appear correct but are factually inaccurate, particularly in video understanding tasks.
+    *   **Importance and Challenge**: Hallucinations undermine user trust and limit LMM applicability in high-stakes areas (e.g., healthcare, autonomous driving). Video modality is inherently more challenging than static images or text due to its temporal dynamics, requiring analysis of continuous changes in actions, movements, and scene transitions.
+
+*   **Related Work & Positioning**
+    *   **Relation to existing approaches**: While LLMs and LMMs (for image understanding) have been studied for hallucinations, previous LMM research primarily focused on static image inputs \cite{gao2025}.
+    *   **Limitations of previous solutions**: Existing benchmarks for LMM hallucinations are predominantly image-centric. Although some video hallucination benchmarks exist (e.g., Video-Hallucer), they often oversimplify by considering only one hallucination dimension or treating multiple dimensions at the same level, leading to category overlaps \cite{gao2025}.
+
+*   **Technical Approach & Innovation**
+    *   **Core technical method/algorithm**:
+        *   **HAVEN Benchmark**: A novel, comprehensive benchmark designed for quantitatively evaluating LMM hallucinations in video understanding.
+        *   **Video-thinking model**: A two-step training strategy to mitigate hallucinations by enhancing LMMs' reasoning abilities.
+    *   **Novelty**:
+        *   HAVEN is the first comprehensive benchmark for video hallucination, meticulously designed across three dimensions: hallucination causes, hallucination aspects, and question formats \cite{gao2025}.
+        *   The video-thinking model introduces a novel training methodology combining Supervised Reasoning Fine-Tuning (SRFT) and Thinking-based Direct Preference Optimization (TDPO), inspired by recent thinking models \cite{gao2025}.
+
+*   **Key Technical Contributions**
+    *   **Novel algorithms, methods, or techniques**:
+        *   **HAVEN Benchmark**: Comprises 6,497 questions categorized by:
+            *   **Causes**: Conflict with prior knowledge, in-context conflict, and inherent capability deficiencies.
+            *   **Aspects**: Object, scene, and event hallucinations.
+            *   **Question Formats**: Binary-choice, multiple-choice, and short-answer.
+        *   **Video-thinking model**: A two-stage training strategy:
+            *   **SRFT**: Supervised fine-tuning using videos (derived from images) and long Chain-of-Thought answers distilled from image-thinking models (e.g., QVQ, OpenAI o1) to instill thinking capabilities.
+            *   **TDPO**: Direct preference optimization that fine-tunes the thinking component at word and sentence levels, providing stronger feedback for fabricated reasoning to ensure factual grounding.
+    *   **System design or architectural innovations**: The multi-dimensional design of the HAVEN benchmark for granular evaluation. The two-stage thinking-based training strategy for hallucination mitigation.
+    *   **Theoretical insights or analysis**: Quantitative study of 7 influential factors on LMM hallucinations, including video duration, frame count, question complexity, model size, and chain-of-thought reasoning \cite{gao2025}.
+
+*   **Experimental Validation**
+    *   **Experiments conducted**:
+        *   Evaluated 16 diverse LMMs (ranging from 3B to 34B parameters, including GPT4o-mini) on the HAVEN benchmark for both hallucination accuracy and response consistency \cite{gao2025}.
+        *   Analyzed the impact of video duration, frame count, and question length on LMM performance \cite{gao2025}.
+        *   Demonstrated the effectiveness of the proposed video-thinking model (LLaVA-NEXT-Video-DPO-7B) in mitigating hallucinations.
+    *   **Key performance metrics and comparison results**:
+        *   **Hallucination Evaluation (Accuracy)**: Valley-Eagle-7B (61.29%) and GPT4o-mini (56.80%) achieved the lowest hallucination rates overall. GPT4o-mini excelled in in-context conflicts, while Valley-Eagle-7B performed best in prior knowledge conflicts \cite{gao2025}.
+        *   **Consistency Evaluation (Bias Score)**: Qwen2.5-VL-3B (27.66%) and Valley-Eagle-7B (28.31%) showed the highest response consistency \cite{gao2025}.
+        *   **Mitigation Results**: The proposed video-thinking model improved baseline accuracy by 7.65% on hallucination evaluation and reduced the bias score by 4.5% \cite{gao2025}.
+        *   **Factor Analysis**: Performance initially improves with video duration/frame count but then declines; decreases with question complexity; improves with increased frame sampling; larger model sizes generally reduce hallucinations and increase consistency; chain-of-thought reasoning reduces hallucinations \cite{gao2025}.
+
+*   **Limitations & Scope**
+    *   **Technical limitations/assumptions**: Many evaluated LMMs primarily process visual content from videos, often not incorporating audio inputs \cite{gao2025}. The evaluation relies on GPT4o-mini as an LLM judge, which introduces a dependency on its own judgment capabilities.
+    *   **Scope of applicability**: The work focuses specifically on hallucination in LMMs for video understanding, with the mitigation strategy being a training-phase intervention.
+
+*   **Technical Significance**
+    *   **Advances the technical state-of-the-art**:
+        *   Establishes the first comprehensive, multi-dimensional benchmark (HAVEN) for evaluating video hallucination in LMMs, filling a critical gap in the field \cite{gao2025}.
+        *   Introduces a novel and effective thinking-based training strategy (SRFT + TDPO) that significantly reduces hallucinations and improves consistency in LMMs for video understanding \cite{gao2025}.
+        *   Provides valuable quantitative insights into factors influencing LMM hallucinations in video, guiding future model development \cite{gao2025}.
+    *   **Potential impact on future research**:
+        *   HAVEN can serve as a standard for rigorous evaluation, fostering the development of more reliable and trustworthy LMMs for video tasks.
+        *   The proposed mitigation strategy offers a promising direction for enhancing LMM robustness, potentially extending to other multimodal tasks.
+        *   The detailed analysis of influencing factors can inform the design of more robust LMM architectures and training paradigms, accelerating progress in reliable video AI.

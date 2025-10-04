@@ -1,0 +1,48 @@
+File: paper_data/knowledge_graph_embedding/acc855d74431537b98de5185e065e4eacbab7b26.pdf
+Created: 2025-10-03T11:28:04.725982
+Keywords: Knowledge Graph Embedding Models (KGEMs), reproducibility study, performance variability, model architecture, training configurations, inverse relations modeling, large-scale benchmarking, unified framework (PyKEEN), hyper-parameter optimization, reproducibility crisis, state-of-the-art competitiveness, empirical comparison, shallow embedding approaches
+==================================================
+INTRIGUING ABSTRACT:
+==================================================
+The reproducibility crisis casts a long shadow over machine learning research, particularly in the complex domain of Knowledge Graph Embedding Models (KGEMs). This paper presents an unprecedented, large-scale empirical study to unravel the true performance landscape of 21 diverse KGEMs. We re-implemented these models within a unified, open-source PyKEEN framework, systematically varying critical components including model architecture, training approaches, loss functions, optimizers, and the explicit modeling of inverse relations across thousands of experiments.
+
+Our findings reveal significant reproducibility challenges, with many previously reported results proving elusive without extensive re-optimization. Crucially, we demonstrate that KGEM performance is not solely dictated by architecture, but by the intricate synergy of its entire configuration stack. We show that numerous established KGEMs, when meticulously configured, can achieve state-of-the-art link prediction performance, often surpassing their published bests. This work provides a vital benchmark, demystifies performance variability, and offers actionable best practices, fundamentally shifting how researchers approach KGEM development and evaluation.
+
+==================================================
+FULL SUMMARY:
+==================================================
+Here's a focused summary of the empirical study by \cite{ali2020} for a literature review:
+
+1.  **Research Questions & Hypotheses**
+    *   The study investigates the reproducibility of previously reported results for Knowledge Graph Embedding Models (KGEMs) and aims to identify factors contributing to performance variability.
+    *   It empirically questions how model architecture, training approaches, loss functions, optimizers, and the explicit modeling of inverse relations influence KGEM performance.
+    *   Implicit hypotheses include that performance is not solely determined by model architecture, and that careful configuration can enable various architectures to achieve state-of-the-art results.
+
+2.  **Study Design & Methodology**
+    *   The study employed a two-phase design: a reproducibility study and a large-scale benchmarking study.
+    *   Researchers re-implemented 21 KGEMs, along with their training pipelines, loss functions, and evaluation metrics, within a unified, open-source PyKEEN framework to ensure fair and consistent comparison.
+    *   The benchmarking systematically varied hyper-parameters, training approaches (local closed world assumption, stochastic local closed world assumption), loss functions, optimizers, and the explicit modeling of inverse relations.
+
+3.  **Data & Participants**
+    *   The study evaluated 21 distinct Knowledge Graph Embedding Models (KGEMs).
+    *   Experiments were conducted on four benchmark datasets (specific names not provided in the snippet).
+    *   The large-scale benchmarking involved "several thousands of experiments" consuming 24,804 GPU hours.
+
+4.  **Key Empirical Findings**
+    *   Reproducibility varied significantly: some previously reported results were reproduced with original hyper-parameters, others only with alternate hyper-parameters, and some could not be reproduced at all.
+    *   Model performance is crucially determined by the combination of model architecture, training approach, loss function, and the explicit modeling of inverse relations, rather than by architecture alone.
+    *   Several KGEM architectures, when carefully configured and optimized, can achieve performance competitive with state-of-the-art models.
+    *   The study provided insights into best practices and optimal configurations for each evaluated model, identifying improvements over previously published best configurations.
+
+5.  **Statistical Analysis**
+    *   The study involved a large-scale empirical comparison of KGEM performance, with thousands of experiments.
+    *   Performance was assessed using standard link prediction evaluation metrics (e.g., plausibility scores, likely including MRR and Hits@k, though not explicitly named in the snippet).
+    *   The analysis focused on identifying significant patterns and relationships between model components and overall performance, leveraging extensive computational resources for comprehensive exploration.
+
+6.  **Validity & Limitations**
+    *   The study enhanced external validity by re-implementing models in a unified framework, directly addressing the heterogeneity and lack of precise hyper-parameter specifications that plagued prior research.
+    *   A limitation is its focus on shallow embedding approaches, excluding graph neural network (GNN)-based or temporal KGEMs.
+
+7.  **Empirical Contribution**
+    *   The study provides novel empirical evidence on the reproducibility crisis in KGEM research and offers the most comprehensive, fair benchmark of 21 models under a unified framework to date.
+    *   It contributes new knowledge by demonstrating the critical impact of training configurations and inverse relation modeling on KGEM performance, suggesting that careful optimization can elevate various architectures to state-of-the-art competitiveness.

@@ -1,0 +1,39 @@
+File: paper_data/knowledge_graph_embedding/2e69afb73097e2fc70c404b7e5817e3dbf3aee6d.pdf
+Created: 2025-10-01T22:37:39.039047
+Keywords: test-time scaling methods, multilingual mathematical reasoning, cross-lingual generalization, Outcome Reward Modeling (ORM), Process Reward Modeling (PRM), Budget Forcing (BF), MCLM benchmark, MR1-1.5B multilingual LLM, inference FLOPs, inconsistent performance gains, poor multilingual generalization, "Thinking LLMs", Fleiss’ Kappa, empirical study
+==================================================
+INTRIGUING ABSTRACT:
+==================================================
+Do advanced "thinking" strategies for Large Language Models truly generalize across languages? Our empirical study challenges the prevailing assumption that test-time scaling methods, highly effective in English, confer similar cross-lingual benefits for complex mathematical reasoning. Introducing MCLM, a novel multilingual math benchmark spanning 55 languages, and the new MR1-1.5B LLM, we rigorously evaluate Outcome Reward Modeling (ORM), Process Reward Modeling (PRM), and Budget Forcing (BF) under controlled inference FLOPs.
+
+Contrary to expectations, these methods exhibit alarmingly inconsistent and often negligible gains in non-English languages. Budget Forcing, for instance, delivered a substantial 20-point English AIME improvement but a mere 1.94-point average gain elsewhere, revealing profound multilingual generalization failures. ORM and PRM also showed unstable performance, with cross-lingual consistency, measured by Fleiss’ Kappa, deteriorating at higher FLOPs. This work critically demonstrates that test-time scaling alone does not ensure robust multilingual performance, highlighting a significant gap in current LLM development. Our findings underscore the urgent need for new approaches to achieve truly language-agnostic reasoning, providing MCLM and MR1-1.5B as crucial resources for future research.
+
+==================================================
+FULL SUMMARY:
+==================================================
+Here's a focused summary of the empirical study by \cite{son2025} for a literature review:
+
+1.  **Research Questions & Hypotheses**
+    *   This study investigates whether test-time scaling methods confer the same cross-lingual benefits observed with train-time scaling during pre-training, specifically in mathematical reasoning. It empirically questions the linguistic generalizability of these methods.
+    *   The implicit hypothesis tested is that test-time scaling alone does not yield robust multilingual performance, with gains being inconsistent across languages and difficulty levels.
+
+2.  **Study Design & Methodology**
+    *   The study employs an experimental design to evaluate three test-time scaling methods: Outcome Reward Modeling (ORM), Process Reward Modeling (PRM), and Budget Forcing (BF). It introduces MCLM, a novel multilingual math benchmark, and compares the performance of various LLMs (Qwen2.5-1.5B, 7B, and a newly trained MR1-1.5B) under controlled inference FLOPs.
+
+3.  **Data & Participants**
+    *   The primary data source is MCLM, a multilingual math benchmark featuring competition-level problems in up to 55 languages, comprising both machine-translated (AIME, MATH-500) and human-annotated (IMO, regional Olympiads) questions. The study utilized Qwen2.5-1.5B Math, Qwen2.5-7B Instruct, Qwen2.5-72B-RM/PRM, and the newly trained MR1-1.5B multilingual LLM.
+
+4.  **Key Empirical Findings**
+    *   ORM and PRM showed inconsistent performance gains: while effective on easier datasets (MT-MATH100), they yielded marginal or even negative gains on challenging ones (MT-AIME2024) across non-English languages.
+    *   Budget Forcing (BF) provided a substantial 20-point improvement on English AIME but only an average 1.94-point gain across other languages, highlighting poor multilingual generalization.
+    *   "Thinking LLMs" (e.g., using BF) achieved performance comparable to traditional scaling methods like best-of-N when constrained to similar inference FLOPs.
+    *   ORM consistently outperformed PRM in average accuracy, despite both methods exhibiting unstable multilingual performance growth with higher variance and lower Fleiss’ Kappa scores at increased inference FLOPs.
+
+5.  **Statistical Analysis**
+    *   Model performance was evaluated using accuracy and cross-lingual consistency, quantified by Fleiss’ kappa (κ), which measures agreement on problem correctness across different language versions of the model. Inference costs were standardized using a unified FLOPs budget, calculated based on generator and verifier parameters and the total number of generated tokens.
+
+6.  **Validity & Limitations**
+    *   The study addresses potential biases from machine-translated data by incorporating human-annotated questions. A limitation is the restricted range of model sizes explored, as models smaller than 1.5B lack capacity for complex problems, and larger models are computationally prohibitive.
+
+7.  **Empirical Contribution**
+    *   This study empirically demonstrates that test-time scaling methods, despite their effectiveness in English, do not robustly generalize to multilingual mathematical reasoning tasks. It contributes the MCLM benchmark and the MR1-1.5B multilingual LLM to facilitate further research into cross-lingual reasoning.

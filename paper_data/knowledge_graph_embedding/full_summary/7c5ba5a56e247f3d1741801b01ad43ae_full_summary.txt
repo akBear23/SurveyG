@@ -1,0 +1,37 @@
+File: paper_data/knowledge_graph_embedding/4f11d22d2cf7a7404b7ef82187c07eede7e7a2f4.pdf
+Created: 2025-10-01T22:25:00.517050
+Keywords: NTIRE 2025 Challenge, Efficient Super-Resolution (ESR), Single-Image Super-Resolution, Deep learning models, Runtime optimization, Model parameters, Floating-point operations (FLOPs), PSNR (Peak Signal-to-Noise Ratio), DIV2K LSDIR dataset, Efficiency advancements, Performance trade-offs, Holistic model optimization, Architectural innovations, State-of-the-art benchmarking
+==================================================
+INTRIGUING ABSTRACT:
+==================================================
+The quest for highly efficient deep learning models in computer vision is paramount, and the NTIRE 2025 Efficient Super-Resolution (ESR) Challenge has unveiled a new frontier in this domain. This report comprehensively reviews 43 cutting-edge submissions from 244 registered entrants, all striving to achieve x4 magnification with a minimum PSNR of 26.90 dB on DIV2K LSDIR datasets while drastically optimizing runtime, parameters, and FLOPs. We unveil a significant paradigm shift: while top solutions achieved remarkable runtimes below 10ms, overall success increasingly hinged on a *balanced* optimization across all efficiency metrics, rather than singular dominance in speed. This challenge highlights a crucial trade-off, where models minimizing parameters or FLOPs often exhibited higher runtimes, underscoring the complexity of holistic efficiency. The leading models, such as EMSR Group and XiaomiMM, exemplify this new era of balanced design. This report provides an invaluable benchmark, offering critical insights into current trends, performance trade-offs, and charting future directions for architectural innovations in ESR, guiding researchers towards truly holistic and efficient model development.
+
+==================================================
+FULL SUMMARY:
+==================================================
+Here's a focused summary of the NTIRE 2025 Efficient Super-Resolution Challenge Report for literature review:
+
+1.  **Review Scope & Objectives**
+    This paper presents a comprehensive review of the NTIRE 2025 Challenge on Single-Image Efficient Super-Resolution (ESR) \cite{ren2025}. The primary objective was to advance deep models that optimize computational metrics (runtime, parameters, FLOPs) while maintaining a minimum PSNR of 26.90 dB on the DIV2K LSDIR valid dataset and 26.99 dB on the DIV2K LSDIR test dataset. The challenge aimed to discover innovative solutions, benchmark their efficiency, and identify general trends for future efficient SR network design.
+
+2.  **Literature Coverage**
+    The report covers the methods submitted to the NTIRE 2025 Efficient Super-Resolution Challenge, which saw 244 registered entrants and 43 teams submitting valid entries \cite{ren2025}. Participants developed models to super-resolve LR images (x4 magnification) using the DIV2K and LSDIR datasets. The Edge-Enhanced Feature Distillation Network (EFDN) served as the baseline model, and submissions were evaluated against its efficiency metrics.
+
+3.  **Classification Framework**
+    The survey organizes the literature based on the challenge's evaluation protocol, categorizing methods by:
+    *   **Runtime**: Measured in milliseconds (ms), averaged on validation and test sets, with a high weighting (w1=0.7) in the overall score.
+    *   **Parameters**: Total number of model parameters (M), reflecting model complexity.
+    *   **FLOPs**: Floating-point operations (G), indicating computational complexity for a 256x256 input.
+    *   **Overall Score**: A weighted combination of runtime, parameters, and FLOPs scores, prioritizing speed efficiency.
+
+4.  **Key Findings & Insights**
+    *   Significant advancements in efficiency were observed, with the top 3 runtime solutions achieving below 10ms and the top 13 below 16ms \cite{ren2025}.
+    *   A notable shift occurred where runtime no longer predominantly dictated overall rankings, unlike previous years, indicating a move towards more balanced optimization across metrics.
+    *   Models optimized for minimal parameters and FLOPs (e.g., VEPG C, HannahSR, XUPTBoys) often exhibited relatively higher runtimes, highlighting a trade-off between computational complexity and execution speed.
+    *   The overall top-performing models (EMSR Group, XiaomiMM) demonstrated a balanced approach, not necessarily leading in any single efficiency metric but excelling in the weighted combination.
+
+5.  **Research Gaps & Future Directions**
+    The survey identifies a significant trade-off between model efficiency (parameters, FLOPs) and execution speed (runtime), suggesting that models optimized for one aspect might compromise on others \cite{ren2025}. Future research should focus on holistic model optimization, integrating more advanced optimization techniques, or exploring novel architectural innovations to enhance both computational efficiency and runtime performance simultaneously. The diverse rankings across metrics also suggest a need for continued innovation in model design beyond incremental improvements.
+
+6.  **Survey Contribution**
+    This report provides a comprehensive benchmark of state-of-the-art efficient single-image super-resolution techniques, meticulously analyzing 43 valid submissions to the NTIRE 2025 challenge \cite{ren2025}. It offers unique insights into current trends, performance trade-offs, and the evolving landscape of efficient SR, serving as an authoritative reference for researchers and practitioners in the field.

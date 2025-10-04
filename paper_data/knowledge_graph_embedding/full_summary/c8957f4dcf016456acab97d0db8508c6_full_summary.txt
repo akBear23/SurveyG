@@ -1,0 +1,81 @@
+File: paper_data/knowledge_graph_embedding/1ff2877358daf5b57b4234473c90895744ebc214.pdf
+Created: 2025-10-01T22:54:33.664888
+Keywords: Multimodal Large Language Models (MLLMs), long-chain reasoning, reinforcement learning (RL), sparse reward, advantage vanishing, information sharing, Share-GRPO, Semantically Consistent Transformation (SCT), Question space expansion, Hierarchical Advantage Estimation, multimodal reasoning, denser rewards, state-of-the-art MLLM reasoning
+==================================================
+INTRIGUING ABSTRACT:
+==================================================
+Unlocking robust long-chain reasoning in Multimodal Large Language Models (MLLMs) remains a critical challenge, with conventional reinforcement learning (RL) approaches often crippled by sparse rewards and advantage vanishing. We introduce **Share-GRPO**, a novel online MLLM RL framework that pioneers **information sharing** to overcome these fundamental limitations. Share-GRPO innovatively expands the reasoning space through **Semantically Consistent Transformation (SCT)**, generating diverse yet semantically equivalent question variants via both textual and multimodal augmentations. This expanded space, coupled with a novel **Hierarchical Advantage Estimation** mechanism, leverages shared reward signals across variants to provide denser, more stable advantage estimates. Our approach empirically demonstrates significantly denser rewards and higher valid advantage ratios, effectively mitigating sparse reward and advantage vanishing. Share-GRPO consistently outperforms state-of-the-art RL-based MLLMs on complex reasoning benchmarks like MathVista, MMStar, and MathVerse. This work establishes a new paradigm for enhancing MLLM reasoning, offering a robust foundation for more capable and reliable multimodal AI systems and inspiring future research in advanced data augmentation and information sharing for RL.
+
+==================================================
+FULL SUMMARY:
+==================================================
+Here's a focused summary of the technical paper for a literature review:
+
+### 1. Research Problem & Motivation
+
+*   **Specific Technical Problem**: Incentivizing the long-chain reasoning ability of Multimodal Large Language Models (MLLMs) using reinforcement learning (RL).
+*   **Importance and Challenge**:
+    *   MLLMs, especially smaller ones, often exhibit limited long-chain reasoning capabilities, making it difficult to apply RL effectively.
+    *   Direct application of existing LLM RL methods like Group Relative Policy Optimization (GRPO) to MLLMs suffers from two critical issues:
+        *   **Sparse Reward**: Due to limited reasoning ability, few generated reasoning paths receive positive rewards, leading to inefficient exploration and unstable training.
+        *   **Advantage Vanishing**: MLLMs tend to generate homogeneous responses for a given question, causing relative advantages (computed by GRPO) to approach or collapse to zero, rendering RL ineffective.
+
+### 2. Related Work & Positioning
+
+*   **Relation to Existing Approaches**:
+    *   Builds upon advancements in RL for LLMs (e.g., GRPO in DeepSeek-R1) which use online RL with rule-based reward functions.
+    *   Acknowledges MLLM reasoning methods like Chain-of-Thought (CoT) \cite{yao2025} and CoMCTS \cite{yao2025} that focus on step-by-step inference.
+    *   Relates to prior RL for MLLMs, including RLHF \cite{yao2025} and methods designing rule-based reward functions (e.g., Vision-R1, MM-Eureka, R1-V, Reason-RFT, R1-VL) to enhance reasoning.
+    *   Connects to the broader concept of information sharing in deep learning (e.g., cross-modal attention, contrastive learning, multi-task/multi-agent RL).
+*   **Limitations of Previous Solutions**:
+    *   Existing GRPO-like methods directly applied to MLLMs fail to address the sparse reward and advantage vanishing issues effectively.
+    *   Prior works attempting to mitigate these issues (e.g., step-wise rewards in R1-VL, sample selection in VL-Rethinker/Skywork R1, online filtering in MM-Eureka) do not leverage information sharing across an expanded question space.
+
+### 3. Technical Approach & Innovation
+
+*   **Core Technical Method**: \cite{yao2025} proposes **Share-GRPO**, a novel online MLLM reinforcement learning framework that introduces information sharing to mitigate sparse reward and advantage vanishing.
+    *   **Reasoning Space Expansion**:
+        *   **Question Space Expansion**: Employs **Semantically Consistent Transformation (SCT)** to generate a group of varied but semantically equivalent questions for each original input.
+            *   *Offline Textual SCT*: Uses GPT-4o to rewrite textual prompts into multiple variants, preserving original intent and answer.
+            *   *Online Multimodal SCT*: Applies visual transformations (e.g., rotation, noise injection) to images, carefully selected to preserve critical visual cues. A transformation-specific prompt is appended to the text for consistency.
+        *   **Solution Space Expansion**: The expanded question space allows the MLLM to explore a larger and more diverse set of reasoning trajectories.
+    *   **Shared Advantage Estimation**:
+        *   Uses rule-based reward functions (outcome-level accuracy and format reward).
+        *   Introduces **Hierarchical Advantage Estimation**:
+            *   **Global-level**: Computes relative advantages using rewards from *all* generated responses across *all* question variants of the same seed question.
+            *   **Local-level**: Computes relative advantages *within* the responses generated for each individual question variant.
+            *   The final advantage combines global and local estimates, with local advantages applied when responses originate from the same question variant.
+*   **Novelty/Differentiation**:
+    *   First work to introduce the concept of **information sharing** into MLLM reasoning reinforcement learning.
+    *   Innovatively expands the question space using both textual and multimodal semantically consistent transformations.
+    *   Proposes a novel **hierarchical advantage estimation** method that leverages shared reward information across question variants to provide more accurate and stable advantage signals.
+
+### 4. Key Technical Contributions
+
+*   **Novel Algorithms/Methods**:
+    *   **Share-GRPO**: A new RL framework for MLLMs that integrates information sharing to address sparse reward and advantage vanishing.
+    *   **Semantically Consistent Transformation (SCT)**: A technique for expanding the question space through both offline textual and online multimodal transformations.
+    *   **Hierarchical Advantage Estimation**: A method for computing more robust and fine-grained relative advantages by considering both global (across all variants) and local (within a variant) reward information.
+*   **Theoretical Insights/Analysis**: The approach is grounded in the idea that expanding the solution space and sharing information across related problem instances can lead to denser rewards and more diverse response distributions, thereby mitigating the core RL challenges.
+
+### 5. Experimental Validation
+
+*   **Experiments Conducted**: Extensive evaluations were performed on six widely-used MLLM reasoning benchmarks.
+*   **Key Performance Metrics and Comparison Results**:
+    *   \cite{yao2025} demonstrates that Share-GRPO provides **denser rewards** and **higher valid advantage ratios** compared to baseline GRPO, empirically confirming its effectiveness in mitigating sparse reward and advantage vanishing (Fig. 1b).
+    *   Share-GRPO consistently **outperforms the baseline** (e.g., Qwen2.5-VL-7B) and other state-of-the-art RL-based reasoning MLLMs (e.g., OpenVL, Thinker-7B, MM-Eureka-7B) on mathematical and general reasoning benchmarks such as MathVista, MMStar, and MathVerse (Fig. 1c).
+
+### 6. Limitations & Scope
+
+*   **Technical Limitations/Assumptions**:
+    *   The effectiveness relies on the "careful selection" of visual transformations that preserve critical visual cues for reasoning.
+    *   The online multimodal SCT involves a "manual textual transformation" to maintain semantic consistency, which might imply a degree of human intervention or careful prompt engineering.
+*   **Scope of Applicability**: Primarily focused on enhancing long-chain reasoning capabilities of MLLMs, particularly beneficial for models that initially exhibit limited reasoning ability.
+
+### 7. Technical Significance
+
+*   **Advancement of State-of-the-Art**: \cite{yao2025} significantly advances the state-of-the-art in MLLM reasoning by effectively addressing the long-standing challenges of sparse reward and advantage vanishing in RL for MLLMs. It is the first to explore information sharing in this context.
+*   **Potential Impact on Future Research**:
+    *   The proposed techniques (SCT and hierarchical advantage estimation) offer a novel paradigm for improving RL training stability and exploration in complex reasoning tasks.
+    *   Could inspire further research into advanced data augmentation and information sharing strategies for MLLM fine-tuning and RL.
+    *   The framework provides a robust foundation for developing more capable and reliable MLLMs for complex multimodal reasoning tasks.
