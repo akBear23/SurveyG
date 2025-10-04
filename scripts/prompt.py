@@ -187,7 +187,7 @@ CRITICAL JSON REQUIREMENTS:
 """
         
         self.EVALUATE_OUTLINE_PROMPT = """
-Evaluate the literature review outline for: '{query}'
+Evaluate the literature review outline for: '[QUERY]'
 
 # EVALUATION CRITERIA
 
@@ -249,8 +249,259 @@ Evaluate the literature review outline for: '{query}'
 
 ---
 Outline to evaluate:
-{outline_text}
+[OUTLINE_TEXT]
 """
+        self.WRITE_INITIAL_SECTION_PROMPT = """
+
+Write a comprehensive literature review section titled "[SECTION_TITLE]" in LaTeX format.
+
+**SECTION SPECIFIC FOCUS:** [SECTION_FOCUS]
+
+**Section taxonomies summaries and development directions:** [PROOFS_TEXT]
+
+**CRITICAL REQUIREMENTS:**
+
+1. **Content & Format:**
+
+  - Generate text in LaTeX format with proper citations (\\cite{{citation_key}})
+
+  - Focus ONLY on the specific aspect assigned to this section
+
+  - At least 500 words for this section
+
+  - Sub-sections follow the given outline (~200 words each)
+
+  - Main section overview (100+ words) BEFORE creating sub-sections
+
+  - No numbering in section/subsection titles
+
+2. **Academic Rigor & Synthesis (HIGH PRIORITY):**
+
+  - Synthesize information ACROSS papers - identify patterns, contradictions, and evolutionary trends
+
+  - Connect findings to broader themes (e.g., "arms race" dynamics, trade-offs)
+
+  - Make implicit connections EXPLICIT (e.g., "This approach addresses the limitation identified in [X] by...")
+
+  - Develop novel frameworks or taxonomies when synthesizing disparate studies
+
+  - Show how different concepts relate (e.g., data poisoning → evasion attacks)
+
+3. **Critical Analysis (HIGH PRIORITY):**
+
+  - Go beyond description - evaluate methodological strengths/weaknesses
+
+  - Compare approaches critically: "While [X] achieves Y, it fails to address Z unlike [W]"
+
+  - Identify WHY gaps/limitations exist (theoretical barriers, practical constraints)
+
+  - Analyze trade-offs explicitly (performance vs. privacy, accuracy vs. robustness)
+
+  - Question assumptions: "Despite claims of robustness, [X] assumes Y which may not hold in Z scenarios"
+
+  - Highlight contradictory findings and discuss possible reasons
+
+  - For each major approach, address: What works? What doesn't? Why? Under what conditions?
+
+4. **Evidence & Citation:**
+
+  - High citation density (8-10 citations minimum)
+
+  - Use specific examples with citations
+
+  - Include comparative statements: "[Paper A] shows X while [Paper B] demonstrates Y under different assumptions"
+
+5. **Organization:**
+
+  - Coherent flow with smooth transitions
+
+  - Integrate taxonomies summaries and development directions naturally
+
+  - Balance depth across sub-sections
+
+**ANALYTICAL FRAMEWORK - Apply these questions:**
+
+- What are the methodological limitations not discussed by the authors?
+
+- How do experimental setups affect generalizability?
+
+- What assumptions are made and are they realistic?
+
+- Where do findings contradict each other and why?
+
+- What theoretical gaps prevent solving identified problems?
+
+**Available Citations:**
+
+[CITATION_INFO]
+
+**SECTION OUTLINE:**
+
+[OUTLINE]
+
+**Papers to reference:**
+
+[PAPERS_SUMMARY]
+
+**Previous section if any:**
+
+[PRE_SECTION]
+
+**OUTPUT INSTRUCTIONS:**
+
+Write ONLY the content for "[SECTION_TITLE]" section focusing on: [SECTION_FOCUS]
+
+Ensure the section demonstrates:
+
+- Comprehensive coverage with deep critical evaluation
+
+- Explicit synthesis showing relationships between studies
+
+- Analytical depth beyond mere description
+
+- Critical comparison of approaches with justified assessments
+
+- Discussion of WHY limitations exist, not just WHAT they are
+
+"""
+        self.EVALUATE_SECTION_PROMPT = """
+        Evaluate the quality of this literature review section based on the following criteria:
+        
+        **Previous section if any:** [PRE_SECTION]
+        **Section Title**: [SECTION_TITLE]
+        **Expected Focus**: [SECTION_FOCUS]
+        **Overall Review Context: Outline**: [OUTLINE]
+        
+        **Section Content**:
+        [SECTION_CONTENT]
+        
+        **Evaluation Criteria** (Rate each from 1-5, where 5 is excellent):
+        
+        1. **Content Coverage** (1-5): Does the section comprehensively cover the expected focus area?
+        2. **Citation Density** (1-5): Are there sufficient and appropriate citations throughout the text?
+        3. **Academic Rigor** (1-5): Is the writing style academic and analytical rather than descriptive?
+        4. **Synthesis Quality** (1-5): Does it synthesize information across papers rather than just listing findings?
+        5. **Critical Analysis** (1-5): Does it provide critical evaluation and comparative analysis?
+        6. **Coherence** (1-5): Is the content well-organized and logically structured?
+        7. **Depth of Analysis** (1-5): Does it provide sufficient depth rather than surface-level discussion?
+        8. **Specificity** (1-5): Does it focus specifically on the assigned scope without overlap with other sections?
+        
+        **IMPORTANT**: 
+        - Return ONLY valid JSON without any markdown formatting or code blocks
+        - Escape all backslashes and quotes properly in JSON strings
+        - Do not include any special characters that might break JSON parsing
+        
+        **Response Format** (JSON only):
+        {{
+            "overall_score": <average_score>,
+            "individual_scores": {{
+                "content_coverage": <score>,
+                "citation_density": <score>,
+                "academic_rigor": <score>,
+                "synthesis_quality": <score>,
+                "critical_analysis": <score>,
+                "coherence": <score>,
+                "depth_of_analysis": <score>,
+                "specificity": <score>
+            }},
+            "strengths": ["list of strengths"],
+            "weaknesses": ["list of weaknesses"],
+            "is_satisfactory": <true/false>,
+            "improvement_needed": ["specific areas needing improvement"],
+            "suggested_queries": ["suggested search queries to find additional relevant papers"]
+        }}
+        
+        Consider a section satisfactory if overall_score >= 3.5 and no individual score is below 3.0.
+        """
+        self.SECTION_IMPROVE_PROMPT = """
+
+  Improve the following literature review section based on evaluation feedback and additional papers.
+
+ 
+
+  **Section Title**: [SECTION_TITLE]
+
+  **Section Focus**: [SECTION_FOCUS]
+
+ 
+
+  **Current Section Content**:
+
+  [CURRENT_CONTENT]
+
+ 
+
+  **Evaluation Feedback**:
+
+  - Overall Score: [OVERALL_SCORE]
+
+  - Strengths: [STRENGTH]
+
+  - Weaknesses: [WEAKNESS]
+
+  - Areas for Improvement: [IMPROVEMENT_NEEDED]
+
+ 
+
+  **Additional Papers Retrieved**:
+
+  [ADDITIONAL_INFO]
+
+ 
+
+  **Improvement Instructions**:
+
+  1. Address the specific weaknesses identified in the evaluation
+
+  2. Incorporate relevant information from the additional papers
+
+  3. Improve citation density and academic rigor
+
+  4. Enhance synthesis and critical analysis
+
+  5. Ensure the content stays focused on: [SECTION_FOCUS]
+
+  6. Maintain academic writing style
+
+  7. Use proper LaTeX citations (\\cite{{citation_key}})
+
+ 
+
+  **Requirements**:
+
+  1. The generated text have to be in LaTeX, use proper LaTeX citations (\\cite{{citation_key}}) throughout the text
+
+  2. Focus ONLY on the specific aspect assigned to this section
+
+  3. Academic writing style with critical analysis
+
+  4. Synthesize information across papers, don't just list them
+
+  5. At least 800 words for this section
+
+  6. The sub sections and sub sub sections have to follow the given section outline, about 300-800 words for each sub section and each sub sub section. Before creating sub sections, ensure that the main section has provide a comprehensive overview of the content in this section, at least 300 words.
+
+  7. Include specific examples and evidence with proper citations
+
+  8. Provide critical evaluation and comparative analysis
+
+  9. Ensure coherent organization and logical flow
+
+  Ensure the section demonstrates:
+
+  - Comprehensive coverage with deep critical evaluation
+
+  - Explicit synthesis showing relationships between studies
+
+  - Analytical depth beyond mere description
+
+  - Critical comparison of approaches with justified assessments
+
+  - Discussion of WHY limitations exist, not just WHAT they are
+
+  Write the improved section content only:
+
+  """
     def generate_prompt(self, template, paras):
         prompt = template
         for k in paras.keys():
