@@ -524,7 +524,7 @@ class LiteratureReviewGenerator:
         # print(check_variable_type(core_papers))
         # print(check_variable_type(all_papers))
         # Fix: ensure both are lists before concatenation
-        all_processed_papers = core_papers + all_papers
+        all_processed_papers = all_papers
         # print(all_processed_papers[0]['metadata'].keys())
         
         # Use core papers for section writing, but all papers for citations
