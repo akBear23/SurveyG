@@ -21,7 +21,6 @@ from writing.summarize import PaperSummarizerRAG
 import sys
 from dotenv import load_dotenv, find_dotenv
 from pathlib import Path 
-from scripts.prompt import PromptHelper
 
 class LiteratureReviewGenerator:
     def __init__(self, query, api_key: str):
@@ -31,7 +30,6 @@ class LiteratureReviewGenerator:
         Args:
             api_key (str): Gemini API key
         """
-        self.prompt_helper = PromptHelper()
         genai.configure(api_key=api_key)
         self.query = query
         self.save_dir = f"paper_data/{self.query.replace(' ', '_').replace(':', '')}/literature_review_output"
@@ -137,14 +135,55 @@ class LiteratureReviewGenerator:
         Returns:
             Dict: Evaluation results with scores and improvement suggestions
         """
-        evaluation_prompt = self.prompt_helper.generate_prompt(self.prompt_helper.EVALUATE_SECTION_PROMPT, 
-                                                               paras={
-                                                                   'PRE_SECTION': pre_section,
-                                                                   'SECTION_TITLE': section_title,
-                                                                   'SECTION_FOCUS': section_focus, 
-                                                                   'OUTLINE': outline,
-                                                                   'SECTION_CONTENT': section_content
-                                                               })
+        evaluation_prompt = f"""
+        Evaluate the quality of this literature review section based on the following criteria:
+        
+        **Previous section if any:** {pre_section}
+        **Section Title**: {section_title}
+        **Expected Focus**: {section_focus}
+        **Overall Review Context: Outline**: {outline}
+        
+        **Section Content**:
+        {section_content}
+        
+        **Evaluation Criteria** (Rate each from 1-5, where 5 is excellent):
+        
+        1. **Content Coverage** (1-5): Does the section comprehensively cover the expected focus area?
+        2. **Citation Density** (1-5): Are there sufficient and appropriate citations throughout the text?
+        3. **Academic Rigor** (1-5): Is the writing style academic and analytical rather than descriptive?
+        4. **Synthesis Quality** (1-5): Does it synthesize information across papers rather than just listing findings?
+        5. **Critical Analysis** (1-5): Does it provide critical evaluation and comparative analysis?
+        6. **Coherence** (1-5): Is the content well-organized and logically structured?
+        7. **Depth of Analysis** (1-5): Does it provide sufficient depth rather than surface-level discussion?
+        8. **Specificity** (1-5): Does it focus specifically on the assigned scope without overlap with other sections?
+        
+        **IMPORTANT**: 
+        - Return ONLY valid JSON without any markdown formatting or code blocks
+        - Escape all backslashes and quotes properly in JSON strings
+        - Do not include any special characters that might break JSON parsing
+        
+        **Response Format** (JSON only):
+        {{
+            "overall_score": <average_score>,
+            "individual_scores": {{
+                "content_coverage": <score>,
+                "citation_density": <score>,
+                "academic_rigor": <score>,
+                "synthesis_quality": <score>,
+                "critical_analysis": <score>,
+                "coherence": <score>,
+                "depth_of_analysis": <score>,
+                "specificity": <score>
+            }},
+            "strengths": ["list of strengths"],
+            "weaknesses": ["list of weaknesses"],
+            "is_satisfactory": <true/false>,
+            "improvement_needed": ["specific areas needing improvement"],
+            "suggested_queries": ["suggested search queries to find additional relevant papers"]
+        }}
+        
+        Consider a section satisfactory if overall_score >= 3.5 and no individual score is below 3.0.
+        """
         
         try:
             response = self.model.generate_content(
@@ -313,12 +352,46 @@ class LiteratureReviewGenerator:
             additional_info += f"Summary: {paper.get('full_summary', paper.get('abstract', 'N/A'))}\n"
             additional_info += f"Relevance Score: {paper.get('similarity_score', 0):.3f}\n"
             additional_info += f"Citation Key: {paper.get('citation_key', '')}\n\n"
-        improvement_prompt = self.prompt_helper.generate_prompt(self.prompt_helper.SECTION_IMPROVE_PROMPT,
-                                                                paras={
-                                                                    "SECTION_TITLE": section_title,
-                                                                    "SECTION_FOCUS": section_focus,
-                                                                    "CURRENT_CONTENT": current_content,
-                                                                })
+        improvement_prompt = f"""
+        Improve the following literature review section based on evaluation feedback and additional papers.
+        
+        **Section Title**: {section_title}
+        **Section Focus**: {section_focus}
+        
+        **Current Section Content**:
+        {current_content}
+        
+        **Evaluation Feedback**:
+        - Overall Score: {evaluation_feedback.get('overall_score', 'N/A')}/5
+        - Strengths: {', '.join(evaluation_feedback.get('strengths', []))}
+        - Weaknesses: {', '.join(evaluation_feedback.get('weaknesses', []))}
+        - Areas for Improvement: {', '.join(evaluation_feedback.get('improvement_needed', []))}
+        
+        **Additional Papers Retrieved**:
+        {additional_info}
+        
+        **Improvement Instructions**:
+        1. Address the specific weaknesses identified in the evaluation
+        2. Incorporate relevant information from the additional papers
+        3. Improve citation density and academic rigor
+        4. Enhance synthesis and critical analysis
+        5. Ensure the content stays focused on: {section_focus}
+        6. Maintain academic writing style
+        7. Use proper LaTeX citations (\\cite{{citation_key}})
+        
+        **Requirements**:        
+        1. The generated text have to be in LaTeX, use proper LaTeX citations (\\cite{{citation_key}}) throughout the text
+        2. Focus ONLY on the specific aspect assigned to this section
+        3. Academic writing style with critical analysis
+        4. Synthesize information across papers, don't just list them
+        5. At least 800 words for this section
+        6. The sub sections and sub sub sections have to follow the given section outline, about 300-800 words for each sub section and each sub sub section. Before creating sub sections, ensure that the main section has provide a comprehensive overview of the content in this section, at least 300 words.
+        7. Include specific examples and evidence with proper citations
+        8. Provide critical evaluation and comparative analysis
+        9. Ensure coherent organization and logical flow
+
+        Write the improved section content only:
+        """
         
         try:
             response = self.model.generate_content(
@@ -401,18 +474,7 @@ class LiteratureReviewGenerator:
             papers_summary += f"**Paper {i} ({paper['citation_key']})**: {paper['file_name']}\n{summary}\n\n"
         # step 3: get proofs text (including paper title, abstract, year from the graph attributes)
         proofs_text = self.get_proofs_text(proof_ids)
-        section_prompt = self.prompt_helper.generate_prompt(self.prompt_helper.WRITE_INITIAL_SECTION_PROMPT,
-                                                            paras={
-                                                                'SECTION_TITLE': section_title,
-                                                                'SECTION_FOCUS': section_focus,
-                                                                'PROOFS_TEXT': proofs_text,
-                                                                'CITATION_INFO': citations_info,
-                                                                'OUTLINE': outline,
-                                                                'PAPERS_SUMMARY': papers_summary[:50000],
-                                                                'PRE_SECTION': pre_section,
-                                                                'SECTION_TITLE': section_title,
-                                                                'SECTION_FOCUS': section_focus
-                                                            })
+        section_prompt = 
         
         # step 3: Generate initial section content
         try:
