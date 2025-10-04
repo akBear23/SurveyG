@@ -169,7 +169,7 @@ Return a JSON array where each element represents ONE section:
     *   1.2. The Role of Knowledge Graph Embedding
     *   1.3. Scope and Organization of the Review",
         "section_focus": "This section introduces Knowledge Graphs (KGs) and the fundamental problem of Knowledge Graph Embedding (KGE). It highlights the importance of KGE for various AI tasks and outlines the scope and structure of the review.",
-        "proof_ids": [1, 2]
+        "proof_ids": [layer_1, community_2]
       ], 
       ...
 ```
