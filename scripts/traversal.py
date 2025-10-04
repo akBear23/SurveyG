@@ -144,13 +144,14 @@ def summarize_community(query, G, papers):
 
 def generate_survey_outline(query, layer_taxonomies, development_directions, communities_summaries, previous_outline='', improvement_suggestions=''):
     taxonomy_text = ""
-    for layer in [1, 2, 3]:
+    for layer in [1]:
         layer_desc = {
             1: 'Foundational Layer',
             2: 'Development Layer', 
             3: 'Recent/Trending Layer'
         }
-        summary = layer_taxonomies.get(str(layer), {}).get('summary', '')
+        summary = layer_taxonomies.get(f'layer_{layer}', {}).get('summary', '')
+        # print(f"Layer {layer} summary: \n{summary}")
         if summary:
             taxonomy_text += f"\n### {layer_desc[layer]}:\n{summary}\n"
     
@@ -162,7 +163,7 @@ def generate_survey_outline(query, layer_taxonomies, development_directions, com
     
     community_text = ""
     for key, community in communities_summaries.items():
-        community_text += f"Group of papers {key} summary:\n{community.get('summary', '')}\n\n"
+        community_text += f"Paper community ID: {key} \nSummary:\n{community.get('summary', '')}\n\n"
 
 
     base_prompt = prompt_helper.generate_prompt(prompt_helper.OUTLINE_PROMPT, 
@@ -475,43 +476,43 @@ def main():
     # #     download_paper(save_path, paper_attr.get('pdf_link'))
 
     # --- Layer method group summaries ---
-    layer_method_group_txt = ""
-    layer_method_group_json = {}
-    for layer in [1]:
-        layer_summary, papers = summarize_layer_method_groups(query, G, layer)
-        layer_method_group_txt += f"Layer {layer} method group summary:\n{layer_summary}\n\n"
-        layer_method_group_json[f"layer_{layer}"] = {
-            "summary": layer_summary,
-            "papers": papers
-        }       
-        all_paths.extend(papers)
-        # # Download papers in this layer's method group
-        # for n in papers:
-        #     paper_attr = G.nodes[n]
-            # os.makedirs(save_dir_core_paper, exist_ok=True)
-            # save_path = os.path.join(save_dir_core_paper, f"{n}.pdf")
-            # if os.path.exists(save_path):
-            #     print(f"PDF for paper ID {n} already exists, skipping download.")
-            #     continue
-            # download_paper(save_path, paper_attr.get('pdf_link'))
+    # layer_method_group_txt = ""
+    # layer_method_group_json = {}
+    # for layer in [1]:
+    #     layer_summary, papers = summarize_layer_method_groups(query, G, layer)
+    #     layer_method_group_txt += f"Layer {layer} method group summary:\n{layer_summary}\n\n"
+    #     layer_method_group_json[f"layer_{layer}"] = {
+    #         "summary": layer_summary,
+    #         "papers": papers
+    #     }       
+    #     all_paths.extend(papers)
+    #     # # Download papers in this layer's method group
+    #     # for n in papers:
+    #     #     paper_attr = G.nodes[n]
+    #         # os.makedirs(save_dir_core_paper, exist_ok=True)
+    #         # save_path = os.path.join(save_dir_core_paper, f"{n}.pdf")
+    #         # if os.path.exists(save_path):
+    #         #     print(f"PDF for paper ID {n} already exists, skipping download.")
+    #         #     continue
+    #         # download_paper(save_path, paper_attr.get('pdf_link'))
     
-    all_paths = list(set(all_paths))  # unique
-    with open(layer_summary_output_path, "w", encoding="utf-8") as f:
-        json.dump(layer_method_group_json, f, ensure_ascii=False, indent=2)
-    print(f"Layer method group summaries saved to {layer_summary_output_path}")
+    # all_paths = list(set(all_paths))  # unique
+    # with open(layer_summary_output_path, "w", encoding="utf-8") as f:
+    #     json.dump(layer_method_group_json, f, ensure_ascii=False, indent=2)
+    # print(f"Layer method group summaries saved to {layer_summary_output_path}")
 
-    community_summaries = {}
-    ls = Leiden_summarizer(graph_path)
-    communities = ls.leiden_algorithm()
-    for i, community in enumerate(communities):
-        summary, papers = summarize_community(query, G, community)
-        community_summaries[f"community_{i}"] = {
-            "summary": summary,
-            "papers": papers
-        }
-    with open(community_summary_output_path, "w", encoding="utf-8") as f:
-        json.dump(community_summaries, f, ensure_ascii=False, indent=2)
-    print(f"Layer method group summaries saved to {community_summary_output_path}")
+    # community_summaries = {}
+    # ls = Leiden_summarizer(graph_path)
+    # communities = ls.leiden_algorithm()
+    # for i, community in enumerate(communities):
+    #     summary, papers = summarize_community(query, G, community)
+    #     community_summaries[f"community_{i}"] = {
+    #         "summary": summary,
+    #         "papers": papers
+    #     }
+    # with open(community_summary_output_path, "w", encoding="utf-8") as f:
+    #     json.dump(community_summaries, f, ensure_ascii=False, indent=2)
+    # print(f"Layer method group summaries saved to {community_summary_output_path}")
     # with open(f"{info_dir}/metadata.json", 'r', encoding='utf-8') as f:
     #     metadata = json.load(f)
     # save_papers_info_json(all_paths, G, info_dir, os.path.join(info_dir, "metadata_core_papers.json"), metadata)

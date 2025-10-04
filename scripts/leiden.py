@@ -117,7 +117,7 @@ class Leiden_summarizer:
         leiden_communities = subgraph.community_leiden(
             objective_function='modularity',
             resolution=1.0,
-            n_iterations=2,
+            n_iterations=5,
             beta=0.01
         )
 

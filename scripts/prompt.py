@@ -108,11 +108,12 @@ PAPER INFORMATION:
 ## Layer Taxonomies (Thematic Organization)
 [LAYER_TAXONOMIES]
 
+## Paper communities 
+[PAPER_COMMUNITIES]
+
 ## Development Directions (Evolutionary Paths)
 [DEVELOPMENT_DIRECTIONS]
 
-## Paper communities 
-[PAPER_COMMUNITIES]
 # TASK: Create Literature Review Outline
 
 REQUIREMENTS:
@@ -157,7 +158,7 @@ REQUIREMENTS:
 # OUTPUT FORMAT (JSON ONLY):
 For each section, add the section and its subsections titles in a hierarchical manner in the same 'section_outline'
 For each section, add a paragraph to the key 'section_focus' to indicate the main focus of that section
-For each section, add an id (taken from the information layer number or the development seed ids) to the key 'proof_ids' to indicate the proof for each section, if proof is from the taxonomy of layer 1, 2, or 3 put the layer number only, if the proof is from the development direction, put the seed(s) paper id.
+For each section, add an id (taken from the information layer number or the development seed ids) to the key 'proof_ids' to indicate the proof for each section, if proof is from the taxonomy of layer 1 put "layer_1", if the proof is from the paper community, put id of that community (example: community_0, community_1,...) if the proof is from the development direction, put the seed(s) paper id.
     
 Return a JSON array where each element represents ONE section:
 
@@ -193,7 +194,7 @@ CRITICAL JSON REQUIREMENTS:
     def generate_prompt(self, template, paras):
         prompt = template
         for k in paras.keys():
-            prompt = prompt.replace(f'[{k}]', paras[k])
+            prompt = prompt.replace(f'[{k}]', str(paras[k]))
         return prompt
 
 if __name__ == "__main__":
