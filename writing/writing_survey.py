@@ -474,43 +474,7 @@ class LiteratureReviewGenerator:
             papers_summary += f"**Paper {i} ({paper['citation_key']})**: {paper['file_name']}\n{summary}\n\n"
         # step 3: get proofs text (including paper title, abstract, year from the graph attributes)
         proofs_text = self.get_proofs_text(proof_ids)
-        section_prompt = f"""
-        Write a comprehensive literature review section titled "{section_title}" in LaTeX format.
-        
-        **SECTION SPECIFIC FOCUS:** {section_focus}
-
-        **Section taxonomies summaries and development directions:** {proofs_text}
-
-        **CRITICAL REQUIREMENTS:**
-        1. The generated text have to be in LaTeX, use proper LaTeX citations (\\cite{{citation_key}}) throughout the text
-        2. Focus ONLY on the specific aspect assigned to this section
-        3. Academic writing style with critical analysis
-        4. Synthesize information across papers, don't just list them
-        5. At least 500 words for this section
-        6. The sub sections and sub sub sections have to follow the given section outline, about 200 words for each sub section and each sub sub section. Before creating sub sections, ensure that the main section has provide a comprehensive overview of the content in this section, at least 100 words.
-        7. Include specific examples and evidence with proper citations
-        8. Provide critical evaluation and comparative analysis
-        9. Ensure coherent organization and logical flow, make sure to include the taxonomies summaries and development directions in the section.
-        10. Only add the content do not need to add the numbering inside the section or subsection titles.
-
-        **Available Citations:**
-        {citations_info}
-        **SECTION OUTLINE:** 
-        {outline}
-        **Papers to reference:**
-        {papers_summary[:50000]}
-        
-        ***Previous section if any:** {pre_section}
-        Write ONLY the content for "{section_title}" section. 
-        Focus specifically on: {section_focus}
-        
-        Ensure the section demonstrates:
-        - Comprehensive coverage of the focus area
-        - High citation density (aim for 8-10 citations minimum)
-        - Academic rigor and analytical depth
-        - Synthesis across multiple papers
-        - Critical evaluation of approaches/findings
-        """
+        section_prompt = 
         
         # step 3: Generate initial section content
         try:
@@ -695,24 +659,6 @@ class LiteratureReviewGenerator:
         print("\n2. Writing literature review sections with self_reflection...")
         sections = {}
         print("\n3. Generating literature review outline...")
-        # outline = self.generate_literature_review_outline(processed_papers)
-        # outline = ''
-        
-        # # Define sections with specific focus
-        # section_definitions = {
-        #     "Introduction": "Introduce the research domain, establish significance, define scope and objectives. Set the context for the literature review.",
-        #     "Background and Related Work": "Provide historical context, fundamental concepts, and theoretical foundations. Discuss the evolution of the field and key developments.",
-        #     "Problem Classification and Taxonomy": "Categorize and classify the different types of problems addressed in the literature. Create a comprehensive taxonomy of problem types and their relationships.",
-        #     "Methodological Approaches": "Analyze and compare different methodologies, algorithms, and techniques used across problem classifications. Focus on technical approaches and their effectiveness.",
-        #     "Current Challenges and Limitations": "Identify gaps, limitations, and unresolved issues in current research for each problem classification. Discuss technical and methodological challenges.",
-        #     "Future Research Directions": "Suggest promising research directions, emerging trends, and potential breakthroughs based on identified gaps and current limitations.",
-        #     "Conclusion": "Summarize key insights, main contributions of the review, and provide final recommendations for the field."
-        # }
-
-        # section_title_list = ["Introduction", "Background and Related Work",
-        #                       "Problem Classification and Taxonomy", "Methodological Approaches", "Current Challenges and Limitations",
-        #                       "Future Research Directions", "Conclusion"]
-        # Load outline from generated txt file
         
         outline_path = f"{self.save_dir}/survey_outline.json"
         # read outline file
