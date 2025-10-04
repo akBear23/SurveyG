@@ -37,6 +37,7 @@ class LiteratureReviewGenerator:
         self.save_dir = f"paper_data/{self.query.replace(' ', '_').replace(':', '')}/literature_review_output"
         os.makedirs(self.save_dir, exist_ok=True)
         self.model = genai.GenerativeModel('gemini-2.5-flash')
+        self.advanced_model = genai.GenerativeModel('gemini-2.5-pro')
         self.papers_data = []
         self.citations_map = {}  # Map paper names to citation keys
         rag_db_path = f"paper_data/{query.replace(' ', '_').replace(':', '')}/rag_database"
@@ -82,7 +83,7 @@ class LiteratureReviewGenerator:
                                                                })
         
         try:
-            response = self.model.generate_content(
+            response = self.advanced_model.generate_content(
                 evaluation_prompt,
                 generation_config=genai.types.GenerationConfig(
                     max_output_tokens=102400,
