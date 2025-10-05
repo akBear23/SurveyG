@@ -295,110 +295,33 @@ Write a comprehensive literature review subsection titled "[SUBSECTION_TITLE]" i
 **CRITICAL REQUIREMENTS:**
 
 1. **Content & Format:**
-   - Generate text in LaTeX format with proper citations (\\cite{{citation_key}})
-   - Focus ONLY on the specific aspect assigned to this subsection
-   - At least 500 words for this subsection
-   - No numbering in subsection titles
+  - Generate text in LaTeX format with proper citations (\\cite{{citation_key}})
+  - Focus ONLY on the specific aspect assigned to this subsection
+  - At least 400 words for this subsection
+  - No numbering in subsection titles
 
-2. **SYNTHESIS REQUIREMENTS (MANDATORY - NOT OPTIONAL):**
-   
-   **A. Build Comparative Frameworks:**
-   - Create explicit comparison tables or taxonomies organizing approaches by key dimensions
-   - Example structure: "Method family A (Papers X, Y, Z) shares characteristic M, which family B 
-     (Papers P, Q) addresses through mechanism N, but introduces trade-off O"
-   - Identify METHOD FAMILIES and their shared characteristics vs. distinguishing features
-   - Map EVOLUTION: Early work assumed X → Mid-period recognized Y → Recent work addresses Z
-   
-   **B. Connect Across Papers (Minimum 3 explicit connections per subsection):**
-   - "Building on [Paper A]'s insight that X, [Paper B] extends this to Y by..."
-   - "[Paper C]'s approach contradicts [Paper D]'s findings under conditions E and F"
-   - "While [Papers A, B, C] focus on problem X, they overlook issue Y, which [Paper D] addresses"
-   - Show CAUSAL relationships: "[Method X] fails because of [limitation Y], 
-     which [Method Z] overcomes through [innovation W]"
-   - Link to BROADER THEMES: "This exemplifies the field's shift from [paradigm A] to [paradigm B]"
-   
-   **C. Identify Patterns and Tensions:**
-   - Recurring trade-offs across multiple papers
-   - Methodological trends and paradigm shifts
-   - Unresolved debates: "Whether approach X or Y is optimal remains contentious, with 
-     [Papers A, B] favoring the former due to [reason], while [Papers C, D] advocate the latter 
-     based on [different criterion]"
-   - Convergent vs. divergent research directions
-   - Identify what the field ASSUMES but rarely questions
+2. **Critical Analysis and Synthesis (HIGH PRIORITY):**
+  - Go beyond description - evaluate methodological strengths/weaknesses.
+  - Compare approaches critically: "While [X] achieves Y, it fails to address Z unlike [W]" - use the taxonomies to inform these comparisons.
+  - Identify WHY gaps/limitations exist (theoretical barriers, practical constraints) as suggested by the development directions.
+  - Analyze trade-offs explicitly (performance vs. privacy, accuracy vs. robustness) and relate to the taxonomies.
+  - Synthesize information ACROSS papers - identify patterns, contradictions, and evolutionary trends as outlined in both the taxonomies and the development directions.
 
-3. **CRITICAL ANALYSIS REQUIREMENTS (MANDATORY - NOT OPTIONAL):**
-   
-   **A. For EACH major approach discussed, answer:**
-   - **What problem does it claim to solve?** (Be specific - not just "improves X" but "reduces 
-     error rate in scenario Y by addressing limitation Z")
-   - **What is its core innovation?** (The actual mechanism/contribution, not just naming it)
-   - **Under what conditions does it succeed?** (Dataset characteristics, assumptions, domain constraints)
-   - **What are its theoretical limitations?** (Why CAN'T it handle X? What fundamental constraints exist?)
-   - **What are its practical limitations?** (Computational cost, scalability, data requirements, 
-     implementation challenges)
-   - **How do these limitations compare to alternatives?** (Systematic comparison on multiple dimensions)
-   
-   **B. Question Assumptions Systematically:**
-   - "Despite [Paper X]'s claim of generalizability, their evaluation assumes [assumption Y], 
-     which may not hold in [scenario Z] because [reason W]"
-   - "[Method A] requires [assumption B], limiting its applicability to domains where [condition C] holds"
-   - Identify UNSTATED assumptions: "Most papers in this area implicitly assume [X], but 
-     this breaks down when [Y]"
-   - Question evaluation choices: "The use of [metric X] may overestimate performance because 
-     it doesn't account for [aspect Y]"
-   
-   **C. Analyze Methodological Quality:**
-   - Evaluate experimental designs: "The comparison in [Paper X] is limited because [confounding 
-     factor Y was not controlled / sample size Z is insufficient / baseline W is outdated]"
-   - Question generalizability: "[Method A] shows strong performance on [dataset X] but its 
-     reliance on [property Y] suggests potential failure on [different setting Z]"
-   - Identify evaluation gaps: "None of the reviewed papers evaluate [important aspect X], 
-     making it unclear whether [claim Y] holds in [realistic scenario Z]"
-   - Critique reproducibility: "[Paper X] omits [critical detail Y], hindering replication"
-   
-   **D. Explain WHY, not just WHAT:**
-   - DON'T: "Method A has limitations"
-   - DO: "Method A's reliance on [mechanism X] prevents it from handling [scenario Y] because 
-     [theoretical constraint Z], as evidenced by [Paper B]'s failure on [dataset C]"
-   - Root limitations in theoretical/mathematical/practical constraints, not just empirical observations
-   - Connect limitations to underlying assumptions or design choices
+3. **Evidence & Citation:**
+  - High citation density (6-8 citations minimum)
+  - Use specific examples with citations
+  - Include comparative statements
 
-4. **Evidence & Citation:**
-   - High citation density (8-10 citations minimum)
-   - Use specific quantitative evidence when available: "achieving 89% accuracy", "reducing 
-     training time by 3x", "requiring 50% fewer samples"
-   - Include comparative statements with evidence: "[Paper A] achieves X% on metric M, 
-     while [Paper B] reaches Y% but requires Z times more [resources/data/parameters]"
-   - Cite multiple papers for general claims: "[Papers A, B, C] all demonstrate [phenomenon X]"
-   - When citing contradictory findings, specify conditions: "[Paper A] reports improvement 
-     under [condition X], while [Paper B] observes degradation under [condition Y]"
+4. **Organization:**
+  - Coherent flow with smooth transitions
+  - Integrate taxonomies summaries and development directions naturally
 
-5. **Integration with Previous Subsections:**
-   - Reference insights from earlier subsections: "As discussed in Subsection X, the challenge of Y..."
-   - Build on previous critiques: "The efficiency concerns raised in Subsection [N] are partially 
-     addressed by [approach in current section], though [limitation X] persists"
-   - Show cumulative knowledge building: "These findings complement Subsection X's observation that Y, 
-     suggesting a broader pattern of Z"
-   - Resolve or extend previous debates: "This addresses the unresolved question from Subsection X regarding Y"
-
-6. **Organization & Transitions:**
-   - Begin subsections with transition sentences linking to previous subsection's content
-   - End subsections with synthesis or forward-looking statements where appropriate
-   - Use signposting: "Three major paradigms emerge...", "A critical tension exists between...", 
-     "Approaches diverge along the dimension of..."
-   - Group related work thematically or by conceptual similarity, not purely chronologically
-   - Create narrative flow that tells the intellectual story of the field's evolution
-
-**MANDATORY ANALYTICAL FRAMEWORK - Apply systematically:**
-
-For each major approach/finding, address:
-1. **Context**: What prior work motivated this? What gap or limitation does it address?
-2. **Mechanism**: How does it technically work? (Brief but specific - key innovation)
-3. **Evidence**: What empirical results support it? On what conditions/datasets/domains?
-4. **Limitations**: What doesn't it solve? Why not? (Both theoretical and practical barriers)
-5. **Comparison**: How does it compare to alternatives on dimensions [accuracy/efficiency/
-   generalizability/interpretability/etc.]?
-6. **Implications**: What does this tell us about the field's trajectory? What remains unsolved?
+**ANALYTICAL FRAMEWORK - Apply these questions:**
+- What are the methodological limitations not discussed by the authors?
+- How do experimental setups affect generalizability?
+- What assumptions are made and are they realistic?
+- Where do findings contradict each other and why?
+- What theoretical gaps prevent solving identified problems?
 
 **RED FLAGS to avoid:**
 - Sequential listing: "Paper A proposes X. Paper B proposes Y. Paper C proposes Z."
@@ -500,262 +423,34 @@ Improve the following literature review subsection based on evaluation feedback 
 
 **MANDATORY IMPROVEMENT ACTIONS:**
 
-1. **Enhance Synthesis (Priority 1):**
-   - ADD 3+ explicit comparative statements per subsection using phrases like:
-     * "Unlike [A], [B] addresses X through mechanism Y"
-     * "In contrast to [A]'s approach, [B, C] adopt strategy X because Y"
-     * "[Method A] and [Method B] converge on principle X but diverge on dimension Y"
-   - IDENTIFY patterns: "[Papers A, B, C] all exhibit trade-off between X and Y, suggesting 
-     fundamental constraint Z in this problem domain"
-   - MAP evolution: "The field progressed from [early assumption/method X] (Papers A, B) to 
-     [later recognition Y] (Papers C, D) to [current approach Z] (Papers E, F)"
-   - HIGHLIGHT contradictions with analysis: "[A] reports improvement under condition X, 
-     while [B] observes degradation under condition Y, indicating sensitivity to Z"
-   - BUILD frameworks: "Approaches can be categorized along dimensions [D1, D2], with [methods X] 
-     optimizing for [D1] and [methods Y] for [D2]"
-   
-2. **Deepen Critical Analysis (Priority 2):**
-   - For EACH major approach, explain WHY limitations exist:
-     * "Cannot handle scenario X because mechanism Y relies on assumption Z, which breaks when W"
-     * Not just "has limitations" but the theoretical/practical constraint causing it
-   - QUESTION assumptions systematically:
-     * "While [Paper X] claims generalizability, it assumes [Y], limiting applicability to domains where [Y] holds"
-     * "The evaluation uses metric X, which may overestimate performance because it doesn't account for [realistic constraint Y]"
-   - ANALYZE trade-offs with specifics:
-     * "Improves accuracy by X% but increases computational cost by Y-fold and requires Z times more training data"
-     * Explain when/why trade-off is acceptable or problematic
-   - CRITIQUE methodology:
-     * "The comparison omits baseline X, making it unclear whether improvement stems from [claimed innovation] or [confounding factor]"
-     * "Sample size of N on dataset D limits generalizability to [broader population/scenario]"
-   
-3. **Add Systematic Comparisons:**
-   - Create comparison frameworks: "Three paradigms emerge—[A, B, C]—differing in [dimensions X, Y, Z]"
-   - Tabular or structured comparison: "On sparse data, Method A outperforms B (X% vs Y%) 
-     due to mechanism Z, but this reverses on dense data where B's assumption W holds"
-   - Multi-dimensional evaluation: Compare approaches on accuracy, efficiency, interpretability, 
-     scalability, assumptions, etc.
-   
-4. **Ground in Theory/Mechanisms:**
-   - Replace descriptive statements with explanatory ones:
-     * WEAK: "Method X performs well on task Y"
-     * STRONG: "Method X's use of mechanism A enables handling of task Y's characteristic B, 
-       as evidenced by C% improvement on dataset D"
-   - Explain empirical observations through underlying mechanisms or constraints
-   
-5. **Increase Specificity:**
-   - Add quantitative evidence: "achieves 87.3% accuracy", "reduces training time from X to Y hours"
-   - Specify conditions: "on datasets with density > X", "when feature Y is available"
-   - Compare numerically: "[A] reaches X% while [B] achieves Y% but with Z parameters vs W parameters"
+ **Improvement Instructions**:
+  1. Address the specific weaknesses identified in the evaluation
+  2. Incorporate relevant information from the additional papers
+  3. Improve citation density and academic rigor
+  4. Enhance synthesis and critical analysis
+  5. Ensure the content stays focused on: [SUBSECTION_FOCUS]
+  6. Maintain academic writing style
+  7. Use proper LaTeX citations (\\cite{{citation_key}})
 
-**REVISION FRAMEWORK - Apply to Each Major Approach/Finding:**
+**Requirements**:
+  1. The generated text have to be in LaTeX, use proper LaTeX citations (\\cite{{citation_key}}) throughout the text
+  2. Focus ONLY on the specific aspect assigned to this subsection
+  3. Academic writing style with critical analysis
+  4. Synthesize information across papers, don't just list them
+  5. At least 400 words for this subsection
+  6. Include specific examples and evidence with proper citations
+  7. Provide critical evaluation and comparative analysis
+  8. Ensure coherent organization and logical flow
 
-[TOPIC/APPROACH NAME] (typically 1-2 paragraphs per major approach)
+  Ensure the subsection demonstrates:
+  - Comprehensive coverage with deep critical evaluation
+  - Explicit synthesis showing relationships between studies
+  - Analytical depth beyond mere description
+  - Critical comparison of approaches with justified assessments
+  - Discussion of WHY limitations exist, not just WHAT they are
 
-**Structure:**
-1. **Context & Innovation**: What prior work motivated this? What's the key innovation? 
-   "Building on [Prior Work]'s observation that X, [This Work] introduces [innovation Y] to address 
-   [limitation Z]"
-
-2. **Evidence**: What empirical support exists? Under what conditions?
-   "[Paper A] demonstrates effectiveness on [dataset/scenario X], achieving [metric Y] of [value Z]"
-
-3. **Mechanism**: How does it work? (Brief technical explanation of key idea)
-   "The core mechanism involves [brief description], which enables [capability X]"
-
-4. **Comparison**: How does it differ from alternatives?
-   "Unlike [Alternative A], which relies on [mechanism X], this approach uses [mechanism Y], 
-   trading [benefit of A] for [benefit of this work]"
-
-5. **Critical Evaluation**: What are theoretical and practical limitations? WHY?
-   "Cannot handle [scenario X] because [theoretical constraint Y: e.g., assumption Z must hold / 
-   complexity grows as O(N²) / requires labeled data]"
-   "While effective on [condition A], [Paper B] shows degradation under [condition C] due to [reason D]"
-
-6. **Trade-offs**: What are the costs/benefits?
-   "Achieves [improvement X] but requires [cost Y: e.g., more data / computational resources / 
-   restrictive assumptions]"
-
-
-**Requirements for Improved Version:**
-1. LaTeX format with proper \\cite{{citation_key}} citations throughout
-2. At least 500 words total with clear focus
-3. **Minimum per subsection:**
-   - 3 explicit comparative/contrastive statements
-   - 2 limitation explanations with underlying reasons (WHY)
-   - 1 pattern identification across multiple papers
-   - 1 trade-off analysis with conditions/quantification
-   - 1 assumption questioning or methodological critique
-4. Explicitly address evaluation feedback and example revisions
-5. Incorporate relevant information from additional papers
-6. Reference and build on previous subsections' insights
 Write the improved subsection content only (no meta-commentary):
 """
-
-        self.SECTION_IMPROVE_PROMPT = """
-Improve the following literature review section based on evaluation feedback and additional papers.
-
-**Section Title**: [SECTION_TITLE]
-**Section Focus**: [SECTION_FOCUS]
-
-**Current Section Content**:
-[CURRENT_CONTENT]
-
-**Evaluation Feedback**:
-- Overall Score: [OVERALL_SCORE]
-- Synthesis Quality: [SYNTHESIS_SCORE] (Target: 4.5+)
-- Critical Analysis: [CRITICAL_SCORE] (Target: 4.5+)
-- Strengths: [STRENGTH]
-- Weaknesses: [WEAKNESS]
-- Specific Improvements Needed: [IMPROVEMENT_NEEDED]
-
-**Additional Papers Retrieved**:
-[ADDITIONAL_INFO]
-
-**MANDATORY IMPROVEMENT ACTIONS:**
-
-1. **Enhance Synthesis (Priority 1):**
-   - ADD 3+ explicit comparative statements per subsection using phrases like:
-     * "Unlike [A], [B] addresses X through mechanism Y"
-     * "In contrast to [A]'s approach, [B, C] adopt strategy X because Y"
-     * "[Method A] and [Method B] converge on principle X but diverge on dimension Y"
-   - IDENTIFY patterns: "[Papers A, B, C] all exhibit trade-off between X and Y, suggesting 
-     fundamental constraint Z in this problem domain"
-   - MAP evolution: "The field progressed from [early assumption/method X] (Papers A, B) to 
-     [later recognition Y] (Papers C, D) to [current approach Z] (Papers E, F)"
-   - HIGHLIGHT contradictions with analysis: "[A] reports improvement under condition X, 
-     while [B] observes degradation under condition Y, indicating sensitivity to Z"
-   - BUILD frameworks: "Approaches can be categorized along dimensions [D1, D2], with [methods X] 
-     optimizing for [D1] and [methods Y] for [D2]"
-   
-2. **Deepen Critical Analysis (Priority 2):**
-   - For EACH major approach, explain WHY limitations exist:
-     * "Cannot handle scenario X because mechanism Y relies on assumption Z, which breaks when W"
-     * Not just "has limitations" but the theoretical/practical constraint causing it
-   - QUESTION assumptions systematically:
-     * "While [Paper X] claims generalizability, it assumes [Y], limiting applicability to domains where [Y] holds"
-     * "The evaluation uses metric X, which may overestimate performance because it doesn't account for [realistic constraint Y]"
-   - ANALYZE trade-offs with specifics:
-     * "Improves accuracy by X% but increases computational cost by Y-fold and requires Z times more training data"
-     * Explain when/why trade-off is acceptable or problematic
-   - CRITIQUE methodology:
-     * "The comparison omits baseline X, making it unclear whether improvement stems from [claimed innovation] or [confounding factor]"
-     * "Sample size of N on dataset D limits generalizability to [broader population/scenario]"
-   
-3. **Add Systematic Comparisons:**
-   - Create comparison frameworks: "Three paradigms emerge—[A, B, C]—differing in [dimensions X, Y, Z]"
-   - Tabular or structured comparison: "On sparse data, Method A outperforms B (X% vs Y%) 
-     due to mechanism Z, but this reverses on dense data where B's assumption W holds"
-   - Multi-dimensional evaluation: Compare approaches on accuracy, efficiency, interpretability, 
-     scalability, assumptions, etc.
-   
-4. **Ground in Theory/Mechanisms:**
-   - Replace descriptive statements with explanatory ones:
-     * WEAK: "Method X performs well on task Y"
-     * STRONG: "Method X's use of mechanism A enables handling of task Y's characteristic B, 
-       as evidenced by C% improvement on dataset D"
-   - Explain empirical observations through underlying mechanisms or constraints
-   
-5. **Increase Specificity:**
-   - Add quantitative evidence: "achieves 87.3% accuracy", "reduces training time from X to Y hours"
-   - Specify conditions: "on datasets with density > X", "when feature Y is available"
-   - Compare numerically: "[A] reaches X% while [B] achieves Y% but with Z parameters vs W parameters"
-
-**REVISION FRAMEWORK - Apply to Each Major Approach/Finding:**
-
-[TOPIC/APPROACH NAME] (typically 1-2 paragraphs per major approach)
-
-**Structure:**
-1. **Context & Innovation**: What prior work motivated this? What's the key innovation? 
-   "Building on [Prior Work]'s observation that X, [This Work] introduces [innovation Y] to address 
-   [limitation Z]"
-
-2. **Evidence**: What empirical support exists? Under what conditions?
-   "[Paper A] demonstrates effectiveness on [dataset/scenario X], achieving [metric Y] of [value Z]"
-
-3. **Mechanism**: How does it work? (Brief technical explanation of key idea)
-   "The core mechanism involves [brief description], which enables [capability X]"
-
-4. **Comparison**: How does it differ from alternatives?
-   "Unlike [Alternative A], which relies on [mechanism X], this approach uses [mechanism Y], 
-   trading [benefit of A] for [benefit of this work]"
-
-5. **Critical Evaluation**: What are theoretical and practical limitations? WHY?
-   "Cannot handle [scenario X] because [theoretical constraint Y: e.g., assumption Z must hold / 
-   complexity grows as O(N²) / requires labeled data]"
-   "While effective on [condition A], [Paper B] shows degradation under [condition C] due to [reason D]"
-
-6. **Trade-offs**: What are the costs/benefits?
-   "Achieves [improvement X] but requires [cost Y: e.g., more data / computational resources / 
-   restrictive assumptions]"
-
-
-**Requirements for Improved Version:**
-1. LaTeX format with proper \\cite{{citation_key}} citations throughout
-2. At least 1000-1500 words total
-3. Sub-sections: at least 500 words each with clear focus
-4. Main section overview: 300+ words providing roadmap and key themes
-5. **Minimum per subsection:**
-   - 3 explicit comparative/contrastive statements
-   - 2 limitation explanations with underlying reasons (WHY)
-   - 1 pattern identification across multiple papers
-   - 1 trade-off analysis with conditions/quantification
-   - 1 assumption questioning or methodological critique
-6. Explicitly address evaluation feedback and example revisions
-7. Incorporate relevant information from additional papers
-8. Reference and build on previous sections' insights
-Write the improved section content only (no meta-commentary):
-"""
-
-        self.EVALUATE_SECTION_PROMPT = """
-        You are a grumpy expert academic researcher carefully evaluating this literature review section.
-        Evaluate the quality of this literature review section based on the following criteria:
-        
-        **Previous section if any:** [PRE_SECTION]
-        **Section Title**: [SECTION_TITLE]
-        **Expected Focus**: [SECTION_FOCUS]
-        **Overall Review Context: Outline**: [OUTLINE]
-        
-        **Section Content**:
-        [SECTION_CONTENT]
-        
-        **Evaluation Criteria** (Rate each from 1-5, where 5 is excellent):
-        
-        1. **Content Coverage** (1-5): Does the section comprehensively cover the expected focus area?
-        2. **Citation Density** (1-5): Are there sufficient and appropriate citations throughout the text?
-        3. **Academic Rigor** (1-5): Is the writing style academic and analytical rather than descriptive?
-        4. **Synthesis Quality** (1-5): Does it synthesize information across papers rather than just listing findings?
-        5. **Critical Analysis** (1-5): Does it provide critical evaluation and comparative analysis?
-        6. **Coherence** (1-5): Is the content well-organized and logically structured?
-        7. **Depth of Analysis** (1-5): Does it provide sufficient depth rather than surface-level discussion?
-        8. **Specificity** (1-5): Does it focus specifically on the assigned scope without overlap with other sections?
-        
-        **IMPORTANT**: 
-        - Return ONLY valid JSON without any markdown formatting or code blocks
-        - Escape all backslashes and quotes properly in JSON strings
-        - Do not include any special characters that might break JSON parsing
-        
-        **Response Format** (JSON only):
-        {{
-            "overall_score": <average_score>,
-            "individual_scores": {{
-                "content_coverage": <score>,
-                "citation_density": <score>,
-                "academic_rigor": <score>,
-                "synthesis_quality": <score>,
-                "critical_analysis": <score>,
-                "coherence": <score>,
-                "depth_of_analysis": <score>,
-                "specificity": <score>
-            }},
-            "strengths": ["list of strengths"],
-            "weaknesses": ["list of weaknesses"],
-            "is_satisfactory": <true/false>,
-            "improvement_needed": ["specific areas needing improvement"],
-            "suggested_queries": ["suggested search queries to find additional relevant papers"]
-        }}
-        
-        Consider a section satisfactory if overall_score >= 3.5 and no individual score is below 3.0.
-        """
         self.WRITE_INITIAL_SECTION_OVERVIEW_PROMPT = """
 Write an introductory overview for the literature review section titled "[SECTION_TITLE]" in LaTeX format. This overview should set the stage for the detailed discussions within its subsections.
 
