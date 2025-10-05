@@ -30,7 +30,7 @@ def create_paper_graph(seleceted_papers_path):
     # crawl_papers = load_json_data(crawl_papers_path)
     # survey_papers = crawl_papers + cited_papers
     survey_papers = load_json_data(seleceted_papers_path)
-    layers = assign_layers(survey_papers, K=20)
+    layers = assign_layers(survey_papers, quantile=0.15)
     
     paper_abstracts = {}
     for paper in survey_papers:
@@ -182,16 +182,29 @@ def save_graph(G, output_path):
             layer_counts[layer] += 1
     print(f"Layer counts: {layer_counts}")
 
-def assign_layers(survey_papers, K=20):
-    foundation_scores = []
+def assign_layers(survey_papers, quantile=0.15):
+    paper_scores = {}
+    
     for paper in survey_papers:
         paper_id = paper.get('id', None)
-        year = paper.get('year', 2025)
+        if paper_id is None:
+            continue  
+            
         score = paper.get('score', 0)
-        foundation_scores.append((score, paper_id))
-    # Get top K papers for foundation layer
+
+        if paper_id in paper_scores:
+            if score > paper_scores[paper_id]:
+                paper_scores[paper_id] = score
+        else:
+            paper_scores[paper_id] = score
+    
+    foundation_scores = [(score, pid) for pid, score in paper_scores.items()]
     foundation_scores.sort(reverse=True)
-    foundation_ids = set([pid for _, pid in foundation_scores[:K]])
+    total_papers = len(foundation_scores)
+    K = max(10, int(quantile * total_papers))  
+    K = min(15, int(quantile * total_papers))
+    # Get top K paper IDs
+    foundation_ids = [pid for _, pid in foundation_scores[:K]]
     # Layer assignment
     layers = {}
     for paper in survey_papers:

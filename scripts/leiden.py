@@ -114,51 +114,46 @@ class Leiden_summarizer:
             print("Running Leiden on entire graph")
         
         # Run Leiden algorithm
-        run_leiden = True
-        resolution = 1.0
-        while resolution > 0.1 and run_leiden:
-            leiden_communities = subgraph.community_leiden(
-                objective_function='modularity',
-                resolution=resolution,
-                n_iterations=5,
-                beta=0.01
-            )
-            print("Running leiden with resolution: ", resolution)
+        
+        resolution = 0.5
+        leiden_communities = subgraph.community_leiden(
+            objective_function='modularity',
+            resolution=resolution,
+            n_iterations=5,
+            beta=0.01
+        )
+        print("Running leiden with resolution: ", resolution)
 
-            # Get community membership
-            leiden_membership = leiden_communities.membership
+        # Get community membership
+        leiden_membership = leiden_communities.membership
 
-            # Create a mapping from igraph vertex index to original node ID
-            node_mapping = {idx: node_id for idx, node_id in enumerate(subgraph.vs["name"])}
-            
-            # Add community labels to NetworkX graph
-            for idx, community_id in enumerate(leiden_membership):
-                node_id = node_mapping[idx]
-                self.G.nodes[node_id]['community'] = community_id
+        # Create a mapping from igraph vertex index to original node ID
+        node_mapping = {idx: node_id for idx, node_id in enumerate(subgraph.vs["name"])}
+        
+        # Add community labels to NetworkX graph
+        for idx, community_id in enumerate(leiden_membership):
+            node_id = node_mapping[idx]
+            self.G.nodes[node_id]['community'] = community_id
 
-            # Calculate modularity score
-            modularity_score = leiden_communities.modularity
-            print(f"Leiden algorithm found {len(set(leiden_membership))} communities")
-            print(f"Modularity score: {modularity_score:.4f}")
+        # Calculate modularity score
+        modularity_score = leiden_communities.modularity
+        print(f"Leiden algorithm found {len(set(leiden_membership))} communities")
+        print(f"Modularity score: {modularity_score:.4f}")
 
-            # Count nodes per community
-            community_sizes = Counter(leiden_membership)
-            print("\nCommunity sizes:")
-            flag = False
-            for comm_id, size in sorted(community_sizes.items()):
-                if size < min_community_size:
-                    flag = True
-                    resolution -= 0.1
-                print(f"Community {comm_id}: {size} nodes")
-            run_leiden = flag
-            # Return communities
-            communities = []
-            for comm_id in sorted(set(leiden_membership)):
-                # Get all node indices in this community
-                node_indices = [idx for idx, cid in enumerate(leiden_membership) if cid == comm_id]
-                # Convert indices to node IDs
-                community_nodes = [node_mapping[idx] for idx in node_indices]
-                communities.append(community_nodes)
+        # Count nodes per community
+        community_sizes = Counter(leiden_membership)
+        print("\nCommunity sizes:")
+        for comm_id, size in sorted(community_sizes.items()):
+            print(f"Community {comm_id}: {size} nodes")
+        # Return communities
+        communities = []
+        for comm_id in sorted(set(leiden_membership)):
+            # Get all node indices in this community
+            node_indices = [idx for idx, cid in enumerate(leiden_membership) if cid == comm_id]
+            # Convert indices to node IDs
+            community_nodes = [node_mapping[idx] for idx in node_indices]
+            community_nodes = community_nodes[:31]
+            communities.append(community_nodes)
             
         return communities
         

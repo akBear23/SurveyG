@@ -189,13 +189,13 @@ Return a JSON array where each element represents ONE main section with its subs
         "number": "1.1",
         "title": "Background: Knowledge Graphs",
         "subsection_focus": "Introduces the fundamental concepts of knowledge graphs, their structure as networks of entities and relations, and their historical development from semantic networks to modern large-scale knowledge bases. Discusses key examples like Freebase, DBpedia, and Wikidata, highlighting their role in organizing world knowledge and enabling intelligent systems.",
-        "proof_ids": ["layer_1", "community_2", "seed_42"]
+        "proof_ids": ["layer_1", "community_2", "68f34ed64fdf07bb1325097c93576658e061231e"]
       },
       {
         "number": "1.2",
         "title": "Role of KG Embedding",
         "subsection_focus": "Explains the motivation for embedding knowledge graphs into continuous vector spaces. Covers the limitations of symbolic representations, the advantages of distributed representations for reasoning and prediction, and how embeddings enable scalability and integration with modern machine learning pipelines. Establishes embedding as a bridge between symbolic and neural approaches.",
-        "proof_ids": ["community_1", "seed_40"]
+        "proof_ids": ["community_1"]
       }
     ]
   },
@@ -479,8 +479,10 @@ Write ONLY the content for "[SUBSECTION_TITLE]" subsection focusing on: [SUBSECT
         self.SUBSECTION_IMPROVE_PROMPT = """
 Improve the following literature review subsection based on evaluation feedback and additional papers.
 
+**Previous subsection if any:** [PRE_SUBSECTION]
 **Subsection Title**: [SUBSECTION_TITLE]
 **Subsection Focus**: [SUBSECTION_FOCUS]
+**Overall Review Context: Outline**: [OUTLINE]
 
 **Current Subsection Content**:
 [CURRENT_CONTENT]
@@ -754,7 +756,49 @@ Write the improved section content only (no meta-commentary):
         
         Consider a section satisfactory if overall_score >= 3.5 and no individual score is below 3.0.
         """
+        self.WRITE_INITIAL_SECTION_OVERVIEW_PROMPT = """
+Write an introductory overview for the literature review section titled "[SECTION_TITLE]" in LaTeX format. This overview should set the stage for the detailed discussions within its subsections.
 
+**SECTION SPECIFIC FOCUS:** [SECTION_FOCUS]
+
+**CRITICAL REQUIREMENTS:**
+
+1.  **Content & Format:**
+    *   Generate text in LaTeX format.
+    *   The overview should be between 200-300 words.
+    *   It should clearly introduce the main themes and sub-topics that will be covered in the subsections of this section.
+    *   Briefly explain the significance of this section within the broader context of the literature review on "[QUERY]".
+    *   Highlight the key challenges or advancements that this section will explore, drawing on the provided proofs and paper summaries at a high level.
+    *   Avoid diving into specific details of individual papers; save that for the subsections.
+    *   No numbering or bullet points.
+
+2.  **Synthesis & Narrative:**
+    *   Synthesize the core ideas from the proof IDs (layer taxonomies, community summaries, development directions) and paper summaries relevant to this section's focus.
+    *   Create a coherent narrative that logically connects the overarching theme of the section to the general contributions of the papers.
+    *   Explain how this section builds upon or diverges from the content of the `PRE_SECTION`.
+
+3.  **Evidence & Citation (High-level):**
+    *   Reference the `PROOFS_TEXT` to inform the overall themes and trends discussed in the overview.
+    *   You may use a few high-level citations (e.g., "\\cite{citation_key}") to establish the primary works relevant to the section's focus, but avoid excessive detailed citation here. The focus is on the narrative flow.
+
+**SECTION TAXONOMIES SUMMARIES AND DEVELOPMENT DIRECTIONS:**
+[PROOFS_TEXT]
+
+**Available Citations:**
+[CITATION_INFO]
+
+**SECTION OUTLINE (for full context):**
+[OUTLINE]
+
+**Papers to reference (high-level themes):**
+[PAPERS_SUMMARY]
+
+**Previous section if any (for contextual flow):**
+[PRE_SECTION]
+
+**OUTPUT INSTRUCTIONS:**
+Write ONLY the content for the introductory overview paragraph(s) of the "[SECTION_TITLE]" section, focusing on: [SECTION_FOCUS].
+"""
     def generate_prompt(self, template, paras):
         prompt = template
         for k in paras.keys():

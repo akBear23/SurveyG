@@ -47,6 +47,7 @@ class LiteratureReviewGenerator:
         self.max_improvement_iterations = 10  # Maximum iterations for section improvement
         self.layer_method_group_json = json.load(open(f"paper_data/{self.query.replace(' ', '_').replace(':', '')}/paths/layer_method_group_summary.json", "r", encoding="utf-8"))
         self.develop_direction = json.load(open(f"paper_data/{self.query.replace(' ', '_').replace(':', '')}/paths/layer1_seed_taxonomy.json", "r", encoding="utf-8"))
+        self.community_summary = json.load(open(f"paper_data/{self.query.replace(' ', '_').replace(':', '')}/paths/communities_summary.json", "r", encoding="utf-8"))
         self.graph_path = f"paper_data/{self.query.replace(' ', '_').replace(':', '')}/info/paper_citation_graph.json"
         self.G = self.load_graph(self.graph_path)
     def load_graph(self, json_path):
@@ -281,11 +282,13 @@ class LiteratureReviewGenerator:
     
     
     #endregion
-    def get_proofs_text(self, proof_ids: list) -> str:
+    def get_proofs_text(self, proof_ids: list, get_nodes_info: bool) -> str:
         """
         get proofs text (including paper title, abstract, year from the graph attributes)
         """
         proofs_text = ''
+        all_nodes = []
+        paper_summaries = ''
         for proof in proof_ids:
             try: 
                 proof = proof.lower().strip()
@@ -299,34 +302,298 @@ class LiteratureReviewGenerator:
                 proofs_text += direction_dict.get('summary', '') + '\n'
                 nodes = [proof]
                 nodes.extend(direction_dict.get('paths', []))
+                all_nodes.extend(nodes)
                 for node in nodes:
-                    if node in self.G.nodes:
+                    if node in self.G.nodes and get_nodes_info:
                         node_data = self.G.nodes[node]
                         title = node_data.get('title', '')
                         abstract = node_data.get('abstract', '')
                         year = node_data.get('year', '')
                         summary = node_data.get('summary', '')
-                        proofs_text += f"Title: {title}\n"
-                        proofs_text += f"Abstract: {abstract}\n"
-                        proofs_text += f"Year: {year}\n"
-                        proofs_text += f"Summary: {summary}\n\n"
-            if proof in [1, 2, 3]:
+                        paper_summaries += f"Title: {title}\n"
+                        paper_summaries += f"Abstract: {abstract}\n"
+                        paper_summaries += f"Year: {year}\n"
+                        paper_summaries += f"Summary: {summary}\n\n"
+            if proof in [1, 2, 3, '1', '2', '3', 'layer_1', 'layer_2', 'layer_3']:
                 proofs_text += 'Taxonomy summaries: \n'
                 layer_dict = self.layer_method_group_json.get(f"{proof}", {})
                 proofs_text += layer_dict.get('summary', '') + '\n'
-                for paper in layer_dict.get('papers', []):
-                    if paper in self.G.nodes:
+                nodes = layer_dict.get('papers', [])
+                all_nodes.extend(nodes)
+                for paper in nodes:
+                    if paper in self.G.nodes and get_nodes_info:
                         node_data = self.G.nodes[paper]
                         title = node_data.get('title', '')
                         abstract = node_data.get('abstract', '')
                         year = node_data.get('year', '')
                         summary = node_data.get('summary', '')
-                        proofs_text += f"Title: {title}\n"
-                        proofs_text += f"Abstract: {abstract}\n"
-                        proofs_text += f"Year: {year}\n"
-                        proofs_text += f"Summary: {summary}\n\n"
-        return proofs_text
+                        paper_summaries += f"Title: {title}\n"
+                        paper_summaries += f"Abstract: {abstract}\n"
+                        paper_summaries += f"Year: {year}\n"
+                        paper_summaries += f"Summary: {summary}\n\n"
+            if proof in self.community_summary.keys():
+                community_dict = self.community_summary[proof]
+                proofs_text += 'Community summaries: \n'
+                proofs_text += community_dict.get('summary', '') + '\n'
+                nodes = community_dict.get('papers', [])
+                all_nodes.extend(nodes)
+                for node in nodes:
+                    if node in self.G.nodes and get_nodes_info:
+                        node_data = self.G.nodes[node]
+                        title = node_data.get('title', '')
+                        abstract = node_data.get('abstract', '')
+                        year = node_data.get('year', '')
+                        summary = node_data.get('summary', '')
+                        paper_summaries += f"Title: {title}\n"
+                        paper_summaries += f"Abstract: {abstract}\n"
+                        paper_summaries += f"Year: {year}\n"
+                        paper_summaries += f"Summary: {summary}\n\n"
+        # all_nodes = list(set(all_nodes))
+        return proofs_text, all_nodes, paper_summaries
+    def write_initial_subsection(self, subsection_title: str, subsection_focus: str, 
+                               section_outline: str, proof_ids: list, pre_subsection: str,
+                               processed_papers: List[Dict]) -> str:
+        """
+        Write initial version of a literature review subsection
+        """
+        # # Step 1: Prepare citations info
+        # citations_info = ""
+        # for paper in processed_papers:
+        #     metadata = paper['metadata']
+        #     citations_info += f"\\cite{{{paper['citation_key']}}}: {metadata.get('title', 'N/A')} by {metadata.get('authors', 'N/A')} ({metadata.get('published_date', 'N/A')})\n"
+        
+        # # Step 2: Get papers summary
+        # paper_summaries = ""
+        # for i, paper in enumerate(processed_papers, 1):
+        #     summary = paper.get('summary', '')
+        #     paper_summaries += f"**Paper {i} ({paper['citation_key']})**: {paper['file_name']}\n{summary}\n\n"
+        
+        # Step 3: Get proofs text
+        proofs_text, proof_papers, paper_summaries = self.get_proofs_text(proof_ids, get_nodes_info=True)
+        citations_info = ""
+        # print(proof_papers)
+        for paper in processed_papers:
+            if not paper['file_name'].replace('.pdf', '') in proof_papers:
+                continue
+            metadata = paper['metadata']
+            citations_info += f"\\cite{{{paper['citation_key']}}}: {metadata.get('title', 'N/A')} by {metadata.get('authors', 'N/A')} ({metadata.get('published_date', 'N/A')})\n"
+        
+        # Step 4: Generate initial subsection content
+        subsection_prompt = self.prompt_helper.generate_prompt(
+            self.prompt_helper.WRITE_INITIAL_SUBSECTION_PROMPT,
+            paras={
+                'SUBSECTION_TITLE': subsection_title,
+                'SUBSECTION_FOCUS': subsection_focus,
+                'PROOFS_TEXT': proofs_text,
+                'CITATION_INFO': citations_info,
+                'OUTLINE': section_outline,
+                'PAPERS_SUMMARY': paper_summaries,
+                'PRE_SUBSECTION': pre_subsection[:50000]
+            }
+        )
+        
+        try:
+            response = self.model.generate_content(
+                subsection_prompt,
+                generation_config=genai.types.GenerationConfig(
+                    max_output_tokens=102400,
+                    temperature=0.4,
+                )
+            )
+            return response.text
+        except Exception as e:
+            print(f"Error writing initial subsection: {e}")
+            return ""
+    def evaluate_subsection_quality(self, subsection_title: str, subsection_content: str, 
+                                 subsection_focus: str, outline: str, pre_subsection: str) -> Dict[str, any]:
+        """
+        Evaluate the quality of a literature review subsection
+        """
+        evaluation_prompt = self.prompt_helper.generate_prompt(
+            self.prompt_helper.EVALUATE_SUBSECTION_PROMPT,
+            paras={
+                'PRE_SUBSECTION': pre_subsection,
+                'SUBSECTION_TITLE': subsection_title,
+                'SUBSECTION_FOCUS': subsection_focus,
+                'OUTLINE': outline,
+                'SUBSECTION_CONTENT': subsection_content
+            }
+        )
+        
+        try:
+            response = self.advanced_model.generate_content(
+                evaluation_prompt,
+                generation_config=genai.types.GenerationConfig(
+                    max_output_tokens=102400,
+                    temperature=0.2,
+                )
+            )
+            
+            # Clean up response text
+            response_text = response.text.strip()
+            
+            # Remove markdown code blocks if present
+            if response_text.startswith('```json'):
+                response_text = response_text.replace('```json\n', '').replace('```', '').strip()
+            elif response_text.startswith('```'):
+                response_text = response_text.replace('```\n', '').replace('```', '').strip()
+            
+            # Parse JSON response
+            evaluation_result = json.loads(response_text)
+            return evaluation_result
+            
+        except json.JSONDecodeError as e:
+            print(f"JSON decode error in subsection evaluation: {e}")
+            # Return fallback result
+            return {
+                "overall_score": 3.0,
+                "individual_scores": {
+                    "content_coverage": 3,
+                    "citation_density": 3,
+                    "academic_rigor": 3,
+                    "synthesis_quality": 3,
+                    "critical_analysis": 3,
+                    "coherence": 3,
+                    "depth_of_analysis": 3,
+                    "specificity": 3
+                },
+                "strengths": [],
+                "weaknesses": ["JSON parsing failed"],
+                "is_satisfactory": False,
+                "improvement_needed": ["Evaluation failed - manual review needed"],
+                "suggested_queries": [],
+                "error": f"JSON parsing error: {str(e)}"
+            }
+            
+        except Exception as e:
+            print(f"Error evaluating subsection: {e}")
+            return {
+                "overall_score": 3.0,
+                "individual_scores": {
+                    "content_coverage": 3,
+                    "citation_density": 3,
+                    "academic_rigor": 3,
+                    "synthesis_quality": 3,
+                    "critical_analysis": 3,
+                    "coherence": 3,
+                    "depth_of_analysis": 3,
+                    "specificity": 3
+                },
+                "strengths": [],
+                "weaknesses": ["Evaluation failed"],
+                "is_satisfactory": False,
+                "improvement_needed": ["Evaluation failed - manual review needed"],
+                "suggested_queries": [],
+                "error": f"General error: {str(e)}"
+            }
+    def improve_subsection_with_additional_papers(self, subsection_title: str, current_content: str,
+                                                subsection_focus: str, additional_papers: List[Dict],
+                                                outline: str,
+                                                evaluation_feedback: Dict, 
+                                                pre_subsection_content: str) -> str:
+        """
+        Improve a subsection by incorporating additional papers and addressing feedback
+        """
+        # Prepare additional papers information
+        additional_info = ""
+        for i, paper in enumerate(additional_papers, 1):
+            metadata = paper.get('metadata', {})
+            additional_info += f"**Additional Paper {i}**:\n"
+            additional_info += f"Title: {metadata.get('title', 'N/A')}\n"
+            additional_info += f"Authors: {metadata.get('authors', 'N/A')}\n"
+            additional_info += f"Summary: {paper.get('full_summary', paper.get('abstract', 'N/A'))}\n"
+            additional_info += f"Relevance Score: {paper.get('similarity_score', 0):.3f}\n"
+            if paper.get('keyword', []) != []:
+                additional_info += f"Keywords: {', '.join(paper.get('keyword', []))}"
+            additional_info += f"Citation Key: {paper.get('citation_key', '')}\n\n"
+        
+        improvement_prompt = self.prompt_helper.generate_prompt(
+            self.prompt_helper.SUBSECTION_IMPROVE_PROMPT,
+            paras={
+                "SUBSECTION_TITLE": subsection_title,
+                "SUBSECTION_FOCUS": subsection_focus,
+                "PRE_SUBSECTION": pre_subsection_content,
+                "OUTLINE": outline,
+                "CURRENT_CONTENT": current_content,
+                "OVERALL_SCORE": {evaluation_feedback.get('overall_score', 'N/A')},
+                "SYNTHESIS_SCORE": {evaluation_feedback.get('individual_scores', {}).get('synthesis_quality', 'N/A')},
+                "CRITICAL_SCORE": {evaluation_feedback.get('individual_scores', {}).get('critical_analysis', 'N/A')},
+                "STRENGTH": {', '.join(evaluation_feedback.get('strengths', []))},
+                "WEAKNESS": {', '.join(evaluation_feedback.get('weaknesses', []))},
+                "IMPROVEMENT_NEEDED": {', '.join(evaluation_feedback.get('improvement_needed', []))},
+                "ADDITIONAL_INFO": additional_info
+            }
+        )
+        
+        try:
+            response = self.model.generate_content(
+                improvement_prompt,
+                generation_config=genai.types.GenerationConfig(
+                    max_output_tokens=102400,
+                    temperature=0.4,
+                )
+            )
+            return response.text
+            
+        except Exception as e:
+            print(f"Error improving subsection: {e}")
+            return current_content
+    # def write_literature_review_subsection_with_reflection(self, subsection_title: str, 
+    #                                                         subsection_focus: str, 
+    #                                                         section_outline_text: str, 
+    #                                                         proof_ids: List[str], 
+    #                                                         pre_subsection_content: str,
+    #                                                         processed_papers: List[Dict]) -> str:
+    #     """
+    #     Write a literature review subsection with self-reflection and iterative improvement.
+    #     """
+    #     print(f"      Writing subsection: {subsection_title}")
 
+    #     # Step 1: Generate initial subsection
+    #     initial_subsection_content = self.write_initial_subsection(
+    #         subsection_title, subsection_focus, section_outline_text, proof_ids, 
+    #         pre_subsection_content, processed_papers
+    #     )
+    #     current_content = initial_subsection_content
+    #     iteration = 0
+
+    #     while iteration < self.max_improvement_iterations:
+    #         iteration += 1
+    #         print(f"         Iteration {iteration}: Evaluating subsection quality...")
+
+    #         # Step 2: Evaluate subsection quality
+    #         evaluation = self.evaluate_subsection_quality(
+    #             subsection_title, current_content, subsection_focus, section_outline_text, 
+    #             pre_subsection_content
+    #         )
+
+    #         print(f"         Overall Score: {evaluation.get('overall_score', 'N/A')}/5")
+
+    #         # Step 3: Check if subsection is satisfactory
+    #         if evaluation.get('is_satisfactory', False):
+    #             print(f"         Subsection meets quality standards!")
+    #             break
+                
+    #         if iteration >= self.max_improvement_iterations:
+    #             print(f"         Maximum iterations reached. Using current version.")
+    #             break
+
+    #         # Step 4: Retrieve additional papers if needed
+    #         suggested_queries = evaluation.get('suggested_queries', [])
+    #         if suggested_queries:
+    #             print(f"         Retrieving additional papers for: {', '.join(suggested_queries[:2])}")
+    #             additional_papers = self.retrieve_additional_papers(suggested_queries[:2])
+    #             print(f"         Found {len(additional_papers)} additional papers")
+    #         else:
+    #             additional_papers = []
+
+    #         # Step 5: Improve subsection
+    #         print(f"         Improving subsection based on feedback...")
+    #         current_content = self.improve_subsection_with_additional_papers(
+    #             subsection_title, current_content, subsection_focus, additional_papers, section_outline_text, evaluation
+    #         )
+        
+    #     return current_content
 # region write initial section
     def write_initial_section(self, section_title: str, processed_papers: List[Dict], 
                             section_focus: str, outline: str, proof_ids: list, pre_section:str) -> str:
@@ -371,68 +638,178 @@ class LiteratureReviewGenerator:
             print(f"Error writing initial section: {e}")
             return ""
     #endregion
-
-    #region write literature review section with reflection
-    def write_literature_review_section_with_reflection(self, section_title: str, 
-                                                      processed_papers: List[Dict],
-                                                      section_focus: str, outline: str, proof_ids: list, pre_section: str) -> str:
+    def write_initial_section_overview(self, section_title: str, section_focus: str, 
+                                       full_outline_text: str, proof_ids: list, pre_section_content: str,
+                                       processed_papers: List[Dict]) -> str:
         """
-        Write a literature review section with self-reflection and iterative improvement
+        Write the initial overview for a literature review section. This is a high-level summary
+        before diving into subsections.
+        """
+        # citations_info = ""
+        # for paper in processed_papers:
+        #     metadata = paper['metadata']
+        #     citations_info += f"\\cite{{{paper['citation_key']}}}: {metadata.get('title', 'N/A')} by {metadata.get('authors', 'N/A')} ({metadata.get('published_date', 'N/A')})\n"
+        
+        # papers_summary = ""
+        # for i, paper in enumerate(processed_papers, 1):
+        #     summary = paper.get('summary', '')
+        #     papers_summary += f"**Paper {i} ({paper['citation_key']})**: {paper['file_name']}\n{summary}\n\n"
+        
+        proofs_text, proof_papers, paper_summaries = self.get_proofs_text(proof_ids, get_nodes_info=True)
+        citations_info = ""
+        for paper in proof_papers:
+            metadata = paper['metadata']
+            citations_info += f"\\cite{{{paper['citation_key']}}}: {metadata.get('title', 'N/A')} by {metadata.get('authors', 'N/A')} ({metadata.get('published_date', 'N/A')})\n"
+        
+        section_overview_prompt = self.prompt_helper.generate_prompt(
+            self.prompt_helper.WRITE_INITIAL_SECTION_OVERVIEW_PROMPT,
+            paras={
+                'SECTION_TITLE': section_title,
+                'SECTION_FOCUS': section_focus,
+                'PROOFS_TEXT': proofs_text,
+                'CITATION_INFO': citations_info,
+                'OUTLINE': full_outline_text,
+                'PAPERS_SUMMARY': paper_summaries,
+                'PRE_SECTION': pre_section_content
+            }
+        )
+        
+        try:
+            response = self.model.generate_content(
+                section_overview_prompt,
+                generation_config=genai.types.GenerationConfig(
+                    max_output_tokens=102400,
+                    temperature=0.4,
+                )
+            )
+            return response.text
+        except Exception as e:
+            print(f"Error writing initial section overview: {e}")
+            return f"Error: Could not generate overview for section '{section_title}' due to {e}"
+    #region write literature review section with reflection
+    def write_literature_review_section_with_reflection(self, section_data: Dict, 
+                                                      processed_papers: List[Dict],
+                                                      full_outline_text: str, 
+                                                      pre_section_content: str) -> Tuple[str, Dict[str, str]]:
+        """
+        Write a literature review section with self-reflection and iterative improvement,
+        including all its subsections.
         
         Args:
-            section_title (str): Title of the section
-            processed_papers (List[Dict]): List of processed papers
-            section_focus (str): Specific focus for this section
+            section_data (Dict): Contains section_number, section_title, section_focus, subsections.
+            processed_papers (List[Dict]): List of processed papers.
+            full_outline_text (str): The complete JSON outline as a string for context.
+            pre_section_content (str): Content of the previous main section, if any.
             
         Returns:
-            str: Final improved section content
+            Tuple[str, Dict[str, str]]: Final improved section content (including all subsections)
+                                       and a dictionary of subsection contents.
         """
         
-        print(f"   Writing: {section_title}")
+        section_number = section_data['section_number']
+        section_title = section_data['section_title']
+        section_focus = section_data['section_focus']
+        section_proof_ids = section_data.get('proof_ids', []) # Top-level proof IDs for the section
+        subsections_data = section_data['subsections']
         
-        # Step 1: Generate initial section
-        initial_section = self.write_initial_section(section_title, processed_papers, section_focus, outline, proof_ids, pre_section)
-
-        current_content = initial_section
-        iteration = 0
+        print(f"   Writing Section {section_number}: {section_title}")
         
-        while iteration < self.max_improvement_iterations:
-            iteration += 1
-            print(f"      Iteration {iteration}: Evaluating section quality...")
-            
-            # Step 2: Evaluate section quality
-            evaluation = self.evaluate_section_quality(section_title, current_content, section_focus, outline, pre_section)
-            
-            print(f"      Overall Score: {evaluation.get('overall_score', 'N/A')}/5")
-            
-            # Step 3: Check if section is satisfactory
-            if evaluation.get('is_satisfactory', False):
-                print(f"      Section meets quality standards!")
-                break
-                
-            if iteration >= self.max_improvement_iterations:
-                print(f"      Maximum iterations reached. Using current version.")
-                break
-            
-            # Step 4: Retrieve additional papers if needed
-            suggested_queries = evaluation.get('suggested_queries', [])
+        # --- 1. Write and refine section overview ---
+        section_overview_checkpoint_path = os.path.join(
+            self.save_dir, 
+            f"section_{section_number.replace('.', '_')}_{section_title.replace(' ', '_').replace('/', '_').replace(':', '').lower()}_overview_checkpoint.tex"
+        )
 
-            with open(f"{self.save_dir}/suggested_queries.txt", "a") as f:
-                f.write(f"Suggested queries for iteration {iteration}:\n, {suggested_queries}")
-            if suggested_queries:
-                print(f"      Retrieving additional papers for: {', '.join(suggested_queries[:2])}")
-                additional_papers = self.retrieve_additional_papers(suggested_queries[:2])
-                print(f"      Found {len(additional_papers)} additional papers")
-            else:
-                additional_papers = []
-            
-            # Step 5: Improve section
-            print(f"      Improving section based on feedback...")
-            current_content = self.improve_section_with_additional_papers(
-                section_title, current_content, section_focus, additional_papers, evaluation
+        section_overview_content = ""
+        if os.path.exists(section_overview_checkpoint_path):
+            print(f"     ⏭️  Loading section overview for '{section_title}' from checkpoint.")
+            with open(section_overview_checkpoint_path, 'r', encoding='utf-8') as f:
+                section_overview_content = f.read()
+        else:
+            print(f"     ✍️  Writing initial overview for section '{section_title}'...")
+            section_overview_content = self.write_initial_section_overview(
+                section_title, section_focus, full_outline_text, section_proof_ids, pre_section_content, processed_papers
             )
+            with open(section_overview_checkpoint_path, 'w', encoding='utf-8') as f:
+                f.write(section_overview_content)
         
-        return current_content
+        # --- 2. Write and refine each subsection ---
+        all_subsections_content_for_section = {}
+        full_section_latex_content = f"\\section{{{section_title}}}\n\\label{{sec:{section_title.lower().replace(' ', '_').replace('and', '_and_')}}}\n\n"
+        full_section_latex_content += section_overview_content + "\n\n" # Add the refined overview
+        
+        pre_subsection_content = "" # To store content of the previous subsection
+
+        for subsection_data in subsections_data:
+            subsection_number = subsection_data['number']
+            subsection_title = subsection_data['title']
+            subsection_focus = subsection_data['subsection_focus']
+            subsection_proof_ids = subsection_data.get('proof_ids', [])
+            
+            print(f"      Writing Subsection {subsection_number}: {subsection_title}")
+
+            checkpoint_path = os.path.join(
+                self.save_dir, 
+                f"subsection_{subsection_number.replace('.', '_')}_{subsection_title.replace(' ', '_').replace('/', '_').replace(':', '').lower()}_checkpoint.tex"
+            )
+            
+            current_subsection_content = ""
+            if os.path.exists(checkpoint_path):
+                print(f"        ⏭️  Loading subsection '{subsection_title}' from checkpoint.")
+                with open(checkpoint_path, 'r', encoding='utf-8') as f:
+                    current_subsection_content = f.read()
+            else:
+                print(f"        ✍️  Writing initial content for subsection '{subsection_title}'...")
+                current_subsection_content = self.write_initial_subsection(
+                    subsection_title, subsection_focus, full_outline_text, subsection_proof_ids, 
+                    pre_subsection_content, processed_papers
+                )
+                with open(checkpoint_path, 'w', encoding='utf-8') as f:
+                    f.write(current_subsection_content)
+
+            iteration = 0
+            while iteration < self.max_improvement_iterations:
+                iteration += 1
+                print(f"         Iteration {iteration}: Evaluating subsection quality...")
+                
+                evaluation = self.evaluate_subsection_quality(
+                    subsection_title, current_subsection_content, subsection_focus, 
+                    full_outline_text, pre_subsection_content
+                )
+                
+                print(f"         Overall Score: {evaluation.get('overall_score', 'N/A')}/5")
+                
+                if evaluation.get('is_satisfactory', False):
+                    print(f"         Subsection meets quality standards!")
+                    break
+                    
+                if iteration >= self.max_improvement_iterations:
+                    print(f"         Maximum iterations reached for subsection. Using current version.")
+                    break
+                
+                suggested_queries = evaluation.get('suggested_queries', [])
+                if suggested_queries:
+                    print(f"         Retrieving additional papers for subsection: {', '.join(suggested_queries[:2])}")
+                    additional_papers = self.retrieve_additional_papers(suggested_queries[:2])
+                    print(f"         Found {len(additional_papers)} additional papers for subsection")
+                else:
+                    additional_papers = []
+                
+                print(f"         Improving subsection based on feedback...")
+                current_subsection_content = self.improve_subsection_with_additional_papers(
+                    subsection_title, current_subsection_content, subsection_focus, 
+                    additional_papers, full_outline_text, evaluation, pre_subsection_content
+                )
+                with open(checkpoint_path, 'w', encoding='utf-8') as f:
+                    f.write(current_subsection_content)
+
+            # After refining, add the subsection content to the section's full content
+            all_subsections_content_for_section[subsection_title] = current_subsection_content
+            full_section_latex_content += f"\subsection{{{subsection_title}}}\n\\label{{sec:{subsection_number.replace('.', '_')}_{subsection_title.lower().replace(' ', '_').replace('and', '_and_')}}}\n\n"
+            full_section_latex_content += current_subsection_content + "\n\n"
+            pre_subsection_content = current_subsection_content # Update for the next iteration
+
+        return full_section_latex_content, all_subsections_content_for_section
     
     #endregion
     def parse_outline_text(file_path: str) -> Tuple[List[str], Dict[str, str], Dict[str, str]]:
@@ -490,7 +867,7 @@ class LiteratureReviewGenerator:
 
         return section_title_list, sections_dict, section_definitions
     #region generate complete literature review
-    def generate_complete_literature_review(self, paper_paths: List[str], 
+    def generate_complete_literature_review(self, paper_paths: str, 
                                           review_title: str = "Literature Review") -> Dict:
         """
         Generate a complete literature review from multiple papers with self-reflection
@@ -500,8 +877,8 @@ class LiteratureReviewGenerator:
         # Step 1: Process all papers
         print("\n1. Processing papers...")
 
-        # process core papers first for drafting (seprate folder)
-        core_papers_path = os.path.join(paper_paths, "core_papers")
+        # process core papers first for drafting (separate folder)
+        core_papers_path = os.path.join(paper_paths)
         core_papers = self.summarizer.process_folder(
             folder_path=core_papers_path,
             skip_existing=True,  # Skip if already processed
@@ -516,85 +893,68 @@ class LiteratureReviewGenerator:
             delay_seconds=0.0,
             metadata_file = os.path.join(f"paper_data/{self.query}/info", "metadata_all_papers.json")
         )
-        def check_variable_type(variable):
-            if isinstance(variable, dict):
-                return "dict"
-            elif isinstance(variable, list):
-                return "list"
-            else:
-                return type(variable).__name__
-        print(core_papers)
-        # print(check_variable_type(core_papers))
-        # print(check_variable_type(all_papers))
-        # Fix: ensure both are lists before concatenation
-        all_processed_papers = all_papers
-        # print(all_processed_papers[0]['metadata'].keys())
-        
-        # Use core papers for section writing, but all papers for citations
-        processed_papers = core_papers
-        # print(processed_papers)
-        if not processed_papers:
-            return {"error": "No papers could be processed"}
-        
-        # Step 2: Write individual sections with self-reflection
-        print("\n2. Writing literature review sections with self_reflection...")
-        sections = {}
-        print("\n3. Generating literature review outline...")
-        
-        outline_path = f"{self.save_dir}/survey_outline.json"
-        # read outline file
-        with open(outline_path, 'r', encoding='utf-8') as f:
-            outline = json.load(f)
-        section_title_list = [section['section_outline'].split("\n")[0].lstrip('# ').strip() for section in outline]
-        sections = {section['section_outline'].split("\n")[0].lstrip('# ').strip(): section['section_outline'] for section in outline}
-        section_definitions = {section['section_outline'].split("\n")[0].lstrip('# ').strip(): section['section_focus'] for section in outline}
-        proof_ids = {section['section_outline'].split("\n")[0].lstrip('# ').strip(): section['proof_ids'] for section in outline}
-        print(section_title_list)
-        print(sections)
 
-        ii = 0
-        for section_title, section_focus in section_definitions.items():
-            # using previous section if any
-            if ii > 0:
-                pre_section = sections[section_title_list[ii-1]]
-            else:
-                pre_section = ""
-            checkpoint_dir = f"{self.save_dir}"
-            os.makedirs(checkpoint_dir, exist_ok=True)
-            # make sure the section title is valid for filename
-            checkpoint_path = os.path.join(checkpoint_dir, f"section_{section_title.replace(' ', '_').replace('/', '_').replace(':', '').lower()}_checkpoint.txt")
-            # Load from checkpoint if exists
-            if os.path.exists(checkpoint_path):
-                print(f"  ⏭️  Loading section '{section_title}' from checkpoint.")
-                with open(checkpoint_path, 'r', encoding='utf-8') as f:
-                    section_content = f.read()
-            else:
-                print(f"  ✍️  Writing section '{section_title}'...")
-                print(f"Section outline: {sections[section_title]}")
-                section_content = self.write_literature_review_section_with_reflection(
-                    section_title, processed_papers, section_focus, sections[section_title], proof_ids[section_title], pre_section
-                )
-                # Save checkpoint for this section
-                with open(checkpoint_path, 'w', encoding='utf-8') as f:
-                    f.write(section_content)
-            sections[section_title] = section_content
-            ii += 1
+        print(f"Processed {len(core_papers)} core papers.")
+        print(f"Processed {len(all_papers)} all papers (including core papers).")
         
+        all_processed_papers = all_papers # This will be used for bibliography
+        processed_papers_for_content = core_papers # Use core papers for detailed content generation
+
+        if not processed_papers_for_content:
+            return {"error": "No core papers could be processed for content generation."}
         
-        # Step 3: Generate LaTeX document
-        print("\n3. Generating LaTeX document...")
-        latex_document = self.generate_latex_document_with_sections(sections, all_processed_papers, review_title)
+        # Step 2: Load the JSON outline
+        print("\n2. Loading literature review outline...")
+        outline_path = f"{self.save_dir}/survey_outline.json"
+        
+        if not os.path.exists(outline_path):
+            return {"error": f"Outline file not found at {outline_path}. Please generate the outline first."}
+
+        with open(outline_path, 'r', encoding='utf-8') as f:
+            outline_json = json.load(f)
+        
+        # Convert the JSON outline to a string for passing as context to prompts
+        full_outline_text = json.dumps(outline_json, indent=2)
+
+        # Step 3: Write individual sections (including subsections) with self-reflection
+        print("\n3. Writing literature review sections and subsections with self-reflection...")
+        
+        sections_content = {} # Stores the final content of each main section
+        all_subsection_contents = {} # Stores content of all subsections, keyed by full title (e.g., "1.1 Background: ...")
+
+        # Iterate through main sections
+        pre_section_content = "" # Content of the previous main section
+
+        for section_data in outline_json:
+            section_number = section_data['section_number']
+            section_title = section_data['section_title']
+
+            # Call the updated function to write/refine the section and its subsections
+            full_section_latex_content, subsections_in_this_section = self.write_literature_review_section_with_reflection(
+                section_data, processed_papers_for_content, full_outline_text, pre_section_content
+            )
+            
+            sections_content[section_title] = full_section_latex_content
+            all_subsection_contents.update(subsections_in_this_section) # Add all subsections from this section
+            pre_section_content = full_section_latex_content # Update for the next main section
+
+        # Step 4: Generate LaTeX document
+        print("\n4. Generating LaTeX document...")
+        latex_document = self.generate_latex_document_with_sections(
+            sections_content, all_processed_papers, review_title
+        )
         
         # Compile final review
         final_review = {
             "title": review_title,
-            "papers_processed": len(processed_papers),
-            "paper_list": [p['file_name'] for p in processed_papers],
-            "citations_map": self.citations_map,
-            "sections": sections,
+            "papers_processed": len(all_processed_papers),
+            "paper_list": [p['file_name'] for p in all_processed_papers],
+            "citations_map": {p['file_name']: p['citation_key'] for p in all_processed_papers}, # Ensure this map is populated
+            "sections": sections_content, # This now contains main section content including subsections
+            "subsections": all_subsection_contents, # Explicitly store subsection content
             "latex_document": latex_document,
             "generation_date": datetime.now().isoformat(),
-            "processed_papers_data": processed_papers
+            "processed_papers_data": all_processed_papers
         }
         
         return final_review

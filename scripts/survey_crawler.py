@@ -68,9 +68,9 @@ class SurveyOptimizedCrawler:
         # Survey-specific configuration
         self.config = {
             # Collection ratios
-            'foundational_ratio': 0.4,    # 40% highly cited foundational papers
-            'recent_ratio': 0.3,          # 30% recent papers with traction
-            'trending_ratio': 0.3,        # 30% trending papers with growth
+            'foundational_ratio': 0.3,    # 30% highly cited foundational papers
+            'recent_ratio': 0.35,          # 35% recent papers with traction
+            'trending_ratio': 0.35,        # 35% trending papers with growth
 
             # Citation thresholds (adjusted by paper age)
             'foundational_min_citations': 10,  
@@ -79,8 +79,8 @@ class SurveyOptimizedCrawler:
             
             # Time ranges
             'foundational_age_range': (3, 15),     # 3-15 years old
-            'recent_age_range': (1, 5),            # 1-5 years old
-            'trending_age_range': (0, 1),          # 0-2 years old
+            'recent_age_range': (2, 5),            # 2-5 years old
+            'trending_age_range': (0, 1),          # 0-1 years old
 
             # Quality thresholds
             'min_abstract_length': 100,
@@ -187,22 +187,7 @@ class SurveyOptimizedCrawler:
         self._log(f" Target: {target_papers} papers")
         self._log("=" * 60)
         
-        # Expand query for better coverage
-        # expanded_queries = self._expand_query(query)
-        # self._log(f" Generated {len(expanded_queries)} query variations")
-
-        # prompt_generate_kws = self._create_keyword_prompt(topic, user_kws, 10)
-        # generated_text = self.chat_agent.gemini_chat(prompt_generate_kws, temperature=0.1)
-        # # print(generated_text)
-        # keywords = self._parse_gemini_response(generated_text)
-        # print(f"Generated {len(keywords.primary_keywords)} primary keywords:")
-        # expanded_queries = [topic.lower()]
-        # for kw in keywords.primary_keywords:
-        #     print(f"  • {kw}")
-        #     expanded_queries.append(f'"{kw}"')
-        # for kw in keywords.secondary_keywords:
-        #     expanded_queries.append(f'"{kw}"')
-        expanded_queries = [topic]
+        expanded_queries = [user_kws]
         # Calculate tier targets
         foundational_target = int(target_papers * self.config['foundational_ratio'])
         recent_target = int(target_papers * self.config['recent_ratio'])

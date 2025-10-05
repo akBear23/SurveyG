@@ -1329,7 +1329,7 @@ class PaperSummarizerRAG:
                 print(f"  ⏭️  Bỏ qua - File đã được lưu trong checkpoint")
                 self.processing_stats['skipped_files'].append(file_path)
                 continue
-            print(f"\n[{i+1}/{len(supported_files)}] Đang xử lý: {file_name}")
+            print(f"\n[{i+1}/{len(supported_files)}] Đang xử lý: {file_path}")
             # Kiểm tra xem file đã được xử lý chưa
             exising_flag, summary_ifTrue = self.is_paper_already_processed(file_path)
             if skip_existing and exising_flag>0:
