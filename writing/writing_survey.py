@@ -735,7 +735,11 @@ class LiteratureReviewGenerator:
         
         # --- 2. Write and refine each subsection ---
         all_subsections_content_for_section = {}
-        full_section_latex_content = f"\\section{{{section_title}}}\n\\label{{sec:{section_title.lower().replace(' ', '_').replace('and', '_and_')}}}\n\n"
+        if not section_overview_content.strip().startswith("\\section"):
+            full_section_latex_content = f"\\section{{{section_title}}}\n"
+        else:
+            full_section_latex_content = ''
+        full_section_latex_content += f"\\label{{sec:{section_title.lower().replace(' ', '_').replace('and', '_and_')}}}\n\n"
         full_section_latex_content += section_overview_content + "\n\n" # Add the refined overview
         
         pre_subsection_content = "" # To store content of the previous subsection
@@ -767,47 +771,81 @@ class LiteratureReviewGenerator:
                 with open(checkpoint_path, 'w', encoding='utf-8') as f:
                     f.write(current_subsection_content)
 
-            iteration = 0
-            while iteration < self.max_improvement_iterations:
-                iteration += 1
-                print(f"         Iteration {iteration}: Evaluating subsection quality...")
+            # iteration = 0
+            # while iteration < self.max_improvement_iterations:
+            #     iteration += 1
+            #     print(f"         Iteration {iteration}: Evaluating subsection quality...")
                 
-                evaluation = self.evaluate_subsection_quality(
-                    subsection_title, current_subsection_content, subsection_focus, 
-                    full_outline_text, pre_subsection_content
-                )
+            #     evaluation = self.evaluate_subsection_quality(
+            #         subsection_title, current_subsection_content, subsection_focus, 
+            #         full_outline_text, pre_subsection_content
+            #     )
                 
-                print(f"         Overall Score: {evaluation.get('overall_score', 'N/A')}/5")
+            #     print(f"         Overall Score: {evaluation.get('overall_score', 'N/A')}/5")
                 
-                if evaluation.get('is_satisfactory', False):
-                    print(f"         Subsection meets quality standards!")
-                    break
+            #     if evaluation.get('is_satisfactory', False):
+            #         print(f"         Subsection meets quality standards!")
+            #         break
                     
-                if iteration >= self.max_improvement_iterations:
-                    print(f"         Maximum iterations reached for subsection. Using current version.")
-                    break
+            #     if iteration >= self.max_improvement_iterations:
+            #         print(f"         Maximum iterations reached for subsection. Using current version.")
+            #         break
                 
-                suggested_queries = evaluation.get('suggested_queries', [])
-                if suggested_queries:
-                    print(f"         Retrieving additional papers for subsection: {', '.join(suggested_queries[:2])}")
-                    additional_papers = self.retrieve_additional_papers(suggested_queries[:2])
-                    print(f"         Found {len(additional_papers)} additional papers for subsection")
-                else:
-                    additional_papers = []
+            #     suggested_queries = evaluation.get('suggested_queries', [])
+            #     if suggested_queries:
+            #         print(f"         Retrieving additional papers for subsection: {', '.join(suggested_queries[:2])}")
+            #         additional_papers = self.retrieve_additional_papers(suggested_queries[:2])
+            #         print(f"         Found {len(additional_papers)} additional papers for subsection")
+            #     else:
+            #         additional_papers = []
                 
-                print(f"         Improving subsection based on feedback...")
-                current_subsection_content = self.improve_subsection_with_additional_papers(
-                    subsection_title, current_subsection_content, subsection_focus, 
-                    additional_papers, full_outline_text, evaluation, pre_subsection_content
-                )
-                with open(checkpoint_path, 'w', encoding='utf-8') as f:
-                    f.write(current_subsection_content)
+            #     print(f"         Improving subsection based on feedback...")
+            #     current_subsection_content = self.improve_subsection_with_additional_papers(
+            #         subsection_title, current_subsection_content, subsection_focus, 
+            #         additional_papers, full_outline_text, evaluation, pre_subsection_content
+            #     )
+            #     with open(checkpoint_path, 'w', encoding='utf-8') as f:
+            #         f.write(current_subsection_content)
 
             # After refining, add the subsection content to the section's full content
             all_subsections_content_for_section[subsection_title] = current_subsection_content
-            full_section_latex_content += f"\subsection{{{subsection_title}}}\n\\label{{sec:{subsection_number.replace('.', '_')}_{subsection_title.lower().replace(' ', '_').replace('and', '_and_')}}}\n\n"
-            full_section_latex_content += current_subsection_content + "\n\n"
-            pre_subsection_content = current_subsection_content # Update for the next iteration
+            if current_subsection_content.strip().startswith("\\section"):
+                current_subsection_content = current_subsection_content.replace("\\section", "\\subsection")
+            
+            subsection_prefix = f"\\subsection"
+            if current_subsection_content.strip().startswith(subsection_prefix):
+                # Find the end of the subsection line and label to remove it
+                # This assumes the label immediately follows the subsection title
+                # and we want to remove both if they are at the very beginning.
+                
+                # A more robust way would be to parse it, but for simple string manipulation:
+                temp_content = current_subsection_content.strip()
+                
+                # Find the first newline after the potential subsection line
+                first_newline_idx = temp_content.find('\n')
+                
+                if first_newline_idx != -1:
+                    # Check if the text before this newline contains the label as well
+                    # This is a bit simplistic and might need refinement depending on exact latex structure
+                    if "\\label" in temp_content[:first_newline_idx]:
+                        # If the label is on the same line as subsection or immediately after
+                        # find the end of the label line
+                        second_newline_idx = temp_content.find('\n', first_newline_idx + 1)
+                        if second_newline_idx != -1:
+                            current_subsection_content = temp_content[second_newline_idx + 1:]
+                        else:
+                            current_subsection_content = "" # Only the subsection and label were present
+                    else: # Only the subsection line
+                        current_subsection_content = temp_content[first_newline_idx + 1:]
+                else: # No newline, meaning only the subsection was in the content
+                    current_subsection_content = ""
+
+            # Now, add the correct subsection line at the beginning
+            full_section_latex_content += f"\\subsection{{{subsection_title}}}\n\\label{{sec:{subsection_number.replace('.', '_')}_{subsection_title.lower().replace(' ', '_').replace('and', '_and_')}}}\n\n"
+            full_section_latex_content += current_subsection_content + '\n'
+
+            # full_section_latex_content += current_subsection_content + "\n\n"
+            # pre_subsection_content = current_subsection_content # Update for the next iteration
 
         return full_section_latex_content, all_subsections_content_for_section
     
@@ -1127,6 +1165,96 @@ class LiteratureReviewGenerator:
         complete_latex = latex_header + latex_content + bibliography + "\n\\end{document}"
         
         return complete_latex
+#     def generate_latex_document_with_sections(self, sections: Dict[str, str], all_papers: List[Dict], 
+#                                         review_title: str = "Literature Review") -> str:
+#         """
+#         Generate complete LaTeX document with individual sections and subsections.
+        
+#         Args:
+#             sections (Dict[str, str]): A dictionary where keys are section titles 
+#                                         and values are the full LaTeX content of each section
+#                                         (including its subsections).
+#             all_papers (List[Dict]): List of all processed papers for bibliography generation.
+#             review_title (str): The title of the entire literature review document.
+            
+#         Returns:
+#             str: The complete LaTeX document as a string.
+#         """
+        
+#         # LaTeX document header
+#         latex_header = r"""\documentclass[12pt,a4paper]{article}
+# \usepackage[utf8]{inputenc}
+# \usepackage[T1]{fontenc}
+# \usepackage{amsmath,amsfonts,amssymb}
+# \usepackage{graphicx}
+# \usepackage[margin=2.5cm]{geometry}
+# \usepackage{setspace}
+# \usepackage{natbib}
+# \usepackage{url}
+# \usepackage{hyperref}
+# \usepackage{booktabs}
+# \usepackage{longtable}
+# \usepackage{array}
+# \usepackage{multirow}
+# \usepackage{wrapfig}
+# \usepackage{float}
+# \usepackage{colortbl}
+# \usepackage{pdflscape}
+# \usepackage{tabu}
+# \usepackage{threeparttable}
+# \usepackage{threeparttablex}
+# \usepackage[normalem]{ulem}
+# \usepackage{makecell}
+# \usepackage{xcolor}
+
+# % Set line spacing
+# \doublespacing
+
+# % Configure hyperref
+# \hypersetup{
+#     colorlinks=true,
+#     linkcolor=blue,
+#     filecolor=magenta,      
+#     urlcolor=cyan,
+#     citecolor=red,
+# }
+
+# % Title and author information
+# \title{""" + review_title + r"""}
+# \author{Literature Review}
+# \date{\today}
+
+# \begin{document}
+
+# \maketitle
+
+# % Abstract (optional)
+# \begin{abstract}
+# This literature review provides a comprehensive analysis of recent research in the field of """ + self.query + r""". The review synthesizes findings from """ + str(len(all_papers)) + r""" research papers, identifying key themes, methodological approaches, and future research directions.
+# \end{abstract}
+
+# \newpage
+# \tableofcontents
+# \newpage
+
+# """
+#         # Generate main content sections
+#         latex_content = ""
+        
+#         # The 'sections' dictionary already contains the full LaTeX content for each section,
+#         # which includes its overview and all subsections. We just need to concatenate them.
+#         for section_title, section_body_latex in sections.items():
+#             # The section_body_latex already contains \section{} and \subsection{} commands
+#             # generated during the writing process.
+#             latex_content += section_body_latex + "\n\n"
+        
+#         # Generate bibliography with ALL papers
+#         bibliography = self._generate_advanced_latex_bibliography(all_papers)
+        
+#         # Combine all parts
+#         complete_latex = latex_header + latex_content + bibliography + "\n\\end{document}"
+        
+#         return complete_latex
     #endregion
 
     #region format LaTeX content
