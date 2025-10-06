@@ -1,88 +1,121 @@
 class PromptHelper:
     def __init__(self):
         # workflow 
-        # 1 - bfs (done)
-        # 2 - layer 1 
-        # 3 - K community (done)
-        # 4 - Outline (done)
-        # 5 - Evaluate 
-        self.BFS_PROMPT = """You are an expert academic researcher analyzing the evolution of research in "[QUERY]".
+        # 1 - bfs modify
+        # 2 - K community (done)
+        # 3 - subsecton modify
+        # 4 - Evaluate 
 
-TASK: Analyze the following citation path, where each paper builds upon previous work.
+# Remember to add information of paper like the template in PAPER_INFO
+        self.BFS_PROMPT_1_touch = """
+*Instruction:* You are a research analyst tracing the evolution of scientific ideas. Your task is to analyze how research in "[QUERY]" has developed through a chain of connected papers, where each work builds upon previous contributions.
 
-CITATION PATH [NUMBER_OF_PAPERS] papers:
+TASK: Analyze the following citation path to reveal how methodologies, problems, and insights evolve across [NUMBER_OF_PAPERS] interconnected papers.
+
+**Papers to reference (sorted chronologically):**
+
 [PAPER_INFO]
-[PREVIOUS_CONTEXT]
 
-ANALYSIS REQUIREMENTS:
-For this development path, provide:
+Each paper follows this format:
+[citation_key] Title (Year)
+Summary: [Description of the paper's content]
 
-1. **Methodological Evolution** (2-3 sentences):
-- What are the key methodological shifts or innovations?
-- How do methods evolve from foundational to recent work?
+*Output your analysis in the following exact structure:*
 
-2. **Knowledge Progression** (4-6 sentences):
-- What problems are being addressed?
-- How does each paper build on the limitations of previous work?
-- What new capabilities or insights emerge?
+1. <think>
+Examine the citation path chronologically. For each progression:
+- How many distinct methodological or conceptual shifts occur?
+- What specific problems does each new paper address that previous papers left unsolved or unexplored?
+- What innovations or capabilities does each subsequent paper introduce?
+- Are there temporal gaps or clusters that suggest external influences (e.g., new datasets, computational advances)?
 
-3. **Temporal Context** (1-2 sentences):
-- How does publication timing relate to technological/theoretical advances?
-- Are there notable gaps or acceleration periods?
+*Format your analysis in this section as a clear, chronological list or table.*
+</think>
 
-4. **Synthesis** (2-3 sentences):
-- What unified narrative connects these works?
-- What is the collective contribution to "[QUERY]"?
+2. *Evolution Analysis:*
+Write a cohesive narrative (target length: ~500-700 words) organized around 1-2 major trends or transitions you identified. *(A "trend" is a sustained directional shift, such as a move to a new methodology, a change in problem focus, or a significant increase in scale/complexity.)* For each trend:
 
-CONSTRAINTS:
-- Be specific and cite paper numbers (e.g., "Paper 3 introduces...")
-- Focus on connections and evolution, not just individual contributions
-- Avoid generic statements; ground analysis in actual methods/results
-- Highlight key transitions with phrases like "building on this..." or "in contrast..."
-- Total length: 500-700 words
+*Trend [Number]: [Descriptive name]*
+- *Methodological progression*: Describe how technical approaches evolve. Reference specific papers.
+- *Problem evolution*: Specifically explain what limitations or gaps each paper addresses.
+- *Key innovations*: Highlight breakthrough contributions that enable new capabilities or insights.
+
+After describing all trends, provide:
+
+3. *Synthesis* (2-3 sentences):
+What unified intellectual trajectory connects these works? What is their collective contribution to advancing "[QUERY]"?
+
+REMEMBER:
+- Always cite papers specifically by title, year, and citation info: "[citation_key] Title (Year)"
 """
-        self.LAYER_PROMPT = """You are analyzing the [LAYER_DESCRIPTION] in "[QUERY]" research.
 
-PAPERS TO ANALYZE ([NUMBER_OF_PAPER] papers):
+        self.BFS_PROMPT_2_touch = """
+*Instruction:* You are a research analyst tracing the evolution of scientific ideas through hierarchical knowledge synthesis. Your task is to analyze how research in "[QUERY]" has developed by building upon existing understanding and incorporating new papers into an evolving narrative.
+
+CONTEXT: You have access to a previously synthesized understanding of this research area, along with new papers to integrate. Your goal is to update and refine the evolutionary analysis by incorporating these new contributions.
+
+**Previous Synthesis (if available):**
+[PREVIOUS_SYNTHESIS]
+
+**New Papers to Integrate (sorted chronologically):**
 [PAPER_INFO]
 
-TASK: Create a thematic taxonomy organizing these works into coherent methodological groups.
+Each paper follows this format:
+[citation_key] Title (Year)
+Summary: [Description of the paper's content]
 
-OUTPUT STRUCTURE:
+TASK: Integrate the new papers into the existing knowledge structure, identifying how they extend, refine, or redirect the previously understood evolutionary trajectory across [TOTAL_NUMBER_OF_PAPERS] papers.
 
-1. **Overview** (2-3 sentences):
-   - What characterizes this layer's contributions?
-   - What problems/challenges do these works address?
+*Output your analysis in the following exact structure:*
 
-2. **Methodological Groups** (Identify 3-5 main approaches):
-   For each group:
-   - **Group Name**: [Descriptive name]
-   - **Core Approach**: [1-2 sentences on methodology]
-   - **Key Works**: [List paper numbers, e.g., Papers 1, 5, 12]
-   - **Contribution**: [How this group advances the field]
+1. <think>
+**Integration Analysis:**
+- How do the new papers relate to the previously identified trends? (Do they extend, challenge, or branch from existing directions?)
+- What new methodological or conceptual shifts appear with these additions?
+- Do the new papers fill gaps identified in the previous synthesis, or do they open entirely new directions?
+- Are there connections between new papers and earlier works not previously synthesized?
+- Does the addition of new papers change the overall narrative or strengthen existing interpretations?
 
-3. **Cross-Group Patterns** (2-3 sentences):
-   - What common trends or complementary approaches exist?
-   - How do groups relate or differ?
+**Temporal Positioning:**
+- Where do the new papers fit chronologically relative to the previous synthesis?
+- Do they represent the latest developments, or do they fill historical gaps?
 
-4. **Layer Significance** (1-2 sentences):
-   - What is this layer's overall impact on "[QUERY]"?
+*Format your analysis in this section as a clear, structured assessment.*
+</think>
 
-CONSTRAINTS:
-- Be specific about methods (algorithms, architectures, techniques)
-- Groups should be distinct yet comprehensive (cover all papers)
-- Cite paper numbers explicitly
-- Length: 500-700 words
+2. *Updated Evolution Analysis:*
+Write a cohesive narrative (target length: ~500-700 words) that integrates new findings with previous understanding. Organize around major trends or transitions:
 
-Provide a structured, analytical taxonomy."""
-        
+For each trend (continuing or new):
+*Trend [Number]: [Descriptive name]*
+- *Methodological progression*: Describe how technical approaches evolve, explicitly noting how new papers advance or diverge from the established trajectory.
+- *Problem evolution*: Explain what limitations each paper addresses, highlighting connections between new and previously analyzed works.
+- *Key innovations*: Emphasize breakthrough contributions from new papers and how they relate to earlier innovations.
+- *Integration points*: Explicitly state how new papers connect to or build upon previously synthesized work.
+
+3. *Refined Synthesis* (3-4 sentences):
+What unified intellectual trajectory connects all works (previous + new)? How has your understanding of the field's evolution been updated or refined? What is the collective contribution to advancing "[QUERY]" with this expanded view?
+
+REMEMBER:
+- Always cite papers specifically: "[citation_key] Title (Year)"
+- Explicitly mark which insights come from newly added papers vs. previous synthesis
+- Maintain coherence between previous understanding and new additions
+- If no previous synthesis exists, treat this as the initial analysis
+"""
+
         self.COMMUNITY_PROMPT = """
 *Instruction:* You are a research analyst synthesizing a body of literature. Your task is to analyze the provided papers on the survey topic "[QUERY]".
 
 TASK: Cluster the provided papers into 2-3 distinct subgroups based on their methodologies, contributions, or thematic focus. Then provide a critical analysis of each cluster and the field overall.
 
-PAPER INFORMATION: 
+**Papers to reference (sorted chronologically):**
+
 [PAPER_INFO]
+
+Each paper follows this format:
+[citation_key] Title (Year)
+Summary: [Description of the paper's content]
+
 *Output your analysis in the following exact structure:*
 
 1.  <think>
@@ -90,7 +123,7 @@ Explain your reasoning for how you clustered papers into subgroups based on thei
 </think>
 2.  *For each subgroup:*
     *   *Subgroup name*: [Clear descriptive name]
-    *   *Papers*: [List paper titles and years]
+    *   *Papers*: [List paper with format [citation_key] Title (Year)]
     *   *Analysis*: Provide 4-6 sentences covering:
         *   *Core methodologies and approaches*: Describe the common technical or methodological toolkit shared by these papers.
         *   *Thematic focus and key contributions*: Explain the specific problem or aspect of "[QUERY]" this group addresses and their main intellectual contributions to the field.
@@ -104,12 +137,11 @@ GUIDELINES:
 - Focus on connections, not just descriptions
 - Total target length: 500-700 words
 """
+
+# Remember to add layer 1 community to PAPER_COMMUNITIES
         self.OUTLINE_PROMPT = """You are creating a comprehensive literature review outline for: "[QUERY]"
 
 # AVAILABLE RESEARCH SYNTHESIS
-
-## Layer Taxonomies (Thematic Organization)
-[LAYER_TAXONOMIES]
 
 ## Paper communities 
 [PAPER_COMMUNITIES]
@@ -286,42 +318,55 @@ Revised Section Suggestions (if structural changes needed):
 Outline to evaluate:
 [OUTLINE_TEXT]
 """
+
+#Remember to drop <think> tags after generating subsections
         self.WRITE_INITIAL_SUBSECTION_PROMPT = """
 Write a comprehensive literature review subsection titled "[SUBSECTION_TITLE]" in LaTeX format.
 
 **SUBSECTION SPECIFIC FOCUS:** [SUBSECTION_FOCUS]
-**Subsection taxonomies summaries and development directions:** [PROOFS_TEXT]
+**Community summaries:** [COMMUNITY_SUMMARY] 
+**Development directions:** [DEVELOPMENT_DIRECTION]
+
+**Papers to reference (sorted chronologically):**
+
+[PAPER_INFO]
+
+Each paper follows this format:
+[citation_key] Title (Year)
+Summary: [Description of the paper's content]
+
+First, generate your reasoning in <think></think> tags by analyzing:
+- Community summaries: to understand the research direction, methodological patterns, and key limitations
+- Development directions: to trace how papers build on each other and what problems each solves
+- Papers to reference: to extract specific technical details for each method
+
+In your <think> tags, you should:
+- Identify methodological patterns from community summaries
+- Map the paper progression chain from development directions
+- Plan how to connect papers (which paper addresses which limitation)
+
+Now consider the following guidelines carefully while writing the subsection:
 
 **CRITICAL REQUIREMENTS:**
 
-1. **Content & Format:**
+1. **Format:**
   - Generate text in LaTeX format with proper citations (\\cite{{citation_key}})
-  - Focus ONLY on the specific aspect assigned to this subsection
   - At least 400 words for this subsection
   - No numbering in subsection titles
 
-2. **Critical Analysis and Synthesis (HIGH PRIORITY):**
-  - Go beyond description - evaluate methodological strengths/weaknesses.
-  - Compare approaches critically: "While [X] achieves Y, it fails to address Z unlike [W]" - use the taxonomies to inform these comparisons.
-  - Identify WHY gaps/limitations exist (theoretical barriers, practical constraints) as suggested by the development directions.
-  - Analyze trade-offs explicitly (performance vs. privacy, accuracy vs. robustness) and relate to the taxonomies.
-  - Synthesize information ACROSS papers - identify patterns, contradictions, and evolutionary trends as outlined in both the taxonomies and the development directions.
-
+2. **Content:**
+  - Focus ONLY on the SUBSECTION SPECIFIC FOCUS assigned to this subsection
+    
 3. **Evidence & Citation:**
-  - High citation density (6-8 citations minimum)
   - Use specific examples with citations
-  - Include comparative statements
 
-4. **Organization:**
-  - Coherent flow with smooth transitions
-  - Integrate taxonomies summaries and development directions naturally
-
-**ANALYTICAL FRAMEWORK - Apply these questions:**
-- What are the methodological limitations not discussed by the authors?
-- How do experimental setups affect generalizability?
-- What assumptions are made and are they realistic?
-- Where do findings contradict each other and why?
-- What theoretical gaps prevent solving identified problems?
+4. **Structure the Subsection:**
+  - Opening: Introduce problem statement in this subsection by 1-2 sentences.
+  - Body: Generating content follow these rules: 
+          - Each paper is described in 2-3 sentences with specific technical contributions, using citation in Available Citations.
+          - Papers are connected by showing how later work addresses limitations in earlier work based on your thought before.
+          - Ensure the overall narrative follows the progression identified in your reasoning.
+  - Closing: Conclusion about unresolved issues across all papers or future directions that emerge from the analyzed literature.
 
 **RED FLAGS to avoid:**
 - Sequential listing: "Paper A proposes X. Paper B proposes Y. Paper C proposes Z."
@@ -331,73 +376,69 @@ Write a comprehensive literature review subsection titled "[SUBSECTION_TITLE]" i
 - Pure description: Describing what a paper does without analyzing its contribution or limitations
 - Ignoring contradictions: Not addressing when papers reach conflicting conclusions
 - Cherry-picking: Only citing results that support a narrative, ignoring contradictory evidence
-
-**Available Citations:**
-[CITATION_INFO]
-
-**SECTION OUTLINE:**
-[OUTLINE]
-
-**Papers to reference:**
-[PAPERS_SUMMARY]
-
-**Previous subsection if any:**
-[PRE_SUBSECTION]
-
-**OUTPUT INSTRUCTIONS:**
-Write ONLY the content for "[SUBSECTION_TITLE]" subsection focusing on: [SUBSECTION_FOCUS]
 """
 
         self.EVALUATE_SUBSECTION_PROMPT = """
-        You are a grumpy expert academic researcher carefully evaluating this literature review subsection.
-        Evaluate the quality of this literature review subsection based on the following criteria:
+You are a grumpy expert academic researcher carefully evaluating this literature review subsection.
+
+**Previous subsection if any:** [PRE_SUBSECTION]
+**Subsection Title**: [SUBSECTION_TITLE]
+**Expected Focus**: [SUBSECTION_FOCUS]
+**Overall Review Context: Outline**: [OUTLINE]
+**Subsection Content**: [SUBSECTION_CONTENT]
+
+Evaluate this subsection holistically as an expert academic reviewer would assess a literature review section.
+
+**IMPORTANT**: 
+- Return ONLY valid JSON without any markdown formatting or code blocks
+- Escape all backslashes and quotes properly in JSON strings
+- Do not include any special characters that might break JSON parsing
+- All text fields can be detailed paragraphs with your expert analysis
+
+**Response Format** (JSON only):
+{{
+  "overall_score": <1-5, where 5 is excellent>,
+  "redundancy_check": "<paragraph analyzing overlap with previous subsection(s). Identify specific redundant content, repeated concepts, or duplicated citations. If no previous subsection exists or no redundancy found, state this clearly.>",
+  "strengths": ["list of specific strengths with examples"],
+  "weaknesses": ["list of specific weaknesses with examples"],
+  "is_satisfactory": <true if overall_score >= 3.5, false otherwise>,
+  "improvement_needed": ["specific actionable improvements with concrete suggestions"],
+  "suggested_queries": ["suggested search queries to find additional relevant papers to address gaps or weaknesses"]
+}}
+"""
         
-        **Previous subsection if any:** [PRE_SUBSECTION]
-        **Subsection Title**: [SUBSECTION_TITLE]
-        **Expected Focus**: [SUBSECTION_FOCUS]
-        **Overall Review Context: Outline**: [OUTLINE]
-        
-        **Subsection Content**:
-        [SUBSECTION_CONTENT]
-        
-        **Evaluation Criteria** (Rate each from 1-5, where 5 is excellent):
-        
-        1. **Content Coverage** (1-5): Does the subsection comprehensively cover the expected focus area?
-        2. **Citation Density** (1-5): Are there sufficient and appropriate citations throughout the text?
-        3. **Academic Rigor** (1-5): Is the writing style academic and analytical rather than descriptive?
-        4. **Synthesis Quality** (1-5): Does it synthesize information across papers rather than just listing findings?
-        5. **Critical Analysis** (1-5): Does it provide critical evaluation and comparative analysis?
-        6. **Coherence** (1-5): Is the content well-organized and logically structured?
-        7. **Depth of Analysis** (1-5): Does it provide sufficient depth rather than surface-level discussion?
-        8. **Specificity** (1-5): Does it focus specifically on the assigned scope without overlap with other subsections?
-        
-        **IMPORTANT**: 
-        - Return ONLY valid JSON without any markdown formatting or code blocks
-        - Escape all backslashes and quotes properly in JSON strings
-        - Do not include any special characters that might break JSON parsing
-        
-        **Response Format** (JSON only):
-        {{
-            "overall_score": <average_score>,
-            "individual_scores": {{
-                "content_coverage": <score>,
-                "citation_density": <score>,
-                "academic_rigor": <score>,
-                "synthesis_quality": <score>,
-                "critical_analysis": <score>,
-                "coherence": <score>,
-                "depth_of_analysis": <score>,
-                "specificity": <score>
-            }},
-            "strengths": ["list of strengths"],
-            "weaknesses": ["list of weaknesses"],
-            "is_satisfactory": <true/false>,
-            "improvement_needed": ["specific areas needing improvement"],
-            "suggested_queries": ["suggested search queries to find additional relevant papers"]
-        }}
-        
-        Consider a subsection satisfactory if overall_score >= 3.5 and no individual score is below 3.0.
-        """
+        self.CHECK_RAG_RESULT_PROMPT = """
+You are an expert academic reviewer filtering retrieved papers for a literature review subsection.
+
+**Subsection Title**: [SUBSECTION_TITLE]
+**Subsection Focus**: [SUBSECTION_FOCUS]
+
+**Current Subsection Content**:
+[CURRENT_CONTENT]
+
+**Current Weaknesses/Gaps** (from previous evaluation):
+[WEAKNESSES]
+
+**Retrieved Papers**:
+[RETRIEVED_PAPERS]
+
+Each paper follows this format:
+[citation_key] Title (Year)
+Summary: [paper content summary]
+
+**Task**: Filter and return only the papers that are relevant to this subsection and can help address the weaknesses or enhance the content.
+
+**IMPORTANT**: 
+- Return ONLY valid JSON without any markdown formatting or code blocks
+- Include only papers that are truly relevant to this specific subsection
+- Maintain the exact same format as the input
+
+**Response Format** (JSON only):
+{{
+  "filtered_papers": "<papers in the same format as [RETRIEVED_PAPERS], one per line:\\n[citation_key] Title (Year)\\nSummary: [paper content summary]\\n>",
+  "reason": "<brief paragraph explaining the filtering criteria and which papers were selected>"
+}}
+"""
 
         self.SUBSECTION_IMPROVE_PROMPT = """
 Improve the following literature review subsection based on evaluation feedback and additional papers.
@@ -426,11 +467,10 @@ Improve the following literature review subsection based on evaluation feedback 
  **Improvement Instructions**:
   1. Address the specific weaknesses identified in the evaluation
   2. Incorporate relevant information from the additional papers
-  3. Improve citation density and academic rigor
-  4. Enhance synthesis and critical analysis
-  5. Ensure the content stays focused on: [SUBSECTION_FOCUS]
-  6. Maintain academic writing style
-  7. Use proper LaTeX citations (\\cite{{citation_key}})
+  3. Ensure the content stays focused on: [SUBSECTION_FOCUS]
+  4. Maintain academic writing style
+  5. Use proper LaTeX citations (\\cite{{citation_key}})
+  6. Remove redundant information with previous subsection. Try to write different aspects of similar papers in previous subsection.
 
 **Requirements**:
   1. The generated text have to be in LaTeX, use proper LaTeX citations (\\cite{{citation_key}}) throughout the text
@@ -451,49 +491,74 @@ Improve the following literature review subsection based on evaluation feedback 
 
 Write the improved subsection content only (no meta-commentary):
 """
-        self.WRITE_INITIAL_SECTION_OVERVIEW_PROMPT = """
-Write an introductory overview for the literature review section titled "[SECTION_TITLE]" in LaTeX format. This overview should set the stage for the detailed discussions within its subsections.
 
-**SECTION SPECIFIC FOCUS:** [SECTION_FOCUS]
+# Remember to add on new paper after RAG if any to PAPER INFO + only extract model name of them
+        self.CHECK_CITATION_KEY = """
+You are verifying citation accuracy in a literature review subsection.
 
-**CRITICAL REQUIREMENTS:**
+**Subsection Title**: [SUBSECTION_TITLE]
 
-1.  **Content & Format:**
-    *   Generate text in LaTeX format.
-    *   The overview should be between 200-300 words.
-    *   It should clearly introduce the main themes and sub-topics that will be covered in the subsections of this section.
-    *   Briefly explain the significance of this section within the broader context of the literature review on "[QUERY]".
-    *   Highlight the key challenges or advancements that this section will explore, drawing on the provided proofs and paper summaries at a high level.
-    *   Avoid diving into specific details of individual papers; save that for the subsections.
-    *   No numbering or bullet points.
+**Papers to reference (sorted chronologically):**
+[PAPER_INFO]
 
-2.  **Synthesis & Narrative:**
-    *   Synthesize the core ideas from the proof IDs (layer taxonomies, community summaries, development directions) and paper summaries relevant to this section's focus.
-    *   Create a coherent narrative that logically connects the overarching theme of the section to the general contributions of the papers.
-    *   Explain how this section builds upon or diverges from the content of the `PRE_SECTION`.
+Each paper follows this format:
+[citation_key] Title (Year)
+Model name: [name of model if this is a methodological paper]
 
-3.  **Evidence & Citation (High-level):**
-    *   Reference the `PROOFS_TEXT` to inform the overall themes and trends discussed in the overview.
-    *   You may use a few high-level citations (e.g., "\\cite{citation_key}") to establish the primary works relevant to the section's focus, but avoid excessive detailed citation here. The focus is on the narrative flow.
+**Subsection Content**: [SUBSECTION_CONTENT]
 
-**SECTION TAXONOMIES SUMMARIES AND DEVELOPMENT DIRECTIONS:**
-[PROOFS_TEXT]
+**Task**: Check if each citation_key in the subsection content correctly maps to its paper in the paper list above. Match by either the paper title or model name mentioned in context.
 
-**Available Citations:**
-[CITATION_INFO]
+**IMPORTANT**: 
+- Return ONLY valid JSON without any markdown formatting or code blocks
+- Only report actual mismatches where citation_key clearly references wrong paper
 
-**SECTION OUTLINE (for full context):**
-[OUTLINE]
-
-**Papers to reference (high-level themes):**
-[PAPERS_SUMMARY]
-
-**Previous section if any (for contextual flow):**
-[PRE_SECTION]
-
-**OUTPUT INSTRUCTIONS:**
-Write ONLY the content for the introductory overview paragraph(s) of the "[SECTION_TITLE]" section, focusing on: [SECTION_FOCUS].
+**Response Format** (JSON only):
+{{
+  "citation_errors": [
+    {{
+      "citation_key_used": "<the citation_key used in content>",
+      "context": "<brief quote showing how it's used>",
+      "correct_citation_key": "<what it should be based on title/model name>",
+      "reason": "<brief explanation of the mismatch>"
+    }}
+  ],
+  "all_correct": <true if no errors found, false otherwise>
+}}
 """
+
+        self.SUBSECTION_MODIFY_CITATION_PROMPT = """
+Correct the citation keys in this literature review subsection based on the verification report.
+
+**Subsection Title**: [SUBSECTION_TITLE]
+
+**Current Subsection Content**:
+[CURRENT_CONTENT]
+
+**Citation Errors Found**:
+[CITATION_ERRORS]
+
+The citation errors follow this format:
+- citation_key_used: <incorrect key used>
+- context: <where it appears>
+- correct_citation_key: <what it should be>
+- reason: <why it's wrong>
+
+**Instructions**:
+1. Replace each incorrect citation_key with the correct one
+2. Ensure the corrected citations still fit naturally in context
+3. Do NOT change any other content, wording, or structure
+4. Maintain proper LaTeX citation format: \\cite{{citation_key}}
+5. If multiple citations are together, keep them together: \\cite{{key1, key2}}
+
+**IMPORTANT**:
+- Return ONLY the corrected subsection content in LaTeX format
+- Do NOT add explanations, comments, or markdown formatting
+- Do NOT modify any text except the citation keys themselves
+
+**Output the corrected subsection content below:**
+"""
+
     def generate_prompt(self, template, paras):
         prompt = template
         for k in paras.keys():
