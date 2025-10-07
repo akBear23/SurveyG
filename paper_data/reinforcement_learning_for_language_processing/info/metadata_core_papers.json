@@ -1,0 +1,575 @@
+{
+    "9cb7f7415fb0590186a3d903a8d5d7044b7a3fdc.pdf": {
+        "title": "The Alignment Ceiling: Objective Mismatch in Reinforcement Learning from Human Feedback",
+        "authors": [
+            "Nathan Lambert",
+            "Roberto Calandra"
+        ],
+        "published_date": "2023",
+        "abstract": "Reinforcement learning from human feedback (RLHF) has emerged as a powerful technique to make large language models (LLMs) more capable in complex settings. RLHF proceeds as collecting human preference data, training a reward model on said data, and optimizing a base ML model with respect to said reward for extrinsic evaluation metrics (e.g. MMLU, GSM8k). RLHF relies on many assumptions about how the various pieces fit together, such as a reward model capturing human preferences and an RL optimizer extracting the right signal from a reward model. As the RLHF process involves many distinct design decisions, it is easy to assume that multiple processes are correlated and therefore numerically linked. This apparent correlation is often not true, where reward models are easily overoptimized or RL optimizers can reduce performance on tasks not modeled in the data. Notable manifestations of models trained with imperfect RLHF systems are those that are prone to refusing basic requests for safety reasons or appearing lazy in generations. As chat model evaluation becomes increasingly nuanced, the reliance on a perceived link between reward model training, RL scores, and downstream performance drives these issues, which we describe as an objective mismatch. In this paper, we illustrate the causes of this issue, reviewing relevant literature from model-based reinforcement learning, and argue for solutions. By solving objective mismatch in RLHF, the ML models of the future will be more precisely aligned to user instructions for both safety and helpfulness.",
+        "file_path": "paper_data/reinforcement_learning_for_language_processing/9cb7f7415fb0590186a3d903a8d5d7044b7a3fdc.pdf",
+        "venue": "arXiv.org",
+        "citationCount": 0,
+        "score": 0
+    },
+    "44a9d8b0314d34aff91ccff9207d38eed37216ed.pdf": {
+        "title": "Iterative Preference Learning from Human Feedback: Bridging Theory and Practice for RLHF under KL-constraint",
+        "authors": [
+            "Wei Xiong",
+            "Hanze Dong",
+            "Chen Ye",
+            "Han Zhong",
+            "Nan Jiang",
+            "Tong Zhang"
+        ],
+        "published_date": "2023",
+        "abstract": "This paper studies the alignment process of generative models with Reinforcement Learning from Human Feedback (RLHF). We first identify the primary challenges of existing popular methods like offline PPO and offline DPO as lacking in strategical exploration of the environment. Then, to understand the mathematical principle of RLHF, we consider a standard mathematical formulation, the reverse-KL regularized contextual bandit for RLHF. Despite its widespread practical application, a rigorous theoretical analysis of this formulation remains open. We investigate its behavior in three distinct settings -- offline, online, and hybrid -- and propose efficient algorithms with finite-sample theoretical guarantees. Moving towards practical applications, our framework, with a robust approximation of the information-theoretical policy improvement oracle, naturally gives rise to several novel RLHF algorithms. This includes an iterative version of the Direct Preference Optimization (DPO) algorithm for online settings, and a multi-step rejection sampling strategy for offline scenarios. Our empirical evaluations on real-world alignment experiment of large language model demonstrate that these proposed methods significantly surpass existing strong baselines, such as DPO and Rejection Sampling Optimization (RSO), showcasing the connections between solid theoretical foundations and their potent practical implementations.",
+        "file_path": "paper_data/reinforcement_learning_for_language_processing/44a9d8b0314d34aff91ccff9207d38eed37216ed.pdf",
+        "venue": "International Conference on Machine Learning",
+        "citationCount": 0,
+        "score": 0
+    },
+    "c78350e81298ca87bc1d59b466fa40081232caaa.pdf": {
+        "title": "Teaching Large Language Models to Reason with Reinforcement Learning",
+        "authors": [
+            "Alex Havrilla",
+            "Yuqing Du",
+            "S. Raparthy",
+            "Christoforos Nalmpantis",
+            "Jane Dwivedi-Yu",
+            "Maksym Zhuravinskyi",
+            "Eric Hambro",
+            "Sainbayar Sukhbaatar",
+            "R. Raileanu"
+        ],
+        "published_date": "2024",
+        "abstract": "Reinforcement Learning from Human Feedback (\\textbf{RLHF}) has emerged as a dominant approach for aligning LLM outputs with human preferences. Inspired by the success of RLHF, we study the performance of multiple algorithms that learn from feedback (Expert Iteration, Proximal Policy Optimization (\\textbf{PPO}), Return-Conditioned RL) on improving LLM reasoning capabilities. We investigate both sparse and dense rewards provided to the LLM both heuristically and via a learned reward model. We additionally start from multiple model sizes and initializations both with and without supervised fine-tuning (\\textbf{SFT}) data. Overall, we find all algorithms perform comparably, with Expert Iteration performing best in most cases. Surprisingly, we find the sample complexity of Expert Iteration is similar to that of PPO, requiring at most on the order of $10^6$ samples to converge from a pretrained checkpoint. We investigate why this is the case, concluding that during RL training models fail to explore significantly beyond solutions already produced by SFT models. Additionally, we discuss a trade off between maj@1 and pass@96 metric performance during SFT training and how conversely RL training improves both simultaneously. We then conclude by discussing the implications of our findings for RLHF and the future role of RL in LLM fine-tuning.",
+        "file_path": "paper_data/reinforcement_learning_for_language_processing/c78350e81298ca87bc1d59b466fa40081232caaa.pdf",
+        "venue": "arXiv.org",
+        "citationCount": 0,
+        "score": 0
+    },
+    "6f9dbae279fa0c3a90d12f3b0f271dc8e6274817.pdf": {
+        "title": "A Survey of Reinforcement Learning from Human Feedback",
+        "authors": [
+            "Timo Kaufmann",
+            "Paul Weng",
+            "Viktor Bengs",
+            "Eyke H\u00fcllermeier"
+        ],
+        "published_date": "2023",
+        "abstract": "Reinforcement learning from human feedback (RLHF) is a variant of reinforcement learning (RL) that learns from human feedback instead of relying on an engineered reward function. Building on prior work on the related setting of preference-based reinforcement learning (PbRL), it stands at the intersection of artificial intelligence and human-computer interaction. This positioning offers a promising avenue to enhance the performance and adaptability of intelligent systems while also improving the alignment of their objectives with human values. The training of large language models (LLMs) has impressively demonstrated this potential in recent years, where RLHF played a decisive role in directing the model's capabilities toward human objectives. This article provides a comprehensive overview of the fundamentals of RLHF, exploring the intricate dynamics between RL agents and human input. While recent focus has been on RLHF for LLMs, our survey adopts a broader perspective, examining the diverse applications and wide-ranging impact of the technique. We delve into the core principles that underpin RLHF, shedding light on the symbiotic relationship between algorithms and human feedback, and discuss the main research trends in the field. By synthesizing the current landscape of RLHF research, this article aims to provide researchers as well as practitioners with a comprehensive understanding of this rapidly growing field of research.",
+        "file_path": "paper_data/reinforcement_learning_for_language_processing/6f9dbae279fa0c3a90d12f3b0f271dc8e6274817.pdf",
+        "venue": "arXiv.org",
+        "citationCount": 0,
+        "score": 0
+    },
+    "0940c04de5a9f5dbea57aa0c7953e3fe4a052422.pdf": {
+        "title": "The Energy Loss Phenomenon in RLHF: A New Perspective on Mitigating Reward Hacking",
+        "authors": [
+            "Yuchun Miao",
+            "Sen Zhang",
+            "Liang Ding",
+            "Yuqi Zhang",
+            "Lefei Zhang",
+            "D. Tao"
+        ],
+        "published_date": "2025",
+        "abstract": "This work identifies the Energy Loss Phenomenon in Reinforcement Learning from Human Feedback (RLHF) and its connection to reward hacking. Specifically, energy loss in the final layer of a Large Language Model (LLM) gradually increases during the RL process, with an excessive increase in energy loss characterizing reward hacking. Beyond empirical analysis, we further provide a theoretical foundation by proving that, under mild conditions, the increased energy loss reduces the upper bound of contextual relevance in LLMs, which is a critical aspect of reward hacking as the reduced contextual relevance typically indicates overfitting to reward model-favored patterns in RL. To address this issue, we propose an Energy loss-aware PPO algorithm (EPPO) which penalizes the increase in energy loss in the LLM's final layer during reward calculation to prevent excessive energy loss, thereby mitigating reward hacking. We theoretically show that EPPO can be conceptually interpreted as an entropy-regularized RL algorithm, which provides deeper insights into its effectiveness. Extensive experiments across various LLMs and tasks demonstrate the commonality of the energy loss phenomenon, as well as the effectiveness of EPPO in mitigating reward hacking and improving RLHF performance.",
+        "file_path": "paper_data/reinforcement_learning_for_language_processing/0940c04de5a9f5dbea57aa0c7953e3fe4a052422.pdf",
+        "venue": "arXiv.org",
+        "citationCount": 0,
+        "score": 0
+    },
+    "3d43594804af065c89d4f5be5d0a17957b633092.pdf": {
+        "title": "Overcoming Reward Overoptimization via Adversarial Policy Optimization with Lightweight Uncertainty Estimation",
+        "authors": [
+            "Xiaoying Zhang",
+            "Jean-Fran\u00e7ois Ton",
+            "Wei Shen",
+            "Hongning Wang",
+            "Yang Liu"
+        ],
+        "published_date": "2024",
+        "abstract": "We introduce Adversarial Policy Optimization (AdvPO), a novel solution to the pervasive issue of reward over-optimization in Reinforcement Learning from Human Feedback (RLHF) for Large Language Models (LLMs). Over-optimization occurs when a reward model serves as an imperfect proxy for human preference, and RL-driven policy optimization erroneously exploits reward inaccuracies. In this paper, we begin by introducing a lightweight way to quantify uncertainties in rewards, relying solely on the last layer embeddings of the reward model, without the need for computationally expensive reward ensembles. AdvPO then addresses a distributionally robust optimization problem centred around the confidence interval of the reward model's predictions for policy improvement. Through comprehensive experiments on the Anthropic HH and TL;DR summarization datasets, we illustrate the efficacy of AdvPO in mitigating the overoptimization issue, consequently resulting in enhanced performance as evaluated through human-assisted evaluation.",
+        "file_path": "paper_data/reinforcement_learning_for_language_processing/3d43594804af065c89d4f5be5d0a17957b633092.pdf",
+        "venue": "arXiv.org",
+        "citationCount": 0,
+        "score": 0
+    },
+    "16d68add6cbad736e6a75b00d2bf8bd49e4dbd40.pdf": {
+        "title": "DPO Meets PPO: Reinforced Token Optimization for RLHF",
+        "authors": [
+            "Han Zhong",
+            "Guhao Feng",
+            "Wei Xiong",
+            "Li Zhao",
+            "Di He",
+            "Jiang Bian",
+            "Liwei Wang"
+        ],
+        "published_date": "2024",
+        "abstract": "In the classical Reinforcement Learning from Human Feedback (RLHF) framework, Proximal Policy Optimization (PPO) is employed to learn from sparse, sentence-level rewards -- a challenging scenario in traditional deep reinforcement learning. Despite the great successes of PPO in the alignment of large language models, its open-source implementation is still largely sub-optimal. To address these issues, we introduce a framework that models RLHF problems as a Markov decision process (MDP), enabling the capture of fine-grained token-wise information. Under this framework, we introduce an algorithm Reinforced Token Optimization (\\texttt{RTO}), which learns the token-wise reward function from preference data and performs policy optimization based on this learned token-wise reward signal. Theoretically, \\texttt{RTO} is proven to have the capability of finding the near-optimal policy sample-efficiently. For its practical implementation, \\texttt{RTO} innovatively integrates Direct Preference Optimization (DPO) and PPO. DPO, originally derived from sparse sentence rewards, surprisingly provides us with a token-wise characterization of response quality, which is seamlessly incorporated into our subsequent PPO training stage. Extensive experiments demonstrate that \\texttt{RTO} performs better than PPO and other direct preference learning algorithms. In particular, RTO outperforms PPO by 7.5 points on the AlpacaEval 2 benchmark and by 4.1 points on Arena-Hard. Our code and models are available at \\href{https://github.com/zkshan2002/RTO}{https://github.com/zkshan2002/RTO}.",
+        "file_path": "paper_data/reinforcement_learning_for_language_processing/16d68add6cbad736e6a75b00d2bf8bd49e4dbd40.pdf",
+        "venue": "arXiv.org",
+        "citationCount": 0,
+        "score": 0
+    },
+    "182c7b40ff7560a5545764814338f55a2098e441.pdf": {
+        "title": "Reinforced Self-Training (ReST) for Language Modeling",
+        "authors": [
+            "Caglar Gulcehre",
+            "T. Paine",
+            "S. Srinivasan",
+            "Ksenia Konyushkova",
+            "L. Weerts",
+            "Abhishek Sharma",
+            "Aditya Siddhant",
+            "Alexa Ahern",
+            "Miaosen Wang",
+            "Chenjie Gu",
+            "Wolfgang Macherey",
+            "A. Doucet",
+            "Orhan Firat",
+            "Nando de Freitas"
+        ],
+        "published_date": "2023",
+        "abstract": "Reinforcement learning from human feedback (RLHF) can improve the quality of large language model's (LLM) outputs by aligning them with human preferences. We propose a simple algorithm for aligning LLMs with human preferences inspired by growing batch reinforcement learning (RL), which we call Reinforced Self-Training (ReST). Given an initial LLM policy, ReST produces a dataset by generating samples from the policy, which are then used to improve the LLM policy using offline RL algorithms. ReST is more efficient than typical online RLHF methods because the training dataset is produced offline, which allows data reuse. While ReST is a general approach applicable to all generative learning settings, we focus on its application to machine translation. Our results show that ReST can substantially improve translation quality, as measured by automated metrics and human evaluation on machine translation benchmarks in a compute and sample-efficient manner.",
+        "file_path": "paper_data/reinforcement_learning_for_language_processing/182c7b40ff7560a5545764814338f55a2098e441.pdf",
+        "venue": "arXiv.org",
+        "citationCount": 0,
+        "score": 0
+    },
+    "cdd0e94e51a02bac22ca5e94fa95daa18f36e226.pdf": {
+        "title": "Uncertainty-Penalized Reinforcement Learning from Human Feedback with Diverse Reward LoRA Ensembles",
+        "authors": [
+            "Yuanzhao Zhai",
+            "Han Zhang",
+            "Yu Lei",
+            "Yue Yu",
+            "Kele Xu",
+            "Dawei Feng",
+            "Bo Ding",
+            "Huaimin Wang"
+        ],
+        "published_date": "2023",
+        "abstract": "Reinforcement learning from human feedback (RLHF) emerges as a promising paradigm for aligning large language models (LLMs). However, a notable challenge in RLHF is overoptimization, where beyond a certain threshold, the pursuit of higher rewards leads to a decline in human preferences. In this paper, we observe the weakness of KL regularization which is commonly employed in existing RLHF methods to address overoptimization. To mitigate this limitation, we scrutinize the RLHF objective in the offline dataset and propose uncertainty-penalized RLHF (UP-RLHF), which incorporates uncertainty regularization during RL-finetuning. To enhance the uncertainty quantification abilities for reward models, we first propose a diverse low-rank adaptation (LoRA) ensemble by maximizing the nuclear norm of LoRA matrix concatenations. Then we optimize policy models utilizing penalized rewards, determined by both rewards and uncertainties provided by the diverse reward LoRA ensembles. Our experimental results, based on two real human preference datasets, showcase the effectiveness of diverse reward LoRA ensembles in quantifying reward uncertainty. Additionally, uncertainty regularization in UP-RLHF proves to be pivotal in mitigating overoptimization, thereby contributing to the overall performance.",
+        "file_path": "paper_data/reinforcement_learning_for_language_processing/cdd0e94e51a02bac22ca5e94fa95daa18f36e226.pdf",
+        "venue": "arXiv.org",
+        "citationCount": 0,
+        "score": 0
+    },
+    "c085e88a0351e393609a95305afc1db792d1db0f.pdf": {
+        "title": "The History and Risks of Reinforcement Learning and Human Feedback",
+        "authors": [
+            "Nathan Lambert",
+            "Thomas Krendl Gilbert",
+            "T. Zick"
+        ],
+        "published_date": "2023",
+        "abstract": "Reinforcement learning from human feedback (RLHF) has emerged as a powerful technique to make large language models (LLMs) easier to use and more effective. A core piece of the RLHF process is the training and utilization of a model of human preferences that acts as a reward function for optimization. This approach, which operates at the intersection of many stakeholders and academic disciplines, remains poorly understood. RLHF reward models are often cited as being central to achieving performance, yet very few descriptors of capabilities, evaluations, training methods, or open-source models exist. Given this lack of information, further study and transparency is needed for learned RLHF reward models. In this paper, we illustrate the complex history of optimizing preferences, and articulate lines of inquiry to understand the sociotechnical context of reward models. In particular, we highlight the ontological differences between costs, rewards, and preferences at stake in RLHF's foundations, related methodological tensions, and possible research directions to improve general understanding of how reward models function.",
+        "file_path": "paper_data/reinforcement_learning_for_language_processing/c085e88a0351e393609a95305afc1db792d1db0f.pdf",
+        "venue": "",
+        "citationCount": 0,
+        "score": 0
+    },
+    "cb3968152f7d93f53d24b00279a90d5071ddc85a.pdf": {
+        "title": "Understanding the Effects of RLHF on LLM Generalisation and Diversity",
+        "authors": [
+            "Robert Kirk",
+            "Ishita Mediratta",
+            "Christoforos Nalmpantis",
+            "Jelena Luketina",
+            "Eric Hambro",
+            "Edward Grefenstette",
+            "R. Raileanu"
+        ],
+        "published_date": "2023",
+        "abstract": "Large language models (LLMs) fine-tuned with reinforcement learning from human feedback (RLHF) have been used in some of the most widely deployed AI models to date, such as OpenAI's ChatGPT or Anthropic's Claude. While there has been significant work developing these methods, our understanding of the benefits and downsides of each stage in RLHF is still limited. To fill this gap, we present an extensive analysis of how each stage of the process (i.e. supervised fine-tuning (SFT), reward modelling, and RLHF) affects two key properties: out-of-distribution (OOD) generalisation and output diversity. OOD generalisation is crucial given the wide range of real-world scenarios in which these models are being used, while output diversity refers to the model's ability to generate varied outputs and is important for a variety of use cases. We perform our analysis across two base models on both summarisation and instruction following tasks, the latter being highly relevant for current LLM use cases. We find that RLHF generalises better than SFT to new inputs, particularly as the distribution shift between train and test becomes larger. However, RLHF significantly reduces output diversity compared to SFT across a variety of measures, implying a tradeoff in current LLM fine-tuning methods between generalisation and diversity. Our results provide guidance on which fine-tuning method should be used depending on the application, and show that more research is needed to improve the tradeoff between generalisation and diversity.",
+        "file_path": "paper_data/reinforcement_learning_for_language_processing/cb3968152f7d93f53d24b00279a90d5071ddc85a.pdf",
+        "venue": "International Conference on Learning Representations",
+        "citationCount": 0,
+        "score": 0
+    },
+    "fb09b581589e1195ff018179c6a11668587c6d64.pdf": {
+        "title": "Vision-Language Models are Zero-Shot Reward Models for Reinforcement Learning",
+        "authors": [
+            "Juan Rocamonde",
+            "Victoriano Montesinos",
+            "Elvis Nava",
+            "Ethan Perez",
+            "David Lindner"
+        ],
+        "published_date": "2023",
+        "abstract": "Reinforcement learning (RL) requires either manually specifying a reward function, which is often infeasible, or learning a reward model from a large amount of human feedback, which is often very expensive. We study a more sample-efficient alternative: using pretrained vision-language models (VLMs) as zero-shot reward models (RMs) to specify tasks via natural language. We propose a natural and general approach to using VLMs as reward models, which we call VLM-RMs. We use VLM-RMs based on CLIP to train a MuJoCo humanoid to learn complex tasks without a manually specified reward function, such as kneeling, doing the splits, and sitting in a lotus position. For each of these tasks, we only provide a single sentence text prompt describing the desired task with minimal prompt engineering. We provide videos of the trained agents at: https://sites.google.com/view/vlm-rm. We can improve performance by providing a second\"baseline\"prompt and projecting out parts of the CLIP embedding space irrelevant to distinguish between goal and baseline. Further, we find a strong scaling effect for VLM-RMs: larger VLMs trained with more compute and data are better reward models. The failure modes of VLM-RMs we encountered are all related to known capability limitations of current VLMs, such as limited spatial reasoning ability or visually unrealistic environments that are far off-distribution for the VLM. We find that VLM-RMs are remarkably robust as long as the VLM is large enough. This suggests that future VLMs will become more and more useful reward models for a wide range of RL applications.",
+        "file_path": "paper_data/reinforcement_learning_for_language_processing/fb09b581589e1195ff018179c6a11668587c6d64.pdf",
+        "venue": "International Conference on Learning Representations",
+        "citationCount": 0,
+        "score": 0
+    },
+    "adc8c71591ee5b043447a7d7db8ae09a8a9f1251.pdf": {
+        "title": "Interpretable Preferences via Multi-Objective Reward Modeling and Mixture-of-Experts",
+        "authors": [
+            "Haoxiang Wang",
+            "Wei Xiong",
+            "Tengyang Xie",
+            "Han Zhao",
+            "Tong Zhang"
+        ],
+        "published_date": "2024",
+        "abstract": "Reinforcement learning from human feedback (RLHF) has emerged as the primary method for aligning large language models (LLMs) with human preferences. The RLHF process typically starts by training a reward model (RM) using human preference data. Conventional RMs are trained on pairwise responses to the same user request, with relative ratings indicating which response humans prefer. The trained RM serves as a proxy for human preferences. However, due to the black-box nature of RMs, their outputs lack interpretability, as humans cannot intuitively understand why an RM thinks a response is good or not. As RMs act as human preference proxies, we believe they should be human-interpretable to ensure that their internal decision processes are consistent with human preferences and to prevent reward hacking in LLM alignment. To build RMs with interpretable preferences, we propose a two-stage approach: i) train an Absolute-Rating Multi-Objective Reward Model (ArmoRM) with multi-dimensional absolute-rating data, each dimension corresponding to a human-interpretable objective (e.g., honesty, verbosity, safety); ii) employ a Mixture-of-Experts (MoE) strategy with a gating network that automatically selects the most suitable reward objectives based on the context. We efficiently trained an ArmoRM with Llama-3 8B and a gating network consisting of a shallow MLP on top of the ArmoRM. Our trained model, ArmoRM-Llama3-8B, obtains state-of-the-art performance on RewardBench, a benchmark evaluating RMs for language modeling. Notably, the performance of our model surpasses the LLM-as-a-judge method with GPT-4 judges by a margin, and approaches the performance of the much larger Nemotron-4 340B reward model.",
+        "file_path": "paper_data/reinforcement_learning_for_language_processing/adc8c71591ee5b043447a7d7db8ae09a8a9f1251.pdf",
+        "venue": "Conference on Empirical Methods in Natural Language Processing",
+        "citationCount": 0,
+        "score": 0
+    },
+    "ba015c5d3f5b44e36363b90070bb3301d21ae57e.pdf": {
+        "title": "On the Safety of Open-Sourced Large Language Models: Does Alignment Really Prevent Them From Being Misused?",
+        "authors": [
+            "Hangfan Zhang",
+            "Zhimeng Guo",
+            "Huaisheng Zhu",
+            "Bochuan Cao",
+            "Lu Lin",
+            "Jinyuan Jia",
+            "Jinghui Chen",
+            "Di Wu"
+        ],
+        "published_date": "2023",
+        "abstract": "Large Language Models (LLMs) have achieved unprecedented performance in Natural Language Generation (NLG) tasks. However, many existing studies have shown that they could be misused to generate undesired content. In response, before releasing LLMs for public access, model developers usually align those language models through Supervised Fine-Tuning (SFT) or Reinforcement Learning with Human Feedback (RLHF). Consequently, those aligned large language models refuse to generate undesired content when facing potentially harmful/unethical requests. A natural question is\"could alignment really prevent those open-sourced large language models from being misused to generate undesired content?''. In this work, we provide a negative answer to this question. In particular, we show those open-sourced, aligned large language models could be easily misguided to generate undesired content without heavy computations or careful prompt designs. Our key idea is to directly manipulate the generation process of open-sourced LLMs to misguide it to generate undesired content including harmful or biased information and even private data. We evaluate our method on 4 open-sourced LLMs accessible publicly and our finding highlights the need for more advanced mitigation strategies for open-sourced LLMs.",
+        "file_path": "paper_data/reinforcement_learning_for_language_processing/ba015c5d3f5b44e36363b90070bb3301d21ae57e.pdf",
+        "venue": "arXiv.org",
+        "citationCount": 0,
+        "score": 0
+    },
+    "e01515c6138bc525f7aec30fc85f2adf028d4156.pdf": {
+        "title": "Principle-Driven Self-Alignment of Language Models from Scratch with Minimal Human Supervision",
+        "authors": [
+            "Zhiqing Sun",
+            "Yikang Shen",
+            "Qinhong Zhou",
+            "Hongxin Zhang",
+            "Zhenfang Chen",
+            "David D. Cox",
+            "Yiming Yang",
+            "Chuang Gan"
+        ],
+        "published_date": "2023",
+        "abstract": "Recent AI-assistant agents, such as ChatGPT, predominantly rely on supervised fine-tuning (SFT) with human annotations and reinforcement learning from human feedback (RLHF) to align the output of large language models (LLMs) with human intentions, ensuring they are helpful, ethical, and reliable. However, this dependence can significantly constrain the true potential of AI-assistant agents due to the high cost of obtaining human supervision and the related issues on quality, reliability, diversity, self-consistency, and undesirable biases. To address these challenges, we propose a novel approach called SELF-ALIGN, which combines principle-driven reasoning and the generative power of LLMs for the self-alignment of AI agents with minimal human supervision. Our approach encompasses four stages: first, we use an LLM to generate synthetic prompts, and a topic-guided method to augment the prompt diversity; second, we use a small set of human-written principles for AI models to follow, and guide the LLM through in-context learning from demonstrations (of principles application) to produce helpful, ethical, and reliable responses to user's queries; third, we fine-tune the original LLM with the high-quality self-aligned responses so that the resulting model can generate desirable responses for each query directly without the principle set and the demonstrations anymore; and finally, we offer a refinement step to address the issues of overly-brief or indirect responses. Applying SELF-ALIGN to the LLaMA-65b base language model, we develop an AI assistant named Dromedary. With fewer than 300 lines of human annotations (including<200 seed prompts, 16 generic principles, and 5 exemplars for in-context learning). Dromedary significantly surpasses the performance of several state-of-the-art AI systems, including Text-Davinci-003 and Alpaca, on benchmark datasets with various settings.",
+        "file_path": "paper_data/reinforcement_learning_for_language_processing/e01515c6138bc525f7aec30fc85f2adf028d4156.pdf",
+        "venue": "Neural Information Processing Systems",
+        "citationCount": 0,
+        "score": 0
+    },
+    "550006bea81e4ccb67743dd1b82a70b86b48d93a.pdf": {
+        "title": "RL-VLM-F: Reinforcement Learning from Vision Language Foundation Model Feedback",
+        "authors": [
+            "Yufei Wang",
+            "Zhanyi Sun",
+            "Jesse Zhang",
+            "Zhou Xian",
+            "Erdem Biyik",
+            "David Held",
+            "Zackory Erickson"
+        ],
+        "published_date": "2024",
+        "abstract": "Reward engineering has long been a challenge in Reinforcement Learning (RL) research, as it often requires extensive human effort and iterative processes of trial-and-error to design effective reward functions. In this paper, we propose RL-VLM-F, a method that automatically generates reward functions for agents to learn new tasks, using only a text description of the task goal and the agent's visual observations, by leveraging feedbacks from vision language foundation models (VLMs). The key to our approach is to query these models to give preferences over pairs of the agent's image observations based on the text description of the task goal, and then learn a reward function from the preference labels, rather than directly prompting these models to output a raw reward score, which can be noisy and inconsistent. We demonstrate that RL-VLM-F successfully produces effective rewards and policies across various domains - including classic control, as well as manipulation of rigid, articulated, and deformable objects - without the need for human supervision, outperforming prior methods that use large pretrained models for reward generation under the same assumptions. Videos can be found on our project website: https://rlvlmf2024.github.io/",
+        "file_path": "paper_data/reinforcement_learning_for_language_processing/550006bea81e4ccb67743dd1b82a70b86b48d93a.pdf",
+        "venue": "International Conference on Machine Learning",
+        "citationCount": 0,
+        "score": 0
+    },
+    "0c43750030198dbe7fe164e1ce743ec64427bca1.pdf": {
+        "title": "Scaling Laws for Reward Model Overoptimization in Direct Alignment Algorithms",
+        "authors": [
+            "Rafael Rafailov",
+            "Yaswanth Chittepu",
+            "Ryan Park",
+            "Harshit S. Sikchi",
+            "Joey Hejna",
+            "Bradley Knox",
+            "Chelsea Finn",
+            "S. Niekum"
+        ],
+        "published_date": "2024",
+        "abstract": "Reinforcement Learning from Human Feedback (RLHF) has been crucial to the recent success of Large Language Models (LLMs), however, it is often a complex and brittle process. In the classical RLHF framework, a reward model is first trained to represent human preferences, which is in turn used by an online reinforcement learning (RL) algorithm to optimize the LLM. A prominent issue with such methods is reward over-optimization or reward hacking, where performance as measured by the learned proxy reward model increases, but true quality plateaus or even deteriorates. Direct Alignment Algorithms (DDAs) like Direct Preference Optimization have emerged as alternatives to the classical RLHF pipeline by circumventing the reward modeling phase. However, although DAAs do not use a separate proxy reward model, they still commonly deteriorate from over-optimization. While the so-called reward hacking phenomenon is not well-defined for DAAs, we still uncover similar trends: at higher KL budgets, DAA algorithms exhibit similar degradation patterns to their classic RLHF counterparts. In particular, we find that DAA methods deteriorate not only across a wide range of KL budgets but also often before even a single epoch of the dataset is completed. Through extensive empirical experimentation, this work formulates and formalizes the reward over-optimization or hacking problem for DAAs and explores its consequences across objectives, training regimes, and model scales.",
+        "file_path": "paper_data/reinforcement_learning_for_language_processing/0c43750030198dbe7fe164e1ce743ec64427bca1.pdf",
+        "venue": "Neural Information Processing Systems",
+        "citationCount": 0,
+        "score": 0
+    },
+    "ff5b0cc250d93b97fe60e1b0c2048708d6875595.pdf": {
+        "title": "Helpful, harmless, honest? Sociotechnical limits of AI alignment and safety through Reinforcement Learning from Human Feedback",
+        "authors": [
+            "Adam Dahlgren Lindstr\u00f6m",
+            "Leila Methnani",
+            "Lea Krause",
+            "Petter Ericson",
+            "\u00cd\u00f1igo Martinez de Rituerto de Troya",
+            "Dimitri Coelho Mollo",
+            "Roel Dobbe"
+        ],
+        "published_date": "2025",
+        "abstract": "This paper critically evaluates the attempts to align Artificial Intelligence (AI) systems, especially Large Language Models (LLMs), with human values and intentions through Reinforcement Learning from Feedback methods, involving either human feedback (RLHF) or AI feedback (RLAIF). Specifically, we show the shortcomings of the broadly pursued alignment goals of honesty, harmlessness, and helpfulness. Through a multidisciplinary sociotechnical critique, we examine both the theoretical underpinnings and practical implementations of RLHF techniques, revealing significant limitations in their approach to capturing the complexities of human ethics, and contributing to AI safety. We highlight tensions inherent in the goals of RLHF, as captured in the HHH principle (helpful, harmless and honest). In addition, we discuss ethically-relevant issues that tend to be neglected in discussions about alignment and RLHF, among which the trade-offs between user-friendliness and deception, flexibility and interpretability, and system safety. We offer an alternative vision for AI safety and ethics which positions RLHF approaches within a broader context of comprehensive design across institutions, processes and technological systems, and suggest the establishment of AI safety as a sociotechnical discipline that is open to the normative and political dimensions of artificial intelligence.",
+        "file_path": "paper_data/reinforcement_learning_for_language_processing/ff5b0cc250d93b97fe60e1b0c2048708d6875595.pdf",
+        "venue": "Ethics and Information Technology",
+        "citationCount": 0,
+        "score": 0
+    },
+    "85a1f32e4794b4c176f3330364bc39977a50d258.pdf": {
+        "title": "Aligning Neural Machine Translation Models: Human Feedback in Training and Inference",
+        "authors": [
+            "Miguel Moura Ramos",
+            "Patrick Fernandes",
+            "Ant\u00f3nio Farinhas",
+            "Andr'e F. T. Martins"
+        ],
+        "published_date": "2023",
+        "abstract": "Reinforcement learning from human feedback (RLHF) is a recent technique to improve the quality of the text generated by a language model, making it closer to what humans would generate.A core ingredient in RLHF\u2019s success in aligning and improving large language models (LLMs) is its \\textit{reward model}, trained using human feedback on model outputs. In machine translation (MT), where metrics trained from human annotations can readily be used as reward models, recent methods using \\textit{minimum Bayes risk} decoding and reranking have succeeded in improving the final quality of translation.In this study, we comprehensively explore and compare techniques for integrating quality metrics as reward models into the MT pipeline. This includes using the reward model for data filtering, during the training phase through RL, and at inference time by employing reranking techniques, and we assess the effects of combining these in a unified approach.Our experimental results, conducted across multiple translation tasks, underscore the crucial role of effective data filtering, based on estimated quality, in harnessing the full potential of RL in enhancing MT quality.Furthermore, our findings demonstrate the effectiveness of combining RL training with reranking techniques, showcasing substantial improvements in translation quality.",
+        "file_path": "paper_data/reinforcement_learning_for_language_processing/85a1f32e4794b4c176f3330364bc39977a50d258.pdf",
+        "venue": "European Association for Machine Translation Conferences/Workshops",
+        "citationCount": 0,
+        "score": 0
+    },
+    "f2d0f3d47ae850f49a58f4977393bd0025af4bec.pdf": {
+        "title": "HybridFlow: A Flexible and Efficient RLHF Framework",
+        "authors": [
+            "Guangming Sheng",
+            "Chi Zhang",
+            "Zilingfeng Ye",
+            "Xibin Wu",
+            "Wang Zhang",
+            "Ru Zhang",
+            "Yanghua Peng",
+            "Haibin Lin",
+            "Chuan Wu"
+        ],
+        "published_date": "2024",
+        "abstract": "Reinforcement Learning from Human Feedback (RLHF) is widely used in Large Language Model (LLM) alignment. Traditional RL can be modeled as a dataflow, where each node represents computation of a neural network (NN) and each edge denotes data dependencies between the NNs. RLHF complicates the dataflow by expanding each node into a distributed LLM training or generation program, and each edge into a many-to-many multicast. Traditional RL frameworks execute the dataflow using a single controller to instruct both intra-node computation and inter-node communication, which can be inefficient in RLHF due to large control dispatch overhead for distributed intra-node computation. Existing RLHF systems adopt a multi-controller paradigm, which can be inflexible due to nesting distributed computation and data communication. We propose HybridFlow, which combines single-controller and multi-controller paradigms in a hybrid manner to enable flexible representation and efficient execution of the RLHF data flow. We carefully design a set of hierarchical APIs that decouple and encapsulate computation and data dependencies in the complex RLHF dataflow, allowing efficient operation orchestration to implement RLHF algorithms and flexible mapping of the computation onto various devices. We further design a 3D-HybridEngine for efficient actor model resharding between training and generation phases, with zero memory redundancy and significantly reduced communication overhead. Our experimental results demonstrate 1.53x~20.57\u00d7 throughput improvement when running various RLHF algorithms using HybridFlow, as compared with state-of-the-art baselines. HybridFlow source code is available at https://github.com/volcengine/verl",
+        "file_path": "paper_data/reinforcement_learning_for_language_processing/f2d0f3d47ae850f49a58f4977393bd0025af4bec.pdf",
+        "venue": "European Conference on Computer Systems",
+        "citationCount": 0,
+        "score": 0
+    },
+    "59a2203ef6ea159bb41540bd282e29e80a8ad579.pdf": {
+        "title": "A Long Way to Go: Investigating Length Correlations in RLHF",
+        "authors": [
+            "Prasann Singhal",
+            "Tanya Goyal",
+            "Jiacheng Xu",
+            "Greg Durrett"
+        ],
+        "published_date": "2023",
+        "abstract": "Great success has been reported using Reinforcement Learning from Human Feedback (RLHF) to align large language models, with open preference datasets enabling wider experimentation, particularly for\"helpfulness\"in tasks like dialogue and web question answering. Alongside these improvements, however, RLHF also often drives models to produce longer outputs. This paper demonstrates, on three diverse settings, that optimizing for response length is, much more than previously thought, a significant factor behind RLHF. Studying the strategies RL optimization uses to maximize reward, we find improvements in reward to largely be driven by increasing response length, instead of other features. Indeed, we find that even a purely length-based reward reproduces most downstream RLHF improvements over supervised fine-tuned models. Testing a comprehensive set of length-countering interventions, we identify the dominant source of these biases to be reward models, which, by studying training dynamics, we find are non-robust and easily influenced by length biases in preference data.",
+        "file_path": "paper_data/reinforcement_learning_for_language_processing/59a2203ef6ea159bb41540bd282e29e80a8ad579.pdf",
+        "venue": "arXiv.org",
+        "citationCount": 0,
+        "score": 0
+    },
+    "0d1c76d45afa012ded7ab741194baf142117c495.pdf": {
+        "title": "Direct Preference Optimization: Your Language Model is Secretly a Reward Model",
+        "authors": [
+            "Rafael Rafailov",
+            "Archit Sharma",
+            "E. Mitchell",
+            "Stefano Ermon",
+            "Christopher D. Manning",
+            "Chelsea Finn"
+        ],
+        "published_date": "2023",
+        "abstract": "While large-scale unsupervised language models (LMs) learn broad world knowledge and some reasoning skills, achieving precise control of their behavior is difficult due to the completely unsupervised nature of their training. Existing methods for gaining such steerability collect human labels of the relative quality of model generations and fine-tune the unsupervised LM to align with these preferences, often with reinforcement learning from human feedback (RLHF). However, RLHF is a complex and often unstable procedure, first fitting a reward model that reflects the human preferences, and then fine-tuning the large unsupervised LM using reinforcement learning to maximize this estimated reward without drifting too far from the original model. In this paper we introduce a new parameterization of the reward model in RLHF that enables extraction of the corresponding optimal policy in closed form, allowing us to solve the standard RLHF problem with only a simple classification loss. The resulting algorithm, which we call Direct Preference Optimization (DPO), is stable, performant, and computationally lightweight, eliminating the need for sampling from the LM during fine-tuning or performing significant hyperparameter tuning. Our experiments show that DPO can fine-tune LMs to align with human preferences as well as or better than existing methods. Notably, fine-tuning with DPO exceeds PPO-based RLHF in ability to control sentiment of generations, and matches or improves response quality in summarization and single-turn dialogue while being substantially simpler to implement and train.",
+        "file_path": "paper_data/reinforcement_learning_for_language_processing/0d1c76d45afa012ded7ab741194baf142117c495.pdf",
+        "venue": "Neural Information Processing Systems",
+        "citationCount": 0,
+        "score": 0
+    },
+    "600ff4c4ae9fc506c86673c5ecce4fa90803e987.pdf": {
+        "title": "RLAIF vs. RLHF: Scaling Reinforcement Learning from Human Feedback with AI Feedback",
+        "authors": [
+            "Harrison Lee",
+            "Samrat Phatale",
+            "Hassan Mansoor",
+            "Kellie Lu",
+            "Thomas Mesnard",
+            "Colton Bishop",
+            "Victor Carbune",
+            "Abhinav Rastogi"
+        ],
+        "published_date": "2023",
+        "abstract": "Reinforcement learning from human feedback (RLHF) has proven effective in aligning large language models (LLMs) with human preferences, but gathering high-quality preference labels is expensive. RL from AI Feedback (RLAIF), introduced in Bai et al., offers a promising alternative that trains the reward model (RM) on preferences generated by an off-the-shelf LLM. Across the tasks of summarization, helpful dialogue generation, and harmless dialogue generation, we show that RLAIF achieves comparable performance to RLHF. Furthermore, we take a step towards\"self-improvement\"by demonstrating that RLAIF can outperform a supervised fine-tuned baseline even when the AI labeler is the same size as the policy, or even the exact same checkpoint as the initial policy. Finally, we introduce direct-RLAIF (d-RLAIF) - a technique that circumvents RM training by obtaining rewards directly from an off-the-shelf LLM during RL, which achieves superior performance to canonical RLAIF. Our results suggest that RLAIF can achieve performance on-par with using human feedback, offering a potential solution to the scalability limitations of RLHF.",
+        "file_path": "paper_data/reinforcement_learning_for_language_processing/600ff4c4ae9fc506c86673c5ecce4fa90803e987.pdf",
+        "venue": "International Conference on Machine Learning",
+        "citationCount": 0,
+        "score": 0
+    },
+    "25709a50df5eb8e40dce7ffe6ecd3bfa79969c7a.pdf": {
+        "title": "Exploring Data Scaling Trends and Effects in Reinforcement Learning from Human Feedback",
+        "authors": [
+            "Wei Shen",
+            "Guanlin Liu",
+            "Zheng Wu",
+            "Ruofei Zhu",
+            "Qingping Yang",
+            "Chao Xin",
+            "Yu Yue",
+            "Lin Yan"
+        ],
+        "published_date": "2025",
+        "abstract": "Reinforcement Learning from Human Feedback (RLHF) is crucial for aligning large language models with human preferences. While recent research has focused on algorithmic improvements, the importance of prompt-data construction has been overlooked. This paper addresses this gap by exploring data-driven bottlenecks in RLHF performance scaling, particularly reward hacking and decreasing response diversity. We introduce a hybrid reward system combining reasoning task verifiers (RTV) and a generative reward model (GenRM) to mitigate reward hacking. We also propose a novel prompt-selection method, Pre-PPO, to maintain response diversity and enhance learning effectiveness. Additionally, we find that prioritizing mathematical and coding tasks early in RLHF training significantly improves performance. Experiments across two model sizes validate our methods' effectiveness and scalability. Results show that RTV is most resistant to reward hacking, followed by GenRM with ground truth, and then GenRM with SFT Best-of-N responses. Our strategies enable rapid capture of subtle task-specific distinctions, leading to substantial improvements in overall RLHF performance. This work highlights the importance of careful data construction and provides practical methods to overcome performance barriers in RLHF.",
+        "file_path": "paper_data/reinforcement_learning_for_language_processing/25709a50df5eb8e40dce7ffe6ecd3bfa79969c7a.pdf",
+        "venue": "arXiv.org",
+        "citationCount": 0,
+        "score": 0
+    },
+    "d084517f14ee247883de0f4dd58bb923e418157d.pdf": {
+        "title": "LLaMA-Berry: Pairwise Optimization for O1-like Olympiad-Level Mathematical Reasoning",
+        "authors": [
+            "Di Zhang",
+            "Jianbo Wu",
+            "Jingdi Lei",
+            "Tong Che",
+            "Jiatong Li",
+            "Tong Xie",
+            "Xiaoshui Huang",
+            "Shufei Zhang",
+            "Marco Pavone",
+            "Yuqiang Li",
+            "Wanli Ouyang",
+            "Dongzhan Zhou"
+        ],
+        "published_date": "2024",
+        "abstract": "This paper presents an advanced mathematical problem-solving framework, LLaMA-Berry, for enhancing the mathematical reasoning ability of Large Language Models (LLMs). The framework combines Monte Carlo Tree Search (MCTS) with iterative Self-Refine to optimize the reasoning path and utilizes a pairwise reward model to evaluate different paths globally. By leveraging the self-critic and rewriting capabilities of LLMs, Self-Refine applied to MCTS (SR-MCTS) overcomes the inefficiencies and limitations of conventional step-wise and greedy search algorithms by fostering a more efficient exploration of solution spaces. Pairwise Preference Reward Model~(PPRM), inspired by Reinforcement Learning from Human Feedback (RLHF), is then used to model pairwise preferences between solutions, utilizing an Enhanced Borda Count (EBC) method to synthesize these preferences into a global ranking score to find better answers. This approach addresses the challenges of scoring variability and non-independent distributions in mathematical reasoning tasks. The framework has been tested on general and advanced benchmarks, showing superior performance in terms of search efficiency and problem-solving capability compared to existing methods like ToT and rStar, particularly in complex Olympiad-level benchmarks, including GPQA, AIME24 and AMC23.",
+        "file_path": "paper_data/reinforcement_learning_for_language_processing/d084517f14ee247883de0f4dd58bb923e418157d.pdf",
+        "venue": "arXiv.org",
+        "citationCount": 0,
+        "score": 0
+    },
+    "ea9809331f53bd9b3013f49cc10ac79965e40b2e.pdf": {
+        "title": "Creativity Has Left the Chat: The Price of Debiasing Language Models",
+        "authors": [
+            "Behnam Mohammadi"
+        ],
+        "published_date": "2024",
+        "abstract": "Large Language Models (LLMs) have revolutionized natural language processing but can exhibit biases and may generate toxic content. While alignment techniques like Reinforcement Learning from Human Feedback (RLHF) reduce these issues, their impact on creativity, defined as syntactic and semantic diversity, remains unexplored. We investigate the unintended consequences of RLHF on the creativity of LLMs through three experiments focusing on the Llama-2 series. Our findings reveal that aligned models exhibit lower entropy in token predictions, form distinct clusters in the embedding space, and gravitate towards\"attractor states\", indicating limited output diversity. Our findings have significant implications for marketers who rely on LLMs for creative tasks such as copywriting, ad creation, and customer persona generation. The trade-off between consistency and creativity in aligned models should be carefully considered when selecting the appropriate model for a given application. We also discuss the importance of prompt engineering in harnessing the creative potential of base models.",
+        "file_path": "paper_data/reinforcement_learning_for_language_processing/ea9809331f53bd9b3013f49cc10ac79965e40b2e.pdf",
+        "venue": "arXiv.org",
+        "citationCount": 0,
+        "score": 0
+    },
+    "900cd128482bbab4d2752d01ce80c55498b78dd2.pdf": {
+        "title": "SWE-RL: Advancing LLM Reasoning via Reinforcement Learning on Open Software Evolution",
+        "authors": [
+            "Yuxiang Wei",
+            "Olivier Duchenne",
+            "Jade Copet",
+            "Quentin Carbonneaux",
+            "Lingming Zhang",
+            "Daniel Fried",
+            "Gabriele Synnaeve",
+            "Rishabh Singh",
+            "Sida Wang"
+        ],
+        "published_date": "2025",
+        "abstract": "The recent DeepSeek-R1 release has demonstrated the immense potential of reinforcement learning (RL) in enhancing the general reasoning capabilities of large language models (LLMs). While DeepSeek-R1 and other follow-up work primarily focus on applying RL to competitive coding and math problems, this paper introduces SWE-RL, the first approach to scale RL-based LLM reasoning for real-world software engineering. Leveraging a lightweight rule-based reward (e.g., the similarity score between ground-truth and LLM-generated solutions), SWE-RL enables LLMs to autonomously recover a developer's reasoning processes and solutions by learning from extensive open-source software evolution data -- the record of a software's entire lifecycle, including its code snapshots, code changes, and events such as issues and pull requests. Trained on top of Llama 3, our resulting reasoning model, Llama3-SWE-RL-70B, achieves a 41.0% solve rate on SWE-bench Verified -- a human-verified collection of real-world GitHub issues. To our knowledge, this is the best performance reported for medium-sized (<100B) LLMs to date, even comparable to leading proprietary LLMs like GPT-4o. Surprisingly, despite performing RL solely on software evolution data, Llama3-SWE-RL has even emerged with generalized reasoning skills. For example, it shows improved results on five out-of-domain tasks, namely, function coding, library use, code reasoning, mathematics, and general language understanding, whereas a supervised-finetuning baseline even leads to performance degradation on average. Overall, SWE-RL opens up a new direction to improve the reasoning capabilities of LLMs through reinforcement learning on massive software engineering data.",
+        "file_path": "paper_data/reinforcement_learning_for_language_processing/900cd128482bbab4d2752d01ce80c55498b78dd2.pdf",
+        "venue": "arXiv.org",
+        "citationCount": 0,
+        "score": 0
+    },
+    "7d4ea31ec7a6a693dc15f69ac464b1d01d3e5745.pdf": {
+        "title": "Understanding the performance gap between online and offline alignment algorithms",
+        "authors": [
+            "Yunhao Tang",
+            "Daniel Guo",
+            "Zeyu Zheng",
+            "Daniele Calandriello",
+            "Yuan Cao",
+            "Eugene Tarassov",
+            "R\u00e9mi Munos",
+            "B. '. Pires",
+            "Michal Valko",
+            "Yong Cheng",
+            "Will Dabney"
+        ],
+        "published_date": "2024",
+        "abstract": "Reinforcement learning from human feedback (RLHF) is the canonical framework for large language model alignment. However, rising popularity in offline alignment algorithms challenge the need for on-policy sampling in RLHF. Within the context of reward over-optimization, we start with an opening set of experiments that demonstrate the clear advantage of online methods over offline methods. This prompts us to investigate the causes to the performance discrepancy through a series of carefully designed experimental ablations. We show empirically that hypotheses such as offline data coverage and data quality by itself cannot convincingly explain the performance difference. We also find that while offline algorithms train policy to become good at pairwise classification, it is worse at generations; in the meantime the policies trained by online algorithms are good at generations while worse at pairwise classification. This hints at a unique interplay between discriminative and generative capabilities, which is greatly impacted by the sampling process. Lastly, we observe that the performance discrepancy persists for both contrastive and non-contrastive loss functions, and appears not to be addressed by simply scaling up policy networks. Taken together, our study sheds light on the pivotal role of on-policy sampling in AI alignment, and hints at certain fundamental challenges of offline alignment algorithms.",
+        "file_path": "paper_data/reinforcement_learning_for_language_processing/7d4ea31ec7a6a693dc15f69ac464b1d01d3e5745.pdf",
+        "venue": "arXiv.org",
+        "citationCount": 0,
+        "score": 0
+    },
+    "6ca16c1c2c60ceda87242c8f8e522d12cc4a13bc.pdf": {
+        "title": "Eureka: Human-Level Reward Design via Coding Large Language Models",
+        "authors": [
+            "Yecheng Jason Ma",
+            "William Liang",
+            "Guanzhi Wang",
+            "De-An Huang",
+            "Osbert Bastani",
+            "Dinesh Jayaraman",
+            "Yuke Zhu",
+            "Linxi Fan",
+            "Anima Anandkumar"
+        ],
+        "published_date": "2023",
+        "abstract": "Large Language Models (LLMs) have excelled as high-level semantic planners for sequential decision-making tasks. However, harnessing them to learn complex low-level manipulation tasks, such as dexterous pen spinning, remains an open problem. We bridge this fundamental gap and present Eureka, a human-level reward design algorithm powered by LLMs. Eureka exploits the remarkable zero-shot generation, code-writing, and in-context improvement capabilities of state-of-the-art LLMs, such as GPT-4, to perform evolutionary optimization over reward code. The resulting rewards can then be used to acquire complex skills via reinforcement learning. Without any task-specific prompting or pre-defined reward templates, Eureka generates reward functions that outperform expert human-engineered rewards. In a diverse suite of 29 open-source RL environments that include 10 distinct robot morphologies, Eureka outperforms human experts on 83% of the tasks, leading to an average normalized improvement of 52%. The generality of Eureka also enables a new gradient-free in-context learning approach to reinforcement learning from human feedback (RLHF), readily incorporating human inputs to improve the quality and the safety of the generated rewards without model updating. Finally, using Eureka rewards in a curriculum learning setting, we demonstrate for the first time, a simulated Shadow Hand capable of performing pen spinning tricks, adeptly manipulating a pen in circles at rapid speed.",
+        "file_path": "paper_data/reinforcement_learning_for_language_processing/6ca16c1c2c60ceda87242c8f8e522d12cc4a13bc.pdf",
+        "venue": "International Conference on Learning Representations",
+        "citationCount": 0,
+        "score": 0
+    },
+    "777d4ec0148c34b0bfab91e9ac3a902e420b891e.pdf": {
+        "title": "Verbosity Bias in Preference Labeling by Large Language Models",
+        "authors": [
+            "Keita Saito",
+            "Akifumi Wachi",
+            "Koki Wataoka",
+            "Youhei Akimoto"
+        ],
+        "published_date": "2023",
+        "abstract": "In recent years, Large Language Models (LLMs) have witnessed a remarkable surge in prevalence, altering the landscape of natural language processing and machine learning. One key factor in improving the performance of LLMs is alignment with humans achieved with Reinforcement Learning from Human Feedback (RLHF), as for many LLMs such as GPT-4, Bard, etc. In addition, recent studies are investigating the replacement of human feedback with feedback from other LLMs named Reinforcement Learning from AI Feedback (RLAIF). We examine the biases that come along with evaluating LLMs with other LLMs and take a closer look into verbosity bias -- a bias where LLMs sometimes prefer more verbose answers even if they have similar qualities. We see that in our problem setting, GPT-4 prefers longer answers more than humans. We also propose a metric to measure this bias.",
+        "file_path": "paper_data/reinforcement_learning_for_language_processing/777d4ec0148c34b0bfab91e9ac3a902e420b891e.pdf",
+        "venue": "arXiv.org",
+        "citationCount": 0,
+        "score": 0
+    },
+    "548278897d46a54958909bb23bcaecf63e24fadf.pdf": {
+        "title": "Secrets of RLHF in Large Language Models Part I: PPO",
+        "authors": [
+            "Rui Zheng",
+            "Shihan Dou",
+            "Songyang Gao",
+            "Wei Shen",
+            "Wei-Yuan Shen",
+            "Bing Wang",
+            "Yan Liu",
+            "Senjie Jin",
+            "Qin Liu",
+            "Limao Xiong",
+            "Luyao Chen",
+            "Zhiheng Xi",
+            "Yuhao Zhou",
+            "Nuo Xu",
+            "Wen-De Lai",
+            "Minghao Zhu",
+            "Rongxiang Weng",
+            "Wen-Chun Cheng",
+            "Cheng Chang",
+            "Zhangyue Yin",
+            "Yuan Hua",
+            "Haoran Huang",
+            "Tianxiang Sun",
+            "Hang Yan",
+            "Tao Gui",
+            "Qi Zhang",
+            "Xipeng Qiu",
+            "Xuanjing Huang"
+        ],
+        "published_date": "2023",
+        "abstract": "Large language models (LLMs) have formulated a blueprint for the advancement of artificial general intelligence. Its primary objective is to function as a human-centric (helpful, honest, and harmless) assistant. Alignment with humans assumes paramount significance, and reinforcement learning with human feedback (RLHF) emerges as the pivotal technological paradigm underpinning this pursuit. Current technical routes usually include \\textbf{reward models} to measure human preferences, \\textbf{Proximal Policy Optimization} (PPO) to optimize policy model outputs, and \\textbf{process supervision} to improve step-by-step reasoning capabilities. However, due to the challenges of reward design, environment interaction, and agent training, coupled with huge trial and error cost of large language models, there is a significant barrier for AI researchers to motivate the development of technical alignment and safe landing of LLMs. The stable training of RLHF has still been a puzzle. In the first report, we dissect the framework of RLHF, re-evaluate the inner workings of PPO, and explore how the parts comprising PPO algorithms impact policy agent training. We identify policy constraints being the key factor for the effective implementation of the PPO algorithm. Therefore, we explore the PPO-max, an advanced version of PPO algorithm, to efficiently improve the training stability of the policy model. Based on our main results, we perform a comprehensive analysis of RLHF abilities compared with SFT models and ChatGPT. The absence of open-source implementations has posed significant challenges to the investigation of LLMs alignment. Therefore, we are eager to release technical reports, reward models and PPO codes, aiming to make modest contributions to the advancement of LLMs.",
+        "file_path": "paper_data/reinforcement_learning_for_language_processing/548278897d46a54958909bb23bcaecf63e24fadf.pdf",
+        "venue": "arXiv.org",
+        "citationCount": 0,
+        "score": 0
+    }
+}

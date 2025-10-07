@@ -1,0 +1,353 @@
+[
+  {
+    "section_number": "1",
+    "section_title": "Introduction to Out-of-Distribution Detection",
+    "section_focus": "This section introduces the critical and rapidly evolving field of Out-of-Distribution (OOD) detection, a cornerstone for building reliable and safe AI systems. It begins by meticulously defining what constitutes OOD data, drawing clear distinctions from in-distribution (ID) data and various types of distribution shifts that challenge model robustness. Subsequently, it elucidates the profound importance of OOD detection in real-world, open-set environments, particularly emphasizing its role in safety-critical applications where undetected novelty or model overconfidence can lead to catastrophic failures. This introductory segment sets the foundational context, outlining the scope and organizational structure of this comprehensive literature review, thereby preparing the reader for a deep exploration of the field's evolution, diverse methodologies, and future directions.",
+    "subsections": [
+      {
+        "number": "1.1",
+        "title": "Defining Out-of-Distribution Data and Distribution Shifts",
+        "subsection_focus": "This subsection establishes the fundamental concepts of Out-of-Distribution (OOD) data, meticulously contrasting it with in-distribution (ID) data, which models are trained to recognize. It delves into various types of distribution shifts, such as semantic shift (representing entirely novel classes or concepts) and covariate shift (involving changes in input appearance or style while retaining the same semantic class), both of which are crucial for a nuanced understanding of OOD. The discussion highlights how these diverse shifts fundamentally challenge the generalization capabilities of conventional machine learning models and necessitate robust detection mechanisms. It also touches upon the inherent ambiguity and evolving definitions in delineating precise OOD boundaries, setting the context for the complexities addressed by the field's research.",
+        "proof_ids": [
+          "layer_1",
+          "community_2",
+          "1007a43d42c7c92d765cdf614c98f6fc974aaf15",
+          "ming2021wu7"
+        ]
+      },
+      {
+        "number": "1.2",
+        "title": "Motivation: The Imperative for Trustworthy AI",
+        "subsection_focus": "This subsection articulates the compelling and urgent reasons behind the escalating importance of OOD detection in modern AI. It emphasizes the critical need for AI systems to express meaningful and calibrated uncertainty when encountering novel, unfamiliar, or anomalous inputs, especially in safety-critical domains such as autonomous driving, medical diagnosis, and cyber-physical systems. The discussion highlights how unchecked model overconfidence on OOD data can lead to unreliable decisions, system failures, and potentially severe harm, underscoring OOD detection as an indispensable component for building trustworthy, robust, and safe artificial intelligence. It frames OOD detection as a pivotal step towards enabling the responsible and reliable deployment of AI in complex, open-world environments where unforeseen circumstances are inevitable.",
+        "proof_ids": [
+          "community_3",
+          "cai2020lsi",
+          "guerin202201y"
+        ]
+      }
+    ]
+  },
+  {
+    "section_number": "2",
+    "section_title": "Foundational Concepts and Early Post-Hoc Methods",
+    "section_focus": "This section lays the essential groundwork for understanding Out-of-Distribution (OOD) detection by introducing fundamental concepts from uncertainty quantification in neural networks and exploring the earliest, often post-hoc, detection methods. It begins by examining how standard classifiers, despite their primary classification objective, implicitly provide signals of uncertainty through their outputs. Subsequently, it details pioneering approaches that ingeniously leveraged these inherent signals, such as maximum softmax probability and its subsequent enhancements, as well as early feature-space distance metrics. This section highlights the initial breakthroughs that demonstrated the feasibility of OOD detection without extensive model retraining, thereby setting the stage for the development of more advanced and integrated techniques.",
+    "subsections": [
+      {
+        "number": "2.1",
+        "title": "Uncertainty Quantification in Neural Networks",
+        "subsection_focus": "This subsection explores how conventional neural networks, primarily designed for classification, can offer implicit signals of uncertainty regarding their predictions. It focuses on the foundational role of softmax probabilities and entropy as initial, straightforward indicators of a model's confidence. The discussion critically covers the inherent limitations of these raw metrics, particularly the pervasive problem of overconfidence when models encounter OOD inputs, which often leads to erroneous high-confidence predictions. Understanding these foundational concepts and their shortcomings is crucial for appreciating the subsequent advancements and the necessity for more sophisticated OOD detection methodologies that aim to provide calibrated uncertainty estimates.",
+        "proof_ids": [
+          "community_0",
+          "community_5",
+          "community_6",
+          "hendrycks17baseline"
+        ]
+      },
+      {
+        "number": "2.2",
+        "title": "Post-Hoc Confidence-Based Detection",
+        "subsection_focus": "This subsection details early and highly influential post-hoc methods that significantly enhanced OOD detection by refining confidence scores derived from pre-trained classifiers. It covers the seminal Maximum Softmax Probability (MSP) baseline, highlighting its surprising effectiveness as a simple yet powerful indicator of OODness. The discussion then progresses to subsequent improvements like ODIN (Out-of-Distribution Detector for Neural Networks), which introduced key innovations such as temperature scaling and input perturbation. These techniques were designed to amplify the distinction between ID and OOD samples without requiring any model retraining, establishing strong, efficient baselines and demonstrating the substantial potential for practical OOD detection with minimal computational overhead.",
+        "proof_ids": [
+          "community_0",
+          "community_5",
+          "community_6",
+          "hendrycks17baseline",
+          "Liang_etal_2018",
+          "Hsu_Y_2020"
+        ]
+      },
+      {
+        "number": "2.3",
+        "title": "Feature-Space Distance-Based Methods",
+        "subsection_focus": "This subsection examines early and impactful approaches that leverage the internal feature representations of neural networks for OOD detection. It primarily focuses on methods that compute distances in the learned feature space, such as Mahalanobis distance, to quantify an input's deviation from the in-distribution manifold. The discussion covers how these methods model the distribution of in-distribution features, often using Gaussian Mixture Models, and subsequently identify OOD samples as those that lie significantly far from these learned ID distributions. It also explores techniques like using generative adversarial networks (GANs) to regularize the feature space, highlighting an early shift towards more robust and discriminative feature-level analysis for OOD discrimination, moving beyond simple output probabilities.",
+        "proof_ids": [
+          "community_0",
+          "community_5",
+          "community_6",
+          "Lee_etal_2018",
+          "anthony2023slf"
+        ]
+      }
+    ]
+  },
+  {
+    "section_number": "3",
+    "section_title": "Generative and Reconstruction-Based Approaches",
+    "section_focus": "This section delves into a distinct family of methods that approach OOD detection by explicitly modeling the in-distribution data manifold or its underlying density. It explores how deep generative models, such as Variational Autoencoders (VAEs) and Generative Adversarial Networks (GANs), are employed to learn the typicality of ID data, subsequently identifying OOD samples as those exhibiting low likelihood under the learned ID distribution or high reconstruction error. The section also covers the evolution of energy-based models, which offer a principled and often more robust alternative for scoring OODness by directly optimizing an energy function. This family of methods aims to provide a more fundamental and theoretically grounded understanding of data distribution for robust OOD discrimination.",
+    "subsections": [
+      {
+        "number": "3.1",
+        "title": "Likelihood-Based Deep Generative Models",
+        "subsection_focus": "This subsection discusses the application of deep generative models, such as Variational Autoencoders (VAEs) and Generative Adversarial Networks (GANs), for OOD detection. It explains how these models learn the underlying data distribution of in-distribution samples, allowing OOD samples to be identified based on their low likelihood under the learned ID distribution. The discussion also covers the inherent challenges associated with using raw likelihood scores, which can sometimes be misleading, and the subsequent introduction of more robust techniques like likelihood ratio tests to improve OOD discrimination. This highlights the evolution from simple density estimation to more refined statistical measures for addressing the limitations of early generative approaches.",
+        "proof_ids": [
+          "community_0",
+          "community_5",
+          "community_6",
+          "Ren_etal_2019",
+          "morningstar2020re9"
+        ]
+      },
+      {
+        "number": "3.2",
+        "title": "Reconstruction Autoencoders: Advancements and Limitations",
+        "subsection_focus": "This subsection focuses on the evolution of reconstruction autoencoder-based OOD detection, highlighting a critical re-evaluation and sophisticated re-engineering of their traditional flaws. It details how initial autoencoders often failed to distinguish OOD samples due to their inherent ability to reconstruct novel inputs effectively, leading to unreliable OOD scores. The discussion then covers significant advancements that directly address these limitations, such as semantic feature reconstruction (rather than pixel-level), the enforcement of maximally compressed latent spaces, layerwise decomposition for incremental information recovery, and normalized distance metrics. These innovations collectively transform autoencoders into more reliable OOD detectors by ensuring that reconstruction error truly reflects OODness rather than model generalization capacity.",
+        "proof_ids": [
+          "layer_1",
+          "community_1",
+          "60108b8e0d7204fa33f686b09128c7fc8489a224",
+          "zhou202250i"
+        ]
+      },
+      {
+        "number": "3.3",
+        "title": "Energy-Based Models for OOD Detection",
+        "subsection_focus": "This subsection introduces Energy-Based Models (EBMs) as a principled and increasingly popular framework for OOD detection. It explains how EBMs assign an 'energy' score to inputs, where in-distribution samples are characterized by low energy values and OOD samples by high energy values. The discussion covers the specialized training objectives designed to explicitly learn these energy landscapes, often involving contrastive learning or pushing OOD samples to higher energy states during training. It highlights EBMs as a robust and theoretically grounded alternative to traditional softmax probabilities, providing a more direct and interpretable measure of OODness by modeling the underlying data distribution's energy landscape.",
+        "proof_ids": [
+          "community_0",
+          "community_5",
+          "community_6",
+          "Liu_etal_2020",
+          "lafon2023w37"
+        ]
+      }
+    ]
+  },
+  {
+    "section_number": "4",
+    "section_title": "Training-Time Strategies and Robust Representation Learning",
+    "section_focus": "This section explores advanced Out-of-Distribution (OOD) detection methods that actively modify the model's training process or learn inherently more robust and separable representations. It covers the influential paradigm of Outlier Exposure, where auxiliary OOD data is strategically incorporated during training, and its subsequent evolution towards synthesizing diverse virtual outliers when real OOD data is scarce. Furthermore, it delves into techniques that explicitly engineer the feature space for better ID/OOD separation, including leveraging fundamental properties like neural collapse and insights derived from gradient information. These proactive approaches aim to bake OOD robustness directly into the model's learned parameters and internal representations, moving beyond purely post-hoc analysis to create intrinsically OOD-aware models.",
+    "subsections": [
+      {
+        "number": "4.1",
+        "title": "Outlier Exposure and Virtual Outlier Synthesis",
+        "subsection_focus": "This subsection details the Outlier Exposure (OE) paradigm, a significant advancement where auxiliary OOD data is incorporated during model training to explicitly teach the model to distinguish novel inputs. It discusses the theoretical underpinnings of OE, which often frames OOD detection as a binary classification task, and its practical implementations. The subsection then explores the evolution towards Virtual Outlier Synthesis (VOS), which addresses the critical challenge of OOD data scarcity by generating synthetic outliers. This includes sophisticated methods like Hamiltonian Monte Carlo and implicit adversarial generation, which create diverse and effective training examples solely from in-distribution data, thereby overcoming the reliance on real OOD datasets and enhancing model robustness.",
+        "proof_ids": [
+          "community_1",
+          "community_3",
+          "community_5",
+          "community_8",
+          "li2025xv2",
+          "wang2022mbf"
+        ]
+      },
+      {
+        "number": "4.2",
+        "title": "Learning Robust and Separable Feature Representations",
+        "subsection_focus": "This subsection focuses on methods that actively shape the model's internal feature space to enhance OOD discrimination. It covers techniques that leverage intrinsic properties of deep neural networks, such as Neural Collapse, to enforce explicit separation between in-distribution and out-of-distribution features, often by pushing them into orthogonal subspaces. The discussion also includes advancements in feature transformation, like Kernel PCA with novel non-linear mappings, and prototype-based learning with mixture models, which aim to create more compact and discriminative ID clusters while maximizing their distance to potential OOD regions. These approaches collectively improve the inherent OOD robustness of the learned representations by designing a more structured and discriminative embedding space.",
+        "proof_ids": [
+          "layer_1",
+          "community_1",
+          "community_3",
+          "community_4",
+          "wu20242p3",
+          "fang2024lv2",
+          "lu20249d4"
+        ]
+      },
+      {
+        "number": "4.3",
+        "title": "Gradient-Based and Neuron-Level Analysis",
+        "subsection_focus": "This subsection explores OOD detection methods that delve into the fine-grained internal dynamics of neural networks, specifically leveraging gradient information and individual neuron activations. It covers approaches that identify OOD by detecting abnormalities in gradient-based attribution maps, which indicate how input features influence predictions, or by analyzing the 'coverage' of neuron activation states by in-distribution data, revealing deviations from learned patterns. Furthermore, it discusses the use of gradient regularization during training to promote smoother OOD score functions and enhance robustness to small input perturbations. This showcases a significant shift towards deeper introspection into model internals for extracting more precise and interpretable OOD signals.",
+        "proof_ids": [
+          "community_3",
+          "community_2",
+          "liu2023zb3",
+          "chen2023za1",
+          "sharifi2024gok"
+        ]
+      }
+    ]
+  },
+  {
+    "section_number": "5",
+    "section_title": "Advanced OOD Paradigms and Contexts",
+    "section_focus": "This section addresses the significant expansion of Out-of-Distribution (OOD) detection beyond standard image classification to encompass more complex data modalities and challenging learning scenarios. It explores the emerging fields of multimodal and graph-structured OOD detection, highlighting the unique challenges and opportunities presented by diverse, interconnected data streams. Furthermore, it delves into OOD detection in specialized contexts like long-tailed recognition and class-incremental learning, where traditional methods often falter due to inherent data biases or catastrophic forgetting. A significant focus is also placed on leveraging powerful pre-trained foundation models, such as Vision-Language Models (VLMs) and Large Language Models (LLMs), for open-vocabulary and zero-shot OOD capabilities, showcasing the field's dynamic adaptation to modern AI architectures and complex real-world problems.",
+    "subsections": [
+      {
+        "number": "5.1",
+        "title": "Multimodal and Graph-Structured OOD Detection",
+        "subsection_focus": "This subsection examines the crucial extension of OOD detection to complex data modalities beyond unimodal images, reflecting the multimodal nature of real-world data. It covers the nascent but rapidly growing field of multimodal OOD, where complementary information from diverse sources (e.g., vision, audio, text) is leveraged to detect novelty, including the development of new benchmarks and algorithms that exploit inter-modal prediction discrepancies. Additionally, it explores OOD detection for graph-structured data, addressing the unique challenges of non-Euclidean data structures and pioneering unsupervised graph-level OOD methods. This marks a significant expansion of the OOD problem space, moving towards more holistic and context-rich detection capabilities.",
+        "proof_ids": [
+          "layer_1",
+          "community_1",
+          "community_2",
+          "f9ac68dc1fdd070a65a71c7361c0d3006",
+          "305941292b59d808af1f6646993747ba0f76f4ac"
+        ]
+      },
+      {
+        "number": "5.2",
+        "title": "OOD in Specialized Learning Settings",
+        "subsection_focus": "This subsection focuses on OOD detection within challenging and specific learning paradigms where standard methods often struggle due to inherent data characteristics. It includes OOD detection in long-tailed recognition, addressing the pervasive confusion between tail-class in-distribution samples and true OODs due to severe class imbalance. It also covers OOD detection in class-incremental learning, where catastrophic forgetting of previously learned classes poses a significant hurdle to maintaining robust OOD performance over time. The discussion highlights tailored solutions, such as representation norm amplification and dynamic outlier adaptation, designed to overcome the unique complexities and trade-offs inherent in these specialized contexts, ensuring OOD robustness in more realistic scenarios.",
+        "proof_ids": [
+          "community_1",
+          "miao2023brn",
+          "shin2024lnf",
+          "miao20246mk"
+        ]
+      },
+      {
+        "number": "5.3",
+        "title": "Leveraging Pre-trained Foundation Models",
+        "subsection_focus": "This subsection explores the transformative impact of large pre-trained foundation models, such as Vision-Language Models (VLMs) like CLIP and Large Language Models (LLMs), on OOD detection. It discusses how these models' rich semantic understanding, vast world knowledge, and open-vocabulary capabilities enable novel zero-shot and open-set OOD detection paradigms. Topics include learning transferable 'negative prompts' to implicitly define OOD boundaries, using LLMs for 'envisioned outlier exposure' to generate synthetic OOD labels, and self-calibrated tuning of VLMs. This showcases a new frontier in OOD detection that capitalizes on the immense pre-trained knowledge and generalization abilities of these powerful models, moving towards more adaptable and versatile OOD systems.",
+        "proof_ids": [
+          "layer_1",
+          "community_1",
+          "community_2",
+          "community_7",
+          "community_8",
+          "531762d37ac99a898f4976181c1c69e2e3076cb",
+          "cao20246gj"
+        ]
+      }
+    ]
+  },
+  {
+    "section_number": "6",
+    "section_title": "Real-World Applications and Deployment Challenges",
+    "section_focus": "This section transitions from methodological advancements to the practical impact and critical deployment considerations of Out-of-Distribution (OOD) detection across various real-world domains. It highlights how OOD detection directly addresses crucial safety and reliability concerns in high-stakes applications like medical imaging, autonomous systems, and cybersecurity. The section also delves into the unique challenges encountered when deploying OOD detectors in dynamic, open-world environments, including issues of scalability, real-time performance, and the vital integration of human feedback. This provides a crucial perspective on the practical relevance, current limitations, and ongoing hurdles in bringing OOD research from theoretical concepts to robust, deployable solutions in diverse industrial and societal contexts.",
+    "subsections": [
+      {
+        "number": "6.1",
+        "title": "OOD in Medical Imaging and Healthcare",
+        "subsection_focus": "This subsection focuses on the critical and life-saving need for OOD detection in medical imaging and healthcare, where misinterpreting novel inputs can have severe consequences for patient well-being. It discusses how OOD methods are applied to tasks like disease diagnosis, anomaly detection in medical scans (e.g., identifying unexpected tumors, lesions, or pathologies), and ensuring the overall reliability of AI-powered clinical decision support systems. The discussion highlights the unique challenges posed by medical data, such as high dimensionality, inherent class imbalance, and the stringent requirement for robust performance on subtle OOD shifts, showcasing tailored solutions developed for this high-stakes domain.",
+        "proof_ids": [
+          "community_4",
+          "berger20214a3",
+          "graham20232re",
+          "vasiliuk20233w9",
+          "anthony2023slf",
+          "hong2024xls"
+        ]
+      },
+      {
+        "number": "6.2",
+        "title": "OOD for Autonomous Systems and Cyber-Physical Systems",
+        "subsection_focus": "This subsection explores the paramount application of OOD detection in autonomous systems, including self-driving vehicles, robotics, and industrial cyber-physical systems. It emphasizes the critical importance of OOD detection for ensuring safety and reliability in these environments, where encountering unforeseen objects, sensor failures, or adversarial attacks can lead to catastrophic outcomes. The discussion covers specific challenges related to achieving real-time performance, effectively integrating sensor fusion across multiple modalities (e.g., LiDAR, camera, radar), and handling diverse types of OOD events in dynamic, open-world operational conditions. This highlights OOD detection as a core enabler for safe and robust autonomous operation.",
+        "proof_ids": [
+          "community_3",
+          "cai2020lsi",
+          "ksel20246fe"
+        ]
+      },
+      {
+        "number": "6.3",
+        "title": "OOD in Cybersecurity and Anomaly Detection",
+        "subsection_focus": "This subsection examines the vital role of OOD detection in cybersecurity and general anomaly detection across various domains. It discusses its application in identifying novel and evolving threats such as network intrusions, sophisticated malware, and fraudulent financial transactions, where OOD samples often represent malicious or highly unusual activities that deviate from normal patterns. The discussion highlights how OOD detection methods are adapted to detect anomalies in diverse data streams, including network traffic, system logs, and user behavior, underscoring its utility in protecting critical infrastructure, sensitive data, and financial systems from evolving and unpredictable threats in a constantly changing digital landscape.",
+        "proof_ids": [
+          "community_2",
+          "community_3",
+          "wang2024q01"
+        ]
+      },
+      {
+        "number": "6.4",
+        "title": "Practical Deployment Considerations and Human-in-the-Loop",
+        "subsection_focus": "This subsection addresses the crucial practical challenges of deploying OOD detection systems in real-world settings, moving beyond theoretical performance. It covers issues such as ensuring scalability for large-scale applications, achieving real-time inference speeds for latency-sensitive systems, and developing adaptive thresholding mechanisms that can dynamically adjust to changing environments. Furthermore, it explores the indispensable role of human-in-the-loop approaches, where human feedback is integrated to refine OOD detectors, manage false positives, and build trust in the system's decisions. The discussion emphasizes the need for OOD solutions that are not only technically effective but also robust, efficient, interpretable, and ultimately practical for real-world deployment.",
+        "proof_ids": [
+          "community_3",
+          "vishwakarma2024z1m",
+          "schmidt2024syr"
+        ]
+      }
+    ]
+  },
+  {
+    "section_number": "7",
+    "section_title": "Ensuring Trustworthy OOD: Advanced Formalisms, Guarantees, and Evaluation",
+    "section_focus": "This section pivots towards the future maturation and rigorous deployment of Out-of-Distribution (OOD) detection, building upon the methodological and application discussions. It delves into the evolution of OOD problem definitions, moving beyond simplistic binaries to nuanced taxonomies that reflect a deeper conceptual understanding of diverse distribution shifts. Crucially, it explores the emerging emphasis on methods offering provable guarantees, such as Conformal Prediction, which are indispensable for deploying OOD systems reliably in safety-critical applications. Finally, it reviews the development of comprehensive benchmarks and unified evaluation frameworks, essential for systematically advancing and ensuring the scientific integrity and trustworthiness of OOD detection algorithms in complex, open-world scenarios.",
+    "subsections": [
+      {
+        "number": "7.1",
+        "title": "Evolving OOD Definitions and Granular Taxonomies",
+        "subsection_focus": "This subsection traces the significant evolution of OOD problem definitions, moving from a simplistic binary ID/OOD distinction to a more granular and context-aware understanding. It covers the introduction of 'Full-Spectrum OOD' to explicitly differentiate between semantic and covariate shifts, and the 'Model-Specific OOD' framework that redefines OOD based on a specific model's performance and misclassification behavior. The discussion also includes the 'Sorites Paradox' in OOD evaluation, which led to the development of continuous measurements of shift degrees, and the emergence of task-oriented taxonomies to organize the field's increasing complexity, collectively reflecting a maturing conceptual understanding of OOD.",
+        "proof_ids": [
+          "community_2",
+          "1007a43d42c7c92d765cdf614c98f6fc974aaf15",
+          "averly20239rv",
+          "long2024os1"
+        ]
+      },
+      {
+        "number": "7.2",
+        "title": "Certifiable OOD Detection: Provable Guarantees and Conformal Prediction",
+        "subsection_focus": "This subsection highlights the critical and growing trend towards providing strong theoretical guarantees for OOD detection, moving beyond mere empirical performance. It focuses on the integration of Conformal Prediction (CP) to offer provably valid false detection rates, which is crucial for deploying OOD systems in safety-critical applications where reliability is paramount. The discussion extends to using CP for statistically rigorous evaluation metrics (e.g., conformal AUROC/FPR) and adaptive, human-in-the-loop frameworks with anytime-valid upper confidence bounds for dynamic FPR control. It also covers theoretical analyses on how unlabeled data can provably help OOD detection, collectively establishing a robust, certifiable, and trustworthy foundation for the field.",
+        "proof_ids": [
+          "community_3",
+          "community_2",
+          "kaur2022cty",
+          "bea84d4f28799628fa91585690088c00e8dca827",
+          "novello2024yco",
+          "vishwakarma2024z1m"
+        ]
+      },
+      {
+        "number": "7.3",
+        "title": "Standardized Benchmarking and Unified Evaluation Frameworks",
+        "subsection_focus": "This subsection reviews the development of standardized benchmarks and unified evaluation frameworks, which are indispensable for the systematic and fair advancement of OOD detection. It discusses the creation of meticulously curated datasets, such as ImageNet-OOD, specifically designed to isolate and evaluate performance on distinct types of distribution shifts. The section also covers comprehensive benchmarks like OOD-Bench and OpenCIL, which provide robust platforms for rigorous comparison across diverse methods and OOD scenarios, addressing the critical need for reproducible, comparable, and scientifically sound assessments in a rapidly evolving field. These efforts are vital for guiding future research and identifying truly robust OOD solutions.",
+        "proof_ids": [
+          "community_2",
+          "community_4",
+          "community_6",
+          "community_7",
+          "yang2023ckx",
+          "huang2023ood",
+          "miao20246mk"
+        ]
+      }
+    ]
+  },
+  {
+    "section_number": "8",
+    "section_title": "Conclusion and Future Directions",
+    "section_focus": "This concluding section synthesizes the key intellectual trajectories and major contributions in Out-of-Distribution (OOD) detection, summarizing the field's evolution from foundational concepts and early post-hoc methods to advanced, context-aware, and theoretically grounded methodologies. It then identifies persistent open challenges that continue to drive innovation, such as the 'near OOD' problem, scalability for increasingly large foundation models, and the need for more adaptive and dynamic OOD systems. Finally, the section discusses promising future research avenues, including the deeper integration of OOD detection with other machine learning tasks, the exploration of causal inference for OOD detection, and the continued pursuit of provably robust, ethical, and trustworthy AI systems capable of operating safely and reliably in an increasingly open and unpredictable world.",
+    "subsections": [
+      {
+        "number": "8.1",
+        "title": "Synthesis of Key Trends and Contributions",
+        "subsection_focus": "This subsection provides a concise synthesis of the major intellectual trajectories and significant contributions identified throughout the review. It summarizes the progression from simple post-hoc scoring to sophisticated training-time strategies, the expansion to complex data modalities and specialized learning paradigms, and the increasing emphasis on theoretical guarantees and robust evaluation. The discussion highlights how these interconnected developments collectively contribute to building more reliable, adaptable, and trustworthy AI systems capable of operating effectively and safely in open-world environments. It consolidates the understanding of how OOD detection has evolved to address the growing demands for robust uncertainty quantification in diverse applications.",
+        "proof_ids": [
+          "layer_1",
+          "community_0",
+          "community_1",
+          "community_2",
+          "community_3",
+          "community_4",
+          "community_5",
+          "community_6",
+          "community_7",
+          "community_8",
+          "community_9"
+        ]
+      },
+      {
+        "number": "8.2",
+        "title": "Open Challenges and Future Research Avenues",
+        "subsection_focus": "This subsection outlines the significant open challenges that continue to drive OOD detection research, pushing the boundaries of current capabilities. It addresses the persistent 'near OOD' problem, where subtle shifts are difficult to distinguish, and the scalability of OOD methods for increasingly large foundation models. Future research avenues include developing more adaptive and dynamic OOD systems that can learn and adjust in real-time, exploring causal inference for OOD detection to understand underlying mechanisms, and fostering deeper integration with other machine learning tasks like active learning and continual learning, aiming for holistic, efficient, and robust AI solutions that can operate autonomously in complex environments.",
+        "proof_ids": [
+          "community_1",
+          "community_2",
+          "community_3",
+          "community_4",
+          "community_5",
+          "community_6",
+          "community_7",
+          "community_8",
+          "community_9",
+          "lu2024j0n",
+          "schmidt2024syr"
+        ]
+      },
+      {
+        "number": "8.3",
+        "title": "Ethical Considerations and Societal Impact",
+        "subsection_focus": "This subsection discusses the crucial ethical implications of OOD detection, particularly in high-stakes applications where its failures can have profound societal consequences. It addresses the potential for bias in OOD detection, which could lead to unfair or discriminatory outcomes, and the risks associated with false positives and false negatives in safety-critical systems. The discussion emphasizes the need for transparency, fairness, and accountability in OOD detection, advocating for research that not only improves technical performance but also ensures responsible and human-centric AI deployment. This includes considering the societal impact of deploying AI models that may fail silently on novel inputs, underscoring the importance of ethical guidelines and robust safeguards.",
+        "proof_ids": [
+          "community_3",
+          "guerin202201y",
+          "vishwakarma2024z1m"
+        ]
+      }
+    ]
+  }
+]

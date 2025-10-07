@@ -1,0 +1,318 @@
+[
+  {
+    "section_number": "1",
+    "section_title": "Introduction",
+    "section_focus": "This section establishes the foundational context for understanding hallucination in Large Language Models (LLMs). It begins by defining what constitutes hallucination, exploring its various manifestations and the critical reasons why it poses a significant challenge to the dependability and credibility of AI systems. The section delineates the scope of this literature review, setting the stage for a comprehensive exploration of how researchers have characterized, detected, and mitigated this pervasive issue across both unimodal and increasingly complex multimodal LLM architectures. It highlights the journey from initial problem identification to advanced theoretical and practical solutions, emphasizing the importance of addressing hallucination for responsible AI development and deployment.",
+    "proof_ids": [
+      "layer_1",
+      "community_0",
+      "dbeeca8466e0c177ec67c60d529899232415ca87"
+    ],
+    "subsections": [
+      {
+        "number": "1.1",
+        "title": "Defining Hallucination and Its Immediate Impact",
+        "subsection_focus": "This subsection establishes a working definition of hallucination in Large Language Models, outlining its core characteristics as the generation of factually inaccurate, nonsensical, or unfaithful information. It briefly distinguishes between intrinsic (contradicting source input) and extrinsic (contradicting world knowledge) forms, and touches upon common manifestations like fact-conflicting or context-conflicting errors. The aim is to provide a clear conceptual foundation and common terminology for the review, emphasizing the fundamental challenge hallucination poses to LLM dependability and credibility across various applications and the urgent need for robust solutions to ensure secure and accountable AI deployment.",
+        "proof_ids": [
+          "layer_1",
+          "community_0",
+          "rejeleene2024okw"
+        ]
+      },
+      {
+        "number": "1.2",
+        "title": "Scope and Motivation of the Review",
+        "subsection_focus": "This subsection delineates the scope of the literature review, outlining the key areas of research to be covered, from foundational understanding to advanced mitigation techniques and multimodal challenges. It articulates the primary motivation for this comprehensive analysis: to synthesize the current state-of-the-art, identify critical gaps, and highlight future directions in addressing LLM hallucination. The discussion underscores the urgent need for robust solutions to ensure LLMs are dependable, transparent, and safe for widespread deployment, addressing concerns about misinformation and accountability in an evolving AI landscape, thereby contributing to the development of trustworthy artificial intelligence.",
+        "proof_ids": [
+          "community_0",
+          "liu2024gxh",
+          "dbeeca8466e0c177ec67c60d529899232415ca87"
+        ]
+      }
+    ]
+  },
+  {
+    "section_number": "2",
+    "section_title": "Foundational Understanding and Theoretical Limits",
+    "section_focus": "This section delves into the core conceptual underpinnings of hallucination in Large Language Models, tracing the intellectual trajectory from initial empirical observations to profound theoretical insights. It begins by detailing the early efforts to characterize and classify various types of hallucinations, establishing foundational taxonomies. Subsequently, it explores the identified root causes and mechanistic origins, shedding light on why LLMs generate erroneous content. The section culminates in a discussion of the groundbreaking theoretical proofs demonstrating the inherent and inevitable nature of hallucination, fundamentally reshaping the research paradigm from complete elimination to robust management and mitigation, thereby guiding future research towards more realistic goals.",
+    "proof_ids": [
+      "layer_1",
+      "community_0",
+      "5cd671efa2af8456c615c5faf54d1be4950f3819"
+    ],
+    "subsections": [
+      {
+        "number": "2.1",
+        "title": "Historical Characterization and Evolving Taxonomies",
+        "subsection_focus": "This subsection traces the historical development of understanding and categorizing hallucination, beginning with pioneering empirical studies, particularly in abstractive summarization, that first systematically identified and distinguished intrinsic and extrinsic errors. It details the evolution of comprehensive taxonomies, discussing how researchers developed frameworks to classify hallucinations by their source, type, and severity. This section establishes the intellectual lineage of how the field moved from observing errors to systematically analyzing and structuring the problem space, providing a crucial framework for subsequent research and guiding initial detection efforts across diverse natural language generation tasks.",
+        "proof_ids": [
+          "layer_1",
+          "community_0",
+          "maynez2020h3q"
+        ]
+      },
+      {
+        "number": "2.2",
+        "title": "Root Causes and Mechanistic Insights",
+        "subsection_focus": "This subsection explores the underlying factors contributing to hallucination in Large Language Models, moving beyond superficial observations to delve into their mechanistic origins. It examines how issues such as inherent biases in vast training data, limitations in model architecture, deficiencies in knowledge representation, and inference-time errors can collectively lead to the generation of incorrect or unfaithful information. Discussions include specific phenomena like \"knowledge overshadowing,\" where dominant conditions or over-represented facts in training data lead to over-generalization and the creation of \"amalgamated hallucinations.\" The section also addresses the challenges of attributing hallucinations to specific internal model behaviors or layers. Understanding these granular mechanistic insights is crucial for developing targeted, efficient, and truly impactful mitigation strategies that address the root causes rather than just the symptoms.",
+        "proof_ids": [
+          "community_0",
+          "du2023qu7",
+          "zhang2024qq9"
+        ]
+      },
+      {
+        "number": "2.3",
+        "title": "The Inevitability of Hallucination",
+        "subsection_focus": "This subsection presents a pivotal shift in the understanding of hallucination, moving from an engineering problem to a fundamental limitation. It discusses theoretical proofs, notably those employing diagonalization arguments, which demonstrate that hallucination is an inherent and unavoidable characteristic for any computable Large Language Model. This groundbreaking insight suggests that complete elimination of hallucination is mathematically impossible, regardless of architectural advancements or training data improvements. This re-frames the research agenda towards robust detection, effective mitigation, and responsible deployment, rather than eradication, necessitating a paradigm shift in how we approach AI dependability and credibility.",
+        "proof_ids": [
+          "layer_1",
+          "community_0",
+          "xu2024n76"
+        ]
+      }
+    ]
+  },
+  {
+    "section_number": "3",
+    "section_title": "Benchmarking and Detection Methodologies",
+    "section_focus": "This section focuses on the critical tools and techniques developed to measure and identify hallucinations in Large Language Models. It explores the evolution of detection methodologies, starting from reference-free and consistency-based approaches that leverage the model's own outputs. The section then delves into more advanced, fine-grained evaluation techniques, including those designed to verify the LLM's reasoning rationales and provide detailed, sentence-level analysis. Finally, it addresses specialized benchmarks tailored for Retrieval-Augmented Generation (RAG) systems, highlighting diagnostic frameworks that pinpoint specific failure modes when LLMs interact with external knowledge sources, ensuring a comprehensive assessment of factual accuracy and overall system reliability.",
+    "proof_ids": [
+      "community_0",
+      "7c1707db9aafd209aa93db3251e7ebd593d55876",
+      "e7c97e953849f1a8e5d85ceb4cfcc0a5d54d2365"
+    ],
+    "subsections": [
+      {
+        "number": "3.1",
+        "title": "Reference-Free and Consistency-Based Detection",
+        "subsection_focus": "This subsection details methods for detecting hallucinations in Large Language Models without relying on external ground truth or human-annotated references. It covers techniques such as `SelfCheckGPT`, which leverages the consistency of stochastically sampled LLM outputs to identify non-factual statements. The discussion also includes approaches that use automated dataset generation and self-contained detection mechanisms, like those employing metamorphic relations, where prompt mutations are used to expose factual inconsistencies. These methods are crucial for evaluating proprietary models and scaling detection efforts where human annotation is impractical, offering efficient and flexible assessment of factual correctness and internal coherence.",
+        "proof_ids": [
+          "layer_1",
+          "community_0",
+          "manakul20236ex"
+        ]
+      },
+      {
+        "number": "3.2",
+        "title": "Fine-Grained and Rationale-Based Evaluation",
+        "subsection_focus": "This subsection explores advanced evaluation methodologies that move beyond simple answer correctness to provide a deeper, more granular understanding of LLM hallucinations. It covers benchmarks that enable token-level or sentence-level analysis, identifying the precise location and nature of errors. A significant development is the focus on verifying the LLM's reasoning process or \"rationales,\" often using structured data like relational databases to automatically check the logical steps. These fine-grained and rationale-based evaluations are essential for diagnosing complex reasoning failures and improving model transparency and verifiability, thereby fostering greater confidence in AI-generated content.",
+        "proof_ids": [
+          "community_0",
+          "oh2024xa3",
+          "li2024osp"
+        ]
+      },
+      {
+        "number": "3.3",
+        "title": "Benchmarking Retrieval-Augmented Generation (RAG)",
+        "subsection_focus": "This subsection focuses on specialized benchmarks designed to rigorously evaluate the performance of Retrieval-Augmented Generation (RAG) systems in mitigating hallucination. It discusses diagnostic frameworks like RGB, which systematically assess LLMs' fundamental abilities when interacting with retrieved information, including noise robustness, negative rejection, and information integration. These benchmarks are crucial for identifying specific failure modes of RAG-augmented LLMs, guiding improvements in retrieval mechanisms, and ensuring that external knowledge is effectively utilized to reduce factual errors and enhance the credibility of generated content, ultimately leading to more dependable AI applications.",
+        "proof_ids": [
+          "layer_1",
+          "community_0",
+          "chen2023h04"
+        ]
+      }
+    ]
+  },
+  {
+    "section_number": "4",
+    "section_title": "Mitigation Strategies: External Grounding and Reasoning",
+    "section_focus": "This section explores a major family of mitigation strategies that combat hallucination by grounding Large Language Models in external, verifiable information and enhancing their reasoning capabilities. It begins with a detailed examination of Retrieval-Augmented Generation (RAG) and the integration of Knowledge Graphs, showcasing how dynamic access to up-to-date facts can reduce factual errors. Subsequently, it delves into paradigms that synergize reasoning and acting, allowing LLMs to interact with environments for self-correction. The section concludes by discussing various self-correction and verification mechanisms, where models are empowered to critically evaluate and refine their own outputs, fostering greater dependability and credibility in their generated content.",
+    "proof_ids": [
+      "layer_1",
+      "community_0",
+      "f208ea909fa7f54fea82def9a92fd81dfc758c39"
+    ],
+    "subsections": [
+      {
+        "number": "4.1",
+        "title": "Retrieval-Augmented Generation (RAG) and Knowledge Graphs",
+        "subsection_focus": "This subsection details how Retrieval-Augmented Generation (RAG) and Knowledge Graphs (KGs) are employed to reduce hallucinations by providing LLMs with access to external, up-to-date, and verifiable information. It covers the evolution of RAG from basic retrieval to advanced, modular architectures that dynamically integrate knowledge. The discussion also includes methods for leveraging structured KGs to enhance factual consistency and credibility, particularly in open-ended question answering, by guiding retrieval and generation processes. These techniques aim to overcome LLMs' reliance on potentially outdated internal knowledge and improve factual accuracy, making them more reliable information providers.",
+        "proof_ids": [
+          "layer_1",
+          "community_0",
+          "gao20232zb"
+        ]
+      },
+      {
+        "number": "4.2",
+        "title": "Synergizing Reasoning and Acting (ReAct)",
+        "subsection_focus": "This subsection explores paradigms that intertwine an LLM's internal reasoning (\"thoughts\") with external actions (e.g., API calls, tool use) to dynamically gather information and verify facts. The `ReAct` framework, for instance, allows LLMs to formulate plans, execute actions in an environment, and then use the observations to refine their reasoning. This synergistic approach directly addresses ungrounded hallucinations by providing a mechanism for external validation, making LLM behavior more robust, factually grounded, and interpretable in complex, interactive tasks, moving beyond purely internal, potentially fallacious, reasoning and enhancing overall system dependability.",
+        "proof_ids": [
+          "layer_1",
+          "community_2",
+          "yao20229uz"
+        ]
+      },
+      {
+        "number": "4.3",
+        "title": "Self-Correction and Verification Mechanisms",
+        "subsection_focus": "This subsection focuses on techniques that enable Large Language Models to critically evaluate their own generated outputs, identify potential errors, and perform revisions. It covers methods like Chain-of-Verification, where models generate multiple drafts and self-critique, and self-reflection, where they iteratively refine responses based on internal consistency checks. The discussion also includes strategies for LLMs to appropriately abstain from answering when uncertain, leveraging metrics like semantic entropy. These mechanisms aim to enhance the intrinsic dependability and logical coherence of LLM outputs, fostering greater confidence and accountability in their autonomous operation across various applications.",
+        "proof_ids": [
+          "community_0",
+          "dhuliawala2023rqn",
+          "tjandra2024umq"
+        ]
+      }
+    ]
+  },
+  {
+    "section_number": "5",
+    "section_title": "Mitigation Strategies: Internal Model Interventions and Training",
+    "section_focus": "This section delves into mitigation strategies that intervene directly within the Large Language Model's architecture or training process to reduce hallucinations, complementing the external grounding approaches discussed in Section 4. It begins by exploring decoding-time techniques that steer the model's output during generation, often through logit manipulation or contrastive signals. Subsequently, it examines various training-based approaches, including robust instruction tuning, data augmentation, and preference optimization, designed to embed hallucination resistance from the ground up. The section concludes with advanced methods that manipulate internal model states or apply causal inference to attention mechanisms, offering deeper, mechanistic interventions for more precise control over factual accuracy.",
+    "proof_ids": [
+      "community_1",
+      "c7a7104df3db13737a865ede2be8146990fa4026",
+      "206400aba5f12f734cdd2e4ab48ef6014ea60773"
+    ],
+    "subsections": [
+      {
+        "number": "5.1",
+        "title": "Decoding-Time Strategies and Logit Manipulation",
+        "subsection_focus": "This subsection explores techniques that intervene during the token generation (decoding) process to prevent hallucinations without requiring full model retraining. Methods include contrastive decoding, which penalizes tokens that are inconsistent with a reference or a subtly altered input, and logit-based steering, which directly influences the probability distribution of generated tokens. These strategies aim to guide the LLM towards more factual and coherent outputs by leveraging internal uncertainty or external signals at inference time, offering efficient and flexible mitigation by shaping the model's output on-the-fly and enhancing its real-time factual consistency.",
+        "proof_ids": [
+          "community_1",
+          "leng2023ohr",
+          "park20247cm"
+        ]
+      },
+      {
+        "number": "5.2",
+        "title": "Training-Based Approaches and Preference Optimization",
+        "subsection_focus": "This subsection details methods that embed hallucination resistance directly into the Large Language Model during its learning phases. It covers robust instruction tuning, where models are fine-tuned on datasets designed to explicitly teach them to avoid hallucinations, often incorporating negative examples. The discussion also includes preference optimization techniques like DPO, which leverage AI-generated or human-annotated preference data to align model behavior with desired factual accuracy. These proactive strategies aim to instill hallucination avoidance as an intrinsic capability of the model, building robustness from the ground up and reducing the reliance on post-hoc corrections.",
+        "proof_ids": [
+          "community_1",
+          "liu2023882",
+          "xiao2024hv1"
+        ]
+      },
+      {
+        "number": "5.3",
+        "title": "Internal State Manipulation and Causal Interventions",
+        "subsection_focus": "This subsection delves into advanced mitigation techniques that directly manipulate the internal workings of Large Language Models, such as their hidden states or attention mechanisms. Methods include re-injecting visual tokens into intermediate layers to combat \"visual amnesia\" or fusing features from early visual layers based on uncertainty. The discussion also covers applying causal inference to attention mechanisms to understand and balance modality priors, offering a principled approach to mitigate modality-induced hallucinations. These interventions provide fine-grained control and mechanistic insights into model failures, enabling more precise and targeted corrections that enhance factual accuracy and reduce spurious correlations.",
+        "proof_ids": [
+          "community_1",
+          "zou2024dp7",
+          "zhou2024lvp"
+        ]
+      }
+    ]
+  },
+  {
+    "section_number": "6",
+    "section_title": "Applications, Specialized Domains, and Multimodal Hallucination",
+    "section_focus": "This section specifically addresses the unique challenges and complexities of hallucination in Multimodal Large Language Models (MLLMs) and specialized application domains. It begins by characterizing the distinct types of hallucinations that emerge from cross-modal interactions, such as object, relation, temporal, and cross-modal driven inconsistencies, as well as domain-specific errors. Subsequently, it details the specialized evaluation benchmarks developed to rigorously assess these multimodal and domain-specific errors. The section concludes by exploring mitigation strategies specifically tailored for MLLMs, including robust instruction tuning, visual grounding techniques, and adaptive frameworks that account for the interplay between different modalities to enhance factual consistency and overall system dependability.",
+    "proof_ids": [
+      "layer_1",
+      "community_1",
+      "206400aba5f12f734cdd2e4ab48ef6014ea60773"
+    ],
+    "subsections": [
+      {
+        "number": "6.1",
+        "title": "Characterizing Multimodal and Domain-Specific Hallucinations",
+        "subsection_focus": "This subsection introduces the distinct forms of hallucination that arise in Large Vision-Language Models (LVLMs), Large Audio-Language Models (LALMs), and other multimodal architectures. It covers phenomena like \"object hallucination\" (describing non-existent objects), \"relation hallucination\" (misinterpreting relationships), and \"temporal hallucination\" (errors in video sequences). The discussion highlights how the \"modality gap\" and inconsistencies between visual/audio inputs and generated text lead to unique challenges, requiring a specialized understanding beyond unimodal LLM hallucinations. It also touches upon domain-specific errors, such as medical hallucinations, emphasizing the need for context-aware analysis and tailored solutions to ensure factual accuracy across diverse data types.",
+        "proof_ids": [
+          "layer_1",
+          "community_1",
+          "li2023249"
+        ]
+      },
+      {
+        "number": "6.2",
+        "title": "Evaluation Benchmarks for Multimodal and Domain-Specific Hallucinations",
+        "subsection_focus": "This subsection details the specialized benchmarks and metrics developed to rigorously assess hallucinations in multimodal Large Language Models and specific application domains. It covers tools like POPE for object hallucination, R-Bench for relation hallucinations, and VideoHallucer for temporal errors in video-language models. The discussion also includes benchmarks for cross-modal driven hallucinations (e.g., AVHBench) and those tailored for specific domains like medical contexts (e.g., Med-HallMark). These evaluation frameworks are crucial for systematically identifying, categorizing, and quantifying the diverse forms of errors in MLLMs and specialized applications, providing a foundation for targeted mitigation efforts.",
+        "proof_ids": [
+          "community_1",
+          "li2023249",
+          "wang2024rta"
+        ]
+      },
+      {
+        "number": "6.3",
+        "title": "Multimodal Mitigation Strategies",
+        "subsection_focus": "This subsection explores mitigation techniques specifically designed to address hallucinations in Large Vision-Language Models and other multimodal architectures. It covers strategies such as robust instruction tuning with negative examples, noise perturbation in visual features during training, and inference-time interventions that enhance visual grounding. The discussion also includes unified frameworks that adapt mitigation based on query type (e.g., perception vs. reasoning) and methods that leverage multi-view reasoning or active retrieval augmentation tailored for multimodal contexts. These strategies aim to improve factual consistency by accounting for the interplay between different modalities, thereby increasing the dependability and credibility of multimodal AI systems.",
+        "proof_ids": [
+          "layer_1",
+          "community_1",
+          "liu2023882"
+        ]
+      }
+    ]
+  },
+  {
+    "section_number": "7",
+    "section_title": "Advanced Topics and Future Directions",
+    "section_focus": "This section explores cutting-edge developments and critical future directions in hallucination research, moving beyond current detection and mitigation paradigms. It delves into the emerging area of adversarial hallucination, where researchers actively probe model vulnerabilities to build more robust systems. The section then addresses the paramount importance of preventing \"never event\" errors in safety-critical applications through specialized guardrails. Finally, it discusses the crucial need for meta-evaluation of benchmarks themselves and the ongoing pursuit of unified theoretical frameworks, integrating empirical observations with fundamental mathematical insights to guide the next generation of trustworthy and dependable Large Language Models.",
+    "proof_ids": [
+      "e7c97e953849f1a8e5d85ceb4cfcc0a5d54d2365",
+      "7c1707db9aafd209aa93db3251e7ebd593d55876",
+      "206400aba5f12f734cdd2e4ab48ef6014ea60773"
+    ],
+    "subsections": [
+      {
+        "number": "7.1",
+        "title": "Adversarial Hallucination and Robustness",
+        "subsection_focus": "This subsection explores the emerging and critical field of adversarial attacks, which are specifically designed to intentionally induce hallucinations in Large Language Models and multimodal models. It discusses how exploiting inherent vulnerabilities, such as the \"attention sink\" phenomenon or specific linguistic structures, can reveal fundamental weaknesses in model resilience and expose previously unknown failure modes. Understanding these adversarial techniques is not merely about creating new attacks, but is crucial for developing more robust AI systems and for proactively building strong defenses against sophisticated, targeted manipulations. This approach signifies a shift from purely reactive mitigation to proactive robustness engineering, aiming to ensure models can withstand deliberate attempts to make them hallucinate, thereby enhancing their credibility in real-world deployment.",
+        "proof_ids": [
+          "community_1",
+          "wang2025jen",
+          "chen20247jb"
+        ]
+      },
+      {
+        "number": "7.2",
+        "title": "Safety-Critical Applications and Guardrails",
+        "subsection_focus": "This subsection addresses the critical need for preventing hallucinations in high-stakes domains where errors can have severe consequences, such as medical diagnosis, legal advice, or financial decision-making. It discusses the development of \"semantic guardrails\" and other application-specific mechanisms designed to ensure absolute error prevention (\"never events\") and to explicitly communicate uncertainty. This area emphasizes moving beyond general factual accuracy to building highly dependable, accountable, and credible AI systems tailored for sensitive real-world deployments, where the cost of hallucination is exceptionally high and ethical considerations are paramount, demanding robust and verifiable solutions.",
+        "proof_ids": [
+          "e7c97e953849f1a8e5d85ceb4cfcc0a5d54d2365",
+          "hakim2024d4u",
+          "liu2024gxh"
+        ]
+      },
+      {
+        "number": "7.3",
+        "title": "Meta-Evaluation and Unified Theoretical Frameworks",
+        "subsection_focus": "This subsection discusses the maturation of the field, including the critical need for meta-evaluation—assessing the quality, reliability, and validity of hallucination benchmarks themselves. It also revisits the ongoing pursuit of a unified theoretical framework for hallucination, integrating empirical observations with fundamental mathematical insights to provide a holistic understanding of its origins and limits. This forward-looking perspective aims to ensure the rigor of research and to guide the development of future, more fundamentally dependable AI systems, moving towards a deeper scientific understanding of AI reliability and establishing a robust foundation for future advancements.",
+        "proof_ids": [
+          "e7c97e953849f1a8e5d85ceb4cfcc0a5d54d2365",
+          "yan2024ux8",
+          "li2025qzg"
+        ]
+      }
+    ]
+  },
+  {
+    "section_number": "8",
+    "section_title": "Conclusion",
+    "section_focus": "This concluding section synthesizes the key advancements and intellectual trajectory of research into hallucination in Large Language Models. It recapitulates the evolution from initial problem characterization and empirical detection to sophisticated mitigation strategies, encompassing both external grounding and internal model interventions. The section highlights the critical expansion into multimodal domains, the deepening theoretical understanding of hallucination's inevitability, and the growing emphasis on rigorous evaluation and proactive robustness. Finally, it outlines the persistent challenges and open questions that continue to drive the field, pointing towards future research avenues essential for developing truly dependable, credible, and ethically sound AI systems capable of responsible deployment.",
+    "proof_ids": [
+      "layer_1",
+      "community_0",
+      "community_1"
+    ],
+    "subsections": [
+      {
+        "number": "8.1",
+        "title": "Summary of Key Developments",
+        "subsection_focus": "This subsection provides a concise recap of the major milestones and advancements discussed throughout the literature review. It highlights the progression from defining and categorizing hallucinations in text-based LLMs to developing advanced detection methods, diverse mitigation strategies (both external and internal), and the crucial expansion of research into multimodal AI. The summary underscores the intellectual journey from treating hallucination as a solvable bug to acknowledging its inherent nature and focusing on robust management, marking a significant maturation of the field's approach to AI dependability and the pursuit of trustworthy artificial intelligence across all modalities.",
+        "proof_ids": [
+          "layer_1",
+          "community_0",
+          "community_1"
+        ]
+      },
+      {
+        "number": "8.2",
+        "title": "Remaining Challenges and Open Questions",
+        "subsection_focus": "This subsection identifies the persistent challenges and unanswered questions that continue to shape the research agenda. It discusses issues such as the scalability of fine-grained evaluation, the generalizability of mitigation techniques across diverse tasks and domains, the need for a deeper understanding of complex causal mechanisms, and the ethical implications of deploying systems with inherent hallucinatory tendencies. It also points to promising future directions, including more adaptive and context-aware AI, and the development of truly transparent and accountable LLMs, emphasizing the ongoing pursuit of trustworthy AI and responsible innovation in the field.",
+        "proof_ids": [
+          "layer_1",
+          "community_0",
+          "community_1"
+        ]
+      }
+    ]
+  }
+]
