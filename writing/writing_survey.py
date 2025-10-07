@@ -24,7 +24,7 @@ from pathlib import Path
 from scripts.prompt import PromptHelper
 
 class LiteratureReviewGenerator:
-    def __init__(self, query, api_key: str):
+    def __init__(self, query, api_key: str, ablation_study = ''):
         """
         Initialize Literature Review Generator with Gemini API key
         
@@ -34,7 +34,8 @@ class LiteratureReviewGenerator:
         self.prompt_helper = PromptHelper()
         genai.configure(api_key=api_key)
         self.query = query
-        self.save_dir = f"paper_data/{self.query.replace(' ', '_').replace(':', '')}/literature_review_output"
+        self.ablation_study = ablation_study
+        self.save_dir = f"paper_data/{self.query.replace(' ', '_').replace(':', '')}/literature_review_output{self.ablation_study}"
         os.makedirs(self.save_dir, exist_ok=True)
         self.model = genai.GenerativeModel('gemini-2.5-flash')
         self.advanced_model = genai.GenerativeModel('gemini-2.5-pro')
@@ -51,6 +52,15 @@ class LiteratureReviewGenerator:
         self.graph_path = f"paper_data/{self.query.replace(' ', '_').replace(':', '')}/info/paper_citation_graph.json"
         self.node_info_path = f"{self.keyword_dir}/processed_checkpoint.json"
         self.G, self.id2node_info = self.load_graph(self.graph_path, self.node_info_path)
+        self.outline_path = f"{self.save_dir}/survey_outline{self.ablation_study}.json"
+
+        if self.ablation_study == '_without_rag':
+            self.max_improvement_iterations = 0
+        if self.ablation_study == '_without_bfs':
+            self.develop_direction = {}
+        if self.ablation_study == '_without_community':
+            self.community_summary = {}
+            self.layer_method_group_json = {}
     def get_paper_text(self, paper_infos):
         papers_text = ''
         for info in paper_infos:
@@ -1054,7 +1064,7 @@ class LiteratureReviewGenerator:
         
         # Step 2: Load the JSON outline
         print("\n2. Loading literature review outline...")
-        outline_path = f"{self.save_dir}/survey_outline.json"
+        outline_path = self.outline_path
         
         if not os.path.exists(outline_path):
             return {"error": f"Outline file not found at {outline_path}. Please generate the outline first."}
@@ -1277,97 +1287,6 @@ class LiteratureReviewGenerator:
         complete_latex = latex_header + latex_content + bibliography + "\n\\end{document}"
         
         return complete_latex
-#     def generate_latex_document_with_sections(self, sections: Dict[str, str], all_papers: List[Dict], 
-#                                         review_title: str = "Literature Review") -> str:
-#         """
-#         Generate complete LaTeX document with individual sections and subsections.
-        
-#         Args:
-#             sections (Dict[str, str]): A dictionary where keys are section titles 
-#                                         and values are the full LaTeX content of each section
-#                                         (including its subsections).
-#             all_papers (List[Dict]): List of all processed papers for bibliography generation.
-#             review_title (str): The title of the entire literature review document.
-            
-#         Returns:
-#             str: The complete LaTeX document as a string.
-#         """
-        
-#         # LaTeX document header
-#         latex_header = r"""\documentclass[12pt,a4paper]{article}
-# \usepackage[utf8]{inputenc}
-# \usepackage[T1]{fontenc}
-# \usepackage{amsmath,amsfonts,amssymb}
-# \usepackage{graphicx}
-# \usepackage[margin=2.5cm]{geometry}
-# \usepackage{setspace}
-# \usepackage{natbib}
-# \usepackage{url}
-# \usepackage{hyperref}
-# \usepackage{booktabs}
-# \usepackage{longtable}
-# \usepackage{array}
-# \usepackage{multirow}
-# \usepackage{wrapfig}
-# \usepackage{float}
-# \usepackage{colortbl}
-# \usepackage{pdflscape}
-# \usepackage{tabu}
-# \usepackage{threeparttable}
-# \usepackage{threeparttablex}
-# \usepackage[normalem]{ulem}
-# \usepackage{makecell}
-# \usepackage{xcolor}
-
-# % Set line spacing
-# \doublespacing
-
-# % Configure hyperref
-# \hypersetup{
-#     colorlinks=true,
-#     linkcolor=blue,
-#     filecolor=magenta,      
-#     urlcolor=cyan,
-#     citecolor=red,
-# }
-
-# % Title and author information
-# \title{""" + review_title + r"""}
-# \author{Literature Review}
-# \date{\today}
-
-# \begin{document}
-
-# \maketitle
-
-# % Abstract (optional)
-# \begin{abstract}
-# This literature review provides a comprehensive analysis of recent research in the field of """ + self.query + r""". The review synthesizes findings from """ + str(len(all_papers)) + r""" research papers, identifying key themes, methodological approaches, and future research directions.
-# \end{abstract}
-
-# \newpage
-# \tableofcontents
-# \newpage
-
-# """
-#         # Generate main content sections
-#         latex_content = ""
-        
-#         # The 'sections' dictionary already contains the full LaTeX content for each section,
-#         # which includes its overview and all subsections. We just need to concatenate them.
-#         for section_title, section_body_latex in sections.items():
-#             # The section_body_latex already contains \section{} and \subsection{} commands
-#             # generated during the writing process.
-#             latex_content += section_body_latex + "\n\n"
-        
-#         # Generate bibliography with ALL papers
-#         bibliography = self._generate_advanced_latex_bibliography(all_papers)
-        
-#         # Combine all parts
-#         complete_latex = latex_header + latex_content + bibliography + "\n\\end{document}"
-        
-#         return complete_latex
-    #endregion
 
     #region format LaTeX content
     def _format_latex_content(self, content: str) -> str:
@@ -1506,14 +1425,17 @@ class LiteratureReviewGenerator:
 
 # Example usage
 def process_papers_from_directory():
-    if len(sys.argv) != 2:
+    if len(sys.argv) < 2:
         print("Usage: python writing/writing_survey.py \"your research query\"")
         print("Example: python writing/writing_survey.py \"federated learning privacy\"")
         return
     query = sys.argv[1]
+    try: ablation_study = sys.argv[2]
+    except:
+        ablation_study = ''
     load_dotenv(Path(".env"))
     API_KEY = os.getenv("API_KEY") 
-    lit_review_gen = LiteratureReviewGenerator(query, API_KEY)
+    lit_review_gen = LiteratureReviewGenerator(query, API_KEY, ablation_study)
     
     # Get all PDF files from a directory
     papers_directory = f"paper_data/{query.replace(' ', '_').replace(':', '')}"  

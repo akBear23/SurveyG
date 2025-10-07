@@ -13,7 +13,7 @@ NUM_PAPERS="$3"
 # Convert query to directory-friendly format (replace spaces with underscores)
 DIR_QUERY=$(echo "$ORIGINAL_QUERY" | tr ' ' '_' | tr -d ':')
 BASE_DIR="/media/aiserver/New Volume/HDD_linux/bear/SurveyG"
-ABLATION_STUDY='_without_rag'
+ABLATION_STUDY='_without_community'
 echo "Starting survey generation for: '$ORIGINAL_QUERY'"
 echo "Using directory name: $DIR_QUERY"
 echo "Running ablation study: $ABLATION_STUDY"
@@ -38,9 +38,9 @@ echo "Running ablation study: $ABLATION_STUDY"
 # echo "Step 5: Generating summaries..."
 # python "$BASE_DIR/writing/summarize.py" "$ORIGINAL_QUERY"
 
-# # Step 7: Traverse graph for summaries
-# echo "Step 7: Traversing graph..."
-# python "$BASE_DIR/scripts/traversal.py" "$ORIGINAL_QUERY" "$ABLATION_STUDY"
+# Step 7: Traverse graph for summaries
+echo "Step 7: Traversing graph..."
+python "$BASE_DIR/scripts/traversal.py" "$ORIGINAL_QUERY" "$ABLATION_STUDY"
 
 # Step 8: Write survey paper
 echo "Step 8: Writing survey paper..."
