@@ -877,6 +877,12 @@ class LiteratureReviewGenerator:
                     subsection_title, subsection_focus, full_outline_text, subsection_proof_ids, 
                     pre_subsection_content, processed_papers
                 )
+                while current_subsection_content == '' or current_subsection_content == None:
+                    current_subsection_content = self.write_initial_subsection(
+                    subsection_title, subsection_focus, full_outline_text, subsection_proof_ids, 
+                    pre_subsection_content, processed_papers
+                )
+                
                 with open(checkpoint_path, 'w', encoding='utf-8') as f:
                     f.write(current_subsection_content)
 
