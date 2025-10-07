@@ -1,0 +1,1346 @@
+\documentclass[12pt,a4paper]{article}
+    \usepackage[utf8]{inputenc}
+    \usepackage[T1]{fontenc}
+    \usepackage{amsmath,amsfonts,amssymb}
+    \usepackage{graphicx}
+    \usepackage[margin=2.5cm]{geometry}
+    \usepackage{setspace}
+    \usepackage{natbib}
+    \usepackage{url}
+    \usepackage{hyperref}
+    \usepackage{booktabs}
+    \usepackage{longtable}
+    \usepackage{array}
+    \usepackage{multirow}
+    \usepackage{wrapfig}
+    \usepackage{float}
+    \usepackage{colortbl}
+    \usepackage{pdflscape}
+    \usepackage{tabu}
+    \usepackage{threeparttable}
+    \usepackage{threeparttablex}
+    \usepackage[normalem]{ulem}
+    \usepackage{makecell}
+    \usepackage{xcolor}
+
+    % Set line spacing
+    \doublespacing
+
+    % Configure hyperref
+    \hypersetup{
+        colorlinks=true,
+        linkcolor=blue,
+        filecolor=magenta,      
+        urlcolor=cyan,
+        citecolor=red,
+    }
+
+    % Title and author information
+    \title{A Comprehensive Literature Review with Self-Reflection}
+    \author{Literature Review}
+    \date{\today}
+
+    \begin{document}
+
+    \maketitle
+
+    % Abstract (optional)
+    \begin{abstract}
+    This literature review provides a comprehensive analysis of recent research in the field. The review synthesizes findings from 377 research papers, identifying key themes, methodological approaches, and future research directions.
+    \end{abstract}
+
+    \newpage
+    \tableofcontents
+    \newpage
+
+    \label{sec:enhancing_kge_expressiveness:_context,_types,_and_advanced_architectures}
+
+\section{Enhancing KGE Expressiveness: Context, Types, and Advanced Architectures}
+\label{sec:enhancing\_kge\_expressiveness:\_context,\_types,\_\_and\_\_advanced\_architectures}
+
+\subsection{Context-Augmented and Multi-view Embeddings}
+\label{sec:3\_1\_context-augmented\_\_and\_\_multi-view\_embeddings}
+
+Traditional Knowledge Graph Embedding (KGE) models primarily derive representations from the intrinsic (head, relation, tail) triple structure, often struggling with data sparsity and the nuanced semantics of real-world knowledge graphs. To overcome these limitations, a significant line of research has focused on enriching entity and relation embeddings by integrating auxiliary information, such as textual descriptions, entity attributes, logical rules, or multi-modal data. These "multi-view" embeddings combine diverse feature types, often through specialized neural networks or attention mechanisms, to create more robust and semantically rich representations.
+
+Early efforts to augment KGE models incorporated supplementary textual information. \cite{xiao2016} introduced Semantic Space Projection (SSP), which leverages textual descriptions by projecting the triple loss vector onto a dynamically generated semantic hyperplane, thereby modeling strong correlations between symbolic facts and text. Similarly, \cite{guo2015} proposed Semantically Smooth Embedding (SSE), which enforces a "semantically smooth" embedding space by constraining entities belonging to the same semantic category to be close in the vector space, utilizing manifold learning algorithms like Laplacian Eigenmaps. Building on the utility of entity types, \cite{wang2021} developed TransET, a model that employs circle convolution based on both entity and type embeddings to generate type-specific representations, enhancing the capture of semantic features. More recently, \cite{he2023} presented TaKE, a model-agnostic framework that automatically learns implicit type features through a relation-specific hyperplane mechanism, addressing the common issue of missing explicit type supervision in real-world KGs.
+
+Beyond static attributes and descriptions, logical rules offer a powerful form of auxiliary information. \cite{guo2017} introduced RUGE, a novel paradigm that iteratively guides KGE learning with soft logical rules, demonstrating that even uncertain, automatically extracted rules can significantly enhance link prediction. To improve the scalability of rule integration, \cite{guo2020} proposed Soft Logical Rule Embedding (SLRE), which regularizes relation representations directly, making the complexity of rule learning independent of the entity set size. Further advancing rule-guided reasoning, \cite{tang2022} developed RulE, a framework that learns explicit rule embeddings and jointly represents entities, relations, and logical rules in a unified space, enabling soft rule inference and mutual regularization between KGE and rule-based components.
+
+Other approaches have focused on leveraging deeper structural context or hyper-relational information. \cite{zhang2018} proposed a method to incorporate a three-layer Hierarchical Relation Structure (HRS) into existing KGE models, enriching embeddings by categorizing relations into clusters, individual relations, and fine-grained sub-relations. Moving beyond simple triplets, \cite{rosso2020} introduced HINGE, a hyper-relational KGE model that directly learns from facts augmented with key-value pairs, capturing both the primary triplet structure and the correlations with associated attributes, which was previously oversimplified.
+
+The integration of multiple, heterogeneous data sources, often termed "multi-view" or "multi-modal" embeddings, has led to more sophisticated models. \cite{shen2022} presented LASS, a method that jointly embeds language semantics from pre-trained language models (LMs) and structural information from knowledge graphs by fine-tuning LMs with a probabilistic structured loss, demonstrating superior performance in low-resource settings. For entity alignment, \cite{zhang2019} developed MultiKE, a framework that unifies multiple entity views (name, relation, attribute) through view-specific embeddings and novel cross-KG inference, including a soft alignment mechanism for relations and attributes. In the biomedical domain, \cite{zhu2022} proposed a multimodal reasoning approach for disease-specific knowledge graphs, integrating structural, categorical, and descriptive embeddings via a reverse-hyperplane projection method to discover new knowledge. Similarly, \cite{yang2025} introduced SEConv for healthcare prediction, combining a resource-efficient self-attention mechanism with a multilayer convolutional neural network to learn deeper structural features from medical KGs.
+
+Advanced neural architectures, particularly attention mechanisms and Transformers, have played a crucial role in effectively combining these diverse feature types. \cite{wang2020} proposed Graph Attenuated Attention networks (GAATs), which use an attenuated attention mechanism to assign different weights to relation paths and acquire information from neighboring nodes, leading to more robust entity and relation representations. For explainable recommendation, \cite{yang2023} developed CKGE, which uses a KG-based Transformer with relational attention and structural encoding to process motivation-aware meta-graphs, integrating contextualized neighbor semantics and high-order connections. \cite{shi2025} introduced TGformer, a graph transformer framework that constructs context-level subgraphs and employs a Knowledge Graph Transformer Network (KGTN) to explore multi-structural (triplet-level and graph-level) and contextual features. Furthermore, \cite{shang2024} presented MGTCA, which combines messages from mixed geometric spaces (hyperbolic, hypersphere, Euclidean) with a trainable convolutional attention network, allowing for adaptive switching between different Graph Neural Network (GNN) types to capture diverse local graph structures. In the realm of Knowledge Graph Question Answering (KGQA), \cite{zhou2023} developed a system for chemistry that operates on hybrid multi-embedding spaces, leveraging BERT-based entity linking and a joint numerical embedding model to handle complex queries.
+
+In conclusion, the evolution of KGE has progressively moved towards comprehensive representations that integrate auxiliary information beyond basic triples. These context-augmented and multi-view embedding approaches, ranging from explicit semantic projections and rule-guided learning to sophisticated multi-modal fusion and attention-based neural architectures, have significantly mitigated data sparsity and improved performance in tasks like link prediction, entity alignment, and recommendation. Future research directions include developing more dynamic and adaptive integration strategies for evolving multi-modal data, enhancing interpretability in complex multi-view models, and exploring novel methods for automatically discovering and leveraging latent auxiliary information from diverse data sources.
+\subsection{Type-Aware and Hierarchical Embeddings}
+\label{sec:3\_2\_type-aware\_\_and\_\_hierarchical\_embeddings}
+
+Knowledge graph embedding (KGE) models often gain significant expressive power and logical consistency by explicitly incorporating semantic type information or hierarchical structures inherent within knowledge graphs. These approaches move beyond simple triplet-level interactions to ensure that learned representations respect the inherent semantic categories and structural relationships between entities, thereby enhancing accuracy, particularly for KGs with rich ontological schemas.
+
+Early efforts to infuse semantic information into KGE models include \cite{guo2015}, which proposed Semantically Smooth Embedding (SSE). SSE leverages external semantic categories (e.g., entity types) to enforce a "semantically smooth" embedding space, where entities of the same category are constrained to be close, improving embeddings by incorporating intrinsic geometric structure. Building on the idea of differentiated representations, \cite{lv2018} introduced TransC, which explicitly distinguishes between concepts and instances. TransC models concepts as spheres and instances as vectors, naturally capturing \texttt{isA} (instanceOf, subClassOf) transitivity by requiring instance vectors to lie within concept spheres, and sub-concept spheres within super-concept spheres. This geometric approach provides a more nuanced representation of hierarchical relationships than uniform vector embeddings.
+
+Further extending the modeling of hierarchical structures, \cite{zhang2018} proposed a method that leverages a three-layer hierarchical relation structure (HRS) to learn knowledge representations. This HRS categorizes relations into clusters, individual relations, and fine-grained sub-relations, enriching the embedding process by integrating this structural information into existing KGE models like TransE and DistMult. Addressing the direct integration of entity types, \cite{wang2021} developed TransET, which employs circle convolution based on entity and type embeddings to generate type-specific representations for entities. This allows for more semantic features to be learned, moving beyond simple triple facts and better representing complex relations.
+
+A more flexible approach to type integration was presented by \cite{he2023} with the Type-augmented Knowledge graph Embedding (TaKE) framework. TaKE is model-agnostic and learns implicit type features without requiring explicit type supervision, a common limitation in real-world KGs. It innovatively uses a relation-specific hyperplane mechanism to project an entity's type representation onto different hyperplanes, capturing the diverse type features relevant to each relation. In a similar vein, \cite{zhu2022} proposed a multimodal reasoning approach for disease-specific knowledge graphs that integrates category (type) embeddings via a novel reverse-hyperplane projection method. This demonstrates how type-aware projections can be specialized for domain-specific knowledge discovery, aligning with the principles of relation-specific type feature emphasis.
+
+Beyond explicit type and hierarchical structures, logical rules often implicitly encode such semantic constraints. \cite{guo2017} introduced RUGE, a novel paradigm for KG embedding with iterative guidance from soft rules. RUGE enables an embedding model to learn simultaneously from labeled triples, unlabeled triples with predicted soft labels, and automatically extracted soft rules with varying confidence levels, allowing rules to iteratively refine embeddings and predictions. Expanding on rule integration, \cite{tang2022} proposed RulE, which learns explicit rule embeddings by jointly representing entities, relations, and first-order logical rules in a unified continuous space. RulE calculates rule confidence scores and uses a soft rule reasoning mechanism to address the brittleness of traditional logical inference, providing a balanced approach to reasoning. For scalable integration of soft rules, \cite{guo2020} developed Soft Logical Rule Embedding (SLRE), which directly regularizes relation representations to satisfy soft logical regularities, making the complexity of rule learning independent of the entity set size.
+
+Finally, the inherent hierarchical nature of many KGs has led to the exploration of non-Euclidean geometries. \cite{pan2021} introduced a hyperbolic hierarchy-aware KGE model that leverages an extended Poincaré Ball and a polar coordinate system. This approach is designed to simultaneously capture both the complex hierarchical relationships and logical patterns within knowledge graphs, offering state-of-the-art results on specific link prediction tasks by exploiting the natural fit of hyperbolic space for hierarchical data.
+
+Despite these advancements, challenges remain in seamlessly integrating diverse forms of type and hierarchical information. While models like TaKE and TransET effectively incorporate entity types, and TransC differentiates concepts, a universally adaptive framework that can dynamically infer and leverage optimal hierarchical structures (e.g., from flat KGs) for \textit{any} given entity and relation context is still an open area. Furthermore, balancing the expressiveness gained from complex type-aware and hierarchical models with computational efficiency, especially for extremely large and dynamic knowledge graphs, remains a critical unresolved issue. Future research could focus on more adaptive and automated methods for discovering and integrating latent hierarchical and type structures, potentially through meta-learning or self-supervised approaches, to further enhance the logical consistency and accuracy of KGE models.
+\subsection{Graph Neural Networks and Transformers for KGE}
+\label{sec:3\_3\_graph\_neural\_networks\_\_and\_\_transformers\_for\_kge}
+
+<think>
+The user wants a LaTeX literature review subsection titled "Graph Neural Networks and Transformers for KGE".
+The subsection needs to be at least 400 words and strictly adhere to the "SUBSECTION SPECIFIC FOCUS".
+I need to use the provided community summaries, development directions, and paper summaries to construct the narrative.
+
+\textbf{SUBSECTION SPECIFIC FOCUS:}
+\item Application of GNNs and Transformers to KGE.
+\item How GNNs capture multi-hop structural context and neighborhood information via message passing/aggregation.
+\item Adaptation of Transformer architectures using self-attention for graph structures.
+\item These models move beyond predefined scoring functions to learn complex, non-linear features, boosting representational power and addressing limitations of earlier geometric models.
+
+\textbf{Constraint Checklist \& Confidence Score:}
+\item LaTeX format: Yes
+\item Proper citations: Yes
+\item At least 400 words: Yes (will aim for this)
+\item No numbering in subsection title: Yes
+\item Focus ONLY on SUBSECTION SPECIFIC FOCUS: Yes
+\item Specific examples with citations: Yes
+\item Structured (Opening, Body, Closing): Yes
+\item Each paper 2-3 sentences with specific technical contributions: Yes
+\item Papers connected by addressing limitations: Yes
+\item Overall narrative follows progression: Yes
+\item Closing about unresolved issues/future directions: Yes
+\item Avoid sequential listing: Yes
+\item Avoid vague critique: Yes
+\item Avoid unsupported claims: Yes
+\item Avoid missing comparisons: Yes
+\item Avoid pure description: Yes
+\item Avoid ignoring contradictions: N/A (no explicit contradictions in provided summaries for this subgroup)
+\item Avoid cherry-picking: N/A (using all relevant papers)
+
+Confidence Score: 5/5
+
+\textbf{Mental Sandbox Simulation:}
+
+*   \textbf{Initial thought:} Start with GNNs, then transition to Transformers. Connect them by showing how they both move beyond simpler models and offer more expressive, contextual learning.
+*   \textbf{Community Summaries Analysis (Subgroup 2: Contextual \& Structural Learning with Neural Architectures):}
+    *   This subgroup directly aligns with the focus.
+    *   Key themes: richer, multi-hop contextual/structural info, inductive learning, beyond triplet-level interactions, nuanced representations.
+    *   Papers: [wang2018] LAN (inductive, attention, neighborhood aggregation), [xie2020] ReInceptionE (CNN, local-global structural info), [zhang2020] M-DCN (CNN, multi-scale dynamic filters), [li2021] SE-GNN (semantic evidence, GNN), [chen2021] MorsE (meta-knowledge transfer, inductive, GNN), [shi2025] TGformer (Graph Transformer, multi-structural, contextual), [yang2025] SEConv (self-attention, CNN, healthcare), [shang2024] MGTCA (mixed geometry message, trainable convolutional attention network).
+    *   This confirms the GNN and Transformer focus.
+
+*   \textbf{Development Directions Analysis:}
+    *   The development direction specifically traces [yan2022] -> [li2023] -> [shi2025].
+    \textit{   [li2023] Position-Aware Relational Transformer for Knowledge Graph Embedding (2023) is a crucial Transformer paper. It addresses the order-invariance problem in vanilla Transformers for KGs. }This paper is NOT in the provided "Papers to reference" list for the subsection, but it's central to the development direction for Transformers. I need to be careful here. The prompt says "Papers to reference (sorted chronologically)" and then provides summaries. If [li2023] is not in the list of papers to reference, I cannot cite it directly. The prompt also says "Each paper is described in 2-3 sentences with specific technical contributions, using citation in Available Citations." This means I can only use the provided citations.*
+    \textit{   \textbf{Revised plan:} I need to focus on the papers }provided in the "Papers to reference" list\textit{. The development direction section is }general\textit{ and might include papers not explicitly provided for }this specific subsection\textit{. I will use the }themes\textit{ from the development direction (e.g., "specialized adaptation of Transformer architectures for relational semantics") but apply them to the }available* Transformer-related papers.
+
+*   \textbf{Mapping Papers to Focus \& Connecting them:}
+
+    *   \textbf{Opening:} Introduce the shift from simpler geometric models to advanced neural architectures (GNNs, Transformers) for capturing complex, non-linear features and multi-hop context in KGE. Mention the limitations of earlier models (e.g., geometric models like TransE, TransD, TransH, RotatE, CompoundE, HousE, SpherE, TorusE, TransMS, HolmE, FHRE, which are mostly from Subgroup 1 and some from Subgroup 3, but the prompt specifically asks to address "limitations of earlier geometric models").
+
+    *   \textbf{GNNs for Multi-hop Context:}
+        *   Start with GNNs' ability to aggregate neighborhood information.
+        \textit{   \cite{wang2018} LAN: Early inductive KGE using logic attention for neighborhood aggregation, addressing permutation invariance and query awareness. }This is a good starting point for GNNs.*
+        *   \cite{li2021} SE-GNN: Further explores how KGE extrapolates by identifying "Semantic Evidence" and proposes SE-GNN to explicitly model these factors through GNN mechanisms. This builds on the idea of structured aggregation for better generalization.
+        \textit{   \cite{shang2024} MGTCA: Advances GNNs by addressing data dependence (GCN vs. GAT) and message limitations. It introduces a }Mixed Geometry Message Function\textit{ (hyperbolic, hypersphere, Euclidean) and a }Trainable Convolutional Attention Network* (TCAN) for adaptive GNN switching, showing how GNNs evolve to capture richer, multi-geometric structural information. This directly addresses the "message passing and aggregation mechanisms" part of the focus.
+        *   \cite{modak2024} CPa-WAC: While primarily about scalability, its "Weighted Aggregation Composition (WAC) Convolution" is an improved compositional message-passing GCN. It also uses graph attention layers. I can frame this as a GNN approach that also considers scalability for large KGs.
+
+    *   \textbf{CNNs for Feature Learning (as a bridge/related neural architecture):}
+        *   \cite{zhang2020} M-DCN: Uses multi-scale dynamic convolutional networks to learn expressive features and handle complex relations, showing how CNNs contribute to learning non-linear features.
+        *   \cite{xie2020} ReInceptionE: Combines CNNs (Inception network) for interaction learning with a relation-aware attention mechanism to incorporate local-global structural information. This bridges CNNs with attention and structural awareness.
+        *   \cite{yang2025} SEConv: Applies self-attention and multi-layer CNNs for deeper structural features, specifically in healthcare. This shows the combination of attention and CNNs.
+
+    *   \textbf{Transformers for Graph Structures:}
+        *   The core idea of Transformers is self-attention.
+        *   \cite{yang2023} CKGE: Introduces a KG-based Transformer with relational attention and structural encoding to model global dependencies for explainable recommendations. This shows adaptation of Transformers to KG structures.
+        *   \cite{shi2025} TGformer: A direct application of a Graph Transformer framework for KGE. It constructs context-level subgraphs and uses a Knowledge Graph Transformer Network (KGTN) to explore multi-structural features (triplet-level and graph-level) across static and temporal KGs. This is a strong example of a Transformer adapted for KGE, capturing contextual and multi-structural information.
+
+    *   \textbf{Connecting to "Limitations of earlier geometric models":}
+        *   The neural models (GNNs, CNNs, Transformers) inherently move beyond the fixed, predefined scoring functions and geometric operations of models like TransE \cite{ji2015}, TransH \cite{wang2014}, TransMS \cite{yang2019}, TorusE \cite{ebisu2017}, CompoundE \cite{ge2022}, HousE \cite{li2022}, SpherE \cite{li2024}, FHRE \cite{liang2024}, and HolmE \cite{zheng2024}. These earlier models, while mathematically elegant, often struggled with complex, non-linear interactions, multi-hop reasoning, and inductive settings. The neural models learn these features directly from data, offering greater expressiveness and often inductive capabilities. For example, TransE and its variants are limited by their assumption of simple translational relationships, which struggle with 1-N, N-1, N-N relations and multi-hop reasoning. RotatE and its complex-space counterparts improve on this but still rely on fixed rotational operations. Hyperbolic models like FHRE and Pan et al.'s work are good for hierarchies but still operate within a geometric paradigm. The neural models offer a more flexible, data-driven approach to feature learning.
+
+    *   \textbf{Closing:} Summarize the benefits (expressiveness, inductive capabilities, contextual understanding) and potential future directions (e.g., combining strengths, interpretability of complex models, scalability for very large KGs, dynamic KGs).
+
+\textit{   \textbf{Self-correction on [li2023]:} Since [li2023] is not in the "Papers to reference" list, I cannot cite it. However, the }problem it solves\textit{ (order-invariance in Transformers for KGs) is a general challenge. I can discuss how Transformer-based models }address\textit{ such challenges, and then use [shi2025] and [yang2023] as examples of }how\textit{ Transformers are adapted to KGs. [shi2025] explicitly mentions "multi-structural features" and "context-level subgraph construction," which implies handling relational semantics beyond simple order-invariance. [yang2023] also talks about "relational attention and structural encoding" for global dependencies. This allows me to discuss the }concept* without citing the unavailable paper.
+
+*   \textbf{Word Count Check:} With 2-3 sentences per paper and connections, plus opening/closing, I should easily hit 400 words.
+
+\textbf{Final Structure Outline:}
+\item \textbf{Introduction:} Shift to GNNs/Transformers for KGE, addressing limitations of earlier geometric models (fixed scoring, limited context).
+\item \textbf{Graph Neural Networks for Contextual Learning:}
+    *   Explain GNNs (message passing, aggregation).
+    *   \cite{wang2018} LAN: Inductive KGE, logic attention, neighborhood aggregation.
+    *   \cite{li2021} SE-GNN: Semantic Evidence, GNNs for extrapolation.
+    *   \cite{modak2024} CPa-WAC: Scalable GNN with weighted aggregation composition.
+    *   \cite{shang2024} MGTCA: Mixed geometry messages, trainable convolutional attention for adaptive GNNs.
+\item \textbf{Convolutional Neural Networks (as related neural architectures):}
+    *   \cite{zhang2020} M-DCN: Multi-scale dynamic CNNs for expressive features.
+    *   \cite{xie2020} ReInceptionE: Inception network + attention for local-global structural info.
+    *   \cite{yang2025} SEConv: Self-attention + CNNs for deeper features (healthcare).
+\item \textbf{Transformers for Graph Structures and Relational Semantics:}
+    *   Explain Transformers (self-attention) adapted for graphs.
+    *   \cite{yang2023} CKGE: KG-based Transformer, relational attention, structural encoding for global dependencies.
+    *   \cite{shi2025} TGformer: Graph Transformer framework, context-level subgraphs, multi-structural features (static/temporal KGs).
+\item \textbf{Addressing Limitations of Earlier Models:} Explicitly state how these neural models overcome the limitations of geometric models (e.g., fixed operations, limited expressiveness, transductivity).
+\item \textbf{Conclusion:} Summarize advantages (expressiveness, inductive, contextual) and future directions (scalability, interpretability, dynamic KGs).
+
+This plan seems robust and covers all requirements.
+\subsection{Graph Neural Networks and Transformers for KGE}
+The evolution of Knowledge Graph Embedding (KGE) has seen a significant shift from models relying on predefined geometric transformations to advanced neural architectures capable of learning complex, non-linear features directly from the graph structure. This subsection focuses on the application of Graph Neural Networks (GNNs) and Transformers, which move beyond the limitations of earlier geometric models by effectively capturing multi-hop structural context, neighborhood information, and global dependencies, leading to more expressive and often inductive embeddings.
+
+Graph Neural Networks (GNNs) leverage message passing and aggregation mechanisms to capture the rich, multi-hop structural context inherent in knowledge graphs. These models allow entities to learn representations by iteratively aggregating information from their neighbors, thereby incorporating local and global graph structure. An early example of this paradigm is the Logic Attention Network (LAN) proposed by \cite{wang2018}, which pioneered inductive KGE by using a logic attention mechanism for neighborhood aggregation. This approach specifically addresses permutation invariance and query awareness, enabling the model to effectively embed emerging entities based on their local connections. Building on the understanding of how KGE models generalize, \cite{li2021} introduced Semantic Evidence (SE) and proposed SE-GNN, a GNN-based model that explicitly captures relation-level, entity-level, and triple-level semantic evidence through distinct neighbor aggregation patterns, leading to superior extrapolation abilities. For large-scale KGs, \cite{modak2024} developed CPa-WAC, a scalable GNN-based KGE model that incorporates a Weighted Aggregation Composition (WAC) convolution, an improved compositional message-passing GCN that uses graph attention layers to efficiently learn embeddings from partitioned subgraphs. Further advancing GNN capabilities, \cite{shang2024} introduced MGTCA, a model that addresses the data dependence of GNNs and the limitations of Euclidean-only message functions. MGTCA integrates a Mixed Geometry Message Function (combining hyperbolic, hypersphere, and Euclidean spaces) with a Trainable Convolutional Attention Network (TCAN) that adaptively switches between GNN types (GCN, GAT, and a novel KGCAT), allowing for richer, multi-geometric structural information capture and robust embedding learning.
+
+Complementary to GNNs, Convolutional Neural Networks (CNNs) have also been adapted to learn intricate features from concatenated entity and relation embeddings. \cite{zhang2020} proposed the Multi-Scale Dynamic Convolutional Network (M-DCN), which employs multi-scale filters with dynamic, relation-specific weights to learn expressive features and effectively handle complex relation types (1-to-N, N-to-1, N-to-N). This moves beyond fixed interaction patterns by allowing filters to adapt to specific relations. Similarly, \cite{xie2020} introduced ReInceptionE, which combines an Inception network for enhanced interaction learning with a relation-aware attention mechanism. This dual approach enriches query embeddings by incorporating both local neighborhood and global entity information, thereby capturing comprehensive structural context. In a specialized application, \cite{yang2025} developed SEConv for healthcare prediction, integrating a resource-efficient self-attention mechanism with a multi-layer CNN to learn deeper and more informative structural features from medical knowledge graph triplets.
+
+The advent of Transformer architectures, with their powerful self-attention mechanisms, has further pushed the boundaries of KGE by enabling the modeling of global dependencies and complex relational semantics. These models are particularly adept at processing sequential data, and their adaptation to graph structures allows for a flexible, data-driven approach to feature learning. For instance, \cite{yang2023} presented CKGE, a Contextualized Knowledge Graph Embedding model for explainable recommendations. This model constructs meta-graphs for talent-course pairs and employs a specialized KG-based Transformer that leverages relational attention and structural encoding to capture global dependencies and motivation-aware context, providing explicit explanations through local path mask prediction. A more direct application of the Transformer paradigm to KGE is the TGformer framework by \cite{shi2025}. TGformer is a novel Graph Transformer that constructs context-level subgraphs for predicted triplets, explicitly modeling inter-triplet relationships. It utilizes a Knowledge Graph Transformer Network (KGTN) to comprehensively explore multi-structural features, encompassing both fine-grained triplet-level and broader graph-level information, and extends its applicability to both static and temporal knowledge graphs.
+
+These advanced neural architectures significantly boost representational power by moving beyond the predefined scoring functions and rigid geometric operations of earlier models like TransE \cite{ji2015}, TransH \cite{wang2014}, TransMS \cite{yang2019}, TorusE \cite{ebisu2017}, CompoundE \cite{ge2022}, HousE \cite{li2022}, SpherE \cite{li2024}, FHRE \cite{liang2024}, and HolmE \cite{zheng2024}. While geometric models offer interpretability and efficiency for certain relation types, they often struggle with highly complex, non-linear interactions, multi-hop reasoning, and inductive settings. For example, translation-based models are inherently limited in handling 1-N, N-1, or N-N relations, and even more advanced rotation-based or hyperbolic models, while excelling at symmetry or hierarchy, still operate within fixed mathematical frameworks. GNNs and Transformers, by learning features directly from data and dynamically aggregating information, offer greater flexibility, expressiveness, and the ability to generalize to unseen entities and complex relational patterns, thereby addressing critical limitations of their predecessors.
+
+In conclusion, the integration of Graph Neural Networks and Transformers into KGE represents a significant advancement, enabling models to learn complex, non-linear features and capture rich contextual and multi-structural information. While these models offer superior expressiveness and inductive capabilities, challenges remain in optimizing their computational efficiency for extremely large-scale KGs, enhancing their interpretability, and further exploring their application to dynamic and heterogeneous knowledge graphs. Future research will likely focus on hybrid architectures that combine the strengths of different neural components, develop more efficient attention mechanisms, and design models that can adaptively leverage diverse structural and semantic cues for robust knowledge representation.
+
+
+\newpage
+\section*{References}
+\addcontentsline{toc}{section}{References}
+
+\begin{thebibliography}{377}
+
+\bibitem{sun2018}
+Zequn Sun, Wei Hu, Qingheng Zhang, et al. (2018). \textit{Bootstrapping Entity Alignment with Knowledge Graph Embedding}. International Joint Conference on Artificial Intelligence.
+
+\bibitem{dasgupta2018}
+S. Dasgupta, Swayambhu Nath Ray, and P. Talukdar (2018). \textit{HyTE: Hyperplane-based Temporally aware Knowledge Graph Embedding}. Conference on Empirical Methods in Natural Language Processing.
+
+\bibitem{chen2023}
+Mingyang Chen, Wen Zhang, Zhen Yao, et al. (2023). \textit{Entity-Agnostic Representation Learning for Parameter-Efficient Knowledge Graph Embedding}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{yang2023}
+Yang Yang, Chubing Zhang, Xin Song, et al. (2023). \textit{Contextualized Knowledge Graph Embedding for Explainable Talent Training Course Recommendation}. ACM Trans. Inf. Syst..
+
+\bibitem{jia2015}
+Yantao Jia, Yuanzhuo Wang, Hailun Lin, et al. (2015). \textit{Locally Adaptive Translation for Knowledge Graph Embedding}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{lloyd2022}
+Oliver Lloyd, Yi Liu, and T. Gaunt (2022). \textit{Assessing the effects of hyperparameters on knowledge graph embedding quality}. Journal of Big Data.
+
+\bibitem{wu2021}
+Junkang Wu, Wentao Shi, Xuezhi Cao, et al. (2021). \textit{DisenKGAT: Knowledge Graph Embedding with Disentangled Graph Attention Network}. International Conference on Information and Knowledge Management.
+
+\bibitem{xu2019}
+Chengjin Xu, M. Nayyeri, Fouad Alkhoury, et al. (2019). \textit{Temporal Knowledge Graph Embedding Model based on Additive Time Series Decomposition}. arXiv.org.
+
+\bibitem{shan2018}
+Yingchun Shan, Chenyang Bu, Xiaojian Liu, et al. (2018). \textit{Confidence-Aware Negative Sampling Method for Noisy Knowledge Graph Embedding}. International Conference on Big Knowledge.
+
+\bibitem{zheng2024}
+Zhuoxun Zheng, Baifan Zhou, Hui Yang, et al. (2024). \textit{Knowledge graph embedding closed under composition}. Data mining and knowledge discovery.
+
+\bibitem{he2023}
+Peng He, Gang Zhou, Yao Yao, et al. (2023). \textit{A type-augmented knowledge graph embedding framework for knowledge graph completion}. Scientific Reports.
+
+\bibitem{xiao2015}
+Han Xiao, Minlie Huang, and Xiaoyan Zhu (2015). \textit{TransG : A Generative Model for Knowledge Graph Embedding}. Annual Meeting of the Association for Computational Linguistics.
+
+\bibitem{guo2017}
+Shu Guo, Quan Wang, Lihong Wang, et al. (2017). \textit{Knowledge Graph Embedding with Iterative Guidance from Soft Rules}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{chen2021}
+Mingyang Chen, Wen Zhang, Yushan Zhu, et al. (2021). \textit{Meta-Knowledge Transfer for Inductive Knowledge Graph Embedding}. Annual International ACM SIGIR Conference on Research and Development in Information Retrieval.
+
+\bibitem{li2023}
+Guang-pu Li, Zequn Sun, Wei Hu, et al. (2023). \textit{Position-Aware Relational Transformer for Knowledge Graph Embedding}. IEEE Transactions on Neural Networks and Learning Systems.
+
+\bibitem{zhou2023}
+Xiaochi Zhou, Shaocong Zhang, Mehal Agarwal, et al. (2023). \textit{Marie and BERT—A Knowledge Graph Embedding Based Question Answering System for Chemistry}. ACS Omega.
+
+\bibitem{xiang2021}
+Yuejia Xiang, Ziheng Zhang, Jiaoyan Chen, et al. (2021). \textit{OntoEA: Ontology-guided Entity Alignment via Joint Knowledge Graph Embedding}. Findings.
+
+\bibitem{cao2022}
+Jiahang Cao, Jinyuan Fang, Zaiqiao Meng, et al. (2022). \textit{Knowledge Graph Embedding: A Survey from the Perspective of Representation Spaces}. ACM Computing Surveys.
+
+\bibitem{wang2021}
+Peng Wang, Jing Zhou, Yuzhang Liu, et al. (2021). \textit{TransET: Knowledge Graph Embedding with Entity Types}. Electronics.
+
+\bibitem{guo2020}
+Shu Guo, Lin Li, Zhen Hui, et al. (2020). \textit{Knowledge Graph Embedding Preserving Soft Logical Regularity}. International Conference on Information and Knowledge Management.
+
+\bibitem{zhang2024}
+Xiaoxiong Zhang, Zhiwei Zeng, Xin Zhou, et al. (2024). \textit{Communication-Efficient Federated Knowledge Graph Embedding with Entity-Wise Top-K Sparsification}. Knowledge-Based Systems.
+
+\bibitem{shen2022}
+Jianhao Shen, Chenguang Wang, Linyuan Gong, et al. (2022). \textit{Joint Language Semantic and Structure Embedding for Knowledge Graph Completion}. International Conference on Computational Linguistics.
+
+\bibitem{hu2024}
+Kairong Hu, Xiaozhi Zhu, Hai Liu, et al. (2024). \textit{Convolutional Neural Network-Based Entity-Specific Common Feature Aggregation for Knowledge Graph Embedding Learning}. IEEE transactions on consumer electronics.
+
+\bibitem{liu2024}
+Yang Liu, Huang Fang, Yunfeng Cai, et al. (2024). \textit{MQuinE: a Cure for “Z-paradox” in Knowledge Graph Embedding}. Conference on Empirical Methods in Natural Language Processing.
+
+\bibitem{zhang2019}
+Yongqi Zhang, Quanming Yao, Wenyuan Dai, et al. (2019). \textit{AutoSF: Searching Scoring Functions for Knowledge Graph Embedding}. IEEE International Conference on Data Engineering.
+
+\bibitem{yang2019}
+Shihui Yang, Jidong Tian, Honglun Zhang, et al. (2019). \textit{TransMS: Knowledge Graph Embedding for Complex Relations by Multidirectional Semantics}. International Joint Conference on Artificial Intelligence.
+
+\bibitem{xie2023}
+Zhiwen Xie, Runjie Zhu, Jin Liu, et al. (2023). \textit{TARGAT: A Time-Aware Relational Graph Attention Model for Temporal Knowledge Graph Embedding}. IEEE/ACM Transactions on Audio Speech and Language Processing.
+
+\bibitem{wang2024}
+Jiapu Wang, Boyue Wang, Junbin Gao, et al. (2024). \textit{MADE: Multicurvature Adaptive Embedding for Temporal Knowledge Graph Completion}. IEEE Transactions on Cybernetics.
+
+\bibitem{xiao2019}
+Han Xiao, Yidong Chen, and X. Shi (2019). \textit{Knowledge Graph Embedding Based on Multi-View Clustering Framework}. IEEE Transactions on Knowledge and Data Engineering.
+
+\bibitem{sachan2020}
+Mrinmaya Sachan (2020). \textit{Knowledge Graph Embedding Compression}. Annual Meeting of the Association for Computational Linguistics.
+
+\bibitem{madushanka2024}
+Tiroshan Madushanka, and R. Ichise (2024). \textit{Negative Sampling in Knowledge Graph Representation Learning: A Review}. arXiv.org.
+
+\bibitem{zhu2022}
+Chaoyu Zhu, Zhihao Yang, Xiaoqiong Xia, et al. (2022). \textit{Multimodal reasoning based on knowledge graph embedding for specific diseases}. Bioinform..
+
+\bibitem{liang2024}
+Qiuyu Liang, Weihua Wang, F. Bao, et al. (2024). \textit{Fully Hyperbolic Rotation for Knowledge Graph Embedding}. European Conference on Artificial Intelligence.
+
+\bibitem{li2024}
+Li, Yuyi Ao, and Jingrui He (2024). \textit{SpherE: Expressive and Interpretable Knowledge Graph Embedding for Set Retrieval}. Annual International ACM SIGIR Conference on Research and Development in Information Retrieval.
+
+\bibitem{ebisu2017}
+Takuma Ebisu, and R. Ichise (2017). \textit{TorusE: Knowledge Graph Embedding on a Lie Group}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{zhang2021}
+Zhao Zhang, Fuzhen Zhuang, Hengshu Zhu, et al. (2021). \textit{Towards Robust Knowledge Graph Embedding via Multi-Task Reinforcement Learning}. IEEE Transactions on Knowledge and Data Engineering.
+
+\bibitem{huang2019}
+Xiao Huang, Jingyuan Zhang, Dingcheng Li, et al. (2019). \textit{Knowledge Graph Embedding Based Question Answering}. Web Search and Data Mining.
+
+\bibitem{tang2019}
+Yun Tang, Jing Huang, Guangtao Wang, et al. (2019). \textit{Orthogonal Relation Transforms with Graph Context Modeling for Knowledge Graph Embedding}. Annual Meeting of the Association for Computational Linguistics.
+
+\bibitem{sun2018}
+Zhu Sun, Jie Yang, Jie Zhang, et al. (2018). \textit{Recurrent knowledge graph embedding for effective recommendation}. ACM Conference on Recommender Systems.
+
+\bibitem{ge2023}
+Xiou Ge, Yun Cheng Wang, Bin Wang, et al. (2023). \textit{Knowledge Graph Embedding: An Overview}. APSIPA Transactions on Signal and Information Processing.
+
+\bibitem{wang2020}
+Rui Wang, Bicheng Li, Shengwei Hu, et al. (2020). \textit{Knowledge Graph Embedding via Graph Attenuated Attention Networks}. IEEE Access.
+
+\bibitem{li2022}
+Rui Li, Jianan Zhao, Chaozhuo Li, et al. (2022). \textit{HousE: Knowledge Graph Embedding with Householder Parameterization}. International Conference on Machine Learning.
+
+\bibitem{zhang2019}
+Qingheng Zhang, Zequn Sun, Wei Hu, et al. (2019). \textit{Multi-view Knowledge Graph Embedding for Entity Alignment}. International Joint Conference on Artificial Intelligence.
+
+\bibitem{tang2022}
+Xiaojuan Tang, Song-Chun Zhu, Yitao Liang, et al. (2022). \textit{RulE: Knowledge Graph Reasoning with Rule Embedding}. Annual Meeting of the Association for Computational Linguistics.
+
+\bibitem{lv2018}
+Xin Lv, Lei Hou, Juan-Zi Li, et al. (2018). \textit{Differentiating Concepts and Instances for Knowledge Graph Embedding}. Conference on Empirical Methods in Natural Language Processing.
+
+\bibitem{chen2025}
+Jie Chen, Yinlong Wang, Shu Zhao, et al. (2025). \textit{Contextualized Quaternion Embedding Towards Polysemy in Knowledge Graph for Link Prediction}. ACM Trans. Asian Low Resour. Lang. Inf. Process..
+
+\bibitem{qian2021}
+Jing Qian, Gangmin Li, Katie Atkinson, et al. (2021). \textit{Understanding Negative Sampling in Knowledge Graph Embedding}. International Journal of Artificial Intelligence & Applications.
+
+\bibitem{dai2020}
+Yuanfei Dai, Shiping Wang, N. Xiong, et al. (2020). \textit{A Survey on Knowledge Graph Embedding: Approaches, Applications and Benchmarks}. Electronics.
+
+\bibitem{ji2024}
+Hao Ji, Li Yan, and Z. Ma (2024). \textit{FSTRE: Fuzzy Spatiotemporal RDF Knowledge Graph Embedding Using Uncertain Dynamic Vector Projection and Rotation}. IEEE transactions on fuzzy systems.
+
+\bibitem{yan2022}
+Qi Yan, Jiaxin Fan, Mohan Li, et al. (2022). \textit{A Survey on Knowledge Graph Embedding}. International Conference on Data Science in Cyberspace.
+
+\bibitem{zhang2023}
+Yichi Zhang, Mingyang Chen, and Wen Zhang (2023). \textit{Modality-Aware Negative Sampling for Multi-modal Knowledge Graph Embedding}. IEEE International Joint Conference on Neural Network.
+
+\bibitem{li2021}
+Ren Li, Yanan Cao, Qiannan Zhu, et al. (2021). \textit{How Does Knowledge Graph Embedding Extrapolate to Unseen Data: a Semantic Evidence View}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{yang2025}
+Qingqing Yang, Min He, Zhongwen Li, et al. (2025). \textit{A Semantic Enhanced Knowledge Graph Embedding Model With AIGC Designed for Healthcare Prediction}. IEEE transactions on consumer electronics.
+
+\bibitem{wang2019}
+Quan Wang, Pingping Huang, Haifeng Wang, et al. (2019). \textit{CoKE: Contextualized Knowledge Graph Embedding}. arXiv.org.
+
+\bibitem{di2023}
+Shimin Di, and Lei Chen (2023). \textit{Message Function Search for Knowledge Graph Embedding}. The Web Conference.
+
+\bibitem{jia2017}
+Yantao Jia, Yuanzhuo Wang, Xiaolong Jin, et al. (2017). \textit{Knowledge Graph Embedding}. ACM Transactions on the Web.
+
+\bibitem{choudhary2021}
+Shivani Choudhary, Tarun Luthra, Ashima Mittal, et al. (2021). \textit{A Survey of Knowledge Graph Embedding and Their Applications}. arXiv.org.
+
+\bibitem{xiao2015}
+Han Xiao, Minlie Huang, and Xiaoyan Zhu (2015). \textit{From One Point to a Manifold: Knowledge Graph Embedding for Precise Link Prediction}. International Joint Conference on Artificial Intelligence.
+
+\bibitem{hu2024}
+Lei Hu, Wenwen Li, Jun Xu, et al. (2024). \textit{GeoEntity-type constrained knowledge graph embedding for predicting natural-language spatial relations}. International Journal of Geographical Information Science.
+
+\bibitem{wang2014}
+Zhen Wang, Jianwen Zhang, Jianlin Feng, et al. (2014). \textit{Knowledge Graph Embedding by Translating on Hyperplanes}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{zhu2020}
+Yushan Zhu, Wen Zhang, Mingyang Chen, et al. (2020). \textit{DualDE: Dually Distilling Knowledge Graph Embedding for Faster and Cheaper Reasoning}. Web Search and Data Mining.
+
+\bibitem{ali2020}
+Mehdi Ali, M. Berrendorf, Charles Tapley Hoyt, et al. (2020). \textit{Bringing Light Into the Dark: A Large-Scale Evaluation of Knowledge Graph Embedding Models Under a Unified Framework}. IEEE Transactions on Pattern Analysis and Machine Intelligence.
+
+\bibitem{mohamed2020}
+Sameh K. Mohamed, A. Nounu, and V. Nováček (2020). \textit{Biological applications of knowledge graph embedding models}. Briefings Bioinform..
+
+\bibitem{gao2020}
+Chang Gao, Chengjie Sun, Lili Shan, et al. (2020). \textit{Rotate3D: Representing Relations as Rotations in Three-Dimensional Space for Knowledge Graph Embedding}. International Conference on Information and Knowledge Management.
+
+\bibitem{peng2021}
+Xutan Peng, Guanyi Chen, Chenghua Lin, et al. (2021). \textit{Highly Efficient Knowledge Graph Embedding Learning with Orthogonal Procrustes Analysis}. North American Chapter of the Association for Computational Linguistics.
+
+\bibitem{shi2025}
+Fobo Shi, Duantengchuan Li, Xiaoguang Wang, et al. (2025). \textit{TGformer: A Graph Transformer Framework for Knowledge Graph Embedding}. IEEE Transactions on Knowledge and Data Engineering.
+
+\bibitem{zhang2024}
+Xiaoxiong Zhang, Zhiwei Zeng, Xin Zhou, et al. (2024). \textit{Personalized Federated Knowledge Graph Embedding with Client-Wise Relation Graph}. Applied intelligence (Boston).
+
+\bibitem{rosso2020}
+Paolo Rosso, Dingqi Yang, and P. Cudré-Mauroux (2020). \textit{Beyond Triplets: Hyper-Relational Knowledge Graph Embedding for Link Prediction}. The Web Conference.
+
+\bibitem{zhou2024}
+Enyuan Zhou, Song Guo, Zhixiu Ma, et al. (2024). \textit{Poisoning Attack on Federated Knowledge Graph Embedding}. The Web Conference.
+
+\bibitem{xie2020}
+Zhiwen Xie, Guangyou Zhou, Jin Liu, et al. (2020). \textit{ReInceptionE: Relation-Aware Inception Network with Joint Local-Global Structural Information for Knowledge Graph Embedding}. Annual Meeting of the Association for Computational Linguistics.
+
+\bibitem{song2021}
+Tengwei Song, Jie Luo, and Lei Huang (2021). \textit{Rot-Pro: Modeling Transitivity by Projection in Knowledge Graph Embedding}. Neural Information Processing Systems.
+
+\bibitem{zhang2020}
+Zhaoli Zhang, Zhifei Li, Hai Liu, et al. (2020). \textit{Multi-Scale Dynamic Convolutional Network for Knowledge Graph Embedding}. IEEE Transactions on Knowledge and Data Engineering.
+
+\bibitem{ge2022}
+Xiou Ge, Yun Cheng Wang, Bin Wang, et al. (2022). \textit{CompoundE: Knowledge Graph Embedding with Translation, Rotation and Scaling Compound Operations}. arXiv.org.
+
+\bibitem{ren2020}
+Feiliang Ren, Jucheng Li, Huihui Zhang, et al. (2020). \textit{Knowledge Graph Embedding with Atrous Convolution and Residual Learning}. International Conference on Computational Linguistics.
+
+\bibitem{yuan2019}
+Jun Yuan, Neng Gao, and Ji Xiang (2019). \textit{TransGate: Knowledge Graph Embedding with Shared Gate Structure}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{xiao2015}
+Han Xiao, Minlie Huang, Yu Hao, et al. (2015). \textit{TransA: An Adaptive Approach for Knowledge Graph Embedding}. arXiv.org.
+
+\bibitem{sun2018}
+Zhiqing Sun, Zhihong Deng, Jian-Yun Nie, et al. (2018). \textit{RotatE: Knowledge Graph Embedding by Relational Rotation in Complex Space}. International Conference on Learning Representations.
+
+\bibitem{ji2015}
+Guoliang Ji, Shizhu He, Liheng Xu, et al. (2015). \textit{Knowledge Graph Embedding via Dynamic Mapping Matrix}. Annual Meeting of the Association for Computational Linguistics.
+
+\bibitem{lin2020}
+Lifan Lin, and Kun She (2020). \textit{Tensor Decomposition-Based Temporal Knowledge Graph Embedding}. IEEE International Conference on Tools with Artificial Intelligence.
+
+\bibitem{islam2023}
+M. Islam, Diego Amaya-Ramirez, B. Maigret, et al. (2023). \textit{Molecular-evaluated and explainable drug repurposing for COVID-19 using ensemble knowledge graph embedding}. Scientific Reports.
+
+\bibitem{wang2021}
+Haoyu Wang, Yaqing Wang, Defu Lian, et al. (2021). \textit{A Lightweight Knowledge Graph Embedding Framework for Efficient Inference and Storage}. International Conference on Information and Knowledge Management.
+
+\bibitem{broscheit2020}
+Samuel Broscheit, Daniel Ruffinelli, Adrian Kochsiek, et al. (2020). \textit{LibKGE - A knowledge graph embedding library for reproducible research}. Conference on Empirical Methods in Natural Language Processing.
+
+\bibitem{fanourakis2022}
+N. Fanourakis, Vasilis Efthymiou, D. Kotzinos, et al. (2022). \textit{Knowledge graph embedding methods for entity alignment: experimental review}. Data mining and knowledge discovery.
+
+\bibitem{wang2018}
+Peifeng Wang, Jialong Han, Chenliang Li, et al. (2018). \textit{Logic Attention Based Neighborhood Aggregation for Inductive Knowledge Graph Embedding}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{tabacof2019}
+Pedro Tabacof, and Luca Costabello (2019). \textit{Probability Calibration for Knowledge Graph Embedding Models}. International Conference on Learning Representations.
+
+\bibitem{pei2019}
+Shichao Pei, Lu Yu, R. Hoehndorf, et al. (2019). \textit{Semi-Supervised Entity Alignment via Knowledge Graph Embedding with Awareness of Degree Difference}. The Web Conference.
+
+\bibitem{zhang2018}
+Yongqi Zhang, Quanming Yao, Yingxia Shao, et al. (2018). \textit{NSCaching: Simple and Efficient Negative Sampling for Knowledge Graph Embedding}. IEEE International Conference on Data Engineering.
+
+\bibitem{li2021}
+Zelong Li, Jianchao Ji, Zuohui Fu, et al. (2021). \textit{Efficient Non-Sampling Knowledge Graph Embedding}. The Web Conference.
+
+\bibitem{li2022}
+Guangtong Li, L. Siddharth, and Jianxi Luo (2022). \textit{Embedding knowledge graph of patent metadata to measure knowledge proximity}. J. Assoc. Inf. Sci. Technol..
+
+\bibitem{ding2018}
+Boyang Ding, Quan Wang, Bin Wang, et al. (2018). \textit{Improving Knowledge Graph Embedding Using Simple Constraints}. Annual Meeting of the Association for Computational Linguistics.
+
+\bibitem{zhang2022}
+Xuanyu Zhang, Qing Yang, and Dongliang Xu (2022). \textit{TranS: Transition-based Knowledge Graph Embedding with Synthetic Relation Representation}. Conference on Empirical Methods in Natural Language Processing.
+
+\bibitem{sun2024}
+Hongliang Sun, Jinlan Liu, Can Wang, et al. (2024). \textit{Learning Dynamic Knowledge Graph Embedding in Evolving Service Ecosystems via Meta-Learning}. 2024 IEEE International Conference on Web Services (ICWS).
+
+\bibitem{wang2024}
+Jiapu Wang, Zheng Cui, Boyue Wang, et al. (2024). \textit{IME: Integrating Multi-curvature Shared and Specific Embedding for Temporal Knowledge Graph Completion}. The Web Conference.
+
+\bibitem{modak2024}
+S. Modak, Aakarsh Malhotra, Sarthak Malik, et al. (2024). \textit{CPa-WAC: Constellation Partitioning-based Scalable Weighted Aggregation Composition for Knowledge Graph Embedding}. International Joint Conference on Artificial Intelligence.
+
+\bibitem{xiao2016}
+Han Xiao, Minlie Huang, Lian Meng, et al. (2016). \textit{SSP: Semantic Space Projection for Knowledge Graph Embedding with Text Descriptions}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{zhang2023}
+Zhao Zhang, Zhanpeng Guan, Fuwei Zhang, et al. (2023). \textit{Weighted Knowledge Graph Embedding}. Annual International ACM SIGIR Conference on Research and Development in Information Retrieval.
+
+\bibitem{guo2015}
+Shu Guo, Quan Wang, Bin Wang, et al. (2015). \textit{Semantically Smooth Knowledge Graph Embedding}. Annual Meeting of the Association for Computational Linguistics.
+
+\bibitem{xu2020}
+Chengjin Xu, M. Nayyeri, Fouad Alkhoury, et al. (2020). \textit{TeRo: A Time-aware Knowledge Graph Embedding via Temporal Rotation}. International Conference on Computational Linguistics.
+
+\bibitem{zheng2024}
+Chenguang Zheng, Guanxian Jiang, Xiao Yan, et al. (2024). \textit{GE2: A General and Efficient Knowledge Graph Embedding Learning System}. Proc. ACM Manag. Data.
+
+\bibitem{zhang2018}
+Zhao Zhang, Fuzhen Zhuang, Meng Qu, et al. (2018). \textit{Knowledge Graph Embedding with Hierarchical Relation Structure}. Conference on Empirical Methods in Natural Language Processing.
+
+\bibitem{zhu2024}
+Beibei Zhu, Ruolin Wang, Junyi Wang, et al. (2024). \textit{A survey: knowledge graph entity alignment research based on graph embedding}. Artificial Intelligence Review.
+
+\bibitem{liu2023}
+Jia Liu, Wei Huang, Tianrui Li, et al. (2023). \textit{Cross-Domain Knowledge Graph Chiasmal Embedding for Multi-Domain Item-Item Recommendation}. IEEE Transactions on Knowledge and Data Engineering.
+
+\bibitem{choi2020}
+S. Choi, Hyun-Je Song, and Seong-Bae Park (2020). \textit{An Approach to Knowledge Base Completion by a Committee-Based Knowledge Graph Embedding}. Applied Sciences.
+
+\bibitem{ge2023}
+Xiou Ge, Yun Cheng Wang, Bin Wang, et al. (2023). \textit{Knowledge Graph Embedding with 3D Compound Geometric Transformations}. APSIPA Transactions on Signal and Information Processing.
+
+\bibitem{sadeghian2021}
+A. Sadeghian, Mohammadreza Armandpour, Anthony Colas, et al. (2021). \textit{ChronoR: Rotation Based Temporal Knowledge Graph Embedding}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{liu2024}
+Jiajun Liu, Wenjun Ke, Peng Wang, et al. (2024). \textit{Fast and Continual Knowledge Graph Embedding via Incremental LoRA}. International Joint Conference on Artificial Intelligence.
+
+\bibitem{li2022}
+Yizhi Li, Wei Fan, Chaochun Liu, et al. (2022). \textit{TranSHER: Translating Knowledge Graph Embedding with Hyper-Ellipsoidal Restriction}. Conference on Empirical Methods in Natural Language Processing.
+
+\bibitem{rossi2020}
+Andrea Rossi, D. Firmani, Antonio Matinata, et al. (2020). \textit{Knowledge Graph Embedding for Link Prediction}. ACM Transactions on Knowledge Discovery from Data.
+
+\bibitem{li2023}
+Jiang Li, Xiangdong Su, and Guanglai Gao (2023). \textit{TeAST: Temporal Knowledge Graph Embedding via Archimedean Spiral Timeline}. Annual Meeting of the Association for Computational Linguistics.
+
+\bibitem{peng2020}
+Yanhui Peng, and Jing Zhang (2020). \textit{LineaRE: Simple but Powerful Knowledge Graph Embedding for Link Prediction}. Industrial Conference on Data Mining.
+
+\bibitem{ji2024}
+Hao Ji, Li Yan, and Z. Ma (2024). \textit{Multihop Fuzzy Spatiotemporal RDF Knowledge Graph Query via Quaternion Embedding}. IEEE transactions on fuzzy systems.
+
+\bibitem{zhang2024}
+Qinggang Zhang, Junnan Dong, Qiaoyu Tan, et al. (2024). \textit{Integrating Entity Attributes for Error-Aware Knowledge Graph Embedding}. IEEE Transactions on Knowledge and Data Engineering.
+
+\bibitem{kochsiek2021}
+Adrian Kochsiek (2021). \textit{Parallel Training of Knowledge Graph Embedding Models: A Comparison of Techniques}. Proceedings of the VLDB Endowment.
+
+\bibitem{yang2021}
+Han Yang, Leilei Zhang, Bingning Wang, et al. (2021). \textit{Cycle or Minkowski: Which is More Appropriate for Knowledge Graph Embedding?}. International Conference on Information and Knowledge Management.
+
+\bibitem{shang2024}
+Bin Shang, Yinliang Zhao, Jun Liu, et al. (2024). \textit{Mixed Geometry Message and Trainable Convolutional Attention Network for Knowledge Graph Completion}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{asmara2023}
+S. M. Asmara, N. A. Sahabudin, Nor Syahidatul Nadiah Ismail, et al. (2023). \textit{A Review of Knowledge Graph Embedding Methods of TransE, TransH and TransR for Missing Links}. International Conference on Software Engineering and Computer Systems.
+
+\bibitem{gregucci2023}
+Cosimo Gregucci, M. Nayyeri, D. Hern'andez, et al. (2023). \textit{Link Prediction with Attention Applied on Multiple Knowledge Graph Embedding Models}. The Web Conference.
+
+\bibitem{pan2021}
+Zhe Pan, and Peng Wang (2021). \textit{Hyperbolic Hierarchy-Aware Knowledge Graph Embedding for Link Prediction}. Conference on Empirical Methods in Natural Language Processing.
+
+\bibitem{yoon2016}
+Hee-Geun Yoon, Hyun-Je Song, Seong-Bae Park, et al. (2016). \textit{A Translation-Based Knowledge Graph Embedding Preserving Logical Property of Relations}. North American Chapter of the Association for Computational Linguistics.
+
+\bibitem{li2024}
+Rui Li, Chaozhuo Li, Yanming Shen, et al. (2024). \textit{Generalizing Knowledge Graph Embedding with Universal Orthogonal Parameterization}. International Conference on Machine Learning.
+
+\bibitem{xiong2017zqu}
+Chenyan Xiong, Russell Power, and Jamie Callan (2017). \textit{Explicit Semantic Ranking for Academic Search via Knowledge Graph Embedding}. The Web Conference.
+
+\bibitem{gong2020b2k}
+Fan Gong, Meng Wang, Haofen Wang, et al. (2020). \textit{SMR: Medical Knowledge Graph Embedding for Safe Medicine Recommendation}. Big Data Research.
+
+\bibitem{zhou2022ehi}
+Bin Zhou, Xingwang Shen, Yuqian Lu, et al. (2022). \textit{Semantic-aware event link reasoning over industrial knowledge graph embedding time series data}. International Journal of Production Research.
+
+\bibitem{le2022ji8}
+Thanh-Binh Le, N. Le, and H. Le (2022). \textit{Knowledge graph embedding by relational rotation and complex convolution for link prediction}. Expert systems with applications.
+
+\bibitem{zhou2022vgb}
+Zhehui Zhou, Can Wang, Yan Feng, et al. (2022). \textit{JointE: Jointly utilizing 1D and 2D convolution for knowledge graph embedding}. Knowledge-Based Systems.
+
+\bibitem{xu2019t6b}
+Da Xu, Chuanwei Ruan, Evren Körpeoglu, et al. (2019). \textit{Product Knowledge Graph Embedding for E-commerce}. Web Search and Data Mining.
+
+\bibitem{mezni20218ml}
+Haithem Mezni, D. Benslimane, and Ladjel Bellatreche (2021). \textit{Context-Aware Service Recommendation Based on Knowledge Graph Embedding}. IEEE Transactions on Knowledge and Data Engineering.
+
+\bibitem{do2021mw0}
+P. Do, and Truong H. V. Phan (2021). \textit{Developing a BERT based triple classification model using knowledge graph embedding for question answering system}. Applied intelligence (Boston).
+
+\bibitem{mai2020ei3}
+Gengchen Mai, K. Janowicz, Ling Cai, et al. (2020). \textit{SE‐KGE: A location‐aware Knowledge Graph Embedding model for Geographic Question Answering and Spatial Semantic Lifting}. Trans. GIS.
+
+\bibitem{zhang2022eab}
+Jiarui Zhang, Jian Huang, Jialong Gao, et al. (2022). \textit{Knowledge graph embedding by logical-default attention graph convolution neural network for link prediction}. Information Sciences.
+
+\bibitem{sosa2019ih0}
+Daniel N. Sosa, Alexander Derry, Margaret Guo, et al. (2019). \textit{A Literature-Based Knowledge Graph Embedding Method for Identifying Drug Repurposing Opportunities in Rare Diseases}. bioRxiv.
+
+\bibitem{guan2019pr4}
+Niannian Guan, Dandan Song, and L. Liao (2019). \textit{Knowledge graph embedding with concepts}. Knowledge-Based Systems.
+
+\bibitem{fan2014g7s}
+M. Fan, Qiang Zhou, E. Chang, et al. (2014). \textit{Transition-based Knowledge Graph Embedding with Relational Mapping Properties}. Pacific Asia Conference on Language, Information and Computation.
+
+\bibitem{zhang20190zu}
+Hengtong Zhang, T. Zheng, Jing Gao, et al. (2019). \textit{Data Poisoning Attack against Knowledge Graph Embedding}. International Joint Conference on Artificial Intelligence.
+
+\bibitem{chen2022mxn}
+Qi Chen, Wei Wang, Kaizhu Huang, et al. (2022). \textit{Zero-Shot Text Classification via Knowledge Graph Embedding for Social Media Data}. IEEE Internet of Things Journal.
+
+\bibitem{wang2022hwx}
+Xin Wang, Shengfei Lyu, Xiangyu Wang, et al. (2022). \textit{Temporal knowledge graph embedding via sparse transfer matrix}. Information Sciences.
+
+\bibitem{chen20226e4}
+Mingyang Chen, Wen Zhang, Zonggang Yuan, et al. (2022). \textit{Federated knowledge graph completion via embedding-contrastive learning}. Knowledge-Based Systems.
+
+\bibitem{abusalih2020gdu}
+Bilal Abu-Salih, Marwan Al-Tawil, Ibrahim Aljarah, et al. (2020). \textit{Relational Learning Analysis of Social Politics using Knowledge Graph Embedding}. Data mining and knowledge discovery.
+
+\bibitem{fang2022wp6}
+Haichuan Fang, Youwei Wang, Zhen Tian, et al. (2022). \textit{Learning knowledge graph embedding with a dual-attention embedding network}. Expert systems with applications.
+
+\bibitem{elebi2019bzc}
+R. Çelebi, Hüseyin Uyar, Erkan Yasar, et al. (2019). \textit{Evaluation of knowledge graph embedding approaches for drug-drug interaction prediction in realistic settings}. BMC Bioinformatics.
+
+\bibitem{sha2019i3a}
+Xiao Sha, Zhu Sun, and Jie Zhang (2019). \textit{Hierarchical attentive knowledge graph embedding for personalized recommendation}. Electronic Commerce Research and Applications.
+
+\bibitem{li2021ro5}
+Zhifei Li, Hai Liu, Zhaoli Zhang, et al. (2021). \textit{Recalibration convolutional networks for learning interaction knowledge graph embedding}. Neurocomputing.
+
+\bibitem{xiao20151fj}
+Han Xiao, Minlie Huang, Yu Hao, et al. (2015). \textit{TransG : A Generative Mixture Model for Knowledge Graph Embedding}. arXiv.org.
+
+\bibitem{zhang2021wg7}
+Fei Zhang, Bo Sun, Xiaolin Diao, et al. (2021). \textit{Prediction of adverse drug reactions based on knowledge graph embedding}. BMC Medical Informatics and Decision Making.
+
+\bibitem{wang20186zs}
+Guanying Wang, Wen Zhang, Ruoxu Wang, et al. (2018). \textit{Label-Free Distant Supervision for Relation Extraction via Knowledge Graph Embedding}. Conference on Empirical Methods in Natural Language Processing.
+
+\bibitem{li2021x10}
+Xinyu Li, P. Zheng, Jinsong Bao, et al. (2021). \textit{Achieving cognitive mass personalization via the self-X cognitive manufacturing network: An industrial-knowledge-graph- and graph-embedding-enabled pathway}. Engineering.
+
+\bibitem{wang202110w}
+Xin Wang, Xiao Liu, Jin Liu, et al. (2021). \textit{A novel knowledge graph embedding based API recommendation method for Mashup development}. World wide web (Bussum).
+
+\bibitem{gutirrezbasulto2018oi0}
+Víctor Gutiérrez-Basulto, and S. Schockaert (2018). \textit{From Knowledge Graph Embedding to Ontology Embedding? An Analysis of the Compatibility between Vector Space Representations and Rules}. International Conference on Principles of Knowledge Representation and Reasoning.
+
+\bibitem{portisch20221rd}
+Jan Portisch, Nicolas Heist, and Heiko Paulheim (2022). \textit{Knowledge graph embedding for data mining vs. knowledge graph embedding for link prediction - two sides of the same coin?}. Semantic Web.
+
+\bibitem{zhang2022muu}
+Fuwei Zhang, Zhao Zhang, Xiang Ao, et al. (2022). \textit{Along the Time: Timeline-traced Embedding for Temporal Knowledge Graph Completion}. International Conference on Information and Knowledge Management.
+
+\bibitem{feng2016dp7}
+Jun Feng, Minlie Huang, Mingdong Wang, et al. (2016). \textit{Knowledge Graph Embedding by Flexible Translation}. International Conference on Principles of Knowledge Representation and Reasoning.
+
+\bibitem{liu2021wqa}
+Jia Liu, Tianrui Li, Shenggong Ji, et al. (2021). \textit{Urban Flow Pattern Mining Based on Multi-Source Heterogeneous Data Fusion and Knowledge Graph Embedding}. IEEE Transactions on Knowledge and Data Engineering.
+
+\bibitem{sang2019gjl}
+Shengtian Sang, Zhihao Yang, Xiaoxia Liu, et al. (2019). \textit{GrEDeL: A Knowledge Graph Embedding Based Method for Drug Discovery From Biomedical Literatures}. IEEE Access.
+
+\bibitem{wang2017yjq}
+M. Wang, Mengyue Liu, Jun Liu, et al. (2017). \textit{Safe Medicine Recommendation via Medical Knowledge Graph Embedding}. arXiv.org.
+
+\bibitem{jiang20219xl}
+Dan Jiang, Ronggui Wang, Juan Yang, et al. (2021). \textit{Kernel multi-attention neural network for knowledge graph embedding}. Knowledge-Based Systems.
+
+\bibitem{liu2022fu5}
+Yang Liu, Zequn Sun, Guang-pu Li, et al. (2022). \textit{I Know What You Do Not Know: Knowledge Graph Embedding via Co-distillation Learning}. International Conference on Information and Knowledge Management.
+
+\bibitem{khan202236g}
+Nasrullah Khan, Zongmin Ma, Aman Ullah, et al. (2022). \textit{Similarity attributed knowledge graph embedding enhancement for item recommendation}. Information Sciences.
+
+\bibitem{mezni2021ezn}
+Haithem Mezni (2021). \textit{Temporal Knowledge Graph Embedding for Effective Service Recommendation}. IEEE Transactions on Services Computing.
+
+\bibitem{zhang2021wix}
+Qianjin Zhang, Ronggui Wang, Juan Yang, et al. (2021). \textit{Structural context-based knowledge graph embedding for link prediction}. Neurocomputing.
+
+\bibitem{huang2021u42}
+Xuqian Huang, Jiuyang Tang, Zhen Tan, et al. (2021). \textit{Knowledge graph embedding by relational and entity rotation}. Knowledge-Based Systems.
+
+\bibitem{pavlovic2022qte}
+Aleksandar Pavlovic, and Emanuel Sallinger (2022). \textit{ExpressivE: A Spatio-Functional Embedding For Knowledge Graph Completion}. International Conference on Learning Representations.
+
+\bibitem{wang20213kg}
+Shensi Wang, Kun Fu, Xian Sun, et al. (2021). \textit{Hierarchical-aware relation rotational knowledge graph embedding for link prediction}. Neurocomputing.
+
+\bibitem{zhang2019rlm}
+Shuai Zhang, Yi Tay, Lina Yao, et al. (2019). \textit{Quaternion Knowledge Graph Embedding}. arXiv.org.
+
+\bibitem{mai20195rp}
+Gengchen Mai, Bo Yan, K. Janowicz, et al. (2019). \textit{Relaxing Unanswerable Geographic Questions Using A Spatially Explicit Knowledge Graph Embedding Model}. Agile Conference.
+
+\bibitem{han2018tzc}
+Zhuobing Han, Xiaohong Li, Hongtao Liu, et al. (2018). \textit{DeepWeak: Reasoning common software weaknesses via knowledge graph embedding}. IEEE International Conference on Software Analysis, Evolution, and Reengineering.
+
+\bibitem{wang2022fvx}
+Feiyang Wang, Zhongbao Zhang, Li Sun, et al. (2022). \textit{DiriE: Knowledge Graph Embedding with Dirichlet Distribution}. The Web Conference.
+
+\bibitem{ferrari2022r82}
+Ilaria Ferrari, Giacomo Frisoni, Paolo Italiani, et al. (2022). \textit{Comprehensive Analysis of Knowledge Graph Embedding Techniques Benchmarked on Link Prediction}. Electronics.
+
+\bibitem{fu2022df2}
+Guirong Fu, Zhao Meng, Zhen Han, et al. (2022). \textit{TempCaps: A Capsule Network-based Embedding Model for Temporal Knowledge Graph Completion}. SPNLP.
+
+\bibitem{wu2018c4b}
+Yanrong Wu, and Zhichun Wang (2018). \textit{Knowledge Graph Embedding with Numeric Attributes of Entities}. Rep4NLP@ACL.
+
+\bibitem{zhang202121t}
+Qianjin Zhang, Ronggui Wang, Juan Yang, et al. (2021). \textit{Knowledge graph embedding by reflection transformation}. Knowledge-Based Systems.
+
+\bibitem{mohamed2019meq}
+Sameh K. Mohamed, V. Nováček, P. Vandenbussche, et al. (2019). \textit{Loss Functions in Knowledge Graph Embedding Models}. DL4KG@ESWC.
+
+\bibitem{xin2022dam}
+Kexuan Xin, Zequn Sun, Wen Hua, et al. (2022). \textit{Large-scale Entity Alignment via Knowledge Graph Merging, Partitioning and Embedding}. International Conference on Information and Knowledge Management.
+
+\bibitem{nie20195gc}
+Binling Nie, and Shouqian Sun (2019). \textit{Knowledge graph embedding via reasoning over entities, relations, and text}. Future generations computer systems.
+
+\bibitem{liu2018kvd}
+Yang Liu, Qingguo Zeng, Huanrui Yang, et al. (2018). \textit{Stock Price Movement Prediction from Financial News with Deep Learning and Knowledge Graph Embedding}. Pacific Rim Knowledge Acquisition Workshop.
+
+\bibitem{ni2020ruj}
+Chien-Chun Ni, Kin Sum Liu, and Nicolas Torzec (2020). \textit{Layered Graph Embedding for Entity Recommendation using Wikipedia in the Yahoo! Knowledge Graph}. The Web Conference.
+
+\bibitem{li20215pu}
+Chen Li, Xutan Peng, Yuhang Niu, et al. (2021). \textit{Learning graph attention-aware knowledge graph embedding}. Neurocomputing.
+
+\bibitem{yu2019qgs}
+S. Yu, Sujit Rokka Chhetri, A. Canedo, et al. (2019). \textit{Pykg2vec: A Python Library for Knowledge Graph Embedding}. Journal of machine learning research.
+
+\bibitem{fatemi2018e6v}
+Bahare Fatemi, Siamak Ravanbakhsh, and D. Poole (2018). \textit{Improved Knowledge Graph Embedding using Background Taxonomic Information}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{chen2021i5t}
+Zhuo Chen, Mi-Yen Yeh, and Tei-Wei Kuo (2021). \textit{PASSLEAF: A Pool-bAsed Semi-Supervised LEArning Framework for Uncertain Knowledge Graph Embedding}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{dong2022c6z}
+Sicong Dong, Xupeng Miao, Peng Liu, et al. (2022). \textit{HET-KG: Communication-Efficient Knowledge Graph Embedding Training via Hotness-Aware Cache}. IEEE International Conference on Data Engineering.
+
+\bibitem{lu20206x1}
+Fengyuan Lu, Peijin Cong, and Xinli Huang (2020). \textit{Utilizing Textual Information in Knowledge Graph Embedding: A Survey of Methods and Applications}. IEEE Access.
+
+\bibitem{li2022nr8}
+Weidong Li, Rong Peng, and Zhi Li (2022). \textit{Improving knowledge graph completion via increasing embedding interactions}. Applied intelligence (Boston).
+
+\bibitem{luo2015df2}
+Yuanfei Luo, Quan Wang, Bin Wang, et al. (2015). \textit{Context-Dependent Knowledge Graph Embedding}. Conference on Empirical Methods in Natural Language Processing.
+
+\bibitem{zhou20216m0}
+Xiaohan Zhou, Yunhui Yi, and Geng Jia (2021). \textit{Path-RotatE: Knowledge Graph Embedding by Relational Rotation of Path in Complex Space}. International Conference on Innovative Computing and Cloud Computing.
+
+\bibitem{zhao202095o}
+Feng Zhao, Haoran Sun, Langjunqing Jin, et al. (2020). \textit{Structure-augmented knowledge graph embedding for sparse data with rule learning}. Computer Communications.
+
+\bibitem{jia201870f}
+Yantao Jia, Yuanzhuo Wang, Xiaolong Jin, et al. (2018). \textit{Path-specific knowledge graph embedding}. Knowledge-Based Systems.
+
+\bibitem{mai2018u0h}
+Gengchen Mai, K. Janowicz, and Bo Yan (2018). \textit{Combining Text Embedding and Knowledge Graph Embedding Techniques for Academic Search Engines}. Semdeep/NLIWoD@ISWC.
+
+\bibitem{li201949n}
+Dingcheng Li, Siamak Zamani, Jingyuan Zhang, et al. (2019). \textit{Integration of Knowledge Graph Embedding Into Topic Modeling with Hierarchical Dirichlet Process}. North American Chapter of the Association for Computational Linguistics.
+
+\bibitem{tang2020ufr}
+Xiaoli Tang, Rui Yuan, Qianyu Li, et al. (2020). \textit{Timespan-Aware Dynamic Knowledge Graph Embedding by Incorporating Temporal Evolution}. IEEE Access.
+
+\bibitem{guo2022qtv}
+Lingbing Guo, Qiang Zhang, Zequn Sun, et al. (2022). \textit{Understanding and Improving Knowledge Graph Embedding for Entity Alignment}. International Conference on Machine Learning.
+
+\bibitem{jiang202235y}
+Dan Jiang, Ronggui Wang, Lixia Xue, et al. (2022). \textit{Multiview feature augmented neural network for knowledge graph embedding}. Knowledge-Based Systems.
+
+\bibitem{liu201918i}
+Yu Liu, Wen Hua, Kexuan Xin, et al. (2019). \textit{Context-Aware Temporal Knowledge Graph Embedding}. WISE.
+
+\bibitem{zhang2020s4x}
+Qianjin Zhang, Ronggui Wang, Juan Yang, et al. (2020). \textit{Knowledge graph embedding by translating in time domain space for link prediction}. Knowledge-Based Systems.
+
+\bibitem{chang20179yf}
+Liang Chang, Manli Zhu, T. Gu, et al. (2017). \textit{Knowledge Graph Embedding by Dynamic Translation}. IEEE Access.
+
+\bibitem{lee2022hr9}
+Yeon-Chang Lee, and Sang-Wook Kim (2022). \textit{THOR: Self-Supervised Temporal Knowledge Graph Embedding via Three-Tower Graph Convolutional Networks}. Industrial Conference on Data Mining.
+
+\bibitem{zhang2022fpm}
+Yongqi Zhang, Zhanke Zhou, Quanming Yao, et al. (2022). \textit{Efficient Hyper-parameter Search for Knowledge Graph Embedding}. Annual Meeting of the Association for Computational Linguistics.
+
+\bibitem{liu2019e1u}
+Chang Liu, Lun Li, Xiaolu Yao, et al. (2019). \textit{A Survey of Recommendation Algorithms Based on Knowledge Graph Embedding}. 2019 IEEE International Conference on Computer Science and Educational Informatization (CSEI).
+
+\bibitem{song2021fnl}
+Wei Song, Jingjin Guo, Ruiji Fu, et al. (2021). \textit{A Knowledge Graph Embedding Approach for Metaphor Processing}. IEEE/ACM Transactions on Audio Speech and Language Processing.
+
+\bibitem{gradgyenge2017xdy}
+László Grad-Gyenge, A. Kiss, and P. Filzmoser (2017). \textit{Graph Embedding Based Recommendation Techniques on the Knowledge Graph}. User Modeling, Adaptation, and Personalization.
+
+\bibitem{zhou20218bt}
+Xiaofei Zhou, Lingfeng Niu, Qiannan Zhu, et al. (2021). \textit{Knowledge Graph Embedding by Double Limit Scoring Loss}. IEEE Transactions on Knowledge and Data Engineering.
+
+\bibitem{chen20210ah}
+Yao Chen, Jiangang Liu, Zhe Zhang, et al. (2021). \textit{MöbiusE: Knowledge Graph Embedding on Möbius Ring}. Knowledge-Based Systems.
+
+\bibitem{zhang2020i7j}
+Yongqi Zhang, Quanming Yao, and Lei Chen (2020). \textit{Interstellar: Searching Recurrent Architecture for Knowledge Graph Embedding}. Neural Information Processing Systems.
+
+\bibitem{boschin2020ki4}
+Armand Boschin (2020). \textit{TorchKGE: Knowledge Graph Embedding in Python and PyTorch}. arXiv.org.
+
+\bibitem{wang20199fe}
+P. Wang, D. Dou, Fangzhao Wu, et al. (2019). \textit{Logic Rules Powered Knowledge Graph Embedding}. arXiv.org.
+
+\bibitem{myklebust201941l}
+E. B. Myklebust, Ernesto Jiménez-Ruiz, Jiaoyan Chen, et al. (2019). \textit{Knowledge Graph Embedding for Ecotoxicological Effect Prediction}. International Workshop on the Semantic Web.
+
+\bibitem{kartheek2021aj7}
+Miriyala Kartheek, and G. Sajeev (2021). \textit{Building Semantic Based Recommender System Using Knowledge Graph Embedding}. International Conference on Intelligent Information Processing.
+
+\bibitem{sha2019plw}
+Xiao Sha, Zhu Sun, and Jie Zhang (2019). \textit{Attentive Knowledge Graph Embedding for Personalized Recommendation}. arXiv.org.
+
+\bibitem{lu2020x6y}
+Haonan Lu, and Hailin Hu (2020). \textit{DensE: An Enhanced Non-Abelian Group Representation for Knowledge Graph Embedding}. arXiv.org.
+
+\bibitem{zhang2020c15}
+Siheng Zhang, Zhengya Sun, and Wensheng Zhang (2020). \textit{Improve the translational distance models for knowledge graph embedding}. Journal of Intelligence and Information Systems.
+
+\bibitem{li2020ek4}
+Mingda Li, Zhengya Sun, Siheng Zhang, et al. (2020). \textit{Enhancing Knowledge Graph Embedding with Relational Constraints}. 2020 IEEE International Conference on Knowledge Graph (ICKG).
+
+\bibitem{li2020he5}
+Jian Li, Zhuoming Xu, Yan Tang, et al. (2020). \textit{Deep Hybrid Knowledge Graph Embedding for Top-N Recommendation}. Web Information System and Application Conference.
+
+\bibitem{kim2020zu3}
+Kuekyeng Kim, Yuna Hur, Gyeongmin Kim, et al. (2020). \textit{GREG: A Global Level Relation Extraction with Knowledge Graph Embedding}. Applied Sciences.
+
+\bibitem{zhu2018l0u}
+Jizhao Zhu, Yantao Jia, Jun Xu, et al. (2018). \textit{Modeling the Correlations of Relations for Knowledge Graph Embedding}. Journal of Computational Science and Technology.
+
+\bibitem{do20184o2}
+Kien Do, T. Tran, and S. Venkatesh (2018). \textit{Knowledge Graph Embedding with Multiple Relation Projections}. International Conference on Pattern Recognition.
+
+\bibitem{ma20194ua}
+Yunpu Ma, Volker Tresp, Liming Zhao, et al. (2019). \textit{Variational Quantum Circuit Model for Knowledge Graph Embedding}. Advanced Quantum Technologies.
+
+\bibitem{zhang2020wou}
+Yuhang Zhang, Jun Wang, and Jie Luo (2020). \textit{Knowledge Graph Embedding Based Collaborative Filtering}. IEEE Access.
+
+\bibitem{zhang2019hs5}
+Wen Zhang, Shumin Deng, Han Wang, et al. (2019). \textit{XTransE: Explainable Knowledge Graph Embedding for Link Prediction with Lifestyles in e-Commerce}. Joint International Conference of Semantic Technology.
+
+\bibitem{wang20198d2}
+Zhihao Wang, and Xin Li (2019). \textit{Hybrid-TE: Hybrid Translation-Based Temporal Knowledge Graph Embedding}. IEEE International Conference on Tools with Artificial Intelligence.
+
+\bibitem{tran20195x3}
+Hung Nghiep Tran, and A. Takasu (2019). \textit{Analyzing Knowledge Graph Embedding Methods from a Multi-Embedding Interaction Perspective}. EDBT/ICDT Workshops.
+
+\bibitem{xiong2018fof}
+Shengwu Xiong, Weitao Huang, and P. Duan (2018). \textit{Knowledge Graph Embedding via Relation Paths and Dynamic Mapping Matrix}. ER Workshops.
+
+\bibitem{radstok2021yup}
+Wessel Radstok, M. Chekol, and M. Schäfer (2021). \textit{Are Knowledge Graph Embedding Models Biased, or Is it the Data That They Are Trained on?}. Wikidata@ISWC.
+
+\bibitem{zhao2020o6z}
+Ling Zhao, Hanhan Deng, L. Qiu, et al. (2020). \textit{Urban Multi-Source Spatio-Temporal Data Analysis Aware Knowledge Graph Embedding}. Symmetry.
+
+\bibitem{zhang20182ey}
+Maoyuan Zhang, Qi Wang, Wukui Xu, et al. (2018). \textit{Discriminative Path-Based Knowledge Graph Embedding for Precise Link Prediction}. European Conference on Information Retrieval.
+
+\bibitem{jia20207dd}
+Ningning Jia, Xiang Cheng, and Sen Su (2020). \textit{Improving Knowledge Graph Embedding Using Locally and Globally Attentive Relation Paths}. European Conference on Information Retrieval.
+
+\bibitem{zhu2019ir6}
+Qiannan Zhu, Xiaofei Zhou, P. Zhang, et al. (2019). \textit{A neural translating general hyperplane for knowledge graph embedding}. Journal of Computer Science.
+
+\bibitem{wang2021dgy}
+Shen Wang, Xiaokai Wei, C. D. Santos, et al. (2021). \textit{Knowledge Graph Representation via Hierarchical Hyperbolic Neural Graph Embedding}. 2021 IEEE International Conference on Big Data (Big Data).
+
+\bibitem{ning20219et}
+Zhiyuan Ning, Ziyue Qiao, Hao Dong, et al. (2021). \textit{LightCAKE: A Lightweight Framework for Context-Aware Knowledge Graph Embedding}. Pacific-Asia Conference on Knowledge Discovery and Data Mining.
+
+\bibitem{sheikh20213qq}
+Nasrullah Sheikh, Xiao Qin, B. Reinwald, et al. (2021). \textit{Knowledge Graph Embedding using Graph Convolutional Networks with Relation-Aware Attention}. arXiv.org.
+
+\bibitem{rim2021s9a}
+Wiem Ben Rim, Carolin (Haas) Lawrence, Kiril Gashteovski, et al. (2021). \textit{Behavioral Testing of Knowledge Graph Embedding Models for Link Prediction}. Conference on Automated Knowledge Base Construction.
+
+\bibitem{zhang20179i2}
+Chunhong Zhang, Miao Zhou, Xiao Han, et al. (2017). \textit{Knowledge Graph Embedding for Hyper-Relational Data}. Unpublished manuscript.
+
+\bibitem{elebi20182bd}
+R. Çelebi, Erkan Yasar, Hüseyin Uyar, et al. (2018). \textit{Evaluation of knowledge graph embedding approaches for drug-drug interaction prediction using Linked Open Data}. Workshop on Semantic Web Applications and Tools for Life Sciences.
+
+\bibitem{garofalo20185g9}
+Martina Garofalo, Maria Angela Pellegrino, Abdulrahman Altabba, et al. (2018). \textit{Leveraging Knowledge Graph Embedding Techniques for Industry 4.0 Use Cases}. arXiv.org.
+
+\bibitem{wang201825m}
+Kai Wang, Yu Liu, Xiujuan Xu, et al. (2018). \textit{Knowledge Graph Embedding with Entity Neighbors and Deep Memory Network}. arXiv.org.
+
+\bibitem{chung2021u2l}
+Chanyoung Chung, and Joyce Jiyoung Whang (2021). \textit{Knowledge Graph Embedding via Metagraph Learning}. Annual International ACM SIGIR Conference on Research and Development in Information Retrieval.
+
+\bibitem{tran2019j42}
+Hung Nghiep Tran, and A. Takasu (2019). \textit{Exploring Scholarly Data by Semantic Query on Knowledge Graph Embedding Space}. International Conference on Theory and Practice of Digital Libraries.
+
+\bibitem{shi2017m2h}
+Jun Shi, Huan Gao, G. Qi, et al. (2017). \textit{Knowledge Graph Embedding with Triple Context}. International Conference on Information and Knowledge Management.
+
+\bibitem{zhang2017ixt}
+Wen Zhang (2017). \textit{Knowledge Graph Embedding with Diversity of Structures}. The Web Conference.
+
+\bibitem{zhu20196p1}
+Ming-Yi Zhu, De-sheng Zhen, Ran Tao, et al. (2019). \textit{Top-N Collaborative Filtering Recommendation Algorithm Based on Knowledge Graph Embedding}. International Conference on Knowledge Management in Organizations.
+
+\bibitem{kertkeidkachorn2019dkn}
+Natthawut Kertkeidkachorn, Xin Liu, and R. Ichise (2019). \textit{GTransE: Generalizing Translation-Based Model on Uncertain Knowledge Graph Embedding}. JSAI.
+
+\bibitem{zhu2019zqy}
+Jia Zhu, Zetao Zheng, Min Yang, et al. (2019). \textit{A semi-supervised model for knowledge graph embedding}. Data mining and knowledge discovery.
+
+\bibitem{zhang20193g2}
+Hengtong Zhang, T. Zheng, Jing Gao, et al. (2019). \textit{Towards Data Poisoning Attack against Knowledge Graph Embedding}. arXiv.org.
+
+\bibitem{liu2019fcs}
+Wenqiang Liu, Hongyun Cai, Xu Cheng, et al. (2019). \textit{Learning High-order Structural and Attribute information by Knowledge Graph Attention Networks for Enhancing Knowledge Graph Embedding}. Knowledge-Based Systems.
+
+\bibitem{kanojia20171in}
+Vibhor Kanojia, Hideyuki Maeda, Riku Togashi, et al. (2017). \textit{Enhancing Knowledge Graph Embedding with Probabilistic Negative Sampling}. The Web Conference.
+
+\bibitem{gao2018di0}
+Huan Gao, Jun Shi, G. Qi, et al. (2018). \textit{Triple Context-Based Knowledge Graph Embedding}. IEEE Access.
+
+\bibitem{mai2018egi}
+Gengchen Mai, K. Janowicz, and Bo Yan (2018). \textit{Support and Centrality: Learning Weights for Knowledge Graph Embedding Models}. International Conference Knowledge Engineering and Knowledge Management.
+
+\bibitem{xiao2016bb9}
+Han Xiao, Minlie Huang, and Xiaoyan Zhu (2016). \textit{Knowledge Semantic Representation: A Generative Model for Interpretable Knowledge Graph Embedding}. arXiv.org.
+
+\bibitem{liu2024q3q}
+Peifeng Liu, Lu Qian, Xingwei Zhao, et al. (2024). \textit{Joint Knowledge Graph and Large Language Model for Fault Diagnosis and Its Application in Aviation Assembly}. IEEE Transactions on Industrial Informatics.
+
+\bibitem{zhang2024cjl}
+Jin-cheng Zhang, A. Zain, Kai Zhou, et al. (2024). \textit{A review of recommender systems based on knowledge graph embedding}. Expert systems with applications.
+
+\bibitem{su2023v6e}
+Xiao-Rui Su, Zhuhong You, Deshuang Huang, et al. (2023). \textit{Biomedical Knowledge Graph Embedding With Capsule Network for Multi-Label Drug-Drug Interaction Prediction}. IEEE Transactions on Knowledge and Data Engineering.
+
+\bibitem{zhu2023bfj}
+Xiangrong Zhu, Guang-pu Li, and Wei Hu (2023). \textit{Heterogeneous Federated Knowledge Graph Embedding Learning and Unlearning}. The Web Conference.
+
+\bibitem{liu2024to0}
+Jiajun Liu, Wenjun Ke, Peng Wang, et al. (2024). \textit{Towards Continual Knowledge Graph Embedding via Incremental Distillation}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{wang2024vgj}
+Wei Wang, Xiaoxuan Shen, Baolin Yi, et al. (2024). \textit{Knowledge-aware fine-grained attention networks with refined knowledge graph embedding for personalized recommendation}. Expert systems with applications.
+
+\bibitem{li2024920}
+Duantengchuan Li, Tao Xia, Jing Wang, et al. (2024). \textit{SDFormer: A shallow-to-deep feature interaction for knowledge graph embedding}. Knowledge-Based Systems.
+
+\bibitem{lee202380l}
+Jaejun Lee, Chanyoung Chung, and Joyce Jiyoung Whang (2023). \textit{InGram: Inductive Knowledge Graph Embedding via Relation Graphs}. International Conference on Machine Learning.
+
+\bibitem{shokrzadeh2023twj}
+Zeinab Shokrzadeh, M. Feizi-Derakhshi, M. Balafar, et al. (2023). \textit{Knowledge graph-based recommendation system enhanced by neural collaborative filtering and knowledge graph embedding}. Ain Shams Engineering Journal.
+
+\bibitem{gao2023086}
+Weibo Gao, Hao Wang, Qi Liu, et al. (2023). \textit{Leveraging Transferable Knowledge Concept Graph Embedding for Cold-Start Cognitive Diagnosis}. Annual International ACM SIGIR Conference on Research and Development in Information Retrieval.
+
+\bibitem{li2024sgp}
+Yufeng Li, Wenchao Zhao, Bo Dang, et al. (2024). \textit{Research on Adverse Drug Reaction Prediction Model Combining Knowledge Graph Embedding and Deep Learning}. 2024 4th International Conference on Machine Learning and Intelligent Systems Engineering (MLISE).
+
+\bibitem{xue2023qi7}
+Zengcan Xue, Zhao Zhang, Hai Liu, et al. (2023). \textit{Learning knowledge graph embedding with multi-granularity relational augmentation network}. Expert systems with applications.
+
+\bibitem{duan2024d3f}
+Pengbo Duan, Kuo Yang, Xin Su, et al. (2024). \textit{HTINet2: herb–target prediction via knowledge graph embedding and residual-like graph neural network}. Briefings Bioinform..
+
+\bibitem{chen20246rm}
+Zhen Chen, Dalin Zhang, Shanshan Feng, et al. (2024). \textit{KGTS: Contrastive Trajectory Similarity Learning over Prompt Knowledge Graph Embedding}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{zhu2022o32}
+Jia Zhu, Changqin Huang, and P. D. Meo (2022). \textit{DFMKE: A dual fusion multi-modal knowledge graph embedding framework for entity alignment}. Information Fusion.
+
+\bibitem{mitropoulou20235t0}
+Katerina Mitropoulou, Panagiotis C. Kokkinos, P. Soumplis, et al. (2023). \textit{Anomaly Detection in Cloud Computing using Knowledge Graph Embedding and Machine Learning Mechanisms}. Journal of Grid Computing.
+
+\bibitem{shomer2023imo}
+Harry Shomer, Wei Jin, Wentao Wang, et al. (2023). \textit{Toward Degree Bias in Embedding-Based Knowledge Graph Completion}. The Web Conference.
+
+\bibitem{wang202490m}
+Mingjie Wang, Zijie Li, Jun Wang, et al. (2024). \textit{TracKGE: Transformer with Relation-pattern Adaptive Contrastive Learning for Knowledge Graph Embedding}. Knowledge-Based Systems.
+
+\bibitem{li2024bl5}
+Zhifei Li, Wei Huang, Xuchao Gong, et al. (2024). \textit{Decoupled semantic graph neural network for knowledge graph embedding}. Neurocomputing.
+
+\bibitem{li2024y2a}
+Mingqi Li, Wenming Ma, and Zihao Chu (2024). \textit{KGIE: Knowledge graph convolutional network for recommender system with interactive embedding}. Knowledge-Based Systems.
+
+\bibitem{jia2023krv}
+Yan Jia, Mengqi Lin, Yechen Wang, et al. (2023). \textit{Extrapolation over temporal knowledge graph via hyperbolic embedding}. CAAI Transactions on Intelligence Technology.
+
+\bibitem{huang2023grx}
+Wei Huang, Jia Liu, Tianrui Li, et al. (2023). \textit{FedCKE: Cross-Domain Knowledge Graph Embedding in Federated Learning}. IEEE Transactions on Big Data.
+
+\bibitem{wang2023s70}
+Ruoxin Wang, and C. F. Cheung (2023). \textit{Knowledge graph embedding learning system for defect diagnosis in additive manufacturing}. Computers in industry (Print).
+
+\bibitem{hou20237gt}
+Xiangning Hou, Ruizhe Ma, Li Yan, et al. (2023). \textit{T-GAE: A Timespan-aware Graph Attention-based Embedding Model for Temporal Knowledge Graph Completion}. Information Sciences.
+
+\bibitem{jiang2023opm}
+Dan Jiang, Ronggui Wang, Lixia Xue, et al. (2023). \textit{Multisource hierarchical neural network for knowledge graph embedding}. Expert systems with applications.
+
+\bibitem{lu2022bwo}
+H. Lu, Hailin Hu, and Xiaodong Lin (2022). \textit{DensE: An enhanced non-commutative representation for knowledge graph embedding with adaptive semantic hierarchy}. Neurocomputing.
+
+\bibitem{djeddi2023g71}
+W. Djeddi, Khalil Hermi, S. Yahia, et al. (2023). \textit{Advancing drug–target interaction prediction: a comprehensive graph-based approach integrating knowledge graph embedding and ProtBert pretraining}. BMC Bioinformatics.
+
+\bibitem{zhang20243iw}
+Yuchao Zhang, Xiangjie Kong, Zhehui Shen, et al. (2024). \textit{A survey on temporal knowledge graph embedding: Models and applications}. Knowledge-Based Systems.
+
+\bibitem{le2023hjy}
+Thanh-Binh Le, Huy Tran, and H. Le (2023). \textit{Knowledge graph embedding with the special orthogonal group in quaternion space for link prediction}. Knowledge-Based Systems.
+
+\bibitem{yao2023y12}
+Zhen Yao, Wen Zhang, Mingyang Chen, et al. (2023). \textit{Analogical Inference Enhanced Knowledge Graph Embedding}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{li2023y5q}
+Zhipeng Li, Shanshan Feng, Jun Shi, et al. (2023). \textit{Future Event Prediction Based on Temporal Knowledge Graph Embedding}. Computer systems science and engineering.
+
+\bibitem{yang2022j7z}
+Shihan Yang, Weiya Zhang, R. Tang, et al. (2022). \textit{Approximate inferring with confidence predicting based on uncertain knowledge graph embedding}. Information Sciences.
+
+\bibitem{banerjee2023fdi}
+Debayan Banerjee, Pranav Ajit Nair, Ricardo Usbeck, et al. (2023). \textit{GETT-QA: Graph Embedding based T2T Transformer for Knowledge Graph Question Answering}. Extended Semantic Web Conference.
+
+\bibitem{hu20230kr}
+Yuke Hu, Wei Liang, Ruofan Wu, et al. (2023). \textit{Quantifying and Defending against Privacy Threats on Federated Knowledge Graph Embedding}. The Web Conference.
+
+\bibitem{li2023wgg}
+Daiyi Li, Li Yan, Xiaowen Zhang, et al. (2023). \textit{EventKGE: Event knowledge graph embedding with event causal transfer}. Knowledge-Based Systems.
+
+\bibitem{hao2022cl4}
+Xinkun Hao, Qingfeng Chen, Haiming Pan, et al. (2022). \textit{Enhancing drug–drug interaction prediction by three-way decision and knowledge graph embedding}. Granular Computing.
+
+\bibitem{khan20222j1}
+Nasrullah Khan, Z. Ma, Li Yan, et al. (2022). \textit{Hashing-based semantic relevance attributed knowledge graph embedding enhancement for deep probabilistic recommendation}. Applied intelligence (Boston).
+
+\bibitem{le2022ybl}
+Thanh-Binh Le, Ngoc Huynh, and Bac Le (2022). \textit{Knowledge graph embedding by projection and rotation on hyperplanes for link prediction}. Applied intelligence (Boston).
+
+\bibitem{liang202338l}
+Shuang Liang (2023). \textit{Knowledge Graph Embedding Based on Graph Neural Network}. IEEE International Conference on Data Engineering.
+
+\bibitem{khan2022ipv}
+Nasrullah Khan, Zongmin Ma, Aman Ullah, et al. (2022). \textit{DCA-IoMT: Knowledge-Graph-Embedding-Enhanced Deep Collaborative Alert Recommendation Against COVID-19}. IEEE Transactions on Industrial Informatics.
+
+\bibitem{he2022e37}
+Peng He, Gang Zhou, Mengli Zhang, et al. (2022). \textit{Improving temporal knowledge graph embedding using tensor factorization}. Applied intelligence (Boston).
+
+\bibitem{shen2022d5j}
+Linshan Shen, Rongbo He, and Shaobin Huang (2022). \textit{Entity alignment with adaptive margin learning knowledge graph embedding}. Data & Knowledge Engineering.
+
+\bibitem{di20210ib}
+Shimin Di, Quanming Yao, Yongqi Zhang, et al. (2021). \textit{Efficient Relation-aware Scoring Function Search for Knowledge Graph Embedding}. IEEE International Conference on Data Engineering.
+
+\bibitem{niu2020uyy}
+Guanglin Niu, Bo Li, Yongfei Zhang, et al. (2020). \textit{AutoETER: Automated Entity Type Representation with Relation-Aware Attention for Knowledge Graph Embedding}. Findings.
+
+\bibitem{nie2023ejz}
+H. Nie, Xiangguo Zhao, Xin Bi, et al. (2023). \textit{Correlation embedding learning with dynamic semantic enhanced sampling for knowledge graph completion}. World wide web (Bussum).
+
+\bibitem{li2022du0}
+Jiayi Li, and Yujiu Yang (2022). \textit{STaR: Knowledge Graph Embedding by Scaling, Translation and Rotation}. Autonomous Infrastructure, Management and Security.
+
+\bibitem{daruna2022dmk}
+A. Daruna, Devleena Das, and S. Chernova (2022). \textit{Explainable Knowledge Graph Embedding: Inference Reconciliation for Knowledge Inferences Supporting Robot Actions}. IEEE/RJS International Conference on Intelligent RObots and Systems.
+
+\bibitem{zhou20210ma}
+Xing-Chun Zhou, Peng Wang, Qi Luo, et al. (2021). \textit{Multi-hop Knowledge Graph Reasoning Based on Hyperbolic Knowledge Graph Embedding and Reinforcement Learning}. IJCKG.
+
+\bibitem{kun202384f}
+Kong Wei Kun, Xin Liu, Teeradaj Racharak, et al. (2023). \textit{WeExt: A Framework of Extending Deterministic Knowledge Graph Embedding Models for Embedding Weighted Knowledge Graphs}. IEEE Access.
+
+\bibitem{dong2022taz}
+Yao Dong, Lei Wang, Ji Xiang, et al. (2022). \textit{RotateCT: Knowledge Graph Embedding by Rotation and Coordinate Transformation in Complex Space}. International Conference on Computational Linguistics.
+
+\bibitem{kamigaito20218jz}
+Hidetaka Kamigaito, and Katsuhiko Hayashi (2021). \textit{Unified Interpretation of Softmax Cross-Entropy and Negative Sampling: With Case Study for Knowledge Graph Embedding}. Annual Meeting of the Association for Computational Linguistics.
+
+\bibitem{krause2022th0}
+Franziska Krause (2022). \textit{Dynamic Knowledge Graph Embeddings via Local Embedding Reconstructions}. Extended Semantic Web Conference.
+
+\bibitem{zhang20213h6}
+Zhao Zhang, Fuzhen Zhuang, Meng Qu, et al. (2021). \textit{Knowledge graph embedding with shared latent semantic units}. Neural Networks.
+
+\bibitem{li2021tm6}
+Guang-pu Li, Zequn Sun, Lei Qian, et al. (2021). \textit{Rule-based data augmentation for knowledge graph embedding}. AI Open.
+
+\bibitem{wang2020au0}
+Kai Wang, Yu Liu, Xiujuan Xu, et al. (2020). \textit{Enhancing knowledge graph embedding by composite neighbors for link prediction}. Computing.
+
+\bibitem{wei20215a7}
+Yuyang Wei, Wei Chen, Zhixu Li, et al. (2021). \textit{Incremental Update of Knowledge Graph Embedding by Rotating on Hyperplanes}. 2021 IEEE International Conference on Web Services (ICWS).
+
+\bibitem{zhang2021rjh}
+Yongqi Zhang, Quanming Yao, and Lei Chen (2021). \textit{Simple and automated negative sampling for knowledge graph embedding}. The VLDB journal.
+
+\bibitem{sheikh202245c}
+Nasrullah Sheikh, Xiao Qin, B. Reinwald, et al. (2022). \textit{Scaling knowledge graph embedding models for link prediction}. EuroMLSys@EuroSys.
+
+\bibitem{ren2021muc}
+Chao Ren, Le Zhang, Lintao Fang, et al. (2021). \textit{Ontological Concept Structure Aware Knowledge Transfer for Inductive Knowledge Graph Embedding}. IEEE International Joint Conference on Neural Network.
+
+\bibitem{eyharabide2021wx4}
+Victoria Eyharabide, I. E. I. Bekkouch, and Nicolae Dragoș Constantin (2021). \textit{Knowledge Graph Embedding-Based Domain Adaptation for Musical Instrument Recognition}. De Computis.
+
+\bibitem{hong2020hyg}
+Y. Hong, Chenyang Bu, and Tingting Jiang (2020). \textit{Rule-enhanced Noisy Knowledge Graph Embedding via Low-quality Error Detection}. 2020 IEEE International Conference on Knowledge Graph (ICKG).
+
+\bibitem{huang2020sqc}
+Yan Huang, Haili Sun, Xu Ke, et al. (2020). \textit{CoRelatE: Learning the correlation in multi-fold relations for knowledge graph embedding}. Knowledge-Based Systems.
+
+\bibitem{kurokawa2021f4f}
+M. Kurokawa (2021). \textit{Explainable Knowledge Reasoning Framework Using Multiple Knowledge Graph Embedding}. IJCKG.
+
+\bibitem{mohamed2021dwg}
+Sameh K. Mohamed, Emir Muñoz, and V. Nováček (2021). \textit{On Training Knowledge Graph Embedding Models}. Inf..
+
+\bibitem{gebhart2021gtp}
+Thomas Gebhart, J. Hansen, and Paul Schrater (2021). \textit{Knowledge Sheaves: A Sheaf-Theoretic Framework for Knowledge Graph Embedding}. International Conference on Artificial Intelligence and Statistics.
+
+\bibitem{deng2024643}
+Weibin Deng, Yiteng Zhang, Hong Yu, et al. (2024). \textit{Knowledge graph embedding based on dynamic adaptive atrous convolution and attention mechanism for link prediction}. Information Processing & Management.
+
+\bibitem{liu2024zr9}
+Jin Liu, Hao Du, R. Guo, et al. (2024). \textit{MMGK: Multimodality Multiview Graph Representations and Knowledge Embedding for Mild Cognitive Impairment Diagnosis}. IEEE Transactions on Computational Social Systems.
+
+\bibitem{zhang2024zmq}
+Chengcheng Zhang, Tianyi Zang, and Tianyi Zhao (2024). \textit{KGE-UNIT: toward the unification of molecular interactions prediction based on knowledge graph and multi-task learning on drug discovery}. Briefings Bioinform..
+
+\bibitem{he2024vks}
+Mingsheng He, Lin Zhu, and Luyi Bai (2024). \textit{ConvTKG: A query-aware convolutional neural network-based embedding model for temporal knowledge graph completion}. Neurocomputing.
+
+\bibitem{zhang2024fy0}
+Dong Zhang, Zhe Rong, Chengyuan Xue, et al. (2024). \textit{SimRE: Simple contrastive learning with soft logical rule for knowledge graph embedding}. Information Sciences.
+
+\bibitem{zhang2024ivc}
+Dong Zhang, Wenlong Feng, Zonghang Wu, et al. (2024). \textit{CDRGN-SDE: Cross-Dimensional Recurrent Graph Network with neural Stochastic Differential Equation for temporal knowledge graph embedding}. Expert systems with applications.
+
+\bibitem{jing2024nxw}
+Yanzhen Jing, Guanghui Zhou, Chao Zhang, et al. (2024). \textit{XMKR: Explainable manufacturing knowledge recommendation for collaborative design with graph embedding learning}. Advanced Engineering Informatics.
+
+\bibitem{jiang2024zlc}
+Pengcheng Jiang, Lang Cao, Cao Xiao, et al. (2024). \textit{KG-FIT: Knowledge Graph Fine-Tuning Upon Open-World Knowledge}. Neural Information Processing Systems.
+
+\bibitem{han2024u0t}
+Zhulin Han, and Jian Wang (2024). \textit{Knowledge enhanced graph inference network based entity-relation extraction and knowledge graph construction for industrial domain}. Frontiers of Engineering Management.
+
+\bibitem{quan2024o2a}
+Huafeng Quan, Yiting Li, Dashuai Liu, et al. (2024). \textit{Protection of Guizhou Miao batik culture based on knowledge graph and deep learning}. Heritage Science.
+
+\bibitem{liu2024tc2}
+Bufan Liu, Chun-Hsien Chen, and Zuoxu Wang (2024). \textit{A multi-hierarchical aggregation-based graph convolutional network for industrial knowledge graph embedding towards cognitive intelligent manufacturing}. Journal of manufacturing systems.
+
+\bibitem{hello2024hgf}
+Nour Hello, P. Lorenzo, and E. Strinati (2024). \textit{Semantic Communication Enhanced by Knowledge Graph Representation Learning}. International Workshop on Signal Processing Advances in Wireless Communications.
+
+\bibitem{li2024z0e}
+Jinpeng Li, Hang Yu, Xiangfeng Luo, et al. (2024). \textit{COSIGN: Contextual Facts Guided Generation for Knowledge Graph Completion}. North American Chapter of the Association for Computational Linguistics.
+
+\bibitem{yan2024joa}
+Qun Yan, Juan Zhao, Linfu Xue, et al. (2024). \textit{Mineral Prospectivity Mapping Based on Spatial Feature Classification with Geological Map Knowledge Graph Embedding: Case Study of Gold Ore Prediction at Wulonggou, Qinghai Province (Western China)}. Natural Resources Research.
+
+\bibitem{liu2024tn0}
+Jhih-Chen Liu, Chiao-Ting Chen, Chi Lee, et al. (2024). \textit{Evolving Knowledge Graph Representation Learning with Multiple Attention Strategies for Citation Recommendation System}. ACM Transactions on Intelligent Systems and Technology.
+
+\bibitem{wang20245dw}
+Chuanghui Wang, Yunqing Yang, Jinshuai Song, et al. (2024). \textit{Research Progresses and Applications of Knowledge Graph Embedding Technique in Chemistry}. Journal of Chemical Information and Modeling.
+
+\bibitem{long2024soi}
+Xiao Long, Liansheng Zhuang, Aodi Li, et al. (2024). \textit{KGDM: A Diffusion Model to Capture Multiple Relation Semantics for Knowledge Graph Embedding}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{zhou2024ayq}
+Qihui Zhou, Peiqi Yin, Xiao Yan, et al. (2024). \textit{Atom: An Efficient Query Serving System for Embedding-based Knowledge Graph Reasoning with Operator-level Batching}. Proc. ACM Manag. Data.
+
+\bibitem{huang2024t19}
+Chen Huang, Deshan Chen, Tengze Fan, et al. (2024). \textit{Incorporating environmental knowledge embedding and spatial-temporal graph attention networks for inland vessel traffic flow prediction}. Engineering applications of artificial intelligence.
+
+\bibitem{lu2024fsd}
+Ming Lu, Yancong Li, Jiangxiao Zhang, et al. (2024). \textit{Deep hyperbolic convolutional model for knowledge graph embedding}. Knowledge-Based Systems.
+
+\bibitem{liu2024yar}
+Qi Liu, Qinghua Zhang, Fan Zhao, et al. (2024). \textit{Uncertain knowledge graph embedding: an effective method combining multi-relation and multi-path}. Frontiers Comput. Sci..
+
+\bibitem{khan20242y2}
+Nasrullah Khan, Zongmin Ma, Ruizhe Ma, et al. (2024). \textit{Continual knowledge graph embedding enhancement for joint interaction-based next click recommendation}. Knowledge-Based Systems.
+
+\bibitem{xue2025ee8}
+Zengcan Xue, Zhaoli Zhang, Hai Liu, et al. (2025). \textit{MHRN: A multi-perspective hierarchical relation network for knowledge graph embedding}. Knowledge-Based Systems.
+
+\bibitem{long20248vt}
+Xiao Long, Liansheng Zhuang, Aodi Li, et al. (2024). \textit{Fact Embedding through Diffusion Model for Knowledge Graph Completion}. The Web Conference.
+
+\bibitem{huang20240su}
+Chen Huang, Fei Yu, Zhiguo Wan, et al. (2024). \textit{Knowledge graph confidence-aware embedding for recommendation}. Neural Networks.
+
+\bibitem{wang2024nej}
+Yuzhuo Wang, Hongzhi Wang, Xianglong Liu, et al. (2024). \textit{GFedKG: GNN-based federated embedding model for knowledge graph completion}. Knowledge-Based Systems.
+
+\bibitem{wang2024c8z}
+Xinyan Wang, Kuo Yang, Ting Jia, et al. (2024). \textit{KDGene: knowledge graph completion for disease gene prediction using interactional tensor decomposition}. Briefings Bioinform..
+
+\bibitem{liu2024x0k}
+Yuhan Liu, Zelin Cao, Xing Gao, et al. (2024). \textit{Bridging the Space Gap: Unifying Geometry Knowledge Graph Embedding with Optimal Transport}. The Web Conference.
+
+\bibitem{li2024uio}
+Yongfang Li, and Chunhua Zhu (2024). \textit{TransE-MTP: A New Representation Learning Method for Knowledge Graph Embedding with Multi-Translation Principles and TransE}. Electronics.
+
+\bibitem{zhang2024z78}
+Qianjin Zhang, and Yandan Xu (2024). \textit{Knowledge graph embedding with inverse function representation for link prediction}. Engineering applications of artificial intelligence.
+
+\bibitem{wang2024534}
+Hao Wang, Dandan Song, Zhijing Wu, et al. (2024). \textit{A collaborative learning framework for knowledge graph embedding and reasoning}. Knowledge-Based Systems.
+
+\bibitem{ni202438q}
+Shengkun Ni, Xiangtai Kong, Yingying Zhang, et al. (2024). \textit{Identifying compound-protein interactions with knowledge graph embedding of perturbation transcriptomics}. Cell Genomics.
+
+\bibitem{nie202499i}
+Jixuan Nie, Xia Hou, Wenfeng Song, et al. (2024). \textit{Knowledge Graph Efficient Construction: Embedding Chain-of-Thought into LLMs}. VLDB Workshops.
+
+\bibitem{wang2024d52}
+Jingchao Wang, Weimin Li, Fangfang Liu, et al. (2024). \textit{ConeE: Global and local context-enhanced embedding for inductive knowledge graph completion}. Expert systems with applications.
+
+\bibitem{mao2024v2s}
+Yuren Mao, Yu Hao, Xin Cao, et al. (2024). \textit{Dynamic Graph Embedding via Meta-Learning}. IEEE Transactions on Knowledge and Data Engineering.
+
+\bibitem{jafarzadeh202468v}
+Parastoo Jafarzadeh, F. Ensan, Mahdiyar Ali Akbar Alavi, et al. (2024). \textit{A Knowledge Graph Embedding Model for Answering Factoid Entity Questions}. ACM Trans. Inf. Syst..
+
+\bibitem{wang2024dea}
+Yalin Wang, Yubin Peng, and Jingyu Guo (2024). \textit{Enhancing knowledge graph embedding with structure and semantic features}. Applied intelligence (Boston).
+
+\bibitem{lu202436n}
+Yuhuan Lu, Weijian Yu, Xin Jing, et al. (2024). \textit{HyperCL: A Contrastive Learning Framework for Hyper-Relational Knowledge Graph Embedding with Hierarchical Ontology}. Annual Meeting of the Association for Computational Linguistics.
+
+\bibitem{han2024gaq}
+Yadan Han, Guangquan Lu, Shichao Zhang, et al. (2024). \textit{A Temporal Knowledge Graph Embedding Model Based on Variable Translation}. Tsinghua Science and Technology.
+
+\bibitem{liu2024jz8}
+Bingchen Liu, Shifu Hou, Weiyi Zhong, et al. (2024). \textit{Enhancing Temporal Knowledge Graph Alignment in News Domain With Box Embedding}. IEEE Transactions on Computational Social Systems.
+
+\bibitem{he2024y6o}
+Yunjie He, Daniel Hernández, M. Nayyeri, et al. (2024). \textit{Generating $SROI^-$ Ontologies via Knowledge Graph Query Embedding Learning}. Unpublished manuscript.
+
+\bibitem{fang20243a4}
+Yan Fang, Xiaodong Liu, Wei Lu, et al. (2024). \textit{Knowledge graph completion with low-dimensional gated hierarchical hyperbolic embedding}. Knowledge-Based Systems.
+
+\bibitem{zhang2024h9k}
+Mingtao Zhang, Guoli Yang, Yi Liu, et al. (2024). \textit{Knowledge graph accuracy evaluation: an LLM-enhanced embedding approach}. International Journal of Data Science and Analysis.
+
+\bibitem{li2024wyh}
+Yicong Li, Yu Yang, Jiannong Cao, et al. (2024). \textit{Toward Structure Fairness in Dynamic Graph Embedding: A Trend-aware Dual Debiasing Approach}. Knowledge Discovery and Data Mining.
+
+\bibitem{dong2024ijo}
+Dibo Dong, Shangwei Wang, Qiaoying Guo, et al. (2024). \textit{Short-Term Marine Wind Speed Forecasting Based on Dynamic Graph Embedding and Spatiotemporal Information}. Journal of Marine Science and Engineering.
+
+\bibitem{wang20246c7}
+Tao Wang, Bo Shen, Jinglin Zhang, et al. (2024). \textit{Knowledge Graph Embedding via Triplet Component Interactions}. Neural Processing Letters.
+
+\bibitem{zhang2024yjo}
+Pengfei Zhang, Xiaoxue Zhang, Yang Fang, et al. (2024). \textit{Knowledge Graph Embedding for Hierarchical Entities Based on Auto-Embedding Size}. Mathematics.
+
+\bibitem{liang20247wv}
+K. Liang, Yue Liu, Hao Li, et al. (2024). \textit{Clustering then Propagation: Select Better Anchors for Knowledge Graph Embedding}. Neural Information Processing Systems.
+
+\bibitem{liu2024t05}
+Qi Liu, Yuanyuan Jin, Xuefei Cao, et al. (2024). \textit{An Entity Ontology-Based Knowledge Graph Embedding Approach to News Credibility Assessment}. IEEE Transactions on Computational Social Systems.
+
+\bibitem{pham20243mh}
+H. V. Pham, Trung Tuan Nguyen, Luu Minh Tuan, et al. (2024). \textit{IDGCN: A Proposed Knowledge Graph Embedding With Graph Convolution Network For Context-Aware Recommendation Systems}. Journal of Organizational Computing and Electronic Commerce.
+
+\bibitem{li2024gar}
+Yu Li, Zhu-Hong You, Shu-Min Wang, et al. (2024). \textit{Attention-Based Learning for Predicting Drug-Drug Interactions in Knowledge Graph Embedding Based on Multisource Fusion Information}. International Journal of Intelligent Systems.
+
+\bibitem{li2024nje}
+Nan Li, Zhihao Yang, Jian Wang, et al. (2024). \textit{Drug–target interaction prediction using knowledge graph embedding}. iScience.
+
+\bibitem{bao20249xp}
+Liming Bao, Yan Wang, Xiaoyu Song, et al. (2024). \textit{HGCGE: hyperbolic graph convolutional networks-based knowledge graph embedding for link prediction}. Knowledge and Information Systems.
+
+\bibitem{xu2024fto}
+Guoshun Xu, Guozheng Rao, Li Zhang, et al. (2024). \textit{Entity-relation aggregation mechanism graph neural network for knowledge graph embedding}. Applied intelligence (Boston).
+
+\bibitem{liang2024z0q}
+Qiuyu Liang, Weihua Wang, Jie Yu, et al. (2024). \textit{Effective Knowledge Graph Embedding with Quaternion Convolutional Networks}. Natural Language Processing and Chinese Computing.
+
+\bibitem{liu2024ixy}
+Jie Liu, Lizheng Zu, Yunbin Yan, et al. (2024). \textit{Multi-Filter soft shrinkage network for knowledge graph embedding}. Expert systems with applications.
+
+\bibitem{dong2025l9k}
+Jie Dong, Cuiping Chen, Chi Zhang, et al. (2025). \textit{Knowledge Graph Embedding With Graph Convolutional Network and Bidirectional Gated Recurrent Unit for Fault Diagnosis of Industrial Processes}. IEEE Sensors Journal.
+
+\bibitem{zhang2025ebv}
+Sensen Zhang, Xun Liang, Simin Niu, et al. (2025). \textit{Integrating Large Language Models and Möbius Group Transformations for Temporal Knowledge Graph Embedding on the Riemann Sphere}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{liu20242zm}
+Xinyue Liu, Jianan Zhang, Chi Ma, et al. (2024). \textit{Temporal Knowledge Graph Reasoning with Dynamic Hypergraph Embedding}. International Conference on Language Resources and Evaluation.
+
+\bibitem{yang2024lwa}
+Ruiyi Yang, Flora D. Salim, and Hao Xue (2024). \textit{SSTKG: Simple Spatio-Temporal Knowledge Graph for Intepretable and Versatile Dynamic Information Embedding}. The Web Conference.
+
+\bibitem{li20246qx}
+Bo Li, Haowei Quan, Jiawei Wang, et al. (2024). \textit{Neural Library Recommendation by Embedding Project-Library Knowledge Graph}. IEEE Transactions on Software Engineering.
+
+\bibitem{liu2024mji}
+Xiaojian Liu, Xinwei Guo, and Wen Gu (2024). \textit{SecKG2vec: A novel security knowledge graph relational reasoning method based on semantic and structural fusion embedding}. Computers & security.
+
+\bibitem{chen2024efo}
+Bin Chen, Hongyi Li, Di Zhao, et al. (2024). \textit{Quality assessment of cyber threat intelligence knowledge graph based on adaptive joining of embedding model}. Complex &amp; Intelligent Systems.
+
+\bibitem{chen2024uld}
+Deng Chen, Weiwei Zhang, and Zuohua Ding (2024). \textit{Embedding dynamic graph attention mechanism into Clinical Knowledge Graph for enhanced diagnostic accuracy}. Expert systems with applications.
+
+\bibitem{wang2017zm5}
+Quan Wang, Zhendong Mao, Bin Wang, et al. (2017). \textit{Knowledge Graph Embedding: A Survey of Approaches and Applications}. IEEE Transactions on Knowledge and Data Engineering.
+
+\bibitem{li2021qr0}
+Zhifei Li, Hai Liu, Zhaoli Zhang, et al. (2021). \textit{Learning Knowledge Graph Embedding With Heterogeneous Relation Attention Networks}. IEEE Transactions on Neural Networks and Learning Systems.
+
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,1310 @@
+\documentclass[12pt,a4paper]{article}
+    \usepackage[utf8]{inputenc}
+    \usepackage[T1]{fontenc}
+    \usepackage{amsmath,amsfonts,amssymb}
+    \usepackage{graphicx}
+    \usepackage[margin=2.5cm]{geometry}
+    \usepackage{setspace}
+    \usepackage{natbib}
+    \usepackage{url}
+    \usepackage{hyperref}
+    \usepackage{booktabs}
+    \usepackage{longtable}
+    \usepackage{array}
+    \usepackage{multirow}
+    \usepackage{wrapfig}
+    \usepackage{float}
+    \usepackage{colortbl}
+    \usepackage{pdflscape}
+    \usepackage{tabu}
+    \usepackage{threeparttable}
+    \usepackage{threeparttablex}
+    \usepackage[normalem]{ulem}
+    \usepackage{makecell}
+    \usepackage{xcolor}
+
+    % Set line spacing
+    \doublespacing
+
+    % Configure hyperref
+    \hypersetup{
+        colorlinks=true,
+        linkcolor=blue,
+        filecolor=magenta,      
+        urlcolor=cyan,
+        citecolor=red,
+    }
+
+    % Title and author information
+    \title{A Comprehensive Literature Review with Self-Reflection}
+    \author{Literature Review}
+    \date{\today}
+
+    \begin{document}
+
+    \maketitle
+
+    % Abstract (optional)
+    \begin{abstract}
+    This literature review provides a comprehensive analysis of recent research in the field. The review synthesizes findings from 328 research papers, identifying key themes, methodological approaches, and future research directions.
+    \end{abstract}
+
+    \newpage
+    \tableofcontents
+    \newpage
+
+    \label{sec:1._introduction}
+
+\section{Introduction}
+The ubiquitous nature of graph-structured data in diverse scientific and engineering domains, ranging from social networks and biological systems to urban infrastructure and recommender systems, has presented a persistent challenge for traditional machine learning paradigms \cite{wu20193b0, zhou20188n6, velickovic2023p4r, wu2022ptq}. Unlike Euclidean data, graphs inherently encode complex relational information, where the connections between entities are as significant as the entities themselves. Graph Neural Networks (GNNs) have emerged as a transformative paradigm, extending the success of deep learning to this non-Euclidean data landscape. By enabling models to learn representations directly from graph structures, GNNs have unlocked unprecedented capabilities for tasks such as node classification, link prediction, and graph classification, demonstrating their profound impact across numerous fields \cite{khemani2024i8r, wang2023zr0}.
+
+The fundamental motivation behind the development of GNNs stems from the critical need to effectively process and leverage relational information. Traditional machine learning models, designed for independent and identically distributed (i.i.d.) data, often struggle to capture the intricate dependencies and structural patterns inherent in graphs. Early attempts to apply machine learning to graphs relied on hand-crafted features or graph kernel methods, which, while foundational, often lacked scalability and the ability to learn complex, hierarchical representations end-to-end \cite{garg2020z6o}. GNNs address this by iteratively aggregating information from a node's local neighborhood, effectively propagating and transforming features across the graph structure. This message-passing mechanism allows GNNs to learn rich, context-aware node and graph embeddings, which has fueled their rapid adoption and continuous evolution. However, this powerful paradigm also introduces unique challenges, such as limitations in expressive power, susceptibility to over-smoothing, and difficulties in handling heterophilous graphs, which necessitate ongoing research and innovation. This comprehensive literature review aims to consolidate the vast and rapidly expanding knowledge base surrounding GNNs, providing a structured understanding of their evolution, diverse methodologies, impactful applications, and future trajectory, while critically identifying existing research gaps and promising directions.
+
+\subsection{The Rise of Graph Neural Networks}
+The ascent of Graph Neural Networks marks a pivotal shift in machine learning, offering a principled approach to process data residing in non-Euclidean spaces \cite{wu20193b0, zhou20188n6}. Prior to GNNs, applying deep learning to graph-structured data was largely constrained by the need to flatten or linearize graph information, often leading to a loss of crucial topological context. GNNs overcome this by generalizing convolutional operations to arbitrary graph structures, allowing nodes to iteratively aggregate information from their neighbors, thereby learning representations that capture both node features and structural roles \cite{velickovic2023p4r}. This message-passing paradigm, initially inspired by spectral graph theory and later refined through spatial approaches, provided the foundational mechanism for GNNs to learn from relational data \cite{kipf2016semi, hamilton2017inductive}.
+
+However, the early success of GNNs was accompanied by recognized limitations. A significant theoretical barrier was their inherent expressive power, often proven to be no more powerful than the 1-dimensional Weisfeiler-Lehman (1-WL) isomorphism test \cite{xu2018c8q, morris20185sd, garg2020z6o}. This meant that many GNN architectures struggled to distinguish between non-isomorphic graphs that the 1-WL test could not differentiate, limiting their ability to capture complex structural patterns like specific cycle sizes or graph diameters \cite{chen2020e6g, oono2019usb}. This limitation spurred an "arms race" in GNN research, driving the development of more expressive architectures. For instance, Path Neural Networks (PathNNs) \cite{michel2023hc4} explicitly leverage path information, with variants like \texttt{˜AP} demonstrating the ability to distinguish graphs that are even 3-WL indistinguishable, thereby significantly surpassing the 1-WL bottleneck. Similarly, non-convolutional GNNs, such as the Random Walk with Unifying Memory (RUM) network \cite{wang2024oi8}, have been introduced to jointly address limited expressiveness, over-smoothing, and over-squashing by entirely eschewing convolution operators in favor of random walk trajectories and recurrent neural networks. These advancements highlight a critical evolutionary trend: moving beyond local, fixed-neighborhood aggregation to incorporate more global, complex, and memory-dependent structural information, as also seen in the exploration of fractional calculus in GNNs to capture non-local dependencies and memory effects \cite{kang2024fsk}.
+
+\subsection{Importance of Graph-Structured Data}
+The intrinsic importance of graph-structured data lies in its ability to naturally represent complex systems where entities and their relationships are paramount. This relational paradigm is pervasive across virtually every scientific and industrial domain, making GNNs indispensable for unlocking insights from these intricate datasets. In social sciences, GNNs model interactions in social networks for tasks like recommendation systems \cite{gao2022f3h, wu2020dc8, fan2019k6u, sharma2022liz}, where understanding user-item relationships and social influence is crucial for personalized content delivery \cite{ying20189jc, wang2019vol}. The sheer scale and dynamic nature of these graphs necessitate efficient and scalable GNN designs \cite{chen2024gbe, vasimuddin2021x7c}.
+
+In molecular science and drug discovery, molecules are inherently graphs, with atoms as nodes and chemical bonds as edges. GNNs excel at learning molecular properties, predicting drug-target interactions, and accelerating materials design by capturing complex structural and chemical information \cite{jiang2020gaq, reiser2022b08, klicpera20215fk, batzner2021t07, fung20212kw, xia2021s85, li2021v1l, xia2023bpu, wander2024nnn, carlo2024a3g, vinh20243q3, smith2024q8n, fang2024p34, zhang202483k, li2024gue, gnanabaskaran20245dg, yao2024pyk, fang2024zd6}. Similarly, in neuroscience, brain connectomes are modeled as graphs to understand brain disorders and functions \cite{bessadok2021bfy, cui2022mjr, cui2022pap, zhao2022fvg, mohammadi202476q, luo2024h2k, abuhantash202458c, abadal2024w7e}. The ability of GNNs to model non-local dependencies and memory effects, as explored by fractional-order GNNs \cite{kang2024fsk}, is particularly relevant for capturing the complex, often non-Markovian, dynamics of biological systems.
+
+Furthermore, GNNs have found critical applications in urban computing for traffic forecasting \cite{li2020fil, jin2023e18, zhou2024t2r}, cybersecurity for anomaly detection and threat intelligence \cite{mitra2024x43, bilot20234ui, shen2021sbk, hin2022g19, nguyen2021g12, li2024r82}, and even computer vision for tasks involving irregular data like point clouds and scene graphs \cite{chen2022mmu}. The challenges GNNs address are fundamental: processing non-Euclidean data, handling varying neighborhood sizes, and learning complex, often long-range, dependencies. For instance, the issue of heterophily, where connected nodes have dissimilar features, is a common real-world phenomenon that traditional GNNs struggle with due to their homophily assumption \cite{ma2021sim, zhu2020c3j}. Solutions like GloGNN \cite{li2022315} explicitly address this by learning global node correlations, demonstrating that effective GNN design must critically evaluate and adapt to the underlying graph properties. The pervasive nature of graph-structured data, coupled with the unique capabilities of GNNs to model these relationships, underscores their transformative potential across scientific and industrial landscapes.
+
+\subsection{Scope and Structure of the Review}
+This comprehensive literature review aims to provide a structured and critical understanding of the Graph Neural Network landscape, consolidating fragmented knowledge, identifying key research gaps, and charting future directions. Our exploration begins by tracing the evolution of GNN architectures, from early spectral and spatial methods to more advanced designs that tackle challenges like limited expressiveness, over-smoothing, and over-squashing \cite{rusch2023xev, cai2020k4b, chen2019s47, oono2019usb, peng2024t2s}. We will critically examine how innovative approaches, such as Path Neural Networks \cite{michel2023hc4} and non-convolutional models like RUM \cite{wang2024oi8}, have pushed the boundaries of expressive power, enabling GNNs to capture more intricate structural patterns than their 1-WL-limited predecessors.
+
+A significant portion of this review will delve into the methodological advancements, including techniques for handling graph heterophily \cite{li2022315, ma2021sim, zhu2020c3j, zheng2022qxr}, enhancing robustness against adversarial attacks \cite{zhang2020b0m, xu2019l8n, zgner2019bbi, zhang2020jrt, gosch20237yi, geisler2021dcq, mujkanovic20238fi, dai2022xze, dai2023tuj}, and improving the explainability of GNN predictions \cite{ying2019rza, yuan20208v3, yuan2020fnk, vu2020zkj, lucic2021p70, zhang2021wgf, agarwal2022xfp, cui2022pap, chen2024woq, bui2024zy9, luo2024euy, wang2024j6z}. For instance, the challenge of explainability, often addressed by identifying important nodes or edges, is critically re-evaluated by methods like SubgraphX \cite{yuan2021pgd}, which directly identifies intuitive subgraphs, highlighting a shift towards more human-intelligible explanations. We will also analyze the critical role of evaluation methodologies, as exemplified by studies that expose pitfalls in current link prediction benchmarks and propose more realistic settings with hard negative sampling \cite{li2023o4c}. This critical analysis will extend to identifying why certain limitations persist, often due to theoretical barriers (e.g., the inherent trade-off between local aggregation and global information capture) or practical constraints (e.g., scalability for extremely large graphs). The review will then explore the broad spectrum of applications, from recommender systems \cite{gao2022f3h} and computer vision \cite{chen2022mmu} to materials science and cybersecurity, before concluding with a discussion of emerging trends, open challenges, and promising future research directions.
+
+\label{sec:2._foundational_concepts_and_early_architectures}
+
+\section{Foundational Concepts and Early Architectures}
+The journey of Graph Neural Networks (GNNs) began with the fundamental challenge of extending deep learning paradigms, which primarily operate on Euclidean data structures like images and sequences, to the inherently non-Euclidean domain of graphs. This section delves into the initial theoretical underpinnings and architectural designs that laid the groundwork for modern GNNs, focusing on the core principles of graph representation learning, the ubiquitous message-passing paradigm, and the critical benchmark of theoretical expressiveness provided by the Weisfeiler-Leman (WL) graph isomorphism test. Understanding these foundational concepts is crucial, as the inherent limitations of early models, particularly concerning their discriminative power and propagation mechanisms, directly motivated the subsequent wave of architectural innovations and theoretical advancements. This period established the initial capabilities of GNNs while simultaneously revealing the deep theoretical and practical challenges that continue to drive research in the field, such as over-smoothing, over-squashing, and the struggle with heterophilous graphs.
+
+\subsection{Graph Representation Learning Fundamentals}
+Graph representation learning is concerned with mapping nodes, edges, or entire graphs into low-dimensional vector spaces, often referred to as embeddings, such that the structural and feature information of the original graph is preserved \cite{wu20193b0, zhou20188n6}. The primary motivation for this transformation is to enable traditional machine learning algorithms, which typically operate on vector inputs, to process and learn from complex graph-structured data. Unlike grid-like data, graphs possess irregular topologies, varying neighborhood sizes, and inherent relational information, making direct application of standard convolutional or recurrent neural networks challenging.
+
+Early approaches to graph representation learning largely relied on hand-crafted features (e.g., node degrees, clustering coefficients) or graph kernel methods \cite{garg2020z6o}. While foundational, these methods often lacked scalability, generality, and the ability to learn hierarchical representations end-to-end. The advent of deep learning spurred the development of methods that could automatically learn these representations. The goal is to produce embeddings where nodes with similar structural roles or features are close in the embedding space, facilitating downstream tasks such as node classification, link prediction, and graph classification \cite{velickovic2023p4r, wu2022ptq}. The challenge lies in designing architectures that can effectively aggregate information from a node's local neighborhood while also capturing global graph properties, balancing local fidelity with global context. This balance is critical for the expressive power and generalization capabilities of the learned representations.
+
+\subsection{The Message Passing Paradigm and Early Models}
+The core mechanism underpinning most Graph Neural Networks is the message-passing paradigm, also known as neighborhood aggregation \cite{gilmer2017neural}. In this iterative process, each node updates its representation by aggregating information (messages) from its direct neighbors and combining it with its own previous state. This process is typically repeated for a fixed number of layers, allowing information to propagate across the graph and enabling nodes to incorporate information from increasingly distant neighbors. Formally, for a node $v$ at layer $k$, its new representation $h\_v^{(k+1)}$ is computed as:
+$$h\_v^{(k+1)} = \text{UPDATE}^{(k)}\left(h\_v^{(k)}, \text{AGGREGATE}^{(k)}(\{h\_u^{(k)} \mid u \in \mathcal{N}(v)\})\right)$$
+where $\mathcal{N}(v)$ denotes the neighbors of node $v$.
+
+Early influential GNN architectures largely adopted this message-passing framework, albeit with different aggregation and update functions. Graph Convolutional Networks (GCNs) \cite{kipf2016semi} emerged as a prominent early model, inspired by spectral graph theory but implemented as a localized spatial convolution. GCNs simplify the aggregation by averaging neighbor features and applying a linear transformation followed by a non-linearity. GraphSAGE \cite{hamilton2017inductive} further popularized the spatial perspective, introducing an inductive framework that learns aggregation functions (e.g., mean, LSTM, pooling) to generate embeddings for unseen nodes. Graph Attention Networks (GATs) \cite{velickovic2017graph} introduced an attention mechanism, allowing nodes to assign different weights to their neighbors based on their features, thereby learning more flexible aggregation patterns.
+
+Despite their initial success, these early message-passing GNNs faced several inherent limitations. A critical issue is \textbf{over-smoothing}, where node representations become indistinguishable as the number of GNN layers increases \cite{rusch2023xev, cai2020k4b, chen2019s47, oono2019usb, peng2024t2s}. This occurs because repeated averaging of neighbor features causes node embeddings to converge to a subspace, losing their discriminative power. This problem is exacerbated in dense graphs and limits the effective depth of GNNs. Another challenge is \textbf{over-squashing}, an information bottleneck that makes it difficult for messages to propagate effectively over long distances \cite{alon2020fok}. As information from an exponentially growing receptive field needs to be compressed into fixed-size messages at each layer, crucial long-range dependencies can be lost. Furthermore, most early GNNs implicitly assume \textbf{homophily}, meaning connected nodes tend to have similar features or labels \cite{ma2021sim, zhu2020c3j}. This assumption causes them to perform poorly on heterophilous graphs, where connected nodes are often dissimilar \cite{zheng2022qxr}. The aggregation of dissimilar features can lead to noisy or misleading representations.
+
+These limitations spurred significant research into alternative propagation mechanisms and architectural designs. For instance, the Random Walk with Unifying Memory (RUM) network \cite{wang2024oi8} proposes a fundamentally \textit{non-convolutional} approach, using random walk trajectories processed by RNNs to generate node representations. This departure from iterative neighborhood aggregation is shown to jointly alleviate limited expressiveness, over-smoothing, and over-squashing by providing a different information flow mechanism that doesn't rely on local averaging. Similarly, the FRactional-Order graph Neural Dynamical network (FROND) framework \cite{kang2024fsk} introduces fractional calculus into continuous GNNs. By replacing integer-order differential equations with Caputo fractional derivatives, FROND captures non-local and memory-dependent dynamics, inherently mitigating over-smoothing through a slow algebraic rate of convergence to stationarity, contrasting with the exponentially swift convergence of Markovian integer-order models. This highlights an evolutionary trend towards more sophisticated propagation models that move beyond instantaneous, local updates. The GloGNN model \cite{li2022315} addresses the homophily assumption by learning global node correlations through a signed coefficient matrix, demonstrating that effective GNN design must critically evaluate and adapt to the underlying graph properties, rather than relying solely on local message passing.
+
+\subsection{Theoretical Expressiveness: The Weisfeiler-Leman Test}
+A critical aspect of evaluating GNNs is their theoretical expressive power, particularly their ability to distinguish between non-isomorphic graphs. The Weisfeiler-Leman (WL) graph isomorphism test provides a widely accepted benchmark for this discriminative power \cite{weisfeiler1968reduction}. The 1-dimensional WL (1-WL) test, also known as the color refinement algorithm, iteratively updates node "colors" (labels) based on the multiset of colors of their neighbors. If two graphs cannot be distinguished by the 1-WL test, they are considered 1-WL equivalent.
+
+A significant theoretical finding established that many standard message-passing GNNs, including GCNs and GraphSAGE, are at most as powerful as the 1-WL test in distinguishing non-isomorphic graphs \cite{xu2018c8q, morris20185sd, garg2020z6o}. This means that if the 1-WL test cannot differentiate two graphs, these GNNs also cannot, regardless of their learned parameters. This theoretical limitation is a major bottleneck, as the 1-WL test is known to be unable to distinguish many common non-isomorphic graphs, such as certain regular graphs or graphs that differ only in specific substructure counts (e.g., cycle sizes) \cite{chen2020e6g, oono2019usb}. This theoretical gap prevents 1-WL equivalent GNNs from solving graph problems that require a finer understanding of graph topology.
+
+This limitation sparked an "arms race" in GNN research, driving the development of more expressive architectures. One direction involved designing \textbf{higher-order GNNs} that mimic higher-dimensional WL tests (e.g., k-WL tests), which consider k-tuples of nodes. While theoretically more powerful, these k-GNNs often incur significantly higher computational complexity, limiting their practical applicability \cite{morris20185sd}.
+
+A more practical and influential direction has been the development of GNNs that leverage richer structural information. Path Neural Networks (PathNNs) \cite{michel2023hc4} represent a significant advancement in this regard. By explicitly encoding and aggregating information from various paths emanating from each node, PathNNs move beyond local neighborhood information. Crucially, the introduction of "annotated sets of paths," where nodes within paths are recursively annotated with hashes of their respective annotated path sets of shorter lengths, allows PathNNs to achieve significantly higher expressive power. Variants like \texttt{˜AP} (All Simple Paths with annotations) have been theoretically and empirically shown to distinguish graphs that are even 3-WL indistinguishable, far surpassing the 1-WL bottleneck of traditional GNNs. However, this enhanced expressiveness comes with a trade-off: finding all simple paths is NP-hard, necessitating approximations (e.g., fixed path length $K$) and careful design to manage computational complexity.
+
+Another approach to overcome the WL limitation is to fundamentally alter the message-passing mechanism. The Random Walk with Unifying Memory (RUM) network \cite{wang2024oi8}, by being entirely non-convolutional and relying on random walk trajectories, is theoretically shown to be more expressive than the WL isomorphism test. It can distinguish non-isomorphic graphs that WL-equivalent GNNs cannot, such as those differing in cycle sizes or radius. This demonstrates that breaking from the standard convolutional aggregation paradigm can lead to architectures with superior discriminative power. The evolution of GNNs, therefore, reflects a continuous effort to overcome the theoretical limitations imposed by the WL test, balancing the need for higher expressiveness with practical considerations of computational efficiency and scalability.
+
+\label{sec:3._enhancing_expressiveness_and_overcoming_early_limitations}
+
+\section*{3. Enhancing Expressiveness and Overcoming Early Limitations}
+The initial success of Graph Neural Networks (GNNs) in extending deep learning to graph-structured data was quickly met with the identification of fundamental limitations that hindered their representational power, robustness, and applicability to real-world complexities. Early GNNs, largely constrained by the expressive power of the 1-Weisfeiler-Leman (1-WL) test, struggled to distinguish between many non-isomorphic graphs, thereby limiting their ability to capture intricate structural patterns \cite{xu2018c8q, morris20185sd}. Furthermore, the iterative message-passing paradigm, while intuitive, introduced pathologies such as over-smoothing, where node representations become indistinguishable in deep models, and over-squashing, which impedes the propagation of long-range dependencies \cite{rusch2023xev, alon2020fok}. Critically, the implicit homophily assumption, prevalent in many early designs, rendered these models ineffective on heterophilous graphs, where connected nodes often exhibit dissimilar features or labels \cite{ma2021sim, zhu2020c3j}.
+
+This section delves into the crucial advancements that propelled GNNs beyond these early constraints, marking a significant evolutionary phase in the field. It explores the development of sophisticated message-passing mechanisms and higher-order architectures designed to enhance representational power, moving beyond the 1-WL bottleneck. A substantial focus is placed on the innovative strategies devised to mitigate the over-smoothing and over-squashing problems, enabling the construction of deeper, more effective GNNs. Finally, it examines the critical challenge of adapting GNNs to diverse graph structures, particularly those exhibiting heterophily, thereby broadening their applicability to the complex and varied topologies found in real-world datasets \cite{wu2022ptq, zhang20222g3, wang2023zr0}. These advancements collectively represent an "arms race" to build more robust, expressive, and versatile GNNs capable of tackling the full spectrum of graph learning tasks.
+
+\subsection*{3.1. Higher-Order and Advanced Message Passing Mechanisms}
+The inherent limitation of many standard message-passing GNNs to the expressive power of the 1-Weisfeiler-Leman (1-WL) test became a significant theoretical bottleneck, preventing them from distinguishing common non-isomorphic graphs and capturing complex substructures \cite{xu2018c8q, morris20185sd}. This limitation spurred an intense research effort to develop higher-order and more advanced message-passing mechanisms that could surpass the 1-WL boundary.
+
+One prominent direction involves explicitly leveraging path information within the graph. Path Neural Networks (PathNNs) \cite{michel2023hc4} represent a notable advancement in this area. Unlike traditional GNNs that aggregate information from direct neighbors, PathNNs encode and aggregate information from various paths emanating from each node. Their core innovation lies in the use of "annotated sets of paths," where nodes within a path are recursively annotated with hashes of their shorter path sets. This hierarchical structural encoding allows PathNNs to achieve significantly higher expressive power. Specifically, variants like \texttt{˜AP} (All Simple Paths with annotations) have been theoretically and empirically demonstrated to distinguish graphs that are even 3-WL indistinguishable, a substantial leap beyond the 1-WL capabilities of most GNNs \cite{michel2023hc4}. However, this enhanced expressiveness comes with a practical trade-off: finding all simple paths is an NP-hard problem, necessitating approximations such as fixing a maximum path length $K$, which can limit the model's ability to capture extremely long-range dependencies or scale to very dense graphs. The computational complexity of path enumeration remains a significant practical constraint for these highly expressive models.
+
+A distinct, yet equally impactful, approach to enhancing expressiveness involves fundamentally rethinking the message-passing paradigm itself. The Random Walk with Unifying Memory (RUM) neural network \cite{wang2024oi8} proposes an entirely non-convolutional GNN architecture. Instead of iterative neighborhood aggregation, RUM stochastically samples finite-length random walks for each node. It then employs an RNN (specifically, GRU) to merge "semantic representations" (node embeddings along the walk) with "topological environments" (captured by a novel "anonymous experiment" function that labels nodes based on their unique traversal order). This departure from the standard convolutional aggregation allows RUM to overcome the 1-WL test's limitations, demonstrating the ability to distinguish non-isomorphic graphs that differ in properties like cycle sizes or radius, which are problematic for WL-equivalent GNNs \cite{wang2024oi8}. The theoretical underpinnings suggest that RUM's expressiveness stems from its ability to process sequences of node features and their unique topological context along walks, rather than relying solely on local multiset aggregation. While RUM offers a compelling alternative, its theoretical proofs for expressiveness rely on assumptions about the universality and injectivity of its internal functions, and its reliance on RNNs for walk processing introduces a different set of computational considerations compared to simple aggregators.
+
+These advancements highlight a critical evolutionary trend: moving beyond mere aggregation of neighbor features to incorporate richer structural contexts, whether through explicit path enumeration or dynamic random walk explorations. The trade-off between theoretical expressiveness and practical computational feasibility remains a central challenge, pushing researchers to develop more efficient approximation schemes and novel architectural designs that can balance these competing demands \cite{chen2022mmu, dwivedi20239ab}.
+
+\subsection*{3.2. Tackling Over-smoothing and Enabling Deep GNNs}
+The promise of deep learning lies in its ability to learn hierarchical representations through many layers. However, for GNNs, increasing depth often leads to a severe degradation in performance due to the over-smoothing problem \cite{rusch2023xev, cai2020k4b, chen2019s47, oono2019usb}. Over-smoothing occurs when repeated aggregation of neighbor features causes node representations to converge to a single point in the embedding space, making them indistinguishable and losing their discriminative power. This phenomenon is particularly acute in dense graphs and effectively limits the practical depth of GNNs to a few layers. Closely related is the over-squashing problem, an information bottleneck where the fixed-size messages in each layer struggle to compress and propagate information from an exponentially growing receptive field, leading to a loss of crucial long-range dependencies \cite{alon2020fok}.
+
+To overcome these fundamental barriers, researchers have explored diverse strategies. One line of work focuses on architectural modifications inspired by deep learning in other domains, such as incorporating residual connections (e.g., GCNII \cite{chen2020simple}) or skip connections \cite{li2021orq, liu2020w3t, zeng2022jhz}. These mechanisms help preserve initial node features and facilitate gradient flow, allowing for deeper architectures. Regularization techniques like DropEdge, which randomly removes edges during training, also help by preventing over-reliance on local neighborhoods and diversifying information paths \cite{rong2019dropedge}.
+
+More fundamentally, novel propagation mechanisms have been proposed to inherently mitigate over-smoothing. The Random Walk with Unifying Memory (RUM) network \cite{wang2024oi8}, by adopting a non-convolutional, random walk-based approach, offers a joint remedy to over-smoothing and over-squashing. Unlike convolutional GNNs where the expected Dirichlet energy (a measure of smoothness) diminishes with depth, RUM's expected Dirichlet energy is theoretically shown to not diminish even with long walks. This implies that node representations do not necessarily converge to a single point, thus attenuating over-smoothing. Furthermore, RUM is shown to decay slower in inter-node Jacobian compared to convolutional counterparts, which helps mitigate the over-squashing problem by improving gradient flow for long-range dependencies \cite{wang2024oi8}. This approach suggests that by moving away from local, iterative averaging, GNNs can maintain distinct node identities while integrating global context.
+
+Another innovative direction involves integrating fractional calculus into continuous GNNs. The FRactional-Order graph Neural Dynamical network (FROND) framework \cite{kang2024fsk} replaces integer-order differential operators with Caputo fractional derivatives. Traditional continuous GNNs, based on integer-order ODEs, model instantaneous, Markovian updates, leading to exponential convergence to stationarity and thus over-smoothing. FROND, by contrast, introduces non-local, memory-dependent dynamics, where the entire historical trajectory of node features influences their update. Theoretically, FROND's non-Markovian random walk interpretation leads to an algebraic (slower) rate of convergence to stationarity, inherently mitigating over-smoothing \cite{kang2024fsk}. This framework generalizes existing continuous GNNs and has been shown to consistently improve performance by capturing complex, memory-dependent graph dynamics. The use of numerical FDE solvers, however, introduces computational considerations that need careful management. Both RUM and FROND exemplify a shift towards more sophisticated, theoretically grounded propagation models that move beyond simple local averaging, enabling the development of truly deep and effective GNNs.
+
+\subsection*{3.3. Adapting to Diverse Graph Structures and Heterophily}
+A foundational assumption in many early GNNs is homophily, which posits that connected nodes tend to share similar features or labels \cite{ma2021sim}. While this holds true for many social and citation networks, real-world graphs often exhibit heterophily, where connected nodes are dissimilar \cite{zhu2020c3j, zheng2022qxr}. Traditional message-passing GNNs, by aggressively smoothing features from neighbors, perform poorly on heterophilous graphs because aggregating dissimilar information can lead to noisy or misleading node representations. Adapting GNNs to these diverse and complex graph structures, particularly those with strong heterophily, has become a critical challenge.
+
+Initial attempts to address heterophily often involved modifying the aggregation scheme or expanding the receptive field. Some methods leverage both low-pass (smoothing) and high-pass (emphasizing differences) filters, or dynamically adjust aggregation weights based on node similarity \cite{gprgnn}. Others enlarge the node neighborhood to include multi-hop neighbors, hoping to find homophilous nodes further away (e.g., H2GCN, WRGAT). However, these approaches face limitations: determining optimal personalized neighborhood sizes is difficult, and they may still miss globally distant but homophilous nodes, while a naive global aggregation would be computationally prohibitive \cite{li2022315}.
+
+The GloGNN and GloGNN++ models \cite{li2022315} offer a significant advancement by performing node neighborhood aggregation from the \textit{whole set of nodes} in the graph, rather than just local or multi-hop neighbors. This allows them to capture "global homophily" that might exist between distant nodes. The core innovation lies in learning a \textbf{signed coefficient matrix Z(l)} for each layer, where Z(l)ij quantifies the importance of node $j$ to node $i$. Crucially, these coefficients can be positive (for homophilous connections) or negative (for heterophilous ones), effectively combining low-pass and high-pass filtering within a single aggregation step. This learned matrix is derived from an optimization problem and regularized by multi-hop reachabilities, incorporating both feature and topological similarity. A key strength of GloGNN is its computational efficiency: despite aggregating globally, the model transforms the aggregation equation to avoid direct computation of the dense Z(l) matrix, achieving \textit{linear time complexity} (O(k2n)) by leveraging matrix properties and the number of labels, thereby making global aggregation feasible for large graphs \cite{li2022315}. Theoretically, GloGNN proves a "grouping effect," where nodes with similar features and local structures (even if distant) will have similar coefficient and representation vectors, explaining its effectiveness.
+
+The development of models like GloGNN highlights an important shift from assuming local homophily to actively learning and leveraging global relationships, even in the presence of heterophily. This move requires not only sophisticated aggregation mechanisms but also efficient computational strategies to handle the increased scope of information integration. The challenge of adapting GNNs to diverse graph structures extends beyond heterophily to include issues like structural disparity \cite{mao202313j}, where different nodes may require different aggregation strategies, and the integration of heterogeneous information networks \cite{lv20219al, wei20246l2}. These advancements collectively underscore the ongoing effort to build GNNs that are robust and flexible enough to model the intricate complexities of real-world graph data, moving beyond simplified assumptions to capture the full spectrum of relational patterns.
+
+\label{sec:4._advanced_methodologies:_robustness,_generalization,_and_efficiency}
+
+\section*{4. Advanced Methodologies: Robustness, Generalization, and Efficiency}
+The remarkable progress of Graph Neural Networks (GNNs) has been significantly driven by the development of sophisticated methodologies that address their limitations in real-world deployment. While earlier advancements focused on enhancing expressiveness and mitigating fundamental issues like over-smoothing and heterophily, the current frontier emphasizes making GNNs more robust, generalizable, and efficient. This section delves into these advanced techniques, which are crucial for transitioning GNNs from theoretical promise to practical applicability across diverse domains. It explores the evolution of self-supervised learning and pre-training, enabling GNNs to learn from vast amounts of unlabeled graph data and generalize to new tasks. Furthermore, it examines the emergence of prompt-based adaptation, a paradigm shift for efficient transfer learning, including the integration of multi-modal information with large language models. Critical concerns regarding GNN robustness against adversarial attacks and their resilience to inherent data imperfections are also addressed, highlighting the ongoing "arms race" between attackers and defenders. Finally, the section investigates geometric and equivariant GNNs, which are specifically designed to respect physical symmetries and incorporate spatial information, proving indispensable for applications in fields like molecular modeling and physics simulations. These advanced methodologies collectively aim to equip GNNs with the necessary capabilities for reliable and effective operation in complex, dynamic, and often imperfect real-world environments \cite{wu2022ptq, zhang20222g3, velickovic2023p4r}.
+
+\subsection*{Self-Supervised Learning and Pre-training Strategies}
+The success of deep learning models in other domains, particularly in natural language processing and computer vision, has been heavily reliant on large-scale pre-training using self-supervised learning (SSL) objectives, followed by fine-tuning on downstream tasks. This paradigm has proven instrumental in improving generalization and addressing data scarcity, and GNNs are increasingly adopting similar strategies \cite{xie2021n52}. The motivation stems from the fact that labeled graph data is often expensive or difficult to obtain, while unlabeled graph structures are abundant. Self-supervised learning for GNNs typically involves creating auxiliary tasks that allow the model to learn meaningful node or graph representations without explicit human annotations.
+
+Early approaches to pre-training GNNs focused on tasks like predicting node attributes, reconstructing graph structure (e.g., edges or subgraphs), or maximizing mutual information between node embeddings and their contexts \cite{hu2019r47, lu20213kr}. Generative pre-training, exemplified by models like GPT-GNN \cite{hu2020u8o}, aims to generate graph structures or node features, thereby learning a comprehensive understanding of graph topology and attributes. More recently, contrastive learning has emerged as a dominant paradigm, where GNNs learn by maximizing agreement between different augmented views of the same node or graph, while minimizing agreement with negative samples \cite{zhang20211dl}. This involves creating multiple perturbed versions of a graph (e.g., via edge dropping, feature masking, or subgraph sampling) and training the GNN to produce similar embeddings for different views of the same entity. Such methods have shown significant promise in learning robust and transferable representations, particularly for tasks like link prediction in biomedical networks \cite{long2022l97} or enhancing feature extraction in heterogeneous information networks \cite{wei20246l2}.
+
+While SSL and pre-training offer substantial benefits in terms of generalization and data efficiency, they present unique challenges in the graph domain. The choice of graph augmentation strategies can significantly impact the quality of learned representations, and designing augmentations that preserve essential semantic or structural information while introducing sufficient perturbation remains an active research area \cite{zhao2020bmj}. Furthermore, the computational cost of pre-training on very large graphs can be prohibitive, necessitating scalable architectures and training strategies \cite{vasimuddin2021x7c}. The "task-agnostic" nature of many pre-training objectives might also lead to a mismatch with specific downstream tasks, requiring careful fine-tuning or more task-aware pre-training designs. For instance, pre-training for molecular property prediction often requires domain-specific inductive biases, as seen in models like Mole-BERT \cite{xia2023bpu}. The evolution of these strategies reflects a continuous effort to balance the generality of learned representations with the specificity required for high performance on diverse real-world applications.
+
+\subsection*{Prompt-based Adaptation and Multi-modal Learning}
+Building upon the success of pre-trained GNNs, prompt-based adaptation has emerged as a powerful paradigm for efficient transfer learning, particularly for few-shot or low-resource scenarios. Inspired by the success of prompt engineering in Large Language Models (LLMs), this approach aims to adapt a pre-trained GNN to diverse downstream tasks by formulating the task as a "prompt" rather than requiring extensive fine-tuning of all model parameters. This significantly reduces the number of trainable parameters and accelerates adaptation, making GNNs more efficient for real-world deployment across a multitude of tasks \cite{sun2022d18, fang2022tjj}.
+
+Prompt tuning for GNNs typically involves adding a small, learnable "prompt" module (e.g., a set of virtual nodes, edges, or feature vectors) to the input graph or intermediate layers of a pre-trained GNN. This prompt is then optimized for a specific downstream task, guiding the pre-trained model to extract relevant information without altering its core learned representations. Models like GPPT \cite{sun2022d18} and GraphPrompt \cite{liu2023ent} demonstrate how this strategy can achieve competitive performance with full fine-tuning while being significantly more parameter-efficient. The flexibility of prompting also extends to multi-task learning, where a single pre-trained GNN can be adapted to multiple objectives using different prompts \cite{sun2023vsl}.
+
+A particularly exciting and rapidly developing direction is the integration of GNNs with large language models (LLMs) for multi-modal learning. This addresses the limitation that GNNs primarily operate on graph topology and node features, often lacking the rich semantic understanding that LLMs possess. By leveraging LLMs, GNNs can incorporate textual descriptions, external knowledge, or even user queries to enhance their understanding of graph entities and relationships. For instance, GNNs can be used to process graph structures, while LLMs interpret associated text, with prompt-based interfaces facilitating their interaction. This synergy enables tasks like knowledge graph completion with natural language queries, text-guided graph neural networks for 3D instance segmentation \cite{huang2021lpu}, or even learning language with extremely weak text supervision on graphs \cite{li202444f}. Recent work explores how LLMs can even improve the adversarial robustness of GNNs by providing semantic context for defense strategies \cite{zhang2024370}. The Hybrid-LLM-GNN framework, for example, integrates LLMs and GNNs for enhanced materials property prediction, demonstrating the power of combining symbolic and structural reasoning \cite{li2024gue}. However, challenges remain in effectively aligning the discrete, structural nature of graphs with the continuous, semantic space of language models, and in designing prompts that are robust and generalizable across diverse multi-modal tasks \cite{castroospina2024iy2}. The interpretability of such hybrid models also becomes more complex, as disentangling the contributions of graph structure and linguistic prompts is non-trivial.
+
+\subsection*{Robustness to Adversarial Attacks and Data Imperfections}
+The deployment of GNNs in critical applications, such as cybersecurity \cite{mitra2024x43, bilot20234ui}, fraud detection \cite{duan2024que}, and medical diagnostics \cite{abadal2024w7e}, necessitates strong guarantees of robustness against adversarial attacks and resilience to inherent data imperfections. This area has become an intense "arms race" between attackers seeking to compromise GNN integrity and defenders striving to build more secure models \cite{dai2022hsi, zhang20222g3}.
+
+Adversarial attacks on GNNs can be broadly categorized into poisoning attacks (at training time) and evasion attacks (at inference time). Poisoning attacks aim to inject malicious nodes or perturb graph structures and features in the training data to degrade model performance or induce specific misclassifications \cite{zhang2020b0m, zou2021qkz}. Backdoor attacks, a specific type of poisoning, embed hidden triggers in the training graph such that a GNN behaves maliciously only when these triggers are present in the input \cite{dai2023tuj}. Evasion attacks, on the other hand, involve subtly perturbing the graph structure or node features of a test instance to cause misclassification without altering the model itself \cite{zgner2019bbi, xu2019l8n}. The non-Euclidean nature of graph data makes these attacks particularly challenging to detect and defend against, as small, imperceptible changes in topology can have cascading effects through message passing.
+
+Defense strategies against adversarial attacks include adversarial training \cite{gosch20237yi}, where models are trained on adversarially perturbed graphs to improve their resilience. Robust aggregation mechanisms, which filter out noisy or malicious messages, and certified robustness methods, which provide provable guarantees on model predictions within a certain perturbation budget, are also actively researched \cite{xia2024xc9, abbahaddou2024bq2}. Graph structure learning, where the GNN learns to adaptively refine or prune its input graph, can also enhance robustness by mitigating the impact of malicious edges \cite{jin2020dh4}. However, a critical analysis reveals that many proposed defenses are evaluated against simplified attack models or specific perturbation types, and their effectiveness against adaptive, stronger attacks remains questionable \cite{mujkanovic20238fi}. There is a clear trade-off between robustness and accuracy, where highly robust models may sacrifice some performance on clean data.
+
+Beyond adversarial attacks, GNNs must also contend with inherent data imperfections, such as noisy labels \cite{dai2022xze}, missing features, and various forms of bias. Data augmentation techniques can help improve robustness to noise \cite{zhao2020bmj}, while methods for learning with weak information \cite{liu2023v3e} or sparse labels \cite{wang2024htw} are crucial for real-world datasets. Addressing data bias, which can lead to unfair or discriminatory outcomes, is another significant concern \cite{dong2021qcg, fan2022m67}. Techniques like disentangled causal substructure learning \cite{fan2022m67} and re-balancing strategies \cite{li20245zy} aim to mitigate bias and improve fairness in GNN predictions. The challenge lies in developing methods that are simultaneously robust to diverse imperfections, computationally efficient, and maintain high predictive performance, often requiring a delicate balance between these competing objectives \cite{zhang2024ctj}.
+
+\subsection*{Geometric and Equivariant Graph Neural Networks}
+For domains where physical symmetries and spatial arrangements are paramount, such as molecular modeling, materials science, and physics simulations, standard GNNs that are merely permutation-invariant fall short. These applications demand models that are not only invariant to permutations of nodes but also \textit{equivariant} to geometric transformations (e.g., rotations, translations, reflections) of the input coordinates. Geometric and equivariant GNNs are specifically designed to incorporate these inductive biases, ensuring that the model's output transforms predictably when its input undergoes a geometric transformation \cite{han20227gn}.
+
+The core idea behind equivariant GNNs, particularly E(n)-equivariant GNNs (where E(n) is the Euclidean group in n dimensions), is to operate directly on 3D coordinates and vector features, ensuring that intermediate representations and final predictions respect the underlying symmetries of the physical system. This is achieved by designing message-passing functions that are themselves equivariant, often by using basis functions that transform correctly under rotations and translations \cite{satorras2021pzl}. For instance, models like E(n) Equivariant Graph Neural Networks \cite{satorras2021pzl} and GemNet \cite{klicpera20215fk} explicitly incorporate relative positional information and directional features, enabling them to accurately predict molecular properties or interatomic potentials \cite{batzner2021t07, reiser2022b08}. The expressive power of these models is significantly enhanced by their ability to encode geometric relationships, as demonstrated by theoretical analyses \cite{joshi20239d0}. Positional encodings, which are critical for standard GNNs to capture structural information beyond connectivity, are also adapted to be equivariant and stable in this context \cite{wang2022p2r}.
+
+The development of geometric GNNs has revolutionized applications in drug discovery \cite{jiang2020gaq, li2021v1l}, materials design \cite{fung20212kw, fang2024p34}, and protein structure prediction \cite{xia2021s85}, where the precise spatial arrangement of atoms and molecules dictates their properties and interactions. They allow for data-efficient learning, as the built-in symmetries reduce the need for extensive data augmentation to cover all possible orientations. Recent advancements include using geometric GNNs to derive descriptor-free collective variables for molecular dynamics simulations \cite{zhang202483k} and exploring their application in learning equivariant representations of neural networks themselves \cite{kofinas2024t2b}. Physics-informed GNNs, which embed physical laws directly into the network architecture, further extend this concept for applications like water distribution systems \cite{ashraf202443e} and deformation prediction \cite{saleh2024d2a}.
+
+However, geometric and equivariant GNNs are not without limitations. Their computational complexity can be higher due to the need to handle vector and tensor representations that transform correctly. The design of truly universal equivariant layers that can capture all relevant symmetries for arbitrary tasks remains an open challenge. Furthermore, while they excel at geometric tasks, their benefits might be less pronounced in purely topological or abstract graph problems. The question of whether high-degree representations are always necessary in equivariant GNNs is also being actively investigated, suggesting potential for more efficient designs \cite{cen2024md8}. Despite these challenges, the ability of equivariant GNNs to bridge the gap between abstract graph structures and concrete physical realities marks a significant step towards more physically consistent and powerful graph learning models \cite{shi2024g4z}.
+
+\label{sec:5._trustworthy_gnns:_explainability,_fairness,_and_privacy}
+
+\section*{5. Trustworthy GNNs: Explainability, Fairness, and Privacy}
+The increasing deployment of Graph Neural Networks (GNNs) in sensitive and high-stakes applications, ranging from healthcare and finance to cybersecurity, necessitates a paramount focus on their trustworthiness. Beyond mere predictive accuracy, users and stakeholders demand models that are explainable, fair, and privacy-preserving. This section delves into the burgeoning research dedicated to instilling these critical attributes into GNNs, acknowledging that their responsible deployment hinges on addressing these multifaceted challenges \cite{dai2022hsi, zhang20222g3}. Explainability aims to demystify GNN predictions, fostering transparency and user confidence by revealing the underlying reasoning. Fairness seeks to mitigate biases inherent in data and model architectures, ensuring equitable outcomes across different demographic groups. Concurrently, privacy-preserving techniques are crucial for safeguarding sensitive graph data during training and inference, upholding ethical standards and regulatory compliance. These three pillars of trustworthiness are often interconnected, presenting complex trade-offs where enhancing one aspect might inadvertently impact another, thereby creating an intricate research landscape that requires careful navigation and innovative solutions \cite{wang20214ku}.
+
+\subsection*{Explainable Graph Neural Networks (XGNNs)}
+The black-box nature of deep learning models, including GNNs, poses a significant barrier to their adoption in domains requiring transparency and accountability. Explainable Graph Neural Networks (XGNNs) aim to bridge this gap by providing insights into \textit{why} a GNN makes a particular prediction. Early efforts in GNN explainability primarily focused on identifying important nodes, edges, or node features that contribute most to a prediction \cite{ying2019rza}. GNNExplainer \cite{ying2019rza}, for instance, identifies a compact subgraph and a small subset of features that are crucial for a specific prediction by maximizing the mutual information between the original graph and the explanation. While foundational, these methods often yield disconnected sets of nodes or edges, which can be less intuitive for human understanding.
+
+A significant advancement in this direction is the direct identification of crucial subgraphs as explanations. SubgraphX \cite{yuan2021pgd} proposes a novel framework that employs Monte Carlo Tree Search (MCTS) to efficiently explore the vast space of possible subgraphs and utilizes Shapley values from cooperative game theory to quantify subgraph importance. This approach inherently captures interactions among different graph structures, providing more coherent and human-intelligible explanations compared to merely highlighting individual components. Similarly, ProtGNN \cite{zhang2021wgf} aims for self-explaining GNNs by learning prototypes that represent common graph patterns, offering model-level insights akin to XGNN \cite{yuan20208v3}, which generates general graph patterns for explanations. More recently, methods like \cite{bui2024zy9} propose structure-aware interaction indices, while \cite{luo2024euy} focuses on inductive and efficient explanations, addressing scalability for larger graphs. The challenge of explaining GNNs for specific applications, such as connectome-based brain disorder analysis, has led to specialized interpretable GNNs \cite{cui2022pap}. Counterfactual explanations, as explored by CF-GNNExplainer \cite{lucic2021p70}, provide insights by identifying minimal changes to the input graph that alter the prediction, offering a different perspective on model sensitivity.
+
+Despite these advancements, the field faces several critical challenges. Defining and evaluating the "ground truth" for GNN explanations remains an open problem, as highlighted by \cite{agarwal2022xfp} and critically examined by \cite{chen2024woq}, which questions how interpretable interpretable GNNs truly are. The trade-off between explanation fidelity (how accurately the explanation reflects the model's true reasoning) and human interpretability (how easily a human can understand and trust the explanation) is persistent. Furthermore, the computational cost of generating explanations, especially for complex models or large graphs, can be prohibitive, often necessitating approximation techniques like those in SubgraphX \cite{yuan2021pgd}. The theoretical gaps preventing a universal framework for GNN explainability stem from the inherent complexity of graph data and the non-linear, iterative nature of message passing, making it difficult to attribute predictions to specific input components without simplifying assumptions. Future directions include developing more robust evaluation metrics, exploring global interactive patterns \cite{wang2024j6z}, and integrating causal reasoning to identify invariant rationales \cite{wu2022vcx}.
+
+\subsection*{Fairness and Bias Mitigation in GNNs}
+The pervasive use of GNNs in decision-making systems raises significant concerns about fairness, as biases embedded in training data or model architectures can lead to discriminatory outcomes. Ensuring fairness in GNNs is crucial for ethical AI deployment, particularly in sensitive applications like social recommendation \cite{fan2019k6u, sharma2022liz} or credit risk assessment \cite{liu2024sbb}. The sources of bias in GNNs are manifold, including disparities in node features, imbalanced graph structures, and the inherent homophily assumption of many GNNs, which can amplify existing societal biases \cite{ma2021sim, zhu2020c3j}.
+
+Research in fair GNNs often distinguishes between group fairness (ensuring similar outcomes for predefined demographic groups) and individual fairness (ensuring similar outcomes for similar individuals). Dong et al. \cite{dong202183w} address individual fairness for GNNs using a ranking-based approach, aiming to ensure that similar nodes (based on features and structure) receive similar predictions. Another critical aspect is mitigating data bias, as explored by EDITS \cite{dong2021qcg}, which models and mitigates data bias for GNNs. This involves techniques that either preprocess the graph to reduce bias, modify the GNN training process, or post-process the model's outputs. For scenarios with limited sensitive attribute information, Dai and Wang \cite{dai2020p5t} propose methods to learn fair GNNs, highlighting the practical challenge of sensitive attribute availability.
+
+More advanced techniques focus on disentangling causal factors to mitigate bias. Fan et al. \cite{fan2022m67} propose debiasing GNNs via learning disentangled causal substructures, aiming to separate the influence of sensitive attributes from task-relevant features. Similarly, re-balancing strategies, as rethought by Li et al. \cite{li20245zy}, offer ways to adjust the influence of different samples or groups during training to achieve fairer outcomes. Wang et al. \cite{wang2022531} address fairness by mitigating sensitive attribute leakage, preventing the model from inadvertently using protected information. The challenge of structural disparity in GNNs, where different nodes or communities might be treated unequally due to graph topology, is demystified by Mao et al. \cite{mao202313j}, who question whether a "one size fits all" approach is suitable.
+
+A critical analysis reveals that achieving fairness often involves trade-offs with other desirable properties, such as accuracy or utility. Luo et al. \cite{luo20240ot} explicitly address this by proposing FUGNN, a framework for harmonizing fairness and utility in GNNs. Methodological limitations include the difficulty in universally defining and measuring fairness across diverse tasks and datasets, as different fairness metrics can sometimes contradict each other. Furthermore, many debiasing techniques assume access to sensitive attribute information, which may not always be available or legally permissible. The theoretical gaps often lie in developing robust causal inference frameworks for graph data that can effectively identify and remove confounding biases without sacrificing predictive power. The generalizability of debiasing methods across different graph types and tasks also remains an active research area.
+
+\subsection*{Privacy-Preserving Graph Neural Networks}
+The processing of graph-structured data by GNNs inevitably involves sensitive information, such as personal connections in social networks, financial transactions, or medical records. This necessitates robust privacy-preserving mechanisms to prevent data leakage and ensure ethical use. The privacy landscape for GNNs is characterized by an "arms race" between sophisticated privacy attacks and defensive strategies. Attackers can attempt to infer sensitive node attributes, identify the existence of specific links, or even reconstruct parts of the graph structure from model outputs or gradients \cite{he2020kz4}. For instance, link stealing attacks \cite{he2020kz4} demonstrate how an adversary can infer the existence of links from a trained GNN, while backdoor attacks \cite{zhang2020b0m, dai2023tuj} can be crafted to embed hidden triggers that, when activated, reveal sensitive information or induce specific malicious behaviors without being easily noticeable.
+
+To counter these threats, several privacy-preserving techniques have been adapted for GNNs. Differential Privacy (DP) is a prominent approach that adds carefully calibrated noise to data, gradients, or model parameters during training to provide provable privacy guarantees. While effective, DP often comes at the cost of utility, as increased privacy typically leads to decreased model accuracy, a trade-off that is particularly challenging for GNNs due to their reliance on structural information. Another promising direction is Federated Learning (FL), where GNNs are trained collaboratively across multiple decentralized clients without sharing raw data, only exchanging model updates \cite{liu2022gcg, he2021x8v}. This distributed paradigm offers a strong baseline for privacy, but FL systems can still be vulnerable to inference attacks on model updates or through malicious clients. Cooperative weighting in federated GNNs, as explored by \cite{hausleitner2024vw0}, attempts to enhance privacy and utility in distributed settings.
+
+Beyond DP and FL, cryptographic techniques like Homomorphic Encryption (HE) and Secure Multi-Party Computation (SMC) offer stronger privacy guarantees by enabling computations on encrypted data. However, these methods are notoriously computationally expensive, making them impractical for large-scale GNN training and inference in many real-world scenarios. The methodological limitations of current privacy-preserving GNNs include the significant computational overhead of cryptographic methods, the inherent utility-privacy trade-off in DP, and the persistent challenge of ensuring robustness against sophisticated inference attacks in FL settings. The theoretical gaps often relate to developing efficient and scalable privacy-preserving primitives that can handle the complex, non-Euclidean operations of GNNs without prohibitive performance degradation. Future research needs to focus on designing hybrid approaches that combine the strengths of different techniques, such as integrating DP with FL, or developing novel GNN architectures that are inherently more privacy-preserving by design, thereby fostering greater confidence and ethical use of GNN technology in real-world scenarios.
+
+\label{sec:6._key_challenges_and_open_problems}
+
+\section*{6. Key Challenges and Open Problems}
+Despite the remarkable advancements and widespread adoption of Graph Neural Networks (GNNs) across diverse domains, from recommender systems \cite{gao2022f3h} and drug discovery \cite{jiang2020gaq} to urban computing \cite{jin2023e18} and cybersecurity \cite{mitra2024x43}, the field continues to grapple with several fundamental and persistent challenges. These challenges are not merely incremental hurdles but often represent deep theoretical and practical limitations that hinder the full potential and reliable deployment of GNNs in real-world, complex scenarios \cite{khemani2024i8r, wu2022ptq}. This section critically analyzes these key challenges, encompassing the difficulties of scaling GNNs to massive and dynamic graphs, the inherent limitations in their expressive power, the crucial problem of generalization to unseen graph structures and mitigating distribution shifts, and the continuous need for robust evaluation and standardized benchmarking. Addressing these open problems is paramount for fostering reliable progress and ensuring the responsible and effective application of GNN technology. Many of these issues are interconnected; for instance, enhancing expressiveness might exacerbate scalability problems, while poor evaluation methodologies can obscure genuine advancements in generalization.
+
+\subsection*{6.1. Scalability to Large and Dynamic Graphs}
+The sheer scale and dynamic nature of many real-world graphs present significant computational and memory challenges for GNNs. Traditional message-passing GNNs often incur high computational costs, particularly for graphs with millions or billions of nodes and edges, as each layer requires aggregating information from expanding neighborhoods \cite{gao2022f3h}. This quadratic or even cubic complexity in terms of the number of nodes or edges makes direct application to massive graphs prohibitive. While sampling-based methods like GraphSAGE \cite{hamilton2017inductive} or mini-batching techniques offer practical solutions by limiting the receptive field, they often come with trade-offs in terms of information loss or approximation quality. Distributed training frameworks like DistGNN \cite{vasimuddin2021x7c} and scalable architectures such as SIGN \cite{rossi2020otv} and GNNAutoScale \cite{fey2021smn} have emerged to tackle this, but the fundamental challenge of processing the entire graph structure efficiently remains.
+
+Beyond static scalability, real-world graphs are inherently dynamic, with nodes and edges appearing, disappearing, or changing attributes over time. Effectively handling these temporal graphs is a critical open problem \cite{longa202399q, jin2023e18}. Existing dynamic GNNs often rely on snapshot-based approaches, retraining, or incremental updates, which can be computationally intensive and struggle to capture continuous temporal dependencies \cite{li2020mk1, zhang20212ke}. For instance, in applications like ETA prediction in Google Maps \cite{derrowpinion2021mwn} or traffic flow forecasting \cite{li2020fil}, the graph structure and features evolve rapidly, demanding models that can adapt in real-time without catastrophic forgetting \cite{zhou2021c3l}. While some approaches like Scalable Spatiotemporal GNNs \cite{cini2022pjy} and Spatio-Spectral GNNs \cite{geisler2024wli} attempt to address this, the trade-off between capturing fine-grained temporal dynamics and maintaining computational efficiency is a persistent hurdle. Novel non-convolutional architectures, such as Random Walk with Unifying Memory (RUM) \cite{wang2024oi8}, offer a promising direction by achieving runtime complexity agnostic to the number of edges, which could alleviate some scalability concerns. Similarly, GloGNN \cite{li2022315} demonstrates linear time complexity for global aggregation, showcasing how algorithmic innovations can unlock scalability for specific challenges like heterophily. However, a unified, efficient, and expressive framework for truly massive and continuously evolving graphs remains an active area of research.
+
+\subsection*{6.2. Persistent Issues with Expressiveness and Over-squashing}
+A foundational limitation of many GNNs, particularly message-passing variants, is their restricted expressive power, often bounded by the 1-Weisfeiler-Leman (1-WL) graph isomorphism test \cite{xu2018c8q, morris20185sd}. This means they struggle to distinguish between certain non-isomorphic graphs or capture complex structural patterns like cycles of specific lengths \cite{chen2020e6g}. This theoretical bottleneck limits their ability to learn intricate graph properties crucial for many tasks.
+
+Two related and widely recognized phenomena further compound this: over-smoothing and over-squashing. Over-smoothing occurs when node representations become increasingly similar and indistinguishable as information propagates through many GNN layers, leading to a loss of local distinctiveness \cite{oono2019usb, cai2020k4b, rusch2023xev}. This is a direct consequence of repeated neighborhood averaging, which acts as a low-pass filter \cite{zhou20213lg}. While techniques like residual connections \cite{li2021orq}, DropEdge \cite{rong2019dropedge}, or advanced propagation schemes \cite{klicpera20186xu, zeng2022jhz} aim to mitigate over-smoothing, they often do not fundamentally alter the information diffusion process that causes it. Over-squashing, on the other hand, refers to the information bottleneck that arises when aggregating information from exponentially growing receptive fields into fixed-size node embeddings, making it difficult to capture long-range dependencies \cite{alon2020fok, wu20221la}. This is particularly problematic for tasks requiring global graph understanding or interactions between distant nodes.
+
+Recent research has made strides in addressing these issues. Path Neural Networks (PathNNs) \cite{michel2023hc4} directly tackle expressiveness by leveraging path information, demonstrating the ability to distinguish graphs that are 3-WL indistinguishable, significantly surpassing the 1-WL limit. This approach, however, can incur high computational costs for enumerating paths. The Random Walk with Unifying Memory (RUM) neural network \cite{wang2024oi8} offers a novel non-convolutional paradigm that jointly remedies limited expressiveness, over-smoothing, and over-squashing. RUM is theoretically shown to be more expressive than 1-WL and to attenuate over-smoothing by maintaining non-diminishing Dirichlet energy, and it alleviates over-squashing by improving gradient flow. Similarly, the FROND framework \cite{kang2024fsk} introduces fractional calculus to continuous GNNs, enabling the capture of non-local, memory-dependent dynamics and inherently mitigating over-smoothing through algebraic convergence. Despite these innovations, the trade-off between achieving higher expressiveness and maintaining computational efficiency and robustness remains a critical challenge. The theoretical gaps persist in developing universally applicable architectures that can overcome these fundamental limitations without introducing new complexities or relying on strong assumptions.
+
+\subsection*{6.3. Generalization to Unseen Structures and Distribution Shifts}
+A crucial challenge for the real-world deployment of GNNs is their ability to generalize effectively to unseen graph structures and to maintain performance under distribution shifts. Unlike grid-structured data (e.g., images), graphs can exhibit vast topological diversity, making inductive generalization particularly difficult. A GNN trained on one set of graphs might perform poorly on graphs with different statistical properties, node feature distributions, or underlying generative mechanisms. This is especially pertinent in applications where the target graph distribution might evolve or differ significantly from the training data, such as in anomaly detection \cite{tang2022g66, chai2022nf9} or fraud detection \cite{duan2024que}.
+
+The problem of distribution shift is exacerbated in dynamic graph settings, where the evolving nature of the graph can lead to spatio-temporal distribution shifts that degrade model performance \cite{zhang2022uih}. For instance, a GNN trained for traffic prediction in one city might fail in another with different road network topology or traffic patterns. Pre-training strategies \cite{hu2019r47, hu2020u8o} and self-supervised learning techniques \cite{xie2021n52, fatemi2021dmb} have emerged as promising avenues to learn more generalizable graph representations. Methods like GPPT \cite{sun2022d18} and GraphPrompt \cite{liu2023ent} leverage pre-training and prompt tuning to enhance generalization capabilities, aiming to adapt models to new tasks or domains with minimal fine-tuning. Learning invariant representations, for example, via cluster generalization \cite{xia20247w9}, also seeks to make GNNs more robust to variations in graph structure.
+
+However, the theoretical understanding of generalization in GNNs is still nascent \cite{jegelka20222lq, ju2023prm}. Current PAC-Bayesian bounds, while providing theoretical guarantees, often rely on assumptions about graph diffusion processes that may not hold in complex real-world scenarios \cite{ju2023prm}. The "arms race" dynamic here involves developing increasingly complex models that risk overfitting to specific graph structures versus designing simpler, more robust architectures that might sacrifice some expressiveness. Furthermore, identifying and mitigating the impact of distribution shifts requires robust causal inference frameworks that can disentangle spurious correlations from true causal relationships, a challenging task in graph data. The ability of GNNs to perform out-of-distribution detection \cite{wu2023303} is also critical, allowing models to signal uncertainty when encountering novel graph patterns, thereby enhancing trustworthiness.
+
+\subsection*{6.4. The Need for Robust Evaluation and Benchmarking}
+The rapid proliferation of GNN models has unfortunately been accompanied by inconsistencies and pitfalls in evaluation methodologies, hindering fair comparisons and obscuring genuine progress. A critical analysis by Li et al. \cite{li2023o4c} highlights several key issues in link prediction evaluation: underreported performance of existing baselines due to suboptimal hyperparameter tuning, a lack of unified data splits and evaluation metrics, and the use of unrealistic "easy" negative samples that do not reflect real-world challenges. This leads to an inflated sense of advancement, where new models might appear superior simply because they are compared against weakly tuned baselines or on simplified tasks.
+
+The absence of standardized and challenging benchmarking frameworks makes it difficult to assess the true capabilities and limitations of novel GNN architectures. While efforts like Benchmarking Graph Neural Networks \cite{dwivedi20239ab} and domain-specific benchmarks such as BrainGB for brain network analysis \cite{cui2022mjr} and PowerGraph for power grids \cite{varbella20242iz} are crucial, their widespread adoption and continuous maintenance are essential. The problem of "easy" negative samples, as identified by \cite{li2023o4c}, is particularly acute in link prediction, where randomly sampled non-existent links often lack common neighbors, making them trivial to distinguish from positive links. To address this, Li et al. \cite{li2023o4c} propose the Heuristic Related Sampling Technique (HeaRT) to generate harder, more realistic negative samples, thereby providing a more robust evaluation setting.
+
+Beyond link prediction, similar issues plague other GNN tasks. For instance, in explainability, defining and evaluating the "ground truth" for explanations remains an open problem, leading to subjective assessments of interpretability \cite{agarwal2022xfp, chen2024woq}. In robustness, the effectiveness of adversarial defenses for GNNs is often evaluated under specific attack models, and their generalizability to unseen or adaptive attacks is questionable \cite{mujkanovic20238fi}. The theoretical gaps in evaluation lie in developing universally accepted metrics that are robust to dataset variations and in designing adversarial benchmarks that truly test the limits of GNN performance under realistic conditions. The continuous need for benchmarks under specific challenging conditions, such as label noise \cite{wang2024481}, underscores the ongoing demand for rigorous and standardized evaluation to ensure that reported progress is reliable and impactful.
+
+\label{sec:7._applications_and_real-world_impact}
+
+\section*{7. Applications and Real-World Impact}
+The transformative potential of Graph Neural Networks (GNNs) extends far beyond theoretical advancements, manifesting in profound and diverse real-world impacts across a multitude of domains. GNNs excel at modeling complex, interconnected data, making them uniquely suited for tasks where relationships and structural dependencies are paramount \cite{wu2022ptq, khemani2024i8r, zhou20188n6}. Their ability to learn representations by aggregating information from local neighborhoods, and increasingly from global graph structures, has enabled breakthroughs in areas previously challenging for traditional machine learning methods. This section delineates the broad utility of GNNs, showcasing their versatility in handling intricate data patterns from social interactions to molecular structures. We will explore their successful deployment in enhancing recommender systems, accelerating scientific discovery, enabling predictive learning in dynamic urban environments, and fortifying cybersecurity defenses, among other emerging applications. A critical examination of these applications reveals not only the strengths of GNNs but also the persistent challenges and trade-offs inherent in deploying them in complex, real-world settings, such as balancing expressiveness with scalability or ensuring robustness against adversarial manipulations. The continuous evolution of GNN architectures, including non-convolutional approaches like RUM \cite{wang2024oi8} and fractional-order models like FROND \cite{kang2024fsk}, further expands their applicability and addresses previous limitations, paving the way for even broader impact.
+
+\subsection*{7.1. GNNs in Recommender Systems}
+Recommender systems are a quintessential application area for GNNs, where the goal is to predict user preferences for items by modeling intricate user-item interactions and leveraging auxiliary information like social networks or item attributes \cite{gao2022f3h, wu2020dc8}. Traditional collaborative filtering methods often struggle with sparsity and cold-start problems, and their ability to capture high-order relationships is limited. GNNs naturally represent user-item interactions as a bipartite graph, allowing for the propagation of preferences and the discovery of latent patterns through message passing \cite{ying20189jc, fan2019k6u}.
+
+Early GNN-based recommender systems, such as PinSage \cite{ying20189jc}, demonstrated significant improvements by learning embeddings for millions of items and users on large-scale graphs. Subsequent advancements have focused on modeling various aspects of recommendation, including session-based recommendations where user behavior sequences are captured as dynamic graphs \cite{wu2018t43, zhang20212ke, zhang2022atq}, and incorporating knowledge graphs to enrich item representations with semantic information \cite{wang2019vol, lyu2023ao0}. The challenge of capturing complex, multi-relational interactions has led to the development of heterogeneous GNNs \cite{wang2019vol} and attention mechanisms \cite{yu2020u32, wang2020khd} to differentiate the importance of various neighbors or relationship types. For instance, \cite{chang2021yyt} and \cite{chang2023ex5} explore GNNs for sequential and bundle recommendations, respectively, highlighting their capacity to model complex dependencies beyond simple pairwise interactions.
+
+Despite their success, GNNs in recommender systems face significant challenges. Scalability to billions of users and items remains a major hurdle, often requiring sampling strategies or distributed training \cite{chen2024gbe, vasimuddin2021x7c}. The inherent homophily assumption of many GNNs can also be problematic in recommendation, as users might interact with diverse items or connect with dissimilar individuals (heterophily) \cite{ma2021sim, li2022315}. While models like GloGNN \cite{li2022315} offer solutions for heterophilous graphs by learning global homophily with linear time complexity, their integration into large-scale industrial recommender systems is still an active research area. Furthermore, the interpretability of GNN recommendations is crucial for user trust and system debugging \cite{lyu2023ao0}, yet explaining complex graph-based decisions remains an open problem. The need for robust evaluation practices, as highlighted by \cite{li2023o4c} for link prediction, is equally critical in recommender systems to ensure fair comparisons and reliable progress.
+
+\subsection*{7.2. Scientific Domains: Molecules, Materials, and Brain Networks}
+GNNs have emerged as powerful tools in scientific discovery, particularly in fields dealing with intrinsically graph-structured data such as molecular science, materials discovery, and neuroscience. In \textbf{molecular science}, GNNs are revolutionizing drug discovery and chemical property prediction. Molecules are naturally represented as graphs, with atoms as nodes and chemical bonds as edges. GNNs can learn intricate molecular fingerprints, predict properties like toxicity or solubility, and even assist in de novo drug design \cite{jiang2020gaq, carlo2024a3g, yao2024pyk}. Architectures like GemNet \cite{klicpera20215fk} and E(3)-equivariant GNNs \cite{satorras2021pzl, batzner2021t07} are designed to respect the physical symmetries of molecules, leading to more accurate and data-efficient predictions of interatomic potentials and binding affinities \cite{li2021v1l, smith2024q8n}. However, the expressiveness limitations of standard GNNs can hinder their ability to distinguish complex isomers or capture subtle quantum mechanical effects, necessitating more powerful architectures like PathNNs \cite{michel2023hc4} or those leveraging fractional calculus \cite{kang2024fsk}. Pre-training GNNs on large molecular datasets, as explored by Mole-BERT \cite{xia2023bpu}, is also a promising direction to enhance generalization.
+
+Similarly, in \textbf{materials discovery}, GNNs are accelerating the design of novel materials with desired properties. Crystal structures, amorphous materials, and alloys can be modeled as graphs, allowing GNNs to predict mechanical, electronic, or thermal properties \cite{reiser2022b08, fung20212kw, maurizi202293p}. They can predict defect formation energies \cite{fang2024zd6} or even model collective variables for molecular dynamics simulations \cite{zhang202483k}. The challenge here lies in handling diverse material compositions and complex interatomic interactions, often requiring equivariant GNNs to maintain physical consistency \cite{batzner2021t07}. The integration of GNNs with large language models (LLMs) is also emerging as a hybrid approach to leverage both structural and textual knowledge for materials property prediction \cite{li2024gue}.
+
+In \textbf{brain network analysis}, GNNs offer a novel paradigm for understanding neurological disorders and cognitive functions. The human brain can be represented as a complex network (connectome), where nodes are brain regions and edges represent structural or functional connections \cite{bessadok2021bfy, mohammadi202476q}. GNNs can analyze these networks to classify brain disorders like Alzheimer's disease \cite{cui2022pap, abuhantash202458c, abadal2024w7e}, predict disease progression, or identify biomarkers \cite{zhao2022fvg, luo2024h2k}. The unique challenges in this domain include the small sample sizes of medical datasets, the inherent noise in neuroimaging data, and the need for interpretable models to provide clinical insights \cite{cui2022pap}. Benchmarks like BrainGB \cite{cui2022mjr} are crucial for standardizing evaluation and fostering robust model development. The application of GNNs in this field often requires careful consideration of heterophily, as functionally distinct brain regions might be connected, and the dynamic nature of brain activity necessitates spatio-temporal GNNs \cite{tang2021h2z}.
+
+\subsection*{7.3. Urban Computing, Time Series, and Epidemic Modeling}
+GNNs are increasingly vital in \textbf{urban computing}, where they tackle complex spatio-temporal prediction tasks essential for smart cities \cite{jin2023e18, rahmani2023kh4}. A prime example is traffic flow forecasting, where road networks form natural graphs, and traffic conditions evolve dynamically \cite{li2020fil, wu2020hi3, zhou2024t2r}. GNNs can capture both the spatial dependencies (e.g., how traffic in one road segment affects adjacent segments) and temporal patterns (e.g., daily commutes, rush hour effects) to provide accurate predictions. Google Maps, for instance, employs GNNs for ETA prediction, demonstrating their real-world impact on navigation and logistics \cite{derrowpinion2021mwn}. However, these applications are highly susceptible to spatio-temporal distribution shifts \cite{zhang2022uih}, where models trained on one city or time period may not generalize well to others, necessitating robust generalization techniques.
+
+The broader field of \textbf{time series analysis} also benefits significantly from GNNs, particularly for multivariate time series where inter-series dependencies can be modeled as graphs \cite{jin2023ijy, wu2020hi3}. GNNs are applied to forecasting, classification, imputation (e.g., filling missing data in sensor networks \cite{cini20213l6, jing2024az0}), and anomaly detection in diverse domains, from financial markets \cite{foroutan2024nhg} to industrial IoT \cite{wu20210h4}. The dynamic nature of these relationships often requires GNNs capable of handling temporal graphs \cite{longa202399q, cini2022pjy}. The challenge lies in efficiently learning evolving graph structures and long-range temporal dependencies, which can be addressed by dynamic GNNs or by integrating concepts from fractional calculus to capture memory effects, as proposed by FROND \cite{kang2024fsk}.
+
+In the critical area of \textbf{epidemic modeling}, GNNs offer powerful tools for predictive learning in dynamic environments. Infectious disease spread can be modeled as a diffusion process over contact networks, making GNNs well-suited for forecasting disease incidence, identifying high-risk areas, and evaluating intervention strategies \cite{liu20242g6}. Causal-based GNNs, such as CausalGNN \cite{wang202201n}, explicitly model causal relationships in spatio-temporal data to improve epidemic forecasting, demonstrating the capacity of GNNs to move beyond correlation to causality. The dynamic and often uncertain nature of epidemic data, however, poses challenges for model robustness and uncertainty quantification \cite{huang2023fk1}, requiring GNNs that can adapt to rapid changes and provide reliable confidence estimates.
+
+\subsection*{7.4. GNNs in Cybersecurity and Other Emerging Fields}
+The growing complexity of cyber threats and interconnected systems has made \textbf{cybersecurity} a fertile ground for GNN applications. Networks, system logs, and user behaviors can all be represented as graphs, allowing GNNs to detect anomalies, identify vulnerabilities, and predict attacks \cite{mitra2024x43, bilot20234ui}. For instance, GNNs are used for vulnerability detection in software code by learning program semantics from abstract syntax trees or control flow graphs \cite{zhou20195xo, liu2021qyl, nguyen2021g12, hin2022g19}. They can also classify encrypted network traffic for malicious activity \cite{shen2021sbk, huoh2023i97} or detect financial fraud by analyzing transaction networks \cite{innan2023fa7, duan2024que, zandi2024dgs, liu2024sbb}. The challenge in cybersecurity lies in the adversarial nature of the domain, where attackers can actively try to evade detection by manipulating graph structures or features, necessitating robust and explainable GNNs \cite{mujkanovic20238fi, wang2024p88, xia2024xc9, li2024r82}. The need for explainability is particularly acute in this field, as security analysts require insights into \textit{why} a particular alert was triggered \cite{yuan2021pgd}.
+
+Beyond these major areas, GNNs are making inroads into numerous \textbf{other emerging fields}:
+\begin{itemize}
+    \item \textbf{Internet of Things (IoT)}: GNNs analyze sensor networks for anomaly detection, resource allocation, and predictive maintenance \cite{dong20225aw, wu20210h4}.
+    \item \textbf{Power Systems}: They are used for grid stability analysis, fault detection, and optimal power flow, leveraging the graph structure of power networks \cite{liao202120x, varbella20242iz, zhang2024ctj}.
+    \item \textbf{Wireless Communications}: GNNs optimize resource management, interference mitigation, and network configuration in complex wireless environments \cite{shen202037i, shen2022gcz, guo2022hu1, abode2024m4z, guo2024zoe}.
+    \item \textbf{Combinatorial Optimization}: GNNs are being explored to learn heuristics or even directly solve NP-hard combinatorial problems, bridging machine learning with operations research \cite{cappart2021xrp, schuetz2021cod}.
+    \item \textbf{Natural Language Processing (NLP)}: While often dominated by Transformers, GNNs are used for text classification, relation extraction, and knowledge graph completion by modeling linguistic dependencies \cite{wang2023wrg, zhang2020tdy, wang2020nbg, wu2023zm5, li202444f, wang2024nuq}.
+    \item \textbf{Computer Vision}: GNNs are increasingly integrated into computer vision tasks, from object detection and multi-object tracking \cite{wang2021mxw} to point cloud processing \cite{li2024yyl} and scene graph generation \cite{chen2022mmu}.
+    \item \textbf{Healthcare and Medical Decision Making}: Beyond brain networks, GNNs are used for drug-drug interaction prediction \cite{gnanabaskaran20245dg}, resource allocation \cite{manivannan2024830}, and customized medical decision algorithms \cite{yan2024ikq}.
+    \item \textbf{Earth Observation}: GNNs are being explored for wildfire danger prediction \cite{zhao2024e2x} and other complex spatio-temporal analyses of satellite data \cite{zhao2024g7h}.
+\end{itemize}
+The pervasive nature of graph-structured data in these diverse fields underscores the broad utility and profound impact of GNNs. The continuous development of more expressive, scalable, and robust GNN architectures will undoubtedly unlock further applications and drive innovation across science, industry, and society.
+
+\label{sec:8._conclusion:_future_directions_and_ethical_considerations}
+
+\section*{8. Conclusion: Future Directions and Ethical Considerations}
+The journey of Graph Neural Networks (GNNs) has been marked by rapid innovation, transforming our ability to model and derive insights from complex, interconnected data. From their foundational roots in spectral graph theory and message passing \cite{zhou20188n6, wu20193b0} to sophisticated architectures capable of capturing intricate relational patterns, GNNs have demonstrated unparalleled utility across diverse domains, as evidenced in recommender systems \cite{gao2022f3h}, scientific discovery \cite{reiser2022b08}, and cybersecurity \cite{mitra2024x43}. This concluding section synthesizes the current state of GNN research, highlighting both the remarkable progress and the persistent challenges. It casts a forward-looking perspective on the future trajectory of GNNs, identifying emerging trends and novel paradigms that promise to push the boundaries of their capabilities. Crucially, it emphasizes the ongoing imperative to bridge theoretical advancements with practical deployment, addressing persistent challenges like scalability, generalization, and robustness. Finally, it reiterates the critical ethical considerations inherent in developing powerful AI systems, underscoring the need for responsible AI that is not only effective but also fair, transparent, and privacy-preserving, thereby guiding future research towards impactful and ethical innovation for societal benefit.
+
+\subsection*{8.1. Emerging Trends and Novel Paradigms}
+The field of GNNs is continuously evolving, driven by the need to overcome inherent limitations and adapt to increasingly complex data landscapes. One significant emerging trend is the \textbf{multi-modal integration with large language models (LLMs)}. While GNNs excel at structural reasoning, LLMs provide powerful semantic understanding. Hybrid architectures that combine these strengths are beginning to surface, for instance, in materials property prediction where \texttt{Hybrid-LLM-GNN} leverages both structural graph data and textual descriptions \cite{li2024gue}. Similarly, research explores how GNNs can learn language with extremely weak text supervision, hinting at a synergistic future where GNNs and LLMs mutually enhance each other's capabilities in understanding complex, multi-faceted information \cite{li202444f}. This integration promises to unlock new levels of intelligence by enabling GNNs to reason over both explicit graph structures and implicit knowledge embedded in text, addressing the limitation of GNNs often being purely structure-driven.
+
+Another novel paradigm involves the application of \textbf{advanced mathematical frameworks}, notably fractional calculus, to GNN design. Traditional continuous GNNs, which model node feature evolution using integer-order differential equations, inherently assume Markovian dynamics, limiting their ability to capture long-term dependencies and memory effects \cite{kang2024fsk}. The FRactional-Order graph Neural Dynamical network (FROND) framework \cite{kang2024fsk} addresses this by employing Caputo fractional derivatives. This generalization allows GNNs to model non-local, memory-dependent dynamics, which are prevalent in real-world graphs exhibiting fractal structures or anomalous transport. Theoretically, FROND's non-Markovian random walk interpretation also leads to a slower, algebraic rate of convergence to stationarity, thereby inherently mitigating the pervasive oversmoothing problem \cite{rusch2023xev, chen2019s47} that plagues deep GNNs. This represents a fundamental shift from local, instantaneous updates to a more holistic, history-aware information propagation mechanism.
+
+Furthermore, the development of \textbf{non-convolutional GNN architectures} marks a significant departure from the prevalent message-passing paradigm. The Random Walk with Unifying Memory (RUM) neural network \cite{wang2024oi8} is a prime example, entirely foregoing convolution operators. Instead, it leverages stochastic random walks and recurrent neural networks (RNNs) to process both semantic and topological features. This approach directly addresses several fundamental limitations of convolution-based GNNs: limited expressiveness (surpassing the Weisfeiler-Lehman test \cite{xu2018c8q, morris20185sd}), over-smoothing, and over-squashing \cite{alon2020fok}. RUM's ability to distinguish non-isomorphic graphs that 1-WL equivalent GNNs cannot, coupled with its theoretical and empirical demonstration of attenuating over-smoothing and over-squashing, positions it as a powerful alternative, especially for tasks requiring deep GNNs or capturing long-range dependencies. Similarly, Path Neural Networks (PathNNs) \cite{michel2023hc4} enhance expressiveness by explicitly aggregating information from various paths, demonstrating the capacity to distinguish graphs indistinguishable by even the 3-WL algorithm through their "annotated sets of paths." While computationally intensive for all simple paths, the theoretical advancements highlight the potential of path-centric approaches to overcome the expressiveness bottleneck. These novel paradigms collectively represent a concerted effort to build more powerful, flexible, and theoretically grounded GNNs that can better model the inherent complexities of real-world graph data.
+
+\subsection*{8.2. Bridging Theory and Practice}
+Despite significant theoretical advancements and promising empirical results, a persistent challenge in GNN research lies in \textbf{bridging the gap between theoretical capabilities and practical deployment}. This involves addressing critical issues such as scalability, generalization, and robustness, which are paramount for real-world impact.
+
+\textbf{Scalability} remains a bottleneck for GNNs, particularly when dealing with massive graphs containing billions of nodes and edges, common in industrial applications like recommender systems \cite{chen2024gbe}. While approaches like \texttt{SIGN} \cite{rossi2020otv}, \texttt{GNNAutoScale} \cite{fey2021smn}, and \texttt{DistGNN} \cite{vasimuddin2021x7c} offer solutions through sampling, distributed training, or approximate aggregation, they often introduce trade-offs with model expressiveness or accuracy. For instance, \texttt{GloGNN} \cite{li2022315} addresses heterophily by performing global aggregation but achieves linear time complexity through clever matrix reordering, demonstrating that efficient, theoretically sound solutions for large-scale graphs are possible. However, the computational cost of exploring complex graph structures, such as all simple paths in \texttt{PathNNs} \cite{michel2023hc4}, still limits the practical depth or breadth of information aggregation. The non-convolutional nature of \texttt{RUM} \cite{wang2024oi8}, with its runtime complexity agnostic to the number of edges, offers a promising direction for inherent scalability.
+
+\textbf{Generalization} is another critical area, ensuring that GNNs trained on one dataset or domain perform well on unseen data or different distributions. Techniques like graph pre-training and prompt tuning (\texttt{GPPT} \cite{sun2022d18}), self-supervised learning \cite{xie2021n52}, and learning invariant representations via cluster generalization \cite{xia20247w9} are actively being explored. However, dynamic graph neural networks often struggle under spatio-temporal distribution shifts \cite{zhang2022uih}, highlighting the need for more adaptive and robust learning paradigms. Theoretical guarantees on generalization, such as improved PAC-Bayesian bounds on graph diffusion \cite{ju2023prm}, are crucial for building more reliable models.
+
+\textbf{Robustness} against adversarial attacks and noisy data is paramount, especially in sensitive applications like cybersecurity \cite{mitra2024x43} or fraud detection \cite{duan2024que}. GNNs are vulnerable to various attacks, including data poisoning and evasion attacks \cite{zhang2020b0m, zou2021qkz, dai2023tuj}, which can significantly degrade their performance \cite{mujkanovic20238fi}. Defenses range from adversarial training \cite{gosch20237yi} and robust aggregation schemes \cite{zhang2020jrt} to graph structure learning for robust GNNs \cite{jin2020dh4} and certified robustness methods \cite{xia2024xc9}. The challenge lies in developing defenses that are effective, scalable, and do not compromise model utility. Recent explorations into whether large language models can improve the adversarial robustness of GNNs \cite{zhang2024370} suggest a multi-faceted approach to this "arms race" dynamic.
+
+Finally, the very foundation of GNN evaluation needs critical re-examination. As highlighted by \texttt{Li et al.} \cite{li2023o4c}, current benchmarking practices for link prediction suffer from pitfalls like underreported baselines, inconsistent data splits, and unrealistic negative sampling. Their proposed \texttt{HeaRT} technique for generating hard, heuristic-related negative samples underscores the importance of rigorous and realistic evaluation to accurately assess model performance and drive meaningful progress. Without robust evaluation, the true capabilities and limitations of GNNs remain obscured, hindering the effective translation of theoretical gains into practical, deployable solutions.
+
+\subsection*{8.3. Ethical Considerations and Responsible AI Development}
+As GNNs become increasingly powerful and pervasive, the ethical implications of their deployment demand rigorous attention. Developing \textbf{responsible AI} is not merely a technical challenge but a societal imperative, ensuring that GNNs are not only powerful but also fair, transparent, and privacy-preserving.
+
+\textbf{Fairness} is a critical concern, especially when GNNs are applied in high-stakes domains like credit risk assessment \cite{liu2024sbb}, social recommendation \cite{fan2019k6u}, or healthcare \cite{yan2024ikq}. GNNs can inadvertently perpetuate or even amplify existing biases present in graph data, leading to discriminatory outcomes. Research efforts focus on identifying and mitigating data bias \cite{dong2021qcg}, ensuring individual fairness \cite{dong202183w}, and developing fair GNNs that account for sensitive attribute leakage \cite{dai2020p5t, wang2022531}. Approaches like learning disentangled causal substructures for debiasing \cite{fan2022m67} or re-balancing techniques \cite{li20245zy} aim to build GNNs that make equitable decisions. The \texttt{FUGNN} framework \cite{luo20240ot} explicitly seeks to harmonize fairness and utility, acknowledging the inherent trade-offs that often exist.
+
+\textbf{Transparency and Explainability} are crucial for building trust and enabling accountability, particularly in black-box GNN models. Users and stakeholders need to understand \textit{why} a GNN made a particular prediction or recommendation. While methods like \texttt{GNNExplainer} \cite{ying2019rza}, \texttt{PGM-Explainer} \cite{vu2020zkj}, and \texttt{XGNN} \cite{yuan20208v3} provide insights into node, edge, or feature importance, the concept of explaining GNN predictions via \textbf{subgraph explorations} is gaining traction. \texttt{SubgraphX} \cite{yuan2021pgd} directly identifies important connected subgraphs using Monte Carlo Tree Search and Shapley values, offering more intuitive and human-intelligible explanations by capturing structural interactions. Other works explore invariant rationales \cite{wu2022vcx} or global interactive patterns \cite{wang2024j6z} to enhance interpretability. However, evaluating the quality and faithfulness of these explanations remains an active research area \cite{agarwal2022xfp, chen2024woq}, with ongoing debates about how interpretable "interpretable" GNNs truly are.
+
+\textbf{Privacy} is another paramount concern. Graph data often contains sensitive personal information, and GNNs can be vulnerable to privacy attacks, such as link stealing \cite{he2020kz4} or reconstruction attacks. The threat of backdoor attacks \cite{zhang2020b0m, dai2023tuj} further complicates privacy, as malicious actors could embed hidden triggers to manipulate GNN behavior. Federated Graph Neural Networks \cite{he2021x8v, liu2022gcg} offer a promising direction for privacy-preserving GNN training by keeping data localized, but they introduce their own challenges in terms of model aggregation and communication overhead.
+
+Ultimately, the development of \textbf{trustworthy GNNs} encompasses these ethical considerations, alongside robustness and confidence calibration \cite{wang20214ku, zhang20222g3, dai2022hsi}. Future research must move beyond optimizing for raw performance metrics and actively integrate principles of fairness, transparency, and privacy into the core design and evaluation of GNN architectures. This holistic approach will ensure that GNNs contribute positively to societal benefit, fostering innovation that is not only powerful but also responsible and aligned with human values.
+
+\newpage
+\section*{References}
+\addcontentsline{toc}{section}{References}
+
+\begin{thebibliography}{328}
+
+\bibitem{wang2024oi8}
+Yuanqing Wang, and Kyunghyun Cho (2024). \textit{Non-convolutional Graph Neural Networks}. Neural Information Processing Systems.
+
+\bibitem{li2022315}
+Xiang Li, Renyu Zhu, Yao Cheng, et al. (2022). \textit{Finding Global Homophily in Graph Neural Networks When Meeting Heterophily}. International Conference on Machine Learning.
+
+\bibitem{kang2024fsk}
+Qiyu Kang, Kai Zhao, Qinxu Ding, et al. (2024). \textit{Unleashing the Potential of Fractional Calculus in Graph Neural Networks with FROND}. International Conference on Learning Representations.
+
+\bibitem{gao2022f3h}
+Chen Gao, Xiang Wang, Xiangnan He, et al. (2022). \textit{Graph Neural Networks for Recommender System}. Web Search and Data Mining.
+
+\bibitem{li2023o4c}
+Juanhui Li, Harry Shomer, Haitao Mao, et al. (2023). \textit{Evaluating Graph Neural Networks for Link Prediction: Current Pitfalls and New Benchmarking}. Neural Information Processing Systems.
+
+\bibitem{michel2023hc4}
+Gaspard Michel, Giannis Nikolentzos, J. Lutzeyer, et al. (2023). \textit{Path Neural Networks: Expressive and Accurate Graph Neural Networks}. International Conference on Machine Learning.
+
+\bibitem{chen2022mmu}
+Chaoqi Chen, Yushuang Wu, Qiyuan Dai, et al. (2022). \textit{A Survey on Graph Neural Networks and Graph Transformers in Computer Vision: A Task-Oriented Perspective}. IEEE Transactions on Pattern Analysis and Machine Intelligence.
+
+\bibitem{yuan2021pgd}
+Hao Yuan, Haiyang Yu, Jie Wang, et al. (2021). \textit{On Explainability of Graph Neural Networks via Subgraph Explorations}. International Conference on Machine Learning.
+
+\bibitem{dong202183w}
+Yushun Dong, Jian Kang, H. Tong, et al. (2021). \textit{Individual Fairness for Graph Neural Networks: A Ranking based Approach}. Knowledge Discovery and Data Mining.
+
+\bibitem{cappart2021xrp}
+Quentin Cappart, D. Chételat, Elias Boutros Khalil, et al. (2021). \textit{Combinatorial optimization and reasoning with graph neural networks}. International Joint Conference on Artificial Intelligence.
+
+\bibitem{dong2021qcg}
+Yushun Dong, Ninghao Liu, B. Jalaeian, et al. (2021). \textit{EDITS: Modeling and Mitigating Data Bias for Graph Neural Networks}. The Web Conference.
+
+\bibitem{li20245zy}
+Zhixun Li, Yushun Dong, Qiang Liu, et al. (2024). \textit{Rethinking Fair Graph Neural Networks from Re-balancing}. Knowledge Discovery and Data Mining.
+
+\bibitem{zhao2020bmj}
+Tong Zhao, Yozen Liu, Leonardo Neves, et al. (2020). \textit{Data Augmentation for Graph Neural Networks}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{joshi20239d0}
+Chaitanya K. Joshi, and Simon V. Mathis (2023). \textit{On the Expressive Power of Geometric Graph Neural Networks}. International Conference on Machine Learning.
+
+\bibitem{sun2022d18}
+Mingchen Sun, Kaixiong Zhou, Xingbo He, et al. (2022). \textit{GPPT: Graph Pre-training and Prompt Tuning to Generalize Graph Neural Networks}. Knowledge Discovery and Data Mining.
+
+\bibitem{derrowpinion2021mwn}
+Austin Derrow-Pinion, Jennifer She, David Wong, et al. (2021). \textit{ETA Prediction with Graph Neural Networks in Google Maps}. International Conference on Information and Knowledge Management.
+
+\bibitem{chen2020bvl}
+Yu Chen, Lingfei Wu, and Mohammed J. Zaki (2020). \textit{Iterative Deep Graph Learning for Graph Neural Networks: Better and Robust Node Embeddings}. Neural Information Processing Systems.
+
+\bibitem{zeng2022jhz}
+Hanqing Zeng, Muhan Zhang, Yinglong Xia, et al. (2022). \textit{Decoupling the Depth and Scope of Graph Neural Networks}. Neural Information Processing Systems.
+
+\bibitem{yuan20208v3}
+Haonan Yuan, Jiliang Tang, Xia Hu, et al. (2020). \textit{XGNN: Towards Model-Level Explanations of Graph Neural Networks}. Knowledge Discovery and Data Mining.
+
+\bibitem{xie2021n52}
+Yaochen Xie, Zhao Xu, Zhengyang Wang, et al. (2021). \textit{Self-Supervised Learning of Graph Neural Networks: A Unified Review}. IEEE Transactions on Pattern Analysis and Machine Intelligence.
+
+\bibitem{mitra2024x43}
+Shaswata Mitra, Trisha Chakraborty, Subash Neupane, et al. (2024). \textit{Use of Graph Neural Networks in Aiding Defensive Cyber Operations}. arXiv.org.
+
+\bibitem{zhang2021kc7}
+Muhan Zhang, and Pan Li (2021). \textit{Nested Graph Neural Networks}. Neural Information Processing Systems.
+
+\bibitem{wang2022p2r}
+Hongya Wang, Haoteng Yin, Muhan Zhang, et al. (2022). \textit{Equivariant and Stable Positional Encoding for More Powerful Graph Neural Networks}. International Conference on Learning Representations.
+
+\bibitem{lu20213kr}
+Yuanfu Lu, Xunqiang Jiang, Yuan Fang, et al. (2021). \textit{Learning to Pre-train Graph Neural Networks}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{fan2022m67}
+Shaohua Fan, Xiao Wang, Yanhu Mo, et al. (2022). \textit{Debiasing Graph Neural Networks via Learning Disentangled Causal Substructure}. Neural Information Processing Systems.
+
+\bibitem{zhang2020b0m}
+Zaixi Zhang, Jinyuan Jia, Binghui Wang, et al. (2020). \textit{Backdoor Attacks to Graph Neural Networks}. ACM Symposium on Access Control Models and Technologies.
+
+\bibitem{cui2022mjr}
+Hejie Cui, Wei Dai, Yanqiao Zhu, et al. (2022). \textit{BrainGB: A Benchmark for Brain Network Analysis With Graph Neural Networks}. IEEE Transactions on Medical Imaging.
+
+\bibitem{bui2024zy9}
+Ngoc Bui, Hieu Trung Nguyen, Viet Anh Nguyen, et al. (2024). \textit{Explaining Graph Neural Networks via Structure-aware Interaction Index}. International Conference on Machine Learning.
+
+\bibitem{liu2022a5y}
+Chuang Liu, Yibing Zhan, Chang Li, et al. (2022). \textit{Graph Pooling for Graph Neural Networks: Progress, Challenges, and Opportunities}. International Joint Conference on Artificial Intelligence.
+
+\bibitem{jin2023ijy}
+Ming Jin, Huan Yee Koh, Qingsong Wen, et al. (2023). \textit{A Survey on Graph Neural Networks for Time Series: Forecasting, Classification, Imputation, and Anomaly Detection}. IEEE Transactions on Pattern Analysis and Machine Intelligence.
+
+\bibitem{ying2019rza}
+Rex Ying, Dylan Bourgeois, Jiaxuan You, et al. (2019). \textit{GNNExplainer: Generating Explanations for Graph Neural Networks}. Neural Information Processing Systems.
+
+\bibitem{liu2020w3t}
+Meng Liu, Hongyang Gao, and Shuiwang Ji (2020). \textit{Towards Deeper Graph Neural Networks}. Knowledge Discovery and Data Mining.
+
+\bibitem{longa202399q}
+Antonio Longa, Veronica Lachi, G. Santin, et al. (2023). \textit{Graph Neural Networks for temporal graphs: State of the art, open challenges, and opportunities}. Trans. Mach. Learn. Res..
+
+\bibitem{papp20211ac}
+P. Papp, Karolis Martinkus, Lukas Faber, et al. (2021). \textit{DropGNN: Random Dropouts Increase the Expressiveness of Graph Neural Networks}. Neural Information Processing Systems.
+
+\bibitem{chang2021yyt}
+Jianxin Chang, Chen Gao, Y. Zheng, et al. (2021). \textit{Sequential Recommendation with Graph Neural Networks}. Annual International ACM SIGIR Conference on Research and Development in Information Retrieval.
+
+\bibitem{mujkanovic20238fi}
+Felix Mujkanovic, Simon Geisler, Stephan Gunnemann, et al. (2023). \textit{Are Defenses for Graph Neural Networks Robust?}. Neural Information Processing Systems.
+
+\bibitem{you2021uxi}
+Jiaxuan You, Jonathan M. Gomes-Selman, Rex Ying, et al. (2021). \textit{Identity-aware Graph Neural Networks}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{luo2024euy}
+Dongsheng Luo, Tianxiang Zhao, Wei Cheng, et al. (2024). \textit{Towards Inductive and Efficient Explanations for Graph Neural Networks}. IEEE Transactions on Pattern Analysis and Machine Intelligence.
+
+\bibitem{cui2022pap}
+Hejie Cui, Wei Dai, Yanqiao Zhu, et al. (2022). \textit{Interpretable Graph Neural Networks for Connectome-Based Brain Disorder Analysis}. International Conference on Medical Image Computing and Computer-Assisted Intervention.
+
+\bibitem{dai2022xze}
+Enyan Dai, Wei-dong Jin, Hui Liu, et al. (2022). \textit{Towards Robust Graph Neural Networks for Noisy Graphs with Sparse Labels}. Web Search and Data Mining.
+
+\bibitem{wang2023wrg}
+Kunze Wang, Yihao Ding, and S. Han (2023). \textit{Graph Neural Networks for Text Classification: A Survey}. Artificial Intelligence Review.
+
+\bibitem{khemani2024i8r}
+Bharti Khemani, S. Patil, K. Kotecha, et al. (2024). \textit{A review of graph neural networks: concepts, architectures, techniques, challenges, datasets, applications, and future directions}. Journal of Big Data.
+
+\bibitem{agarwal2022xfp}
+Chirag Agarwal, Owen Queen, Himabindu Lakkaraju, et al. (2022). \textit{Evaluating explainability for graph neural networks}. Scientific Data.
+
+\bibitem{dwivedi20239ab}
+Vijay Prakash Dwivedi, Chaitanya K. Joshi, T. Laurent, et al. (2023). \textit{Benchmarking Graph Neural Networks}. Journal of machine learning research.
+
+\bibitem{abboud2020x5e}
+Ralph Abboud, .Ismail .Ilkan Ceylan, Martin Grohe, et al. (2020). \textit{The Surprising Power of Graph Neural Networks with Random Node Initialization}. International Joint Conference on Artificial Intelligence.
+
+\bibitem{liu2023v3e}
+Yixin Liu, Kaize Ding, Jianling Wang, et al. (2023). \textit{Learning Strong Graph Neural Networks with Weak Information}. Knowledge Discovery and Data Mining.
+
+\bibitem{liu2021ee2}
+Xiaorui Liu, W. Jin, Yao Ma, et al. (2021). \textit{Elastic Graph Neural Networks}. International Conference on Machine Learning.
+
+\bibitem{balcilar20215ga}
+M. Balcilar, P. Héroux, Benoit Gaüzère, et al. (2021). \textit{Breaking the Limits of Message Passing Graph Neural Networks}. International Conference on Machine Learning.
+
+\bibitem{hu2019r47}
+Weihua Hu, Bowen Liu, Joseph Gomes, et al. (2019). \textit{Strategies for Pre-training Graph Neural Networks}. International Conference on Learning Representations.
+
+\bibitem{chamberlain2022fym}
+B. Chamberlain, S. Shirobokov, Emanuele Rossi, et al. (2022). \textit{Graph Neural Networks for Link Prediction with Subgraph Sketching}. International Conference on Learning Representations.
+
+\bibitem{reiser2022b08}
+Patrick Reiser, Marlen Neubert, Andr'e Eberhard, et al. (2022). \textit{Graph neural networks for materials science and chemistry}. Communications Materials.
+
+\bibitem{li2021orq}
+Guohao Li, Matthias Müller, Bernard Ghanem, et al. (2021). \textit{Training Graph Neural Networks with 1000 Layers}. International Conference on Machine Learning.
+
+\bibitem{wang2022u2l}
+Xiyuan Wang, and Muhan Zhang (2022). \textit{How Powerful are Spectral Graph Neural Networks}. International Conference on Machine Learning.
+
+\bibitem{zhang2021wgf}
+Zaixin Zhang, Qi Liu, Hao Wang, et al. (2021). \textit{ProtGNN: Towards Self-Explaining Graph Neural Networks}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{garg2020z6o}
+Vikas K. Garg, S. Jegelka, and T. Jaakkola (2020). \textit{Generalization and Representational Limits of Graph Neural Networks}. International Conference on Machine Learning.
+
+\bibitem{fatemi2021dmb}
+Bahare Fatemi, Layla El Asri, and Seyed Mehran Kazemi (2021). \textit{SLAPS: Self-Supervision Improves Structure Learning for Graph Neural Networks}. Neural Information Processing Systems.
+
+\bibitem{zhang2021jqr}
+Yuyu Zhang, Xinshi Chen, Yuan Yang, et al. (2021). \textit{Graph Neural Networks}. Deep Learning on Graphs.
+
+\bibitem{varbella20242iz}
+Anna Varbella, Kenza Amara, B. Gjorgiev, et al. (2024). \textit{PowerGraph: A power grid benchmark dataset for graph neural networks}. Neural Information Processing Systems.
+
+\bibitem{rusch2023xev}
+T. Konstantin Rusch, Michael M. Bronstein, and Siddhartha Mishra (2023). \textit{A Survey on Oversmoothing in Graph Neural Networks}. arXiv.org.
+
+\bibitem{chen2020e6g}
+Zhengdao Chen, Lei Chen, Soledad Villar, et al. (2020). \textit{Can graph neural networks count substructures?}. Neural Information Processing Systems.
+
+\bibitem{zhang20222g3}
+He Zhang, Bang Wu, Xingliang Yuan, et al. (2022). \textit{Trustworthy Graph Neural Networks: Aspects, Methods, and Trends}. Proceedings of the IEEE.
+
+\bibitem{han2024rkj}
+Haoyu Han, Juanhui Li, Wei Huang, et al. (2024). \textit{Node-wise Filtering in Graph Neural Networks: A Mixture of Experts Approach}. arXiv.org.
+
+\bibitem{rossi2020otv}
+Emanuele Rossi, Fabrizio Frasca, B. Chamberlain, et al. (2020). \textit{SIGN: Scalable Inception Graph Neural Networks}. arXiv.org.
+
+\bibitem{wu2022vcx}
+Yingmin Wu, Xiang Wang, An Zhang, et al. (2022). \textit{Discovering Invariant Rationales for Graph Neural Networks}. International Conference on Learning Representations.
+
+\bibitem{morris20185sd}
+Christopher Morris, Martin Ritzert, Matthias Fey, et al. (2018). \textit{Weisfeiler and Leman Go Neural: Higher-order Graph Neural Networks}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{dai2022hsi}
+Enyan Dai, Tianxiang Zhao, Huaisheng Zhu, et al. (2022). \textit{A Comprehensive Survey on Trustworthy Graph Neural Networks: Privacy, Robustness, Fairness, and Explainability}. Machine Intelligence Research.
+
+\bibitem{wang2024j6z}
+Yuwen Wang, Shunyu Liu, Tongya Zheng, et al. (2024). \textit{Unveiling Global Interactive Patterns across Graphs: Towards Interpretable Graph Neural Networks}. Knowledge Discovery and Data Mining.
+
+\bibitem{ju2023prm}
+Haotian Ju, Dongyue Li, Aneesh Sharma, et al. (2023). \textit{Generalization in Graph Neural Networks: Improved PAC-Bayesian Bounds on Graph Diffusion}. International Conference on Artificial Intelligence and Statistics.
+
+\bibitem{liu20242g6}
+Zewen Liu, Guancheng Wan, B. A. Prakash, et al. (2024). \textit{A Review of Graph Neural Networks in Epidemic Modeling}. Knowledge Discovery and Data Mining.
+
+\bibitem{zhang2018kdl}
+Muhan Zhang, and Yixin Chen (2018). \textit{Link Prediction Based on Graph Neural Networks}. Neural Information Processing Systems.
+
+\bibitem{bianchi20194ea}
+F. Bianchi, Daniele Grattarola, L. Livi, et al. (2019). \textit{Graph Neural Networks With Convolutional ARMA Filters}. IEEE Transactions on Pattern Analysis and Machine Intelligence.
+
+\bibitem{ma2021sim}
+Yao Ma, Xiaorui Liu, Neil Shah, et al. (2021). \textit{Is Homophily a Necessity for Graph Neural Networks?}. International Conference on Learning Representations.
+
+\bibitem{li202444f}
+Li, Lecheng Zheng, Bowen Jin, et al. (2024). \textit{Can Graph Neural Networks Learn Language with Extremely Weak Text Supervision?}. Annual Meeting of the Association for Computational Linguistics.
+
+\bibitem{he2020kz4}
+Xinlei He, Jinyuan Jia, M. Backes, et al. (2020). \textit{Stealing Links from Graph Neural Networks}. USENIX Security Symposium.
+
+\bibitem{fang2022tjj}
+Taoran Fang, Yunchao Zhang, Yang Yang, et al. (2022). \textit{Universal Prompt Tuning for Graph Neural Networks}. Neural Information Processing Systems.
+
+\bibitem{chen2024woq}
+Yongqiang Chen, Yatao Bian, Bo Han, et al. (2024). \textit{How Interpretable Are Interpretable Graph Neural Networks?}. International Conference on Machine Learning.
+
+\bibitem{liu2023ent}
+Zemin Liu, Xingtong Yu, Yuan Fang, et al. (2023). \textit{GraphPrompt: Unifying Pre-Training and Downstream Tasks for Graph Neural Networks}. The Web Conference.
+
+\bibitem{dong20225aw}
+Guimin Dong, Mingyue Tang, Zhiyuan Wang, et al. (2022). \textit{Graph Neural Networks in IoT: A Survey}. ACM Trans. Sens. Networks.
+
+\bibitem{fan2019k6u}
+Wenqi Fan, Yao Ma, Qing Li, et al. (2019). \textit{Graph Neural Networks for Social Recommendation}. The Web Conference.
+
+\bibitem{you2020drv}
+Jiaxuan You, Rex Ying, and J. Leskovec (2020). \textit{Design Space for Graph Neural Networks}. Neural Information Processing Systems.
+
+\bibitem{cai2020k4b}
+Chen Cai, and Yusu Wang (2020). \textit{A Note on Over-Smoothing for Graph Neural Networks}. arXiv.org.
+
+\bibitem{gosch20237yi}
+Lukas Gosch, Simon Geisler, Daniel Sturm, et al. (2023). \textit{Adversarial Training for Graph Neural Networks}. Neural Information Processing Systems.
+
+\bibitem{zhang2020jrt}
+Xiang Zhang, and M. Zitnik (2020). \textit{GNNGuard: Defending Graph Neural Networks against Adversarial Attacks}. Neural Information Processing Systems.
+
+\bibitem{alon2020fok}
+Uri Alon, and Eran Yahav (2020). \textit{On the Bottleneck of Graph Neural Networks and its Practical Implications}. International Conference on Learning Representations.
+
+\bibitem{zhu2021zc3}
+Meiqi Zhu, Xiao Wang, C. Shi, et al. (2021). \textit{Interpreting and Unifying Graph Neural Networks with An Optimization Framework}. The Web Conference.
+
+\bibitem{zou2021qkz}
+Xu Zou, Qinkai Zheng, Yuxiao Dong, et al. (2021). \textit{TDGIA: Effective Injection Attacks on Graph Neural Networks}. Knowledge Discovery and Data Mining.
+
+\bibitem{xu2019l8n}
+Kaidi Xu, Hongge Chen, Sijia Liu, et al. (2019). \textit{Topology Attack and Defense for Graph Neural Networks: An Optimization Perspective}. International Joint Conference on Artificial Intelligence.
+
+\bibitem{xia20247w9}
+Donglin Xia, Xiao Wang, Nian Liu, et al. (2024). \textit{Learning Invariant Representations of Graph Neural Networks via Cluster Generalization}. Neural Information Processing Systems.
+
+\bibitem{wu2020dc8}
+Shiwen Wu, Fei Sun, Fei Sun, et al. (2020). \textit{Graph Neural Networks in Recommender Systems: A Survey}. ACM Computing Surveys.
+
+\bibitem{bianchi20239ee}
+F. Bianchi, and Veronica Lachi (2023). \textit{The expressive power of pooling in Graph Neural Networks}. Neural Information Processing Systems.
+
+\bibitem{vu2020zkj}
+Minh N. Vu, and M. Thai (2020). \textit{PGM-Explainer: Probabilistic Graphical Model Explanations for Graph Neural Networks}. Neural Information Processing Systems.
+
+\bibitem{gao20213kp}
+Chen Gao, Yu Zheng, Nian Li, et al. (2021). \textit{A Survey of Graph Neural Networks for Recommender Systems: Challenges, Methods, and Directions}. Trans. Recomm. Syst..
+
+\bibitem{bessadok2021bfy}
+Alaa Bessadok, M. Mahjoub, and I. Rekik (2021). \textit{Graph Neural Networks in Network Neuroscience}. IEEE Transactions on Pattern Analysis and Machine Intelligence.
+
+\bibitem{wang20214ku}
+Xiao Wang, Hongrui Liu, Chuan Shi, et al. (2021). \textit{Be Confident! Towards Trustworthy Graph Neural Networks via Confidence Calibration}. Neural Information Processing Systems.
+
+\bibitem{geisler2024wli}
+Simon Geisler, Arthur Kosmala, Daniel Herbst, et al. (2024). \textit{Spatio-Spectral Graph Neural Networks}. Neural Information Processing Systems.
+
+\bibitem{zeng20237gv}
+DingYi Zeng, Wanlong Liu, Wenyu Chen, et al. (2023). \textit{Substructure Aware Graph Neural Networks}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{jin2020dh4}
+Wei Jin, Yao Ma, Xiaorui Liu, et al. (2020). \textit{Graph Structure Learning for Robust Graph Neural Networks}. Knowledge Discovery and Data Mining.
+
+\bibitem{dai2020p5t}
+Enyan Dai, and Suhang Wang (2020). \textit{Say No to the Discrimination: Learning Fair Graph Neural Networks with Limited Sensitive Attribute Information}. Web Search and Data Mining.
+
+\bibitem{klicpera20215fk}
+Johannes Klicpera, Florian Becker, and Stephan Gunnemann (2021). \textit{GemNet: Universal Directional Graph Neural Networks for Molecules}. Neural Information Processing Systems.
+
+\bibitem{dwivedi2021af0}
+Vijay Prakash Dwivedi, A. Luu, T. Laurent, et al. (2021). \textit{Graph Neural Networks with Learnable Structural and Positional Representations}. International Conference on Learning Representations.
+
+\bibitem{feng20225sa}
+Jiarui Feng, Yixin Chen, Fuhai Li, et al. (2022). \textit{How Powerful are K-hop Message Passing Graph Neural Networks}. Neural Information Processing Systems.
+
+\bibitem{satorras2021pzl}
+Victor Garcia Satorras, Emiel Hoogeboom, and M. Welling (2021). \textit{E(n) Equivariant Graph Neural Networks}. International Conference on Machine Learning.
+
+\bibitem{mao202313j}
+Haitao Mao, Zhikai Chen, Wei Jin, et al. (2023). \textit{Demystifying Structural Disparity in Graph Neural Networks: Can One Size Fit All?}. Neural Information Processing Systems.
+
+\bibitem{zgner2019bbi}
+Daniel Zügner, and Stephan Günnemann (2019). \textit{Adversarial Attacks on Graph Neural Networks via Meta Learning}. International Conference on Learning Representations.
+
+\bibitem{yuan2020fnk}
+Hao Yuan, Haiyang Yu, Shurui Gui, et al. (2020). \textit{Explainability in Graph Neural Networks: A Taxonomic Survey}. IEEE Transactions on Pattern Analysis and Machine Intelligence.
+
+\bibitem{finkelshtein202301z}
+Ben Finkelshtein, Xingyue Huang, Michael M. Bronstein, et al. (2023). \textit{Cooperative Graph Neural Networks}. International Conference on Machine Learning.
+
+\bibitem{lucic2021p70}
+Ana Lucic, Maartje ter Hoeve, Gabriele Tolomei, et al. (2021). \textit{CF-GNNExplainer: Counterfactual Explanations for Graph Neural Networks}. International Conference on Artificial Intelligence and Statistics.
+
+\bibitem{zheng2022qxr}
+Xin Zheng, Yixin Liu, Shirui Pan, et al. (2022). \textit{Graph Neural Networks for Graphs with Heterophily: A Survey}. arXiv.org.
+
+\bibitem{dai2023tuj}
+Enyan Dai, M. Lin, Xiang Zhang, et al. (2023). \textit{Unnoticeable Backdoor Attacks on Graph Neural Networks}. The Web Conference.
+
+\bibitem{jin2023e18}
+G. Jin, Yuxuan Liang, Yuchen Fang, et al. (2023). \textit{Spatio-Temporal Graph Neural Networks for Predictive Learning in Urban Computing: A Survey}. IEEE Transactions on Knowledge and Data Engineering.
+
+\bibitem{ying20189jc}
+Rex Ying, Ruining He, Kaifeng Chen, et al. (2018). \textit{Graph Convolutional Neural Networks for Web-Scale Recommender Systems}. Knowledge Discovery and Data Mining.
+
+\bibitem{hu2020u8o}
+Ziniu Hu, Yuxiao Dong, Kuansan Wang, et al. (2020). \textit{GPT-GNN: Generative Pre-Training of Graph Neural Networks}. Knowledge Discovery and Data Mining.
+
+\bibitem{luan202272y}
+Sitao Luan, Chenqing Hua, Qincheng Lu, et al. (2022). \textit{Revisiting Heterophily For Graph Neural Networks}. Neural Information Processing Systems.
+
+\bibitem{klicpera20186xu}
+Johannes Klicpera, Aleksandar Bojchevski, and Stephan Günnemann (2018). \textit{Predict then Propagate: Graph Neural Networks meet Personalized PageRank}. International Conference on Learning Representations.
+
+\bibitem{chen2019s47}
+Deli Chen, Yankai Lin, Wei Li, et al. (2019). \textit{Measuring and Relieving the Over-smoothing Problem for Graph Neural Networks from the Topological View}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{wang2022531}
+Yu Wang, Yuying Zhao, Yushun Dong, et al. (2022). \textit{Improving Fairness in Graph Neural Networks via Mitigating Sensitive Attribute Leakage}. Knowledge Discovery and Data Mining.
+
+\bibitem{zhou20213lg}
+Kaixiong Zhou, Xiao Huang, D. Zha, et al. (2021). \textit{Dirichlet Energy Constrained Learning for Deep Graph Neural Networks}. Neural Information Processing Systems.
+
+\bibitem{jegelka20222lq}
+S. Jegelka (2022). \textit{Theory of Graph Neural Networks: Representation and Learning}. arXiv.org.
+
+\bibitem{jin2021pf0}
+Wei Jin, Lingxiao Zhao, Shichang Zhang, et al. (2021). \textit{Graph Condensation for Graph Neural Networks}. International Conference on Learning Representations.
+
+\bibitem{geisler2021dcq}
+Simon Geisler, Tobias Schmidt, Hakan cSirin, et al. (2021). \textit{Robustness of Graph Neural Networks at Scale}. Neural Information Processing Systems.
+
+\bibitem{wu20193b0}
+Zonghan Wu, Shirui Pan, Fengwen Chen, et al. (2019). \textit{A Comprehensive Survey on Graph Neural Networks}. IEEE Transactions on Neural Networks and Learning Systems.
+
+\bibitem{xu2018c8q}
+Keyulu Xu, Weihua Hu, J. Leskovec, et al. (2018). \textit{How Powerful are Graph Neural Networks?}. International Conference on Learning Representations.
+
+\bibitem{zhou20188n6}
+Jie Zhou, Ganqu Cui, Zhengyan Zhang, et al. (2018). \textit{Graph Neural Networks: A Review of Methods and Applications}. AI Open.
+
+\bibitem{batzner2021t07}
+Simon L. Batzner, Albert Musaelian, Lixin Sun, et al. (2021). \textit{E(3)-equivariant graph neural networks for data-efficient and accurate interatomic potentials}. Nature Communications.
+
+\bibitem{sarlin20198a6}
+Paul-Edouard Sarlin, Daniel DeTone, Tomasz Malisiewicz, et al. (2019). \textit{SuperGlue: Learning Feature Matching With Graph Neural Networks}. Computer Vision and Pattern Recognition.
+
+\bibitem{wu2020hi3}
+Zonghan Wu, Shirui Pan, Guodong Long, et al. (2020). \textit{Connecting the Dots: Multivariate Time Series Forecasting with Graph Neural Networks}. Knowledge Discovery and Data Mining.
+
+\bibitem{wu2018t43}
+Shu Wu, Yuyuan Tang, Yanqiao Zhu, et al. (2018). \textit{Session-based Recommendation with Graph Neural Networks}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{zhu2020c3j}
+Jiong Zhu, Yujun Yan, Lingxiao Zhao, et al. (2020). \textit{Beyond Homophily in Graph Neural Networks: Current Limitations and Effective Designs}. Neural Information Processing Systems.
+
+\bibitem{wang2019t4a}
+Minjie Wang, Da Zheng, Zihao Ye, et al. (2019). \textit{Deep Graph Library: A Graph-Centric, Highly-Performant Package for Graph Neural Networks.}. Unpublished manuscript.
+
+\bibitem{li2020fil}
+Mengzhang Li, and Zhanxing Zhu (2020). \textit{Spatial-Temporal Fusion Graph Neural Networks for Traffic Flow Forecasting}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{satorras20174cv}
+Victor Garcia Satorras, and Joan Bruna (2017). \textit{Few-Shot Learning with Graph Neural Networks}. International Conference on Learning Representations.
+
+\bibitem{zhou20195xo}
+Yaqin Zhou, Shangqing Liu, J. Siow, et al. (2019). \textit{Devign: Effective Vulnerability Identification by Learning Comprehensive Program Semantics via Graph Neural Networks}. Neural Information Processing Systems.
+
+\bibitem{oono2019usb}
+Kenta Oono, and Taiji Suzuki (2019). \textit{Graph Neural Networks Exponentially Lose Expressive Power for Node Classification}. International Conference on Learning Representations.
+
+\bibitem{shi2019vl4}
+Lei Shi, Yifan Zhang, Jian Cheng, et al. (2019). \textit{Skeleton-Based Action Recognition With Directed Graph Neural Networks}. Computer Vision and Pattern Recognition.
+
+\bibitem{wu20221la}
+Zhanghao Wu, Paras Jain, Matthew A. Wright, et al. (2022). \textit{Representing Long-Range Context for Graph Neural Networks with Global Attention}. Neural Information Processing Systems.
+
+\bibitem{wang2020khd}
+Ziyang Wang, Wei Wei, G. Cong, et al. (2020). \textit{Global Context Enhanced Graph Neural Networks for Session-based Recommendation}. Annual International ACM SIGIR Conference on Research and Development in Information Retrieval.
+
+\bibitem{wang2019vol}
+Hongwei Wang, Fuzheng Zhang, Mengdi Zhang, et al. (2019). \textit{Knowledge-aware Graph Neural Networks with Label Smoothness Regularization for Recommender Systems}. Knowledge Discovery and Data Mining.
+
+\bibitem{zhong2019kka}
+Peixiang Zhong, Di Wang, and C. Miao (2019). \textit{EEG-Based Emotion Recognition Using Regularized Graph Neural Networks}. IEEE Transactions on Affective Computing.
+
+\bibitem{zhao2021po9}
+Tianxiang Zhao, Xiang Zhang, and Suhang Wang (2021). \textit{GraphSMOTE: Imbalanced Node Classification on Graphs with Graph Neural Networks}. Web Search and Data Mining.
+
+\bibitem{lv20219al}
+Qingsong Lv, Ming Ding, Qiang Liu, et al. (2021). \textit{Are we really making much progress?: Revisiting, benchmarking and refining heterogeneous graph neural networks}. Knowledge Discovery and Data Mining.
+
+\bibitem{yu201969a}
+Yue Yu, Jie Chen, Tian Gao, et al. (2019). \textit{DAG-GNN: DAG Structure Learning with Graph Neural Networks}. International Conference on Machine Learning.
+
+\bibitem{tang2022g66}
+Jianheng Tang, Jiajin Li, Zi-Chao Gao, et al. (2022). \textit{Rethinking Graph Neural Networks for Anomaly Detection}. International Conference on Machine Learning.
+
+\bibitem{zhao2021lls}
+Jianan Zhao, Xiao Wang, C. Shi, et al. (2021). \textit{Heterogeneous Graph Structure Learning for Graph Neural Networks}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{keisler2022t7p}
+R. Keisler (2022). \textit{Forecasting Global Weather with Graph Neural Networks}. arXiv.org.
+
+\bibitem{li2020mk1}
+Maosen Li, Siheng Chen, Yangheng Zhao, et al. (2020). \textit{Dynamic Multiscale Graph Neural Networks for 3D Skeleton Based Human Motion Prediction}. Computer Vision and Pattern Recognition.
+
+\bibitem{wu2022ptq}
+Lingfei Wu, P. Cui, Jian Pei, et al. (2022). \textit{Graph Neural Networks: Foundation, Frontiers and Applications}. Knowledge Discovery and Data Mining.
+
+\bibitem{liu2021qyl}
+Zhenguang Liu, Peng Qian, Xiaoyang Wang, et al. (2021). \textit{Combining Graph Neural Networks With Expert Knowledge for Smart Contract Vulnerability Detection}. IEEE Transactions on Knowledge and Data Engineering.
+
+\bibitem{zhang20211dl}
+Hengrui Zhang, Qitian Wu, Junchi Yan, et al. (2021). \textit{From Canonical Correlation Analysis to Self-supervised Graph Neural Networks}. Neural Information Processing Systems.
+
+\bibitem{shen202037i}
+Yifei Shen, Yuanming Shi, Jun Zhang, et al. (2020). \textit{Graph Neural Networks for Scalable Radio Resource Management: Architecture Design and Theoretical Analysis}. IEEE Journal on Selected Areas in Communications.
+
+\bibitem{zhang2020tdy}
+Yufeng Zhang, Xueli Yu, Zeyu Cui, et al. (2020). \textit{Every Document Owns Its Structure: Inductive Text Classification via Graph Neural Networks}. Annual Meeting of the Association for Computational Linguistics.
+
+\bibitem{huang20209zd}
+Qian Huang, Horace He, Abhay Singh, et al. (2020). \textit{Combining Label Propagation and Simple Models Out-performs Graph Neural Networks}. International Conference on Learning Representations.
+
+\bibitem{schaefer2022rsz}
+S. Schaefer, Daniel Gehrig, and D. Scaramuzza (2022). \textit{AEGNN: Asynchronous Event-based Graph Neural Networks}. Computer Vision and Pattern Recognition.
+
+\bibitem{chen20201cf}
+Tianwen Chen, and R. C. Wong (2020). \textit{Handling Information Loss of Graph Neural Networks for Session-based Recommendation}. Knowledge Discovery and Data Mining.
+
+\bibitem{shen2022gcz}
+Yifei Shen, Jun Zhang, Shenghui Song, et al. (2022). \textit{Graph Neural Networks for Wireless Communications: From Theory to Practice}. IEEE Transactions on Wireless Communications.
+
+\bibitem{sharma2022liz}
+Kartik Sharma, Yeon-Chang Lee, S. Nambi, et al. (2022). \textit{A Survey of Graph Neural Networks for Social Recommender Systems}. ACM Computing Surveys.
+
+\bibitem{chen2021x8i}
+Tianlong Chen, Yongduo Sui, Xuxi Chen, et al. (2021). \textit{A Unified Lottery Ticket Hypothesis for Graph Neural Networks}. International Conference on Machine Learning.
+
+\bibitem{chen2022ifd}
+Cen Chen, Kenli Li, Wei Wei, et al. (2022). \textit{Hierarchical Graph Neural Networks for Few-Shot Learning}. IEEE transactions on circuits and systems for video technology (Print).
+
+\bibitem{li2022hw4}
+Jiachen Li, Siheng Chen, Xiaoyong Pan, et al. (2022). \textit{Cell clustering for spatial transcriptomics data with graph neural networks}. Nature Computational Science.
+
+\bibitem{yun2022s4i}
+Seongjun Yun, Seoyoon Kim, Junhyun Lee, et al. (2022). \textit{Neo-GNNs: Neighborhood Overlap-aware Graph Neural Networks for Link Prediction}. Neural Information Processing Systems.
+
+\bibitem{wijesinghe20225ms}
+Asiri Wijesinghe, and Qing Wang (2022). \textit{A New Perspective on "How Graph Neural Networks Go Beyond Weisfeiler-Lehman?"}. International Conference on Learning Representations.
+
+\bibitem{cini20213l6}
+Andrea Cini, Ivan Marisca, and C. Alippi (2021). \textit{Filling the G_ap_s: Multivariate Time Series Imputation by Graph Neural Networks}. International Conference on Learning Representations.
+
+\bibitem{wu2023zm5}
+Lingfei Wu, Yu Chen, Kai Shen, et al. (2023). \textit{Graph Neural Networks for Natural Language Processing: A Survey}. Found. Trends Mach. Learn..
+
+\bibitem{li2022a34}
+Tianfu Li, Zheng Zhou, Sinan Li, et al. (2022). \textit{The emerging graph neural networks for intelligent fault diagnostics and prognostics: A guideline and a benchmark study}. Mechanical systems and signal processing.
+
+\bibitem{velickovic2023p4r}
+Petar Velickovic (2023). \textit{Everything is Connected: Graph Neural Networks}. Current Opinion in Structural Biology.
+
+\bibitem{jiang2020gaq}
+Dejun Jiang, Zhenxing Wu, Chang-Yu Hsieh, et al. (2020). \textit{Could graph neural networks learn better molecular representation for drug discovery? A comparison study of descriptor-based and graph-based models}. Journal of Cheminformatics.
+
+\bibitem{sun2023vsl}
+Xiangguo Sun, Hongtao Cheng, Jia Li, et al. (2023). \textit{All in One: Multi-Task Prompting for Graph Neural Networks}. Knowledge Discovery and Data Mining.
+
+\bibitem{zhang2021f18}
+Xiao-Meng Zhang, Li Liang, Lin Liu, et al. (2021). \textit{Graph Neural Networks and Their Current Applications in Bioinformatics}. Frontiers in Genetics.
+
+\bibitem{bojchevski2020c51}
+Aleksandar Bojchevski, Johannes Klicpera, Bryan Perozzi, et al. (2020). \textit{Scaling Graph Neural Networks with Approximate PageRank}. Knowledge Discovery and Data Mining.
+
+\bibitem{xia2023bpu}
+Jun Xia, Chengshuai Zhao, Bozhen Hu, et al. (2023). \textit{Mole-BERT: Rethinking Pre-training Graph Neural Networks for Molecules}. International Conference on Learning Representations.
+
+\bibitem{rahmani2023kh4}
+Saeed Rahmani, Asiye Baghbani, N. Bouguila, et al. (2023). \textit{Graph Neural Networks for Intelligent Transportation Systems: A Survey}. IEEE transactions on intelligent transportation systems (Print).
+
+\bibitem{chen2024gbe}
+Hao Chen, Yuan-Qi Bei, Qijie Shen, et al. (2024). \textit{Macro Graph Neural Networks for Online Billion-Scale Recommender Systems}. The Web Conference.
+
+\bibitem{liao202120x}
+Wenlong Liao, B. Bak‐Jensen, J. Pillai, et al. (2021). \textit{A Review of Graph Neural Networks and Their Applications in Power Systems}. Journal of Modern Power Systems and Clean Energy.
+
+\bibitem{hin2022g19}
+David Hin, Andrey Kan, Huaming Chen, et al. (2022). \textit{LineVD: Statement-level Vulnerability Detection using Graph Neural Networks}. IEEE Working Conference on Mining Software Repositories.
+
+\bibitem{tsitsulin20209pl}
+Anton Tsitsulin, John Palowitch, Bryan Perozzi, et al. (2020). \textit{Graph Clustering with Graph Neural Networks}. Journal of machine learning research.
+
+\bibitem{fung20212kw}
+Victor Fung, Jiaxin Zhang, Eric Juarez, et al. (2021). \textit{Benchmarking graph neural networks for materials chemistry}. npj Computational Materials.
+
+\bibitem{wang2021mxw}
+Yongxin Wang, Kris Kitani, and Xinshuo Weng (2021). \textit{Joint Object Detection and Multi-Object Tracking with Graph Neural Networks}. IEEE International Conference on Robotics and Automation.
+
+\bibitem{wang2020nbg}
+Danqing Wang, Pengfei Liu, Y. Zheng, et al. (2020). \textit{Heterogeneous Graph Neural Networks for Extractive Document Summarization}. Annual Meeting of the Association for Computational Linguistics.
+
+\bibitem{jha2022cj8}
+Kanchan Jha, S. Saha, and Hiteshi Singh (2022). \textit{Prediction of protein–protein interaction using graph neural networks}. Scientific Reports.
+
+\bibitem{schuetz2021cod}
+M. Schuetz, J. K. Brubaker, and H. Katzgraber (2021). \textit{Combinatorial optimization with physics-inspired graph neural networks}. Nature Machine Intelligence.
+
+\bibitem{shen2021sbk}
+Meng Shen, Jinpeng Zhang, Liehuang Zhu, et al. (2021). \textit{Accurate Decentralized Application Identification via Encrypted Traffic Analysis Using Graph Neural Networks}. IEEE Transactions on Information Forensics and Security.
+
+\bibitem{bo2023rwt}
+Deyu Bo, Chuan Shi, Lele Wang, et al. (2023). \textit{Specformer: Spectral Graph Neural Networks Meet Transformers}. International Conference on Learning Representations.
+
+\bibitem{zhang20212ke}
+Mengqi Zhang, Shu Wu, Xueli Yu, et al. (2021). \textit{Dynamic Graph Neural Networks for Sequential Recommendation}. IEEE Transactions on Knowledge and Data Engineering.
+
+\bibitem{wei20246l2}
+Jianjun Wei, Yue Liu, Xin Huang, et al. (2024). \textit{Self-Supervised Graph Neural Networks for Enhanced Feature Extraction in Heterogeneous Information Networks}. 2024 5th International Conference on Machine Learning and Computer Application (ICMLCA).
+
+\bibitem{yu2020u32}
+Feng Yu, Yanqiao Zhu, Q. Liu, et al. (2020). \textit{TAGNN: Target Attentive Graph Neural Networks for Session-based Recommendation}. Annual International ACM SIGIR Conference on Research and Development in Information Retrieval.
+
+\bibitem{he2021x8v}
+Chaoyang He, Keshav Balasubramanian, Emir Ceyani, et al. (2021). \textit{FedGraphNN: A Federated Learning System and Benchmark for Graph Neural Networks}. arXiv.org.
+
+\bibitem{wu20210h4}
+Yulei Wu, Hongning Dai, and Haina Tang (2021). \textit{Graph Neural Networks for Anomaly Detection in Industrial Internet of Things}. IEEE Internet of Things Journal.
+
+\bibitem{kofinas2024t2b}
+Miltiadis Kofinas, Boris Knyazev, Yan Zhang, et al. (2024). \textit{Graph Neural Networks for Learning Equivariant Representations of Neural Networks}. International Conference on Learning Representations.
+
+\bibitem{li2021v1l}
+Shuangli Li, Jingbo Zhou, Tong Xu, et al. (2021). \textit{Structure-aware Interactive Graph Neural Networks for the Prediction of Protein-Ligand Binding Affinity}. Knowledge Discovery and Data Mining.
+
+\bibitem{balcilar2021di1}
+M. Balcilar, G. Renton, P. Héroux, et al. (2021). \textit{Analyzing the Expressive Power of Graph Neural Networks in a Spectral Perspective}. International Conference on Learning Representations.
+
+\bibitem{zhang2020f4l}
+Muhan Zhang, Pan Li, Yinglong Xia, et al. (2020). \textit{Labeling Trick: A Theory of Using Graph Neural Networks for Multi-Node Representation Learning}. Neural Information Processing Systems.
+
+\bibitem{bilot20234ui}
+Tristan Bilot, Nour El Madhoun, K. A. Agha, et al. (2023). \textit{Graph Neural Networks for Intrusion Detection: A Survey}. IEEE Access.
+
+\bibitem{wu2023303}
+Qitian Wu, Yiting Chen, Chenxiao Yang, et al. (2023). \textit{Energy-based Out-of-Distribution Detection for Graph Neural Networks}. International Conference on Learning Representations.
+
+\bibitem{huang2021lpu}
+P. Huang, Han-Hung Lee, Hwann-Tzong Chen, et al. (2021). \textit{Text-Guided Graph Neural Networks for Referring 3D Instance Segmentation}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{suresh202191q}
+Susheel Suresh, Vinith Budde, Jennifer Neville, et al. (2021). \textit{Breaking the Limit of Graph Neural Networks by Improving the Assortativity of Graphs with Local Mixing Patterns}. Knowledge Discovery and Data Mining.
+
+\bibitem{liu2022gcg}
+R. Liu, and Han Yu (2022). \textit{Federated Graph Neural Networks: Overview, Techniques, and Challenges}. IEEE Transactions on Neural Networks and Learning Systems.
+
+\bibitem{wang202201n}
+Lijing Wang, A. Adiga, Jiangzhuo Chen, et al. (2022). \textit{CausalGNN: Causal-Based Graph Neural Networks for Spatio-Temporal Epidemic Forecasting}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{zhou2021c3l}
+Fan Zhou, and Chengtai Cao (2021). \textit{Overcoming Catastrophic Forgetting in Graph Neural Networks with Experience Replay}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{vasimuddin2021x7c}
+Vasimuddin, Sanchit Misra, Guixiang Ma, et al. (2021). \textit{DistGNN: Scalable Distributed Training for Large-Scale Graph Neural Networks}. International Conference for High Performance Computing, Networking, Storage and Analysis.
+
+\bibitem{eliasof202189g}
+Moshe Eliasof, E. Haber, and Eran Treister (2021). \textit{PDE-GCN: Novel Architectures for Graph Neural Networks Motivated by Partial Differential Equations}. Neural Information Processing Systems.
+
+\bibitem{huang2023fk1}
+Kexin Huang, Ying Jin, E. Candès, et al. (2023). \textit{Uncertainty Quantification over Graph with Conformalized Graph Neural Networks}. Neural Information Processing Systems.
+
+\bibitem{fey2021smn}
+Matthias Fey, J. E. Lenssen, F. Weichert, et al. (2021). \textit{GNNAutoScale: Scalable and Expressive Graph Neural Networks via Historical Embeddings}. International Conference on Machine Learning.
+
+\bibitem{nguyen2021g12}
+Van-Anh Nguyen, D. Q. Nguyen, Van Nguyen, et al. (2021). \textit{ReGVD: Revisiting Graph Neural Networks for Vulnerability Detection}. 2022 IEEE/ACM 44th International Conference on Software Engineering: Companion Proceedings (ICSE-Companion).
+
+\bibitem{innan2023fa7}
+Nouhaila Innan, Abhishek Sawaika, Ashim Dhor, et al. (2023). \textit{Financial Fraud Detection using Quantum Graph Neural Networks}. Quantum Machine Intelligence.
+
+\bibitem{guo2022hu1}
+Jia Guo, and Chenyang Yang (2022). \textit{Learning Power Allocation for Multi-Cell-Multi-User Systems With Heterogeneous Graph Neural Networks}. IEEE Transactions on Wireless Communications.
+
+\bibitem{maurizi202293p}
+M. Maurizi, Chao Gao, and F. Berto (2022). \textit{Predicting stress, strain and deformation fields in materials and structures with graph neural networks}. Scientific Reports.
+
+\bibitem{ye20226hn}
+Zi Ye, Y. J. Kumar, G. O. Sing, et al. (2022). \textit{A Comprehensive Survey of Graph Neural Networks for Knowledge Graphs}. IEEE Access.
+
+\bibitem{liu2021efj}
+Zemin Liu, Trung-Kien Nguyen, and Yuan Fang (2021). \textit{Tail-GNN: Tail-Node Graph Neural Networks}. Knowledge Discovery and Data Mining.
+
+\bibitem{du2021kn9}
+Lun Du, Xiaozhou Shi, Qiang Fu, et al. (2021). \textit{GBK-GNN: Gated Bi-Kernel Graph Neural Networks for Modeling Both Homophily and Heterophily}. The Web Conference.
+
+\bibitem{xu20226vc}
+Weizhi Xu, Jun Wu, Qiang Liu, et al. (2022). \textit{Evidence-aware Fake News Detection with Graph Neural Networks}. The Web Conference.
+
+\bibitem{wang2023a6u}
+Shaocong Wang, Yi Li, Dingchen Wang, et al. (2023). \textit{Echo state graph neural networks with analogue random resistive memory arrays}. Nature Machine Intelligence.
+
+\bibitem{bing2022oka}
+Rui Bing, Guan Yuan, Mu Zhu, et al. (2022). \textit{Heterogeneous graph neural networks analysis: a survey of techniques, evaluations and applications}. Artificial Intelligence Review.
+
+\bibitem{lyu2023ao0}
+Ziyu Lyu, Yue Wu, Junjie Lai, et al. (2023). \textit{Knowledge Enhanced Graph Neural Networks for Explainable Recommendation}. IEEE Transactions on Knowledge and Data Engineering.
+
+\bibitem{peng2021gbb}
+Hao Peng, Ruitong Zhang, Yingtong Dou, et al. (2021). \textit{Reinforced Neighborhood Selection Guided Multi-Relational Graph Neural Networks}. ACM Trans. Inf. Syst..
+
+\bibitem{xia2021s85}
+Ying Xia, Chun-Qiu Xia, Xiaoyong Pan, et al. (2021). \textit{GraphBind: protein structural context embedded rules learned by hierarchical graph neural networks for recognizing nucleic-acid-binding residues}. Nucleic Acids Research.
+
+\bibitem{feng2022914}
+Aosong Feng, Chenyu You, Shiqiang Wang, et al. (2022). \textit{KerGNNs: Interpretable Graph Neural Networks with Graph Kernels}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{paper2022mw4}
+Unknown Authors (2022). \textit{Graph Neural Networks: Foundations, Frontiers, and Applications}. Unpublished manuscript.
+
+\bibitem{luan2021g2p}
+Sitao Luan, Chenqing Hua, Qincheng Lu, et al. (2021). \textit{Is Heterophily A Real Nightmare For Graph Neural Networks To Do Node Classification?}. arXiv.org.
+
+\bibitem{waikhom20226fa}
+Lilapati Waikhom, and Ripon Patgiri (2022). \textit{A survey of graph neural networks in various learning paradigms: methods, applications, and challenges}. Artificial Intelligence Review.
+
+\bibitem{tang2021h2z}
+Siyi Tang, Jared A. Dunnmon, Khaled Saab, et al. (2021). \textit{Self-Supervised Graph Neural Networks for Improved Electroencephalographic Seizure Analysis}. International Conference on Learning Representations.
+
+\bibitem{thost20211ln}
+Veronika Thost, and Jie Chen (2021). \textit{Directed Acyclic Graph Neural Networks}. International Conference on Learning Representations.
+
+\bibitem{chai2022nf9}
+Ziwei Chai, Siqi You, Yang Yang, et al. (2022). \textit{Can Abnormality be Detected by Graph Neural Networks?}. International Joint Conference on Artificial Intelligence.
+
+\bibitem{sun20239ly}
+Chengcheng Sun, Chenhao Li, Xiang Lin, et al. (2023). \textit{Attention-based graph neural networks: a survey}. Artificial Intelligence Review.
+
+\bibitem{zhang2022atq}
+Mengqi Zhang, Shu Wu, Meng Gao, et al. (2022). \textit{Personalized Graph Neural Networks With Attention Mechanism for Session-Aware Recommendation}. IEEE Transactions on Knowledge and Data Engineering.
+
+\bibitem{munikoti2022k7d}
+Sai Munikoti, D. Agarwal, L. Das, et al. (2022). \textit{Challenges and Opportunities in Deep Reinforcement Learning With Graph Neural Networks: A Comprehensive Review of Algorithms and Applications}. IEEE Transactions on Neural Networks and Learning Systems.
+
+\bibitem{huoh2023i97}
+Ting-Li Huoh, Yan Luo, Peilong Li, et al. (2023). \textit{Flow-Based Encrypted Network Traffic Classification With Graph Neural Networks}. IEEE Transactions on Network and Service Management.
+
+\bibitem{han20227gn}
+Jiaqi Han, Yu Rong, Tingyang Xu, et al. (2022). \textit{Geometrically Equivariant Graph Neural Networks: A Survey}. arXiv.org.
+
+\bibitem{kim2022yql}
+Hwan Kim, Byung Suk Lee, Won-Yong Shin, et al. (2022). \textit{Graph Anomaly Detection With Graph Neural Networks: Current Status and Challenges}. IEEE Access.
+
+\bibitem{zhang2022uih}
+Zeyang Zhang, Xin Wang, Ziwei Zhang, et al. (2022). \textit{Dynamic Graph Neural Networks Under Spatio-Temporal Distribution Shift}. Neural Information Processing Systems.
+
+\bibitem{zhou2022a3h}
+Yang Zhou, Jiuhong Xiao, Yuee Zhou, et al. (2022). \textit{Multi-Robot Collaborative Perception With Graph Neural Networks}. IEEE Robotics and Automation Letters.
+
+\bibitem{wu2023aqs}
+Xinyi Wu, A. Ajorlou, Zihui Wu, et al. (2023). \textit{Demystifying Oversmoothing in Attention-Based Graph Neural Networks}. Neural Information Processing Systems.
+
+\bibitem{long2022l97}
+Yahui Long, Min Wu, Yong Liu, et al. (2022). \textit{Pre-training graph neural networks for link prediction in biomedical networks}. Bioinform..
+
+\bibitem{cini2022pjy}
+Andrea Cini, Ivan Marisca, F. Bianchi, et al. (2022). \textit{Scalable Spatiotemporal Graph Neural Networks}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{zhang2023ann}
+Zhen Zhang, Mohammed Haroon Dupty, Fan Wu, et al. (2023). \textit{Factor Graph Neural Networks}. Journal of machine learning research.
+
+\bibitem{chang2023ex5}
+Jianxin Chang, Chen Gao, Xiangnan He, et al. (2023). \textit{Bundle Recommendation and Generation With Graph Neural Networks}. IEEE Transactions on Knowledge and Data Engineering.
+
+\bibitem{wang2023zr0}
+J. Wang (2023). \textit{A survey on graph neural networks}. EAI Endorsed Trans. e Learn..
+
+\bibitem{zhao2022fvg}
+Xusheng Zhao, Jia Wu, Hao Peng, et al. (2022). \textit{Deep Reinforcement Learning Guided Graph Neural Networks for Brain Network Analysis}. Neural Networks.
+
+\bibitem{sahili2023f2x}
+Zahraa Al Sahili, and M. Awad (2023). \textit{Spatio-Temporal Graph Neural Networks: A Survey}. arXiv.org.
+
+\bibitem{levie2023c1s}
+R. Levie (2023). \textit{A graphon-signal analysis of graph neural networks}. Neural Information Processing Systems.
+
+\bibitem{wang2024nuq}
+Pengcheng Wang, Linping Tao, Mingwei Tang, et al. (2024). \textit{Incorporating syntax and semantics with dual graph neural networks for aspect-level sentiment analysis}. Engineering applications of artificial intelligence.
+
+\bibitem{dong2024dx0}
+Hu Dong, Longjie Li, Dongwen Tian, et al. (2024). \textit{Dynamic link prediction by learning the representation of node-pair via graph neural networks}. Expert systems with applications.
+
+\bibitem{zhao2024oyr}
+Pengju Zhao, Wenjie Liao, Yuli Huang, et al. (2024). \textit{Beam layout design of shear wall structures based on graph neural networks}. Automation in Construction.
+
+\bibitem{chen2024h2c}
+Ming Chen, Yajian Jiang, Xiujuan Lei, et al. (2024). \textit{Drug-Target Interactions Prediction Based on Signed Heterogeneous Graph Neural Networks}. Chinese journal of electronics.
+
+\bibitem{foroutan2024nhg}
+P. Foroutan, and Salim Lahmiri (2024). \textit{Deep Learning-Based Spatial-Temporal Graph Neural Networks for Price Movement Classification in Crude Oil and Precious Metal Markets}. Machine Learning with Applications.
+
+\bibitem{wander2024nnn}
+Brook Wander, Muhammed Shuaibi, John R. Kitchin, et al. (2024). \textit{CatTSunami: Accelerating Transition State Energy Calculations with Pretrained Graph Neural Networks}. ACS Catalysis.
+
+\bibitem{li20248gg}
+Duantengchuan Li, Yuxuan Gao, Zhihao Wang, et al. (2024). \textit{Homogeneous graph neural networks for third-party library recommendation}. Information Processing & Management.
+
+\bibitem{duan2024que}
+Yifan Duan, Guibin Zhang, Shilong Wang, et al. (2024). \textit{CaT-GNN: Enhancing Credit Card Fraud Detection via Causal Temporal Graph Neural Networks}. arXiv.org.
+
+\bibitem{praveen202498y}
+R. Praveen, Aktalina Torogeldieva, B. Saravanan, et al. (2024). \textit{Enhancing Intellectual Property Rights(IPR) Transparency with Blockchain and Dual Graph Neural Networks}. 2024 First International Conference on Software, Systems and Information Technology (SSITCON).
+
+\bibitem{wang2024p88}
+Huiwei Wang, Tianhua Liu, Ziyu Sheng, et al. (2024). \textit{Explanatory subgraph attacks against Graph Neural Networks}. Neural Networks.
+
+\bibitem{jing2024az0}
+Baoyu Jing, Dawei Zhou, Kan Ren, et al. (2024). \textit{Causality-Aware Spatiotemporal Graph Neural Networks for Spatiotemporal Time Series Imputation}. International Conference on Information and Knowledge Management.
+
+\bibitem{zhang2024370}
+Zhongjian Zhang, Xiao Wang, Huichi Zhou, et al. (2024). \textit{Can Large Language Models Improve the Adversarial Robustness of Graph Neural Networks?}. Knowledge Discovery and Data Mining.
+
+\bibitem{kanatsoulis2024l6i}
+Charilaos I. Kanatsoulis, and Alejandro Ribeiro (2024). \textit{Counting Graph Substructures with Graph Neural Networks}. International Conference on Learning Representations.
+
+\bibitem{mishra2024v89}
+Rajat Mishra, and S. Shridevi (2024). \textit{Knowledge graph driven medicine recommendation system using graph neural networks on longitudinal medical records}. Scientific Reports.
+
+\bibitem{fang2024p34}
+Zhenyao Fang, and Qimin Yan (2024). \textit{Towards accurate prediction of configurational disorder properties in materials using graph neural networks}. npj Computational Materials.
+
+\bibitem{zhang202483k}
+Jintu Zhang, Luigi Bonati, Enrico Trizio, et al. (2024). \textit{Descriptor-Free Collective Variables from Geometric Graph Neural Networks.}. Journal of Chemical Theory and Computation.
+
+\bibitem{yin20241mx}
+Nan Yin, Mengzhu Wang, Li Shen, et al. (2024). \textit{Continuous Spiking Graph Neural Networks}. arXiv.org.
+
+\bibitem{yan20240up}
+Liuxi Yan, and Yaoqun Xu (2024). \textit{XGBoost-Enhanced Graph Neural Networks: A New Architecture for Heterogeneous Tabular Data}. Applied Sciences.
+
+\bibitem{shen2024exf}
+Xu Shen, P. Lió, Lintao Yang, et al. (2024). \textit{Graph Rewiring and Preprocessing for Graph Neural Networks Based on Effective Resistance}. IEEE Transactions on Knowledge and Data Engineering.
+
+\bibitem{manivannan2024830}
+S. K. Manivannan, Venkatesh Kavididevi, D. Muthukumaran, et al. (2024). \textit{Graph Neural Networks for Resource Allocation Optimization in Healthcare Industry}. 2024 2nd International Conference on Self Sustainable Artificial Intelligence Systems (ICSSAS).
+
+\bibitem{he202455s}
+Xingyang He (2024). \textit{Graph neural networks in recommender systems}. Applied and Computational Engineering.
+
+\bibitem{zhao2024qw6}
+Zhe Zhao, Pengkun Wang, Haibin Wen, et al. (2024). \textit{A Twist for Graph Classification: Optimizing Causal Information Flow in Graph Neural Networks}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{yan2024ikq}
+Yafeng Yan, Shuyao He, Zhou Yu, et al. (2024). \textit{Investigation of Customized Medical Decision Algorithms Utilizing Graph Neural Networks}. 2024 IEEE 2nd International Conference on Sensors, Electronics and Computer Engineering (ICSECE).
+
+\bibitem{xia2024xc9}
+Zaishuo Xia, Han Yang, Binghui Wang, et al. (2024). \textit{GNNCert: Deterministic Certification of Graph Neural Networks against Adversarial Perturbations}. International Conference on Learning Representations.
+
+\bibitem{zhou2024t2r}
+Yicheng Zhou, P. Wang, Hao Dong, et al. (2024). \textit{Make Graph Neural Networks Great Again: A Generic Integration Paradigm of Topology-Free Patterns for Traffic Speed Prediction}. International Joint Conference on Artificial Intelligence.
+
+\bibitem{lu2024eu9}
+Shengyao Lu, Keith G. Mills, Jiao He, et al. (2024). \textit{GOAt: Explaining Graph Neural Networks via Graph Output Attribution}. International Conference on Learning Representations.
+
+\bibitem{wang2024cb8}
+Zhiyang Wang, J. Cerviño, and Alejandro Ribeiro (2024). \textit{A Manifold Perspective on the Statistical Generalization of Graph Neural Networks}. arXiv.org.
+
+\bibitem{li2024yyl}
+Dilong Li, Chenghui Lu, Zi-xing Chen, et al. (2024). \textit{Graph Neural Networks in Point Clouds: A Survey}. Remote Sensing.
+
+\bibitem{castroospina2024iy2}
+A. Castro-Ospina, M. Solarte-Sanchez, L. Vega-Escobar, et al. (2024). \textit{Graph-Based Audio Classification Using Pre-Trained Models and Graph Neural Networks}. Italian National Conference on Sensors.
+
+\bibitem{zhao2024g5p}
+Tianyi Zhao, Jian Kang, and Lu Cheng (2024). \textit{Conformalized Link Prediction on Graph Neural Networks}. Knowledge Discovery and Data Mining.
+
+\bibitem{duan2024efz}
+Wei Duan, Jie Lu, Yu Guang Wang, et al. (2024). \textit{Layer-diverse Negative Sampling for Graph Neural Networks}. Trans. Mach. Learn. Res..
+
+\bibitem{luo2024h2k}
+Xuexiong Luo, Jia Wu, Jian Yang, et al. (2024). \textit{Graph Neural Networks for Brain Graph Learning: A Survey}. International Joint Conference on Artificial Intelligence.
+
+\bibitem{carlo2024a3g}
+Alessandro De Carlo, D. Ronchi, Marco Piastra, et al. (2024). \textit{Predicting ADMET Properties from Molecule SMILE: A Bottom-Up Approach Using Attention-Based Graph Neural Networks}. Pharmaceutics.
+
+\bibitem{zandi2024dgs}
+Sahab Zandi, Kamesh Korangi, Mar'ia 'Oskarsd'ottir, et al. (2024). \textit{Attention-based Dynamic Multilayer Graph Neural Networks for Loan Default Prediction}. European Journal of Operational Research.
+
+\bibitem{zhao2024aer}
+Haihong Zhao, Bo Yang, Jiaxu Cui, et al. (2024). \textit{Effective Fault Scenario Identification for Communication Networks via Knowledge-Enhanced Graph Neural Networks}. IEEE Transactions on Mobile Computing.
+
+\bibitem{yao2024pyk}
+Rufan Yao, Zhenhua Shen, Xinyi Xu, et al. (2024). \textit{Knowledge mapping of graph neural networks for drug discovery: a bibliometric and visualized analysis}. Frontiers in Pharmacology.
+
+\bibitem{vinh20243q3}
+Tuan Vinh, Loc Nguyen, Quang H. Trinh, et al. (2024). \textit{Predicting Cardiotoxicity of Molecules Using Attention-Based Graph Neural Networks}. Journal of Chemical Information and Modeling.
+
+\bibitem{ashraf202443e}
+Inaam Ashraf, Janine Strotherm, L. Hermes, et al. (2024). \textit{Physics-Informed Graph Neural Networks for Water Distribution Systems}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{smith2024q8n}
+Zachary Smith, Michael Strobel, Bodhi P. Vani, et al. (2024). \textit{Graph Attention Site Prediction (GrASP): Identifying Druggable Binding Sites Using Graph Neural Networks with Attention}. Journal of Chemical Information and Modeling.
+
+\bibitem{abadal2024w7e}
+S. Abadal, Pablo Galván, Alberto Mármol, et al. (2024). \textit{Graph neural networks for electroencephalogram analysis: Alzheimer's disease and epilepsy use cases}. Neural Networks.
+
+\bibitem{pflueger2024qi6}
+Maximilian Pflueger, David J. Tena Cucala, and Egor V. Kostylev (2024). \textit{Recurrent Graph Neural Networks and Their Connections to Bisimulation and Logic}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{mohammadi202476q}
+H. Mohammadi, and Waldemar Karwowski (2024). \textit{Graph Neural Networks in Brain Connectivity Studies: Methods, Challenges, and Future Directions}. Brain Science.
+
+\bibitem{sui2024xh9}
+Yongduo Sui, Xiang Wang, Tianlong Chen, et al. (2024). \textit{Inductive Lottery Ticket Learning for Graph Neural Networks}. Journal of Computational Science and Technology.
+
+\bibitem{peng2024t2s}
+Jie Peng, Runlin Lei, and Zhewei Wei (2024). \textit{Beyond Over-smoothing: Uncovering the Trainability Challenges in Deep Graph Neural Networks}. International Conference on Information and Knowledge Management.
+
+\bibitem{zhao2024e2x}
+Shan Zhao, Ioannis Prapas, Ilektra Karasante, et al. (2024). \textit{Causal Graph Neural Networks for Wildfire Danger Prediction}. arXiv.org.
+
+\bibitem{nabian2024vto}
+M. A. Nabian (2024). \textit{X-MeshGraphNet: Scalable Multi-Scale Graph Neural Networks for Physics Simulation}. arXiv.org.
+
+\bibitem{cen2024md8}
+Jiacheng Cen, Anyi Li, Ning Lin, et al. (2024). \textit{Are High-Degree Representations Really Unnecessary in Equivariant Graph Neural Networks?}. Neural Information Processing Systems.
+
+\bibitem{yang2024vy7}
+Yachao Yang, Yanfeng Sun, Shaofan Wang, et al. (2024). \textit{Graph Neural Networks with Soft Association between Topology and Attribute}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{li2024gue}
+Youjia Li, Vishu Gupta, Muhammed Nur Talha Kilic, et al. (2024). \textit{Hybrid-LLM-GNN: Integrating Large Language Models and Graph Neural Networks for Enhanced Materials Property Prediction}. Digital Discovery.
+
+\bibitem{guo2024zoe}
+Zhenbei Guo, Fuliang Li, Jiaxing Shen, et al. (2024). \textit{ConfigReco: Network Configuration Recommendation With Graph Neural Networks}. IEEE Network.
+
+\bibitem{gnanabaskaran20245dg}
+A. Gnanabaskaran, K. Bharathi, S. P. Nandakumar, et al. (2024). \textit{Enhanced Drug-Drug Interaction Prediction with Graph Neural Networks and SVM}. 2024 International Conference on Knowledge Engineering and Communication Systems (ICKECS).
+
+\bibitem{wang20245it}
+Beibei Wang, Bo Jiang, and Chris H. Q. Ding (2024). \textit{FL-GNNs: Robust Network Representation via Feature Learning Guided Graph Neural Networks}. IEEE Transactions on Network Science and Engineering.
+
+\bibitem{abode2024m4z}
+Daniel Abode, Ramoni O. Adeogun, and Gilberto Berardinelli (2024). \textit{Power Control for 6G In-Factory Subnetworks With Partial Channel Information Using Graph Neural Networks}. IEEE Open Journal of the Communications Society.
+
+\bibitem{zhao20244un}
+Tianxiang Zhao, Xiang Zhang, and Suhang Wang (2024). \textit{Disambiguated Node Classification with Graph Neural Networks}. The Web Conference.
+
+\bibitem{hausleitner2024vw0}
+Christian Hausleitner, Heimo Mueller, Andreas Holzinger, et al. (2024). \textit{Collaborative weighting in federated graph neural networks for disease classification with the human-in-the-loop}. Scientific Reports.
+
+\bibitem{zhao2024g7h}
+Shan Zhao, Zhaiyu Chen, Zhitong Xiong, et al. (2024). \textit{Beyond Grid Data: Exploring graph neural networks for Earth observation}. IEEE Geoscience and Remote Sensing Magazine.
+
+\bibitem{rusch2024fgp}
+T. Konstantin Rusch, Nathan Kirk, M. Bronstein, et al. (2024). \textit{Message-Passing Monte Carlo: Generating low-discrepancy point sets via graph neural networks}. Proceedings of the National Academy of Sciences of the United States of America.
+
+\bibitem{wang2024htw}
+Fali Wang, Tianxiang Zhao, and Suhang Wang (2024). \textit{Distribution Consistency based Self-Training for Graph Neural Networks with Sparse Labels}. Web Search and Data Mining.
+
+\bibitem{liu2024sbb}
+Bingyao Liu, Iris Li, Jianhua Yao, et al. (2024). \textit{Unveiling the Potential of Graph Neural Networks in SME Credit Risk Assessment}. 2024 5th International Conference on Intelligent Computing and Human-Computer Interaction (ICHCI).
+
+\bibitem{fang2024zd6}
+Zhenyao Fang, and Qimin Yan (2024). \textit{Leveraging Persistent Homology Features for Accurate Defect Formation Energy Predictions via Graph Neural Networks}. Chemistry of Materials.
+
+\bibitem{benedikt2024153}
+Michael Benedikt, Chia-Hsuan Lu, Boris Motik, et al. (2024). \textit{Decidability of Graph Neural Networks via Logical Characterizations}. International Colloquium on Automata, Languages and Programming.
+
+\bibitem{zhang20241k0}
+Yuelin Zhang, Jiacheng Cen, Jiaqi Han, et al. (2024). \textit{Improving Equivariant Graph Neural Networks on Large Geometric Graphs via Virtual Nodes Learning}. International Conference on Machine Learning.
+
+\bibitem{graziani2024lgd}
+Caterina Graziani, Tamara Drucks, Fabian Jogl, et al. (2024). \textit{The Expressive Power of Path-Based Graph Neural Networks}. International Conference on Machine Learning.
+
+\bibitem{shi2024g4z}
+Dai Shi, Andi Han, Lequan Lin, et al. (2024). \textit{Design Your Own Universe: A Physics-Informed Agnostic Method for Enhancing Graph Neural Networks}. International Journal of Machine Learning and Cybernetics.
+
+\bibitem{yuan2024b8b}
+Jiang Yuan, Shanxiong Chen, Bofeng Mo, et al. (2024). \textit{R-GNN: recurrent graph neural networks for font classification of oracle bone inscriptions}. Heritage Science.
+
+\bibitem{wang2024kx8}
+Haitao Wang, Zelin Liu, Mingjun Li, et al. (2024). \textit{A Gearbox Fault Diagnosis Method Based on Graph Neural Networks and Markov Transform Fields}. IEEE Sensors Journal.
+
+\bibitem{abuhantash202458c}
+Ferial Abuhantash, Mohd Khalil Abu Hantash, and Aamna AlShehhi (2024). \textit{Comorbidity-based framework for Alzheimer’s disease classification using graph neural networks}. Scientific Reports.
+
+\bibitem{abbahaddou2024bq2}
+Yassine Abbahaddou, Sofiane Ennadir, J. Lutzeyer, et al. (2024). \textit{Bounding the Expected Robustness of Graph Neural Networks Subject to Node Feature Attacks}. International Conference on Learning Representations.
+
+\bibitem{huang2024tdd}
+Renhong Huang, Jiarong Xu, Xin Jiang, et al. (2024). \textit{Measuring Task Similarity and Its Implication in Fine-Tuning Graph Neural Networks}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{jiang202448s}
+Yue Jiang, Changkong Zhou, Vikas Garg, et al. (2024). \textit{Graph4GUI: Graph Neural Networks for Representing Graphical User Interfaces}. International Conference on Human Factors in Computing Systems.
+
+\bibitem{wang20246bq}
+Bin Wang, Yadong Xu, Manyi Wang, et al. (2024). \textit{Gear Fault Diagnosis Method Based on the Optimized Graph Neural Networks}. IEEE Transactions on Instrumentation and Measurement.
+
+\bibitem{silva2024trs}
+Thiago H. Silva, and Daniel Silver (2024). \textit{Using graph neural networks to predict local culture}. Environment and Planning B Urban Analytics and City Science.
+
+\bibitem{zhang2024ctj}
+Xin Zhang, Zhen Xu, Yue Liu, et al. (2024). \textit{Robust Graph Neural Networks for Stability Analysis in Dynamic Networks}. 2024 3rd International Conference on Cloud Computing, Big Data Application and Software Engineering (CBASE).
+
+\bibitem{sun2024ztz}
+Mengfang Sun, Wenying Sun, Ying Sun, et al. (2024). \textit{Applying Hybrid Graph Neural Networks to Strengthen Credit Risk Analysis}. 2024 3rd International Conference on Cloud Computing, Big Data Application and Software Engineering (CBASE).
+
+\bibitem{zeng2024fpp}
+Xin Zeng, Fan-Fang Meng, Meng-Liang Wen, et al. (2024). \textit{GNNGL-PPI: multi-category prediction of protein-protein interactions using graph neural networks based on global graphs and local subgraphs}. BMC Genomics.
+
+\bibitem{chen20241tu}
+Ziang Chen, Xiaohan Chen, Jialin Liu, et al. (2024). \textit{Expressive Power of Graph Neural Networks for (Mixed-Integer) Quadratic Programs}. arXiv.org.
+
+\bibitem{fujita2024crj}
+Takaaki Fujita (2024). \textit{Superhypergraph Neural Networks and Plithogenic Graph Neural Networks: Theoretical Foundations}. arXiv.org.
+
+\bibitem{saleh2024d2a}
+Mahdi Saleh, Michael Sommersperger, N. Navab, et al. (2024). \textit{Physics-Encoded Graph Neural Networks for Deformation Prediction under Contact}. IEEE International Conference on Robotics and Automation.
+
+\bibitem{aburidi2024023}
+Mohammed Aburidi, and Roummel F. Marcia (2024). \textit{Topological Adversarial Attacks on Graph Neural Networks Via Projected Meta Learning}. IEEE Conference on Evolving and Adaptive Intelligent Systems.
+
+\bibitem{wang2024481}
+Zhonghao Wang, Danyu Sun, Sheng Zhou, et al. (2024). \textit{NoisyGL: A Comprehensive Benchmark for Graph Neural Networks under Label Noise}. Neural Information Processing Systems.
+
+\bibitem{horck2024a8s}
+Rostislav Horcík, and Gustav Sír (2024). \textit{Expressiveness of Graph Neural Networks in Planning Domains}. International Conference on Automated Planning and Scheduling.
+
+\bibitem{sun2024pix}
+Jianshan Sun, Suyuan Mei, Kun Yuan, et al. (2024). \textit{Prerequisite-Enhanced Category-Aware Graph Neural Networks for Course Recommendation}. ACM Transactions on Knowledge Discovery from Data.
+
+\bibitem{li2024r82}
+Langsha Li, Feng Qiang, and Li Ma (2024). \textit{Advancing Cybersecurity: Graph Neural Networks in Threat Intelligence Knowledge Graphs}. International Conference on Algorithms, Software Engineering, and Network Security.
+
+\bibitem{luo20240ot}
+Renqiang Luo, Huafei Huang, Shuo Yu, et al. (2024). \textit{FUGNN: Harmonizing Fairness and Utility in Graph Neural Networks}. Knowledge Discovery and Data Mining.
+
+\bibitem{li202492k}
+Shouheng Li, F. Geerts, Dongwoo Kim, et al. (2024). \textit{Towards Bridging Generalization and Expressivity of Graph Neural Networks}. International Conference on Learning Representations.
+
+\bibitem{liao20249wq}
+Yidong Liao, Xiao-Ming Zhang, and Chris Ferrie (2024). \textit{Graph Neural Networks on Quantum Computers}. arXiv.org.
+
+\bibitem{wang2024ged}
+Yufeng Wang, and Charith Mendis (2024). \textit{TGLite: A Lightweight Programming Framework for Continuous-Time Temporal Graph Neural Networks}. International Conference on Architectural Support for Programming Languages and Operating Systems.
+
+\bibitem{liu20245da}
+Ping Liu, Haichao Wei, Xiaochen Hou, et al. (2024). \textit{LinkSAGE: Optimizing Job Matching Using Graph Neural Networks}. Knowledge Discovery and Data Mining.
+
+\bibitem{varghese2024ygs}
+Alan John Varghese, Zhen Zhang, and G. Karniadakis (2024). \textit{SympGNNs: Symplectic Graph Neural Networks for identifiying high-dimensional Hamiltonian systems and node classification}. Neural Networks.
+
+\bibitem{dinverno2024vkw}
+Giuseppe Alessio D’Inverno, M. Bianchini, and F. Scarselli (2024). \textit{VC dimension of Graph Neural Networks with Pfaffian activation functions}. Neural Networks.
+
+\end{thebibliography}
+
+\end{document}

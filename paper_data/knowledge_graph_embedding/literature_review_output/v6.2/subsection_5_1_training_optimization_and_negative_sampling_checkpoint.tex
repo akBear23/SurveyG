@@ -1,0 +1,110 @@
+think
+The user wants a LaTeX literature review subsection titled "Training Optimization and Negative Sampling".
+The subsection needs to be at least 400 words and focus specifically on:
+- Optimizing KGE training processes.
+- Negative sampling strategies (uniform, Bernoulli, confidence-aware, dynamic).
+- Non-sampling frameworks.
+- Adaptive margins, loss functions, and other optimization techniques.
+
+I need to integrate the provided paper summaries, community summaries, and development directions.
+
+**Constraint Checklist & Confidence Score:**
+1. LaTeX format: Yes
+2. At least 400 words: Yes (will ensure during writing)
+3. No numbering in subsection titles: Yes
+4. Focus ONLY on SUBSECTION SPECIFIC FOCUS: Yes
+5. Specific examples with citations: Yes
+6. Opening (1-2 sentences problem statement): Yes
+7. Body (2-3 sentences per paper, connections, narrative progression): Yes
+8. Closing (unresolved issues/future directions): Yes
+9. Avoid sequential listing: Yes (will focus on connections and progression)
+10. Avoid vague critique: Yes (will use specific limitations from summaries)
+11. Avoid unsupported claims: Yes (will explain significance/importance)
+12. Avoid missing comparisons: Yes (will connect papers)
+13. Avoid pure description: Yes (will analyze contributions/limitations)
+14. Avoid ignoring contradictions: N/A (no explicit contradictions in summaries, but will highlight different approaches to the same problem)
+15. Avoid cherry-picking: N/A (will use all relevant papers)
+
+Confidence Score: 5/5
+
+**Mental Sandbox Simulation:**
+
+*   **Initial thought on structure:**
+    *   Start with the fundamental problem of KGE training: how to efficiently and effectively learn from vast, incomplete KGs, especially the challenge of negative examples.
+    *   Introduce basic negative sampling (Bernoulli/uniform implied by later papers) and its limitations (vanishing gradients, instability).
+    *   Discuss early attempts at improving sampling (e.g., adaptive margin, confidence-aware).
+    *   Move to more sophisticated sampling (caching, modality-aware).
+    *   Transition to non-sampling methods as an alternative.
+    *   Discuss broader optimization techniques (adaptive margins, loss functions, ensemble/committee approaches, robust learning).
+    *   Conclude with remaining challenges.
+
+*   **Paper Mapping to Themes:**
+
+    *   **Negative Sampling (Core):**
+        *   \cite{madushanka2024}: Survey on NS, foundational.
+        *   \cite{zhang2023}: Modality-Aware NS for MMKGE, addresses multi-modal specific NS.
+        *   \cite{shan2018}: Confidence-Aware NS for noisy KGs, addresses noise.
+        *   \cite{zhang2018}: NSCaching, efficient cache-based NS for hard negatives.
+        *   \cite{sun2018}: RotatE introduces self-adversarial negative sampling. (This is a model paper, but its NS technique is relevant).
+        *   \cite{li2021}: Non-Sampling KGE, presents an alternative to NS.
+        *   \cite{he2023}: New type-constrained negative sampling strategy (part of a broader framework, but relevant).
+
+    *   **Adaptive Margins/Loss Functions/Optimization:**
+        *   \cite{jia2017}: TransA, adaptive margin for loss function.
+        *   \cite{tabacof2019}: Probability Calibration, addresses uncalibrated predictions, which is an optimization/reliability issue.
+        *   \cite{choi2020}: Committee-based KGE, ensemble approach for robustness.
+        *   \cite{zhang2021}: Multi-Task Reinforcement Learning for robust KGE (noise filtering during training).
+        *   \cite{guo2017}: Iterative Guidance from Soft Rules (optimization of learning process with rules).
+        *   \cite{guo2020}: Soft Logical Regularity (rule-based regularization for optimization).
+        *   \cite{xiao2015} TransA (adaptive Mahalanobis distance, a form of adaptive metric/loss). This is distinct from \cite{jia2017} TransA, which focuses on adaptive margin. I need to be careful with the citation keys. The summary for `xiao2015` TransA is "An Adaptive Approach for Knowledge Graph Embedding (2015)" and focuses on adaptive Mahalanobis distance. The summary for `jia2017` TransA is "Knowledge Graph Embedding (2017)" and focuses on adaptive margin. I will treat them as distinct contributions to "adaptive optimization."
+
+*   **Narrative Flow (Chronological with thematic grouping):**
+
+    1.  **Introduction to KGE Training Challenges:** Emphasize the need for efficient and effective training, especially with incomplete KGs, and the role of negative examples.
+    2.  **Early Negative Sampling & Limitations:**
+        *   Mention the basic idea of negative sampling (implied by later papers improving it).
+        *   \cite{sun2018} RotatE's self-adversarial negative sampling for hard negatives.
+        *   Limitations: vanishing gradients, instability, inefficiency for complex KGs.
+    3.  **Advanced Negative Sampling Strategies:**
+        *   **Efficiency & Hard Negatives:** \cite{zhang2018} NSCaching (cache-based for hard negatives, efficient).
+        *   **Robustness to Noise:** \cite{shan2018} Confidence-Aware NS (for noisy KGs).
+        *   **Modality-Specific:** \cite{zhang2023} Modality-Aware NS (for MMKGE).
+        *   **Type-Aware:** \cite{he2023} type-constrained NS (as part of TaKE framework).
+        *   **Survey:** \cite{madushanka2024} provides a comprehensive review of NS methods, categorizing them and highlighting challenges.
+    4.  **Non-Sampling Alternatives:**
+        *   \cite{li2021} NS-KGE (efficient non-sampling framework, full-data training).
+    5.  **Broader Optimization Techniques (Loss Functions, Margins, Robustness):**
+        *   **Adaptive Margins/Metrics:**
+            *   \cite{xiao2015} TransA (adaptive Mahalanobis distance for complex relations).
+            *   \cite{jia2017} TransA (adaptive margin, incremental learning).
+        *   **Rule-Guided Optimization:**
+            *   \cite{guo2017} RUGE (iterative guidance from soft rules).
+            *   \cite{guo2020} SLRE (scalable soft logical rule embedding, regularization).
+        *   **Ensemble/Committee for Robustness:** \cite{choi2020} Committee-based KGE (aggregating diverse models).
+        *   **Robustness to Noise (beyond sampling):** \cite{zhang2021} MTRL (multi-task RL for noise filtering).
+        *   **Calibration:** \cite{tabacof2019} Probability Calibration (addressing uncalibrated predictions).
+    6.  **Conclusion:** Summarize the progress from simple sampling to sophisticated, adaptive, and non-sampling methods, and the integration of various optimization techniques. Highlight remaining challenges like dynamic KGs, explainability of complex sampling, and unified frameworks for diverse optimization needs.
+
+*   **Self-correction/Refinement:**
+    *   Ensure smooth transitions between papers and themes.
+    *   Explicitly state the *limitation* of the previous method that the current method addresses.
+    *   The two TransA papers (`xiao2015` and `jia2017`) are distinct. `xiao2015` TransA focuses on an adaptive Mahalanobis distance, while `jia2017` TransA focuses on an adaptive margin for the loss function and incremental learning. I will present them sequentially in the "Adaptive Margins/Metrics" section, highlighting their different but complementary contributions to adaptivity.
+    *   Some papers like `wang2020` GAATs, `li2022` TranSHER, `xiao2016` SSP, `guo2015` SSE, `shen2022` LASS, `yuan2019` TransGate, `wang2021` TransET, `zhang2018` HRS, `xiao2015` TransG, `yoon2016` lppTransE, `tang2022` RulE, `lv2018` TransC, `huang2019` KEQA, `zhu2022` Multimodal reasoning, `li2022` Patent KGE, `zhou2023` Marie and BERT, `dai2020` Survey are primarily about model architecture, auxiliary information, or applications, and less directly about *training optimization or negative sampling*. I will exclude these from this specific subsection to maintain focus, as per the "SUBSECTION SPECIFIC FOCUS" instruction. I will only include `sun2018` RotatE for its specific negative sampling contribution.
+
+This plan seems solid and adheres to all requirements. I will now proceed with writing the LaTeX content.
+\subsection{Training Optimization and Negative Sampling}
+Optimizing the training process for knowledge graph embedding (KGE) models is paramount for achieving stable, efficient, and accurate representations, particularly given the inherent incompleteness of real-world knowledge graphs. A critical aspect of this optimization involves generating plausible negative examples to contrast with positive triples, a task primarily addressed by negative sampling strategies.
+
+Initial KGE models often relied on simple uniform negative sampling, which, while straightforward, can lead to inefficient training due to the generation of "easy" negative examples that provide little gradient signal. To address this, \cite{sun2018} introduced **RotatE**, a model that, alongside its complex space rotation mechanism, proposed a novel self-adversarial negative sampling technique. This method samples negative triples based on the current embedding model's scores, making the negative samples more informative and challenging, thereby improving training efficiency compared to uniform sampling. Building on the need for more effective negative examples, \cite{zhang2018} proposed **NSCaching**, a simple yet efficient cache-based negative sampling method. NSCaching directly maintains and samples from a cache of "hard" negative triplets, which are rare but highly informative, thus mitigating the vanishing gradient problem without the complexity and instability of GAN-based approaches.
+
+The challenge of negative sampling is further compounded by real-world complexities such as noise and multi-modal data. For noisy knowledge graphs, \cite{shan2018} introduced a **Confidence-Aware Negative Sampling** method. This approach leverages the concept of negative triple confidence to support the robust training of KGE models in noisy environments, mitigating issues like zero loss and false detection that arise from uniform sampling. In the context of multi-modal KGE, where entities possess heterogeneous embeddings (e.g., structural and visual), \cite{zhang2023} developed **Modality-Aware Negative Sampling (MANS)**. MANS performs modal-level sampling, specifically targeting negative visual embeddings to explicitly achieve modality alignment, a crucial aspect overlooked by traditional entity-level negative sampling. Furthermore, within the \textbf{TaKE} framework, \cite{he2023} proposed a new type-constrained negative sampling strategy that constructs more effective negative samples by dynamically sampling from both homogeneous and non-homogeneous candidate sets, leveraging implicit type-constrained prior knowledge. A comprehensive overview of these and other negative sampling techniques is provided by \cite{madushanka2024}, which systematically reviews, categorizes, and identifies open research questions in the field, underscoring its enduring importance.
+
+While negative sampling aims to improve efficiency by selecting a subset of negative examples, an alternative approach seeks to train on the full dataset without sampling. \cite{li2021} introduced **NS-KGE (Efficient Non-Sampling Knowledge Graph Embedding)**, a framework that mathematically re-derives and re-organizes the non-sampling square loss function. This innovation disentangles entity and relation embeddings, making full-data training computationally and space-efficient, thereby eliminating the instability and suboptimal accuracy caused by negative sampling.
+
+Beyond negative sampling, other optimization techniques play a crucial role. Adaptive margins and loss functions enhance model stability and accuracy. For instance, \cite{xiao2015} proposed **TransA**, an adaptive approach that replaces the inflexible Euclidean distance with an adaptive Mahalanobis distance of absolute loss, allowing for relation-specific elliptical equipotential surfaces to model complex relation topologies more effectively. Similarly, \cite{jia2017} also introduced a **TransA** model that adaptively determines the margin of the loss function based on the specific characteristics (locality) of different knowledge graphs. This work also presented an incremental version, iTransA, for efficient updates in dynamic KGs.
+
+The integration of logical rules also serves as an optimization strategy. \cite{guo2017} proposed **RUGE (RUle-Guided Embedding)**, an iterative framework that guides embedding learning with soft rules. This approach enables embeddings to learn from labeled triples, unlabeled triples with predicted soft labels, and automatically extracted soft rules, demonstrating the benefits of iterative interaction between embedding learning and logical inference. Extending this, \cite{guo2020} developed **SLRE (Soft Logical Rule Embedding)**, a scalable method that preserves soft logical regularities by representing relations as bilinear forms and mapping entities into a non-negative, bounded space. Its novel rule-based regularization directly enforces constraints on relation representations, making rule learning complexity independent of entity set size.
+
+Robustness and reliability are further addressed by techniques like ensemble methods and probability calibration. \cite{choi2020} presented a **committee-based knowledge graph embedding model** that aggregates diverse perspectives from multiple KGE models. This ensemble approach computes the plausibility of candidate facts more comprehensively, leading to more robust performance than any single model. To tackle the issue of uncalibrated predictions, \cite{tabacof2019} introduced methods for **Probability Calibration for Knowledge Graph Embedding Models**. This work demonstrated that KGE models are often uncalibrated and proposed a novel heuristic for calibration using synthetic negatives, ensuring reliable confidence scores for predictions. Finally, to directly address the pervasive problem of noisy data, \cite{zhang2021} proposed a **Multi-Task Reinforcement Learning (MTRL)** framework. MTRL employs policy-based RL agents to make hard decisions on triple selection, filtering out noisy data, while multi-task learning leverages correlations among similar relations, leading to more robust KGEs without relying on external information.
+
+Despite significant advancements, challenges remain in training optimization and negative sampling. Future research could explore more sophisticated adaptive mechanisms that dynamically adjust sampling strategies or loss functions based on the evolving state of the embedding space and the specific characteristics of individual relations. Developing unified, theoretically grounded frameworks that seamlessly integrate diverse optimization techniques (e.g., adaptive sampling, rule-based regularization, and robust learning) while maintaining computational efficiency for large-scale and dynamic knowledge graphs is a promising direction. Furthermore, ensuring the explainability of complex negative sampling choices and their impact on model behavior will be crucial for building trustworthy KGE systems.

@@ -1,0 +1,85 @@
+<think>
+The user wants a LaTeX literature review subsection titled "Multi-Curvature and Spatiotemporal Embeddings".
+The subsection needs to focus on models that go beyond single Euclidean spaces to capture complex geometric structures in dynamic KGs, specifically multi-curvature adaptive embeddings (MADE, IME), and the integration of spatial, fuzzy, and temporal information (FSTRE, quaternion-based).
+
+I need to analyze the provided community summaries and development directions to identify the key papers, their contributions, and how they relate to each other, especially in terms of addressing limitations.
+
+**Community Summaries Analysis:**
+
+*   **Subgroup 1: Foundational Temporal Integration & Time Series Modeling**
+    *   Papers: `[dasgupta2018]` (HyTE), `[xu2019]` (ATiSE), `[lin2020]` (Tensor Decomposition), `[li2023]` (TeAST)
+    *   Focus: Early temporal integration, geometric (hyperplane), time series, tensor decomposition, spiral timeline.
+    *   Limitations: Struggle with complex non-linear temporal patterns, scalability.
+    *   *Relevance to subsection focus*: HyTE introduces a geometric approach to time, which is a precursor to multi-curvature. ATiSE introduces temporal uncertainty. These are foundational for understanding the need for more complex temporal and geometric modeling.
+
+*   **Subgroup 2: Rotation-based and Complex Space Temporal Embeddings**
+    *   Papers: `[xu2020]` (TeRo), `[sadeghian2021]` (ChronoR), `[ji2024]` (FSTRE)
+    *   Focus: Rotation in complex/k-dimensional spaces for temporal evolution.
+    *   Limitations: Complexity with higher dimensions or additional factors.
+    *   *Relevance to subsection focus*: TeRo and ChronoR use complex spaces and rotations for temporal modeling. FSTRE is *highly relevant* as it integrates fuzziness, spatial (projection), and temporal (rotation) in complex vector space, directly matching the subsection's focus. The mention of "quaternion-based embeddings" in the subsection prompt directly links to `[ji2024] Multihop Fuzzy Spatiotemporal RDF Knowledge Graph Query` which uses quaternions.
+
+*   **Subgroup 3: Multi-Curvature & Graph Neural Network Approaches for Complex Geometries and Interactions**
+    *   Papers: `[wang2024]` (MADE), `[wang2024]` (IME), `[xie2023]` (TARGAT)
+    *   Focus: Multi-curvature spaces (Euclidean, hyperbolic, hyperspherical), adaptive embeddings, GNNs for multi-fact interactions.
+    *   Limitations: Increased computational overhead, interpretation challenges.
+    *   *Relevance to subsection focus*: MADE and IME are *directly relevant* as they are multi-curvature adaptive embeddings. TARGAT is GNN-based and focuses on multi-fact interactions, which is less directly about multi-curvature or spatiotemporal embeddings but could be mentioned as a complementary approach to complex interactions.
+
+**Development Directions Analysis:**
+
+*   **Integration Analysis**:
+    *   **Geometric Modeling**: `[wang2024] MADE` and `[wang2024] IME` (multicurvature adaptive embeddings for temporal KGs) are explicitly mentioned as advancing geometric modeling.
+    *   **Temporal KGE**: `[ji2024] FSTRE` and `[ji2024] Multihop Fuzzy Spatiotemporal RDF Knowledge Graph Query` are highlighted for integrating fuzziness, spatial dimensions, and uncertainty, moving towards "spatiotemporal fuzzy" understanding.
+    *   **New Methodological Shifts**: "Fuzzy/Uncertain/Spatiotemporal KGE" and "Adaptive Geometric and GNN Architectures" are identified as new shifts, directly aligning with the subsection focus.
+    *   **Connections**: Multi-curvature models (`[wang2024] MADE`, `[wang2024] IME`) build on non-Euclidean embeddings. `[ji2024] Multihop Fuzzy Spatiotemporal RDF Knowledge Graph Query` leverages quaternion embeddings, relating to earlier complex-space models like RotatE (`[xu2020] TeRo`, `[sadeghian2021] ChronoR`).
+
+*   **Updated Evolution Analysis**:
+    *   **Trend 1: Enhancing Expressiveness and Contextual Awareness**:
+        *   `[wang2024] MADE` and `[wang2024] IME` address the inability of single geometric spaces to capture diverse TKG structures.
+        *   `[ji2024] FSTRE` and `[ji2024] Multihop Fuzzy Spatiotemporal RDF Knowledge Graph Query` address the challenge of representing uncertain, dynamic, and spatiotemporal knowledge.
+    *   **Key Innovations**: Multicurvature adaptive embeddings (`[wang2024] MADE`, `[wang2024] IME`), fuzzy spatiotemporal RDF models with projection/rotation for spatial/temporal embedding (`[ji2024] FSTRE`).
+
+**Paper Progression Chain & Connections:**
+
+1.  **Foundational Temporal (Geometric/Complex Space):**
+    *   `[dasgupta2018]` (HyTE): Early geometric approach, hyperplanes for timestamps. Limitation: Simple time representation, no uncertainty.
+    *   `[xu2019]` (ATiSE): Models entity/relation evolution as additive time series with Gaussian distributions, introducing *temporal uncertainty*. Still in Euclidean space.
+    *   `[xu2020]` (TeRo): Introduces *temporal rotation in complex space* for entity evolution, handling diverse relation patterns and time intervals. Moves beyond Euclidean.
+    *   `[sadeghian2021]` (ChronoR): Generalizes TeRo's rotation to k-dimensions, uses inner product scoring, and introduces advanced regularization for temporal smoothness. Refines rotation-based temporal modeling.
+
+2.  **Multi-Curvature Embeddings for Temporal KGs:**
+    *   `[wang2024]` (MADE): Addresses the limitation of single-space embeddings for complex TKG geometries. Models TKGs in *multicurvature spaces* (Euclidean, hyperbolic, hyperspherical) with data-driven weighting.
+    *   `[wang2024]` (IME): Builds on MADE. Addresses MADE's limitations by explicitly learning *space-shared* and *space-specific* properties to bridge "spatial gaps" between curvature spaces and uses an *Adjustable Multi-curvature Pooling (AMP)* for adaptive information fusion.
+
+3.  **Comprehensive Spatiotemporal & Fuzzy Embeddings:**
+    *   `[ji2024]` (FSTRE): Addresses the limitation of existing KGEs for *uncertain and dynamic knowledge, lacking spatial modeling*. Integrates fuzziness, spatial (projection), and temporal (rotation) in a complex vector space using anisotropic vectors for fine-grained fuzziness. This is a major leap in integrating multiple complex dimensions.
+    *   `[ji2024] Multihop Fuzzy Spatiotemporal RDF Knowledge Graph Query`: Extends FSTRE's paradigm to multihop queries. Addresses the problem of *neglecting KG uncertainty and spatiotemporal sensitivity during path reasoning*. Uses *quaternions* to jointly embed spatiotemporal entities and relations as rotations, enabling multihop fuzzy spatiotemporal queries.
+
+4.  **GNN for Complex Temporal Interactions (less direct but related to complex structures):**
+    *   `[xie2023]` (TARGAT): Focuses on GNNs to capture *multi-fact interactions across different timestamps*. While not directly multi-curvature or spatiotemporal in the same vein as FSTRE, it addresses complex temporal interactions, which is a related challenge in dynamic KGs. I should mention it briefly as a complementary approach to handling complex temporal dynamics.
+
+**Constraint Checklist & Confidence Score:**
+1. LaTeX format: Yes
+2. At least 400 words: Will ensure during writing.
+3. No numbering in subsection titles: Yes
+4. Focus ONLY on SUBSECTION SPECIFIC FOCUS: Yes, will stick to multi-curvature, spatiotemporal, fuzzy, and quaternion embeddings.
+5. Specific examples with citations: Yes, will use paper names and their core technical contributions.
+6. Structure (Opening, Body, Closing): Yes
+    - Opening: Problem statement (beyond Euclidean, complex geometries, dynamic KGs).
+    - Body: Describe papers (2-3 sentences each), connect by limitations.
+    - Closing: Unresolved issues/future directions.
+7. Avoid Red Flags: Will be careful about sequential listing, vague critiques, unsupported claims, missing comparisons, pure description, ignoring contradictions, cherry-picking.
+
+Confidence Score: 5/5
+
+Strategizing complete. I will now proceed with generating the LaTeX output based on this plan. I will start with an introduction, then discuss the progression from basic temporal modeling to multi-curvature, and finally the comprehensive spatiotemporal-fuzzy integration. I will ensure smooth transitions and clear connections between papers. I will also make sure to explicitly mention the "quaternion-based embeddings" as requested.
+</think>
+\subsection{Multi-Curvature and Spatiotemporal Embeddings}
+The inherent complexity of dynamic knowledge graphs, characterized by diverse relational patterns, hierarchical structures, and the temporal evolution of facts, often exceeds the representational capacity of traditional Euclidean embedding spaces. This subsection explores advanced temporal Knowledge Graph Embedding (KGE) models that transcend single geometric spaces, embracing multi-curvature geometries and integrating comprehensive spatiotemporal and fuzzy information to capture these intricate structures.
+
+Early efforts to incorporate time into KGEs laid the groundwork for more sophisticated geometric approaches. \textcite{dasgupta2018} introduced HyTE, a foundational model that associated each timestamp with a hyperplane, enabling temporally-guided inference and prediction of temporal scopes. While innovative, HyTE's representation of time was relatively simple. \textcite{xu2019} further advanced temporal modeling with ATiSE, which conceptualized entity and relation evolution as additive time series components, explicitly accounting for temporal uncertainty through Gaussian distributions. This marked a significant step towards capturing the probabilistic nature of dynamic knowledge. Moving beyond linear transformations, \textcite{xu2020} proposed TeRo, which leveraged element-wise rotation in complex space to model entity evolution, effectively handling diverse relation patterns and time intervals. Building on this rotational paradigm, \textcite{sadeghian2021} introduced ChronoR, generalizing rotation to k-dimensions and employing an inner product scoring function that theoretically encompasses complex-domain models like ComplEx, alongside advanced regularization for temporal smoothness.
+
+Despite these advancements in temporal modeling, a significant limitation remained: the assumption of a single, often Euclidean, geometric space for embeddings. Real-world knowledge graphs often exhibit mixed geometric properties, such as hierarchical structures (best in hyperbolic space), cyclic patterns (hyperspherical), and linear relationships (Euclidean). Addressing this, \textcite{wang2024} introduced MADE (Multicurvature Adaptive Embedding), a pioneering model that embeds temporal knowledge graphs (TKGs) into a combination of Euclidean, hyperbolic, and hyperspherical spaces. MADE adaptively weights these different curvature spaces based on data characteristics, allowing it to capture diverse geometric structures more effectively than single-space models. Further refining this multi-curvature paradigm, \textcite{wang2024} presented IME (Integrating Multi-curvature Shared and Specific Embedding). IME builds upon MADE's foundation by explicitly learning "space-shared" properties to bridge the semantic gaps between different curvature spaces, while also capturing "space-specific" characteristics. It introduces an Adjustable Multi-curvature Pooling (AMP) mechanism to adaptively fuse information from these diverse spaces, along with novel loss functions to ensure structural consistency.
+
+Beyond just temporal dynamics and multi-curvature geometries, the latest research has moved towards a comprehensive integration of spatial and fuzzy information. \textcite{ji2024} introduced FSTRE (Fuzzy Spatiotemporal RDF Knowledge Graph Embedding), a groundbreaking model designed to handle uncertain and dynamic knowledge, a capability largely absent in prior KGEs. FSTRE operates in a complex vector space, uniquely employing projection operations to embed spatial information and rotation operations for temporal information. It further integrates fine-grained fuzziness into spatiotemporal facts by leveraging the modal length of anisotropic vectors, allowing for the representation of inherent uncertainty. Extending this comprehensive approach, \textcite{ji2024} explored Multihop Fuzzy Spatiotemporal RDF Knowledge Graph Querying via Quaternion Embedding. This work addresses the challenge of performing multihop path reasoning in uncertain and spatiotemporal KGs. It utilizes quaternion-based embeddings to jointly represent spatiotemporal entities and relations as rotations, effectively enabling complex multihop fuzzy spatiotemporal queries by leveraging the noncommutative compositional properties of quaternions. Complementary to these geometric and spatiotemporal advancements, \textcite{xie2023} proposed TARGAT, a Graph Neural Network (GNN)-based approach that employs a dynamic time-aware relational generator to explicitly capture multi-fact interactions across different timestamps, offering another avenue for modeling complex temporal dependencies within dynamic knowledge graphs.
+
+In conclusion, the evolution towards multi-curvature and spatiotemporal embeddings signifies a critical shift in temporal KGE research, moving beyond simplistic temporal integration to embrace the full geometric and contextual complexity of dynamic knowledge. While models like MADE and IME offer adaptive geometric representations, FSTRE and quaternion-based approaches provide a holistic framework for fuzzy, spatial, and temporal dynamics. Future directions include developing more efficient training methodologies for these high-dimensional and multi-space models, enhancing their interpretability, and exploring how to seamlessly integrate adaptive geometric learning with advanced GNN architectures for even more robust and context-aware knowledge graph reasoning.
