@@ -50,7 +50,7 @@ class LiteratureReviewGenerator:
         self.community_summary = json.load(open(f"paper_data/{self.query.replace(' ', '_').replace(':', '')}/paths/communities_summary.json", "r", encoding="utf-8"))
         self.graph_path = f"paper_data/{self.query.replace(' ', '_').replace(':', '')}/info/paper_citation_graph.json"
         self.node_info_path = f"{self.keyword_dir}/processed_checkpoint.json"
-        self.G = self.load_graph(self.graph_path, self.node_info_path)
+        self.G, self.id2node_info = self.load_graph(self.graph_path, self.node_info_path)
     def get_paper_text(self, paper_infos):
         papers_text = ''
         for info in paper_infos:
@@ -69,6 +69,7 @@ class LiteratureReviewGenerator:
             node_id = node['file_name'].replace('.pdf', '')
             info = node["metadata"]
             info['citation_key'] = node['citation_key']
+            info['year'] = info['published_date']
             id2node_info[node_id] = info
         G = nx.DiGraph()
         for node in data['nodes']:
@@ -77,8 +78,11 @@ class LiteratureReviewGenerator:
             G.add_node(node_id, **info)
         for edge in data['edges']:
             G.add_edge(edge['source'], edge['target'], **edge)
-        return G
-
+        return G, id2node_info
+    def parse_remove_think(self, summary):
+        summary = re.sub(r"1.<think>[\s\S]*?</think>", "", summary)
+        summary = re.sub(r"<think>[\s\S]*?</think>", "", summary)
+        return summary
     #region evaluate section quality
     def evaluate_section_quality(self, section_title: str, section_content: str, 
                             section_focus: str, outline: str, pre_section: str) -> Dict[str, any]:
@@ -209,7 +213,7 @@ class LiteratureReviewGenerator:
     #endregion
     
     #region retrieve additional papers from RAG
-    def retrieve_additional_papers(self, queries: List[str], n_results: int = 3) -> List[Dict]:
+    def retrieve_additional_papers(self, subsection_title, subsection_focus, current_content, weaknesses, queries: List[str], n_results: int = 3) -> List[Dict]:
         """
         Retrieve additional papers from RAG system based on queries
         
@@ -222,7 +226,6 @@ class LiteratureReviewGenerator:
         """
         all_results = []
         seen_doc_ids = set()
-        
         for query in queries:
             try:
                 results = self.summarizer.search_similar_papers(query, n_results)
@@ -232,24 +235,94 @@ class LiteratureReviewGenerator:
                     doc_id = result.get('doc_id', '')
                     if doc_id not in seen_doc_ids:
                         seen_doc_ids.add(doc_id)
+                        node_id = result.get('metadata').get('file_name').replace('.pdf', '')
+                        result['citation_key'] =  self.id2node_info[node_id].get('citation_key')
+                        result['title'] = self.id2node_info[node_id].get('title')
+                        result['summary'] = self.id2node_info[node_id].get('summary')
                         all_results.append(result)
-                        
+
             except Exception as e:
                 print(f"Error retrieving papers for query '{query}': {e}")
                 continue
-        
+        all_results = self.filter_additional_papers_with_llm_check(subsection_title, subsection_focus, current_content, weaknesses, all_results)
         return all_results
     #endregion
     
-    def filter_additional_papers_with_llm_check(self, queries: List[str], subsection_title, subsection_focus, current_content, weaknesses):
+    def filter_additional_papers_with_llm_check(self, subsection_title, subsection_focus, current_content, weaknesses, retrieved_papers):
+        # print("Retrieved papers: ", retrieved_papers)
+        retrieved_papers_text = self.get_paper_text(retrieved_papers)
+        # print("Retrieved papers text: ", retrieved_papers_text)
         prompt = self.prompt_helper.generate_prompt(self.prompt_helper.CHECK_RAG_RESULT_PROMPT,
                                                     paras={
                                                         "SUBSECTION_TITLE": subsection_title,
                                                         "SUBSECTION_FOCUS": subsection_focus,
                                                         "CURRENT_CONTENT": current_content,
                                                         "WEAKNESSES": weaknesses,
-                                                        "RETRIEVED_PAPERS": retrieved_papers
+                                                        "RETRIEVED_PAPERS": retrieved_papers_text
                                                     })
+        with open('tmp/writing_prompts.txt', "a") as f:
+            f.write(f"FILTER RETRIEVED PAPER PROMPT:\n {prompt}")
+
+        try:
+            response = self.model.generate_content(
+                prompt,
+                generation_config=genai.types.GenerationConfig(
+                    max_output_tokens=102400,
+                    temperature=0.4,
+                )
+            )
+            return self.parse_rag_result(response.text)
+            
+        except Exception as e:
+            print(f"Error improving section: {e}")
+            return current_content
+    def parse_rag_result(self, response_text):
+        """
+        Parse the JSON output from the RAG result prompt.
+        
+        Args:
+            response_text (str): The raw response text from the language model
+            
+        Returns:
+            dict: A dictionary with two keys:
+                - 'filtered_papers': String containing filtered papers in the specified format
+                - 'reason': String explaining the filtering criteria
+                
+        Raises:
+            ValueError: If the response doesn't contain valid JSON or required fields
+        """
+        # Remove any markdown formatting if present
+        cleaned_text = re.sub(r'```json|```', '', response_text.strip())
+        
+        try:
+            # Parse the JSON response
+            parsed_data = json.loads(cleaned_text)
+            
+            # Validate required fields
+            if not isinstance(parsed_data, dict):
+                raise ValueError("Response is not a JSON object")
+                
+            if "filtered_papers" not in parsed_data or "reason" not in parsed_data:
+                raise ValueError("Missing required fields in JSON response")
+                
+            # Validate field types
+            if not isinstance(parsed_data["filtered_papers"], str) or not isinstance(parsed_data["reason"], str):
+                raise ValueError("Invalid field types in JSON response")
+                
+            return parsed_data
+            
+        except json.JSONDecodeError as e:
+            # Try to extract JSON if there's extra text
+            json_match = re.search(r'\{.*\}', cleaned_text, re.DOTALL)
+            if json_match:
+                try:
+                    parsed_data = json.loads(json_match.group())
+                    if "filtered_papers" in parsed_data and "reason" in parsed_data:
+                        return parsed_data
+                except json.JSONDecodeError:
+                    pass
+                    
+            raise ValueError(f"Failed to parse JSON response: {str(e)}")
     # region improve section with additional papers
     def improve_section_with_additional_papers(self, section_title: str, current_content: str,
                                              section_focus: str, additional_papers: List[Dict],
@@ -412,7 +485,9 @@ class LiteratureReviewGenerator:
                 'DEVELOPMENT_DIRECTION': development_direction,
             }
         )
-        
+        with open('tmp/writing_prompts.txt', "a") as f:
+            f.write(f"INITAL SUBSECTION PROMPT:\n {subsection_prompt}")
+
         try:
             response = self.model.generate_content(
                 subsection_prompt,
@@ -421,7 +496,7 @@ class LiteratureReviewGenerator:
                     temperature=0.4,
                 )
             )
-            return response.text
+            return self.parse_remove_think(response.text)
         except Exception as e:
             print(f"Error writing initial subsection: {e}")
             return ""
@@ -440,7 +515,9 @@ class LiteratureReviewGenerator:
                 'SUBSECTION_CONTENT': subsection_content
             }
         )
-        
+        with open('tmp/writing_prompts.txt', "a") as f:
+            f.write(f"EVALUATE SUBSECTION PROMPT:\n {evaluation_prompt}")
+
         try:
             response = self.advanced_model.generate_content(
                 evaluation_prompt,
@@ -545,7 +622,9 @@ class LiteratureReviewGenerator:
                 "ADDITIONAL_INFO": additional_info
             }
         )
-        
+        with open('tmp/writing_prompts.txt', "a") as f:
+            f.write(f"SUBSECTION IMPROVEMENT PROMPT:\n {improvement_prompt}")
+
         try:
             response = self.model.generate_content(
                 improvement_prompt,
@@ -755,9 +834,10 @@ class LiteratureReviewGenerator:
                     break
                 
                 suggested_queries = evaluation.get('suggested_queries', [])
+                weaknesses = evaluation.get('weaknesses')
                 if suggested_queries:
                     print(f"         Retrieving additional papers for subsection: {', '.join(suggested_queries[:2])}")
-                    additional_papers = self.retrieve_additional_papers(suggested_queries[:2])
+                    additional_papers = self.retrieve_additional_papers(subsection_title, subsection_focus, current_subsection_content, weaknesses, suggested_queries)
                     print(f"         Found {len(additional_papers)} additional papers for subsection")
                 else:
                     additional_papers = []
@@ -929,7 +1009,8 @@ class LiteratureReviewGenerator:
         for section_data in outline_json:
             section_number = section_data['section_number']
             section_title = section_data['section_title']
-
+            # if section_number in ['1', '2', '3']:
+            #     continue
             # Call the updated function to write/refine the section and its subsections
             full_section_latex_content, subsections_in_this_section = self.write_literature_review_section_with_reflection(
                 section_data, processed_papers_for_content, full_outline_text, pre_section_content

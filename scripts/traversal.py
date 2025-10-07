@@ -154,6 +154,7 @@ def summarize_layer_method_groups(query, G, layer):
     return summary, papers
 
 def parse_remove_think(summary):
+    summary = re.sub(r"1.<think>[\s\S]*?</think>", "", summary)
     summary = re.sub(r"<think>[\s\S]*?</think>", "", summary)
     return summary
 def summarize_community(query, G, papers):
