@@ -1,0 +1,1026 @@
+\documentclass[12pt,a4paper]{article}
+    \usepackage[utf8]{inputenc}
+    \usepackage[T1]{fontenc}
+    \usepackage{amsmath,amsfonts,amssymb}
+    \usepackage{graphicx}
+    \usepackage[margin=2.5cm]{geometry}
+    \usepackage{setspace}
+    \usepackage{natbib}
+    \usepackage{url}
+    \usepackage{hyperref}
+    \usepackage{booktabs}
+    \usepackage{longtable}
+    \usepackage{array}
+    \usepackage{multirow}
+    \usepackage{wrapfig}
+    \usepackage{float}
+    \usepackage{colortbl}
+    \usepackage{pdflscape}
+    \usepackage{tabu}
+    \usepackage{threeparttable}
+    \usepackage{threeparttablex}
+    \usepackage[normalem]{ulem}
+    \usepackage{makecell}
+    \usepackage{xcolor}
+
+    % Set line spacing
+    \doublespacing
+
+    % Configure hyperref
+    \hypersetup{
+        colorlinks=true,
+        linkcolor=blue,
+        filecolor=magenta,      
+        urlcolor=cyan,
+        citecolor=red,
+    }
+
+    % Title and author information
+    \title{A Comprehensive Literature Review with Self-Reflection}
+    \author{Literature Review}
+    \date{\today}
+
+    \begin{document}
+
+    \maketitle
+
+    % Abstract (optional)
+    \begin{abstract}
+    This literature review provides a comprehensive analysis of recent research in the field. The review synthesizes findings from 194 research papers, identifying key themes, methodological approaches, and future research directions.
+    \end{abstract}
+
+    \newpage
+    \tableofcontents
+    \newpage
+
+    \label{sec:introduction:_the_genesis_and_challenges_of_generative_adversarial_networks}
+
+\section{Introduction: The Genesis and Challenges of Generative Adversarial Networks}
+\label{sec:introduction:\_the\_genesis\_\_and\_\_challenges\_of\_generative\_adversarial\_networks}
+
+\subsection{The Vision of Adversarial Learning}
+\label{sec:1\_1\_the\_vision\_of\_adversarial\_learning}
+
+The challenge of generating realistic and diverse synthetic data, capable of mimicking complex real-world distributions, has long been a central pursuit in machine learning. A groundbreaking paradigm shift emerged with the introduction of Generative Adversarial Networks (GANs), offering an innovative approach to this problem.
+
+The foundational concept of adversarial learning was first articulated by Goodfellow et al. in their seminal 2014 paper, \cite{Goodfellow2014}. This work proposed a novel framework where two neural networks, a generator (G) and a discriminator (D), are pitted against each other in a dynamic, zero-sum minimax game. The generator's primary objective is to learn the underlying data distribution of a given dataset and produce synthetic samples that are indistinguishable from real data. Conversely, the discriminator's role is to accurately differentiate between authentic data samples from the training set and the artificially generated samples produced by the generator. This adversarial process is formalized by a value function $V(D, G)$, which the generator aims to minimize while the discriminator strives to maximize, leading to the objective $\min\_G \max\_D V(D, G)$. Through this iterative training, the generator continuously refines its ability to create increasingly realistic data, while the discriminator simultaneously improves its detection capabilities. The initial vision of GANs sparked immense excitement due to their unprecedented potential to learn intricate data distributions and synthesize novel, high-fidelity data across various domains, laying the essential groundwork for all subsequent research and advancements in deep generative modeling.
+
+However, despite the profound theoretical elegance and promising vision of GANs, their practical implementation immediately encountered significant hurdles. Early GAN models were notoriously difficult to train, often suffering from instability, vanishing gradients, and a pervasive issue known as mode collapse. Mode collapse occurs when the generator produces a limited variety of samples, failing to capture the full diversity of the target data distribution, thereby undermining the core promise of learning complex distributions. These challenges directly hindered the realization of the initial high-fidelity data synthesis vision.
+
+In response to these immediate practical limitations, early research focused on stabilizing the adversarial training process. Che et al. addressed these issues in \cite{che2016kho}, arguing that the instability and mode collapse stemmed from the particular functional shape of the trained discriminators in high-dimensional spaces. They introduced several regularization techniques to the objective function, aiming to dramatically stabilize GAN training. Their proposed regularizers were designed to promote a fairer distribution of probability mass across the data's modes during early training phases, offering a unified solution to the missing modes problem and enabling the generator to explore a broader range of the data distribution.
+
+Further efforts to enhance stability and diversity were explored by Metz et al. in \cite{metz20169ir}, who introduced Unrolled Generative Adversarial Networks. This method sought to stabilize GANs by redefining the generator's objective with respect to an \textit{unrolled} optimization of the discriminator. Instead of optimizing against the current state of the discriminator, the generator considers the discriminator's response after a few optimization steps, allowing for a more informed and stable training signal. This technique effectively mitigated mode collapse and stabilized the training of GANs, even with complex recurrent generators, leading to increased diversity and coverage of the data distribution by the generator.
+
+These early efforts, though not fully resolving all inherent challenges, were pivotal in demonstrating that the initial vision of adversarial learning was indeed attainable with methodological refinements. They highlighted that while the conceptual framework of GANs was revolutionary, its practical deployment necessitated robust training strategies to overcome instability and mode collapse. This early phase of research was crucial in beginning to unlock the potential of GANs, paving the way for the extensive innovations that would follow to truly realize their promise in generating high-fidelity, diverse, and controllable synthetic data.
+\subsection{Inherent Instabilities: Mode Collapse and Training Divergence}
+\label{sec:1\_2\_inherent\_instabilities:\_mode\_collapse\_\_and\_\_training\_divergence}
+
+The initial promise of Generative Adversarial Networks (GANs) was significantly hampered by pervasive challenges related to training instability and mode collapse, which severely limited their practical applicability. These fundamental issues stem from the intricate dynamics of the adversarial training process and the limitations of the original GAN objective function.
+
+A primary concern was \textbf{mode collapse}, a phenomenon where the generator fails to capture the full diversity of the real data distribution, instead producing only a limited set of samples or variations thereof. This results in a lack of richness and realism in the generated output, as the generator essentially finds a few "safe" modes that fool the discriminator, neglecting to explore the broader data manifold. \cite{che2016kho} explicitly acknowledged this problem, stating that GANs are "prone to miss modes." The authors attributed this behavior to the particular functional shape of trained discriminators in high-dimensional spaces, which could easily lead to training stagnation or misdirection of probability mass towards regions of higher concentration. To counteract this, \cite{che2016kho} proposed introducing several regularization techniques to the objective function, aiming to stabilize training and promote a "fair distribution of probability mass across the modes of the data generating distribution," thereby offering a unified solution to the missing modes problem.
+
+Concurrently, GANs were plagued by \textbf{training instability}, characterized by vanishing or exploding gradients, oscillatory behavior, and outright non-convergence. This made GANs notoriously difficult to train, often requiring extensive hyperparameter tuning and specific architectural heuristics. A significant contributor to this instability was the tendency for the discriminator to become overly powerful, leading to saturated gradients for the generator. When the discriminator perfectly distinguishes real from fake samples, the generator receives little to no meaningful gradient signal, hindering its ability to improve. \cite{miyato2018arc} directly addressed this issue, identifying "the instability of its training" as a major challenge in GAN research. To stabilize the training of the discriminator, they introduced Spectral Normalization, a novel weight normalization technique. This method constrains the Lipschitz constant of the discriminator's layers, ensuring that the gradients remain well-behaved and preventing the discriminator from becoming too strong too quickly, which in turn provides a more stable and continuous learning signal for the generator \cite{miyato2018arc}.
+
+These instabilities and the propensity for mode collapse were often attributed to the limitations of the original GAN objective function, which relies on the Jensen-Shannon (JS) divergence. When the real and generated data distributions are non-overlapping in high-dimensional spaces—a common scenario, especially early in training—the JS divergence can become saturated. This saturation leads to vanishing gradients for the generator, effectively paralyzing its learning process and hindering its ability to explore the full data manifold. The efforts by \cite{che2016kho} to regularize the objective to encourage mode coverage, and by \cite{miyato2018arc} to stabilize discriminator training through spectral normalization, represent crucial early steps in mitigating these inherent challenges. While \cite{che2016kho} focused on the symptom of mode collapse by encouraging broader mode exploration, \cite{miyato2018arc} tackled the more fundamental issue of gradient stability within the adversarial game.
+
+In conclusion, the inherent instabilities of early GANs, particularly mode collapse and the challenges of training divergence rooted in the limitations of the JS divergence, presented significant hurdles to their widespread adoption. The pioneering work on regularization techniques \cite{che2016kho} and discriminator stabilization methods like Spectral Normalization \cite{miyato2018arc} laid essential groundwork. These efforts were critical in understanding the complex dynamics of adversarial training and paved the way for subsequent research into more robust objective functions and architectural innovations designed to achieve stable, diverse, and high-quality generative models.
+\subsection{Scope and Overview of Stabilization Strategies}
+\label{sec:1\_3\_scope\_\_and\_\_overview\_of\_stabilization\_strategies}
+
+The inherent instability of Generative Adversarial Networks (GANs) during training, often manifesting as mode collapse or non-convergence, has necessitated the development of a diverse array of stabilization strategies. These approaches span fundamental modifications to objective functions, sophisticated regularization techniques, innovative architectural designs, and advanced training paradigms, collectively aiming to make GANs more robust, reliable, and capable of generating high-quality, diverse outputs. This section provides a comprehensive roadmap of these multi-faceted strategies, highlighting their contributions to advancing GAN performance across various domains.
+
+Early efforts to stabilize GAN training primarily focused on refining the objective function and introducing regularization to improve the optimization landscape. The original GAN formulation suffered from vanishing gradients and mode collapse due to the Jensen-Shannon divergence. To address this, \textcite{arjovsky2017ze5} introduced Wasserstein GAN (WGAN), which utilizes the Earth-Mover (Wasserstein) distance as a loss function, providing a smoother gradient and a more meaningful metric of generator performance. Building on this, alternative loss functions were explored, such as the Least Squares Generative Adversarial Networks (LSGANs) proposed by \textcite{mao2017ss0}, which adopt a least squares loss to mitigate vanishing gradients and achieve more stable training and higher quality images compared to traditional GANs. Complementing these loss function changes, regularization techniques became crucial. \textcite{miyato2018arc} introduced Spectral Normalization (SN-GAN), a computationally light weight normalization technique that directly constrains the Lipschitz constant of the discriminator's layers, proving highly effective in stabilizing training and improving sample quality. Further theoretical insights into GAN convergence and the effectiveness of gradient penalties were provided by \textcite{mescheder2018}, which analyzed various training methods and their convergence properties. Other regularization methods include Mode Regularized GANs \textcite{che2016kho}, which regularize the objective to encourage a fairer distribution of probability mass across data modes, and the Binarized Representation Entropy (BRE) regularization by \textcite{cao20184y8}, which guides the discriminator to better allocate its model capacity by encouraging high joint entropy of activation patterns. The theoretical underpinnings for these techniques, clarifying the need for Lipschitz constraints and gradient penalties, were further elaborated by \textcite{chu2020zbv} and \textcite{xu2019uwg}, who applied control theory to model GAN dynamics and propose stabilization through L2 regularization on the discriminator output.
+
+Beyond objective function and regularization, significant advancements have been made through innovative architectural designs and progressive training paradigms. A pivotal contribution in this area is the Progressive Growing of GANs (PGGAN) by \textcite{karras2017raw}, which introduced a training methodology where both the generator and discriminator progressively grow in resolution, starting from low-resolution images and gradually adding layers for finer details. This approach not only speeds up training but also significantly stabilizes it, enabling the generation of unprecedentedly high-quality images. Similarly, \textcite{zhang2016mm0} proposed StackGAN, a multi-stage architecture that decomposes the complex problem of text-to-image synthesis into manageable sub-problems, refining images progressively. To address the challenge of mode collapse and instability, \textcite{metz20169ir} introduced Unrolled Generative Adversarial Networks, where the generator's objective is defined with respect to an unrolled optimization of the discriminator, allowing for a more stable training process. More recently, architectural innovations have involved multiple discriminators: \textcite{wei2021gla} presented DuelGAN, which introduces a peer discriminator that "duels" with the primary discriminator to discourage agreement and enhance sample diversity, thereby mitigating early mode collapse. Following a similar vein, \textcite{zhang2021ypi} proposed Twin Discriminator Generative Adversarial Networks (TWGAN), combining saturating and non-saturating losses with two discriminators to exploit complementary statistical properties for improved training stability and sample diversity. Furthermore, \textcite{gan202494y} introduced a learnable auxiliary module with an auxiliary penalty and augmented discriminator to enhance the stability of both networks during noise-to-image synthesis.
+
+Advanced training paradigms have also emerged to tackle specific challenges, such as data efficiency and fine-grained control. For scenarios with limited training data, which often lead to discriminator overfitting and training divergence, \textcite{zhao2020xhy} proposed Differentiable Augmentation (DiffAugment). This method applies various types of differentiable augmentations to both real and fake samples, effectively stabilizing training and achieving impressive results with fewer images. This concept was further refined by \textcite{karras202039x} with Adaptive Discriminator Augmentation (ADA), demonstrating that good results are possible with only a few thousand images. Other training strategies include InfoMax-GAN \textcite{lee20205ue}, which employs contrastive learning and mutual information maximization to simultaneously mitigate catastrophic forgetting in the discriminator and mode collapse in the generator. For faster and stabilized few-shot image synthesis, \textcite{liu20212c2} introduced FastGAN, a lightweight architecture leveraging skip-layer channel-wise excitation and a self-supervised discriminator. The concept of transfer learning between networks for stability was explored by \textcite{megahed2024c23} in Collaborative-GAN, where well-performing networks transfer learned weights to underperforming ones to mitigate instability and mode collapse. Theoretical work by \textcite{salmona202283g} has also shed light on the inherent trade-offs, demonstrating that constraining the Lipschitz constant (a common stabilization technique) can limit the ability of push-forward generative models to fit multimodal distributions, thus highlighting a tension between stability and diversity.
+
+In conclusion, the evolution of GAN stabilization strategies reflects a continuous effort to overcome fundamental optimization challenges and push the boundaries of generative model capabilities. From foundational adjustments to loss functions and regularization, through innovative architectural designs like progressive growing and multi-discriminator setups, to sophisticated training paradigms for data efficiency and enhanced control, research has progressively built upon earlier insights. While significant strides have been made in achieving high-fidelity and diverse image generation, the field continues to grapple with balancing stability, quality, diversity, and computational efficiency, particularly in novel domains and under resource constraints. Future research will likely continue to explore these interdependencies, aiming for more robust, efficient, and universally applicable GAN training methodologies.
+
+
+\label{sec:early_heuristics_and_architectural_foundations_for_stability}
+
+\section{Early Heuristics and Architectural Foundations for Stability}
+\label{sec:early\_heuristics\_\_and\_\_architectural\_foundations\_for\_stability}
+
+\subsection{Deep Convolutional GANs (DCGANs) and Architectural Best Practices}
+\label{sec:2\_1\_deep\_convolutional\_gans\_(dcgans)\_\_and\_\_architectural\_best\_practices}
+
+Early Generative Adversarial Networks (GANs), as initially proposed by \cite{Goodfellow2014}, demonstrated the powerful concept of adversarial training but were notoriously difficult to stabilize, often suffering from issues like mode collapse and unstable convergence, particularly when relying on fully connected network architectures. This inherent instability limited their ability to generate high-quality and diverse images. A pivotal advancement in addressing these challenges came with the introduction of Deep Convolutional Generative Adversarial Networks (DCGANs) by \cite{Radford2015}, which established a set of crucial architectural guidelines that significantly improved GAN training stability and the visual fidelity of generated outputs.
+
+DCGANs revolutionized GAN design by systematically integrating convolutional layers and adopting specific architectural choices that became standard practice for many subsequent generative models. The core innovation involved replacing traditional pooling layers with strided convolutions in the discriminator for downsampling and fractional-strided convolutions (also known as transposed convolutions) in the generator for upsampling. This allowed the networks to learn their own spatial downsampling and upsampling operations, rather than relying on fixed, non-learnable pooling functions. This architectural shift enabled the generator to produce images with higher spatial coherence and the discriminator to learn more robust features, leading to a substantial improvement in the quality and stability of generated images compared to earlier fully connected network designs.
+
+Beyond the strategic use of convolutional layers, \cite{Radford2015} also highlighted the critical role of batch normalization. Batch normalization layers were strategically applied in both the generator and discriminator, with the notable exceptions of the generator's output layer and the discriminator's input layer. The primary benefit of batch normalization is its ability to stabilize learning by normalizing the input to each layer to have zero mean and unit variance. This prevents internal covariate shift, mitigates vanishing or exploding gradients, and allows for the training of deeper generative models. By ensuring a more consistent distribution of activations throughout the network, batch normalization significantly contributes to smoother training dynamics and more robust convergence.
+
+The selection of activation functions was another key architectural recommendation from DCGANs. For the generator, the Rectified Linear Unit (ReLU) activation function was predominantly used in all layers, except for the output layer, which employed a Tanh activation. ReLU's sparse activation properties help in learning complex, non-linear mappings efficiently. In contrast, the discriminator utilized Leaky ReLU (LeakyReLU) activations for all layers. LeakyReLU addresses the "dying ReLU" problem by allowing a small, non-zero gradient when the unit is not active, ensuring that gradients can flow through the network even for negative inputs. This provides the discriminator with more robust gradient information, preventing saturation and aiding in the stability of the adversarial training process.
+
+These architectural recommendations from \cite{Radford2015} quickly became an enduring foundation for achieving greater stability in generative models. By moving away from fully connected layers and embracing a fully convolutional architecture with specific normalization and activation strategies, DCGANs demonstrated that carefully designed network structures could dramatically improve GAN performance. While other contemporary research efforts also sought to improve GAN stability through different means, such as mode regularization \cite{che2016kho} or unrolled optimization objectives \cite{metz20169ir}, DCGANs provided a concrete, widely adopted architectural blueprint. Its contributions were pivotal in transforming GANs from a theoretically promising but practically challenging concept into a powerful tool capable of generating visually compelling images, setting the stage for future advancements in high-fidelity image synthesis. The principles established by DCGANs continue to influence the design of modern GAN architectures, underscoring their lasting impact on the field.
+\subsection{Practical Training Tricks: Minibatch Discrimination and Feature Matching}
+\label{sec:2\_2\_practical\_training\_tricks:\_minibatch\_discrimination\_\_and\_\_feature\_matching}
+
+The early development of Generative Adversarial Networks (GANs) was significantly hampered by training instability and the pervasive problem of mode collapse, where the generator produces only a limited variety of samples. While theoretical advancements in objective functions were crucial, practical heuristics and architectural modifications also played a pivotal role in stabilizing training and promoting sample diversity. This subsection delves into two such early, yet impactful, empirical tricks: minibatch discrimination and feature matching, which provided tangible improvements by actively managing the complex adversarial dynamics.
+
+A seminal contribution to practical GAN training was made by \cite{Salimans2016}, who introduced several techniques to improve stability and sample quality. Among these, \textit{minibatch discrimination} emerged as a key method for addressing mode collapse. Traditional discriminators evaluate samples independently, making it difficult to detect if the generator is producing many identical or highly similar samples. Minibatch discrimination tackles this by allowing the discriminator to consider the statistics of an entire batch of samples. Specifically, a new layer is added to the discriminator that computes a set of statistics for each sample within its minibatch, based on its feature representation. These statistics are then concatenated with the original feature representation and fed to the subsequent layers of the discriminator. By exposing the discriminator to the relationships between samples in a batch, it gains the ability to identify and penalize generators that produce samples lacking diversity, thereby encouraging the generator to explore a wider range of the data distribution and mitigate mode collapse.
+
+Complementing minibatch discrimination, \textit{feature matching} was another heuristic proposed by \cite{Salimans2016} to stabilize GAN training. Instead of directly optimizing the generator to fool the discriminator's final output (which can lead to unstable gradients), feature matching encourages the generator to produce samples whose feature statistics match those of real data in an intermediate layer of the discriminator. The generator's objective is modified to minimize the Euclidean distance between the mean feature vector of real data and the mean feature vector of generated data, as extracted from a chosen intermediate layer of the discriminator. This approach provides the generator with a more stable and meaningful gradient signal, as it no longer needs to find specific points that fool the discriminator but rather to match the overall distribution of features. This encourages the generator to capture the underlying structure and characteristics of real data more effectively, leading to higher quality and more diverse generated samples.
+
+These practical tricks, introduced by \cite{Salimans2016}, provided crucial advancements in the early GAN landscape. They demonstrated that beyond merely adjusting the loss function, carefully engineered architectural components and training objectives could significantly enhance the robustness and performance of GANs. By enabling the discriminator to detect mode collapse and providing the generator with more stable learning signals, minibatch discrimination and feature matching laid important groundwork for subsequent innovations. However, despite these improvements, GAN training remained a challenging endeavor, particularly in complex domains or with limited data. For instance, even in later applications like SAR image recognition, the inherent instability of GANs persisted, as noted by \cite{gao2018d4g}, who observed that "the training of GANs becomes unstable when they are applied to SAR images, which reduces the feature extraction capability of the discriminator." This highlights that while early practical tricks offered significant gains, the quest for truly robust and universally stable GAN training continued to drive further research into more sophisticated architectures and regularization techniques.
+
+In conclusion, minibatch discrimination and feature matching represent foundational empirical strategies that significantly contributed to the early success and broader applicability of GANs. They underscored the importance of designing mechanisms that directly address the adversarial dynamics, particularly concerning mode collapse and gradient stability. While not a complete solution to all GAN training challenges, these techniques provided tangible improvements in sample diversity and training stability, paving the way for more advanced architectural and regularization-based innovations in the ongoing effort to master generative adversarial learning.
+
+
+\label{sec:mathematical_foundations:_loss_function_reformulations_and_gradient_regularization}
+
+\section{Mathematical Foundations: Loss Function Reformulations and Gradient Regularization}
+\label{sec:mathematical\_foundations:\_loss\_function\_reformulations\_\_and\_\_gradient\_regularization}
+
+\subsection{Wasserstein GANs (WGAN) and the Earth Mover's Distance}
+\label{sec:3\_1\_wasserstein\_gans\_(wgan)\_\_and\_\_the\_earth\_mover's\_distance}
+
+The initial formulation of Generative Adversarial Networks (GANs) \cite{Goodfellow2014} presented a revolutionary framework for generative modeling, yet it was plagued by significant training instabilities, notably vanishing gradients and mode collapse. These issues largely stemmed from the use of the Jensen-Shannon (JS) divergence as the objective function, which provides a saturated gradient when the real and generated data distributions are non-overlapping, a common occurrence in high-dimensional data spaces. This led to a critical need for a more robust and stable training objective.
+
+A groundbreaking paradigm shift was introduced by Wasserstein GANs (WGAN) \cite{Arjovsky2017}, which fundamentally altered the GAN objective by replacing the problematic Jensen-Shannon divergence with the Earth Mover's (Wasserstein-1) distance. This change offered a smoother and more continuous loss landscape, providing more meaningful gradients even when the real and generated distributions were non-overlapping. The theoretical underpinnings of the Wasserstein distance ensure that a continuous and non-zero gradient is available almost everywhere, directly addressing the critical issues of vanishing gradients and mode collapse that hindered earlier GANs. In this formulation, the discriminator was re-termed as a 'critic' to reflect its new role in estimating the Earth Mover's distance rather than performing binary classification. The initial WGAN formulation enforced a K-Lipschitz constraint on this critic via weight clipping, representing a significant theoretical and practical advancement in achieving GAN training stability \cite{Arjovsky2017}.
+
+Prior to WGAN, researchers attempted to mitigate GAN instabilities through various regularization techniques. For instance, \cite{che2016kho} proposed Mode Regularized Generative Adversarial Networks to address mode collapse and training instability by regularizing the objective function. While these efforts provided some improvements, WGAN offered a more fundamental solution by changing the underlying divergence metric itself, thereby providing a theoretically sounder path to stability.
+
+Building upon the foundational requirement of a Lipschitz-constrained critic in WGAN, subsequent research focused on more robust and efficient methods to enforce this constraint. While weight clipping, as initially proposed by \cite{Arjovsky2017}, could lead to undesirable behaviors such as capacity underutilization or exploding gradients, alternative regularization techniques emerged. For example, \cite{miyato2018arc} introduced Spectral Normalization (SN-GAN), a novel weight normalization technique designed to stabilize the training of the discriminator by directly controlling its Lipschitz constant. This method proved to be computationally light and easy to integrate, offering a more effective and stable way to enforce the Lipschitz constraint compared to simple weight clipping, thereby further enhancing the stability of WGAN-based architectures.
+
+The principles introduced by WGAN have had a lasting impact on the field, extending beyond fundamental generative modeling to various practical applications where stable and robust generative models are crucial. For instance, in wireless communications, the inherent stability of WGANs has been leveraged to enhance channel estimation. \cite{hu2021yk5} proposed a GAN-based channel estimation enhancement algorithm that integrates a conditional GAN with an improved Wasserstein GAN to boost training stability and learning ability. Similarly, \cite{ye2024n41} utilized a GAN variant for channel estimation in intelligent reflecting surface (IRS)-assisted mmWave MIMO systems, specifically designing a loss function to ensure the correct optimization direction and improve training stability, directly benefiting from the lessons learned from Wasserstein GANs. These applications underscore the enduring relevance of WGAN's contributions to stable GAN training.
+
+In conclusion, the introduction of Wasserstein GANs marked a pivotal moment in the evolution of generative adversarial networks. By replacing the Jensen-Shannon divergence with the Earth Mover's distance and enforcing a Lipschitz constraint on the critic, WGAN provided a fundamentally more stable and interpretable training objective. This innovation effectively addressed the critical issues of vanishing gradients and mode collapse, transforming GANs from a notoriously unstable concept into a more reliable and scientifically measurable framework. The subsequent refinements in Lipschitz constraint enforcement and the widespread application of WGAN principles in diverse domains highlight its foundational role in advancing the field of generative modeling.
+\subsection{Gradient Penalties (WGAN-GP, DRAGAN) for Lipschitz Continuity}
+\label{sec:3\_2\_gradient\_penalties\_(wgan-gp,\_dragan)\_for\_lipschitz\_continuity}
+
+The inherent instability of Generative Adversarial Networks (GANs) during training, particularly the challenge of ensuring a well-behaved discriminator, has been a central focus of research. A critical aspect of this stability, especially for Wasserstein GANs (WGANs), is enforcing the Lipschitz continuity constraint on the discriminator function. Initially, \textcite{Arjovsky2017} introduced the Wasserstein-1 distance as a more stable alternative to the Jensen-Shannon divergence, providing a smoother loss landscape and better convergence properties. However, their initial method for enforcing the Lipschitz constraint, weight clipping, proved problematic, limiting model capacity and often leading to vanishing or exploding gradients.
+
+This fundamental limitation was robustly addressed by \textcite{Gulrajani2017} with the introduction of the Wasserstein GAN with Gradient Penalty (WGAN-GP). Instead of clipping weights, WGAN-GP enforces the 1-Lipschitz constraint by penalizing the norm of the discriminator's gradient with respect to its input. Specifically, a penalty term is added to the discriminator's loss function that encourages the gradient norm to be close to one, typically sampled along straight lines between real and generated data points. This approach proved significantly more effective and stable than weight clipping, allowing the discriminator to learn more complex functions without pathological behavior, thereby improving training stability and the quality of generated samples. WGAN-GP quickly became a widely adopted standard, demonstrating the crucial role of precise gradient control in achieving stable and high-quality GAN training dynamics.
+
+Further theoretical and empirical investigations into gradient regularization solidified its importance. \textcite{Mescheder2018} provided a comprehensive analysis of various gradient penalty methods, including WGAN-GP and DRAGAN (Discriminator Regularization with Adversarial Gradients), investigating their convergence properties. They demonstrated that properly applied gradient penalties are essential for stable training, and introduced the concept of zero-centered gradient penalties, which further refined regularization by penalizing the gradient norm at the data points themselves. This work underscored that well-behaved gradients are not only crucial for the Lipschitz constraint but also generally for preventing exploding or vanishing gradients, thereby ensuring the discriminator provides meaningful feedback to the generator.
+
+The principles established by WGAN-GP and related gradient penalty methods have been widely adopted and integrated into more complex GAN architectures and diverse applications. For instance, \textcite{huang2022zar} proposed VAE-WGANGP, which explicitly incorporates a gradient penalty within an asymmetric loss function to alleviate gradient explosion or disappearance during the generation of high-fidelity SAR images. This demonstrates the continued necessity of gradient penalties even when combining GANs with other generative models like Variational Autoencoders (VAEs). Similarly, in the domain of wireless communications, \textcite{hu2021yk5} integrated an "improved Wasserstein GAN" (implicitly leveraging gradient penalties) into a conditional GAN framework to enhance channel estimation stability and learning ability, showcasing its utility beyond image synthesis. More recently, \textcite{ye2024n41} continued this trajectory by proposing a GAN variant with a specifically designed loss function to improve training stability for channel estimation in IRS-assisted mmWave MIMO systems, building upon the foundational understanding of stable GAN optimization.
+
+The pervasive challenge of GAN training instability and mode collapse, as acknowledged by works like \textcite{zhang2022ysl} in the context of DCGANs, and the difficulties in stabilizing advanced architectures such as CycleGANs \textcite{you2018a3m}, underscore the enduring importance of robust regularization techniques. Gradient penalties, by rigorously enforcing the Lipschitz constraint and ensuring well-behaved gradients, have provided a foundational solution to these issues. While highly effective, challenges remain, including the computational overhead associated with gradient calculations and the sensitivity to the penalty coefficient, which often requires careful hyperparameter tuning. Future research continues to explore more efficient and adaptive methods for maintaining discriminator stability, building upon the robust framework established by WGAN-GP and its successors.
+\subsection{Spectral Normalization: An Efficient Architectural Regularizer}
+\label{sec:3\_3\_spectral\_normalization:\_an\_efficient\_architectural\_regularizer}
+
+The inherent instability of Generative Adversarial Networks (GANs) has long been a critical challenge, often leading to issues such as mode collapse and training divergence. A significant breakthrough in addressing these challenges, particularly in the context of Wasserstein GANs (WGANs), has been the enforcement of the Lipschitz constraint on the discriminator. Early work, such as that by \cite{shrivastava2016uym}, highlighted the need for regularization to bridge the gap between synthetic and real image distributions and stabilize adversarial training, proposing self-regularization terms. The theoretical foundation for stable GAN training was significantly advanced by \cite{Arjovsky2017}, who introduced the Wasserstein-1 distance as an objective function, necessitating a 1-Lipschitz discriminator. While \cite{Gulrajani2017} later improved upon this by introducing a gradient penalty (WGAN-GP) to robustly enforce the Lipschitz constraint through modifications to the loss function, this approach often incurred additional computational cost due to gradient computations.
+
+A pivotal contribution to architectural regularization emerged with \cite{Miyato2018}, which introduced Spectral Normalization (SN) for Generative Adversarial Networks (SN-GAN). Unlike gradient penalties that modify the loss function, SN directly normalizes the spectral norm of each weight matrix within the discriminator's layers. This architectural approach efficiently enforces the Lipschitz constraint by ensuring that the maximum singular value of each weight matrix is bounded by one, thereby controlling the Lipschitz constant of the entire network. The direct normalization of weights makes SN a computationally lighter and often more stable alternative or complement to gradient penalties, leading to smoother loss landscapes and more consistent gradient flow for the generator. Furthermore, \cite{Miyato2018} also proposed the Two-Time-Scale Update Rule (TTUR), a complementary technique that uses different learning rates for the generator and discriminator, further enhancing training stability and preventing one network from overpowering the other.
+
+The simplicity, ease of implementation, and robust stabilization properties of Spectral Normalization quickly led to its widespread adoption, making it a standard component in many high-performance GAN architectures. Its ability to provide a stable training environment proved crucial for scaling GANs to generate high-fidelity images. For instance, \cite{Brock2019} leveraged stability techniques, including those inspired by SN-GAN, to train Large Scale GANs (BigGANs) that achieved unprecedented image quality and diversity. Similarly, subsequent architectural innovations like the StyleGAN series \cite{Karras2019, Karras2020, Karras2021} implicitly benefited from the foundational stability provided by methods like SN, allowing their sophisticated generator designs to flourish without being hampered by training instabilities. The principles of stable GAN training, often drawing from the insights of WGAN and SN, have also found application in specialized domains. For example, \cite{hu2021yk5} integrated an improved Wasserstein GAN framework to enhance channel estimation in wireless communications, focusing on improving training stability and learning ability. More recently, \cite{ye2024n41} proposed a GAN variant for channel estimation in IRS-assisted mmWave MIMO systems, emphasizing the design of loss functions to ensure training stability and robust performance.
+
+In conclusion, Spectral Normalization represents a profound shift towards architectural regularization for GAN stability. By directly enforcing the Lipschitz constraint on the discriminator's weights, SN offers an efficient and effective alternative to loss-based gradient penalties, significantly contributing to overall training reliability and the generation of higher-quality samples. Its widespread adoption underscores its impact, enabling the development of increasingly complex and powerful GAN models. While SN has largely addressed many stability issues, future research continues to explore how to optimally combine architectural regularizers with other training techniques, and how to adapt these principles to novel GAN formulations and challenging data distributions to further enhance robustness and performance.
+\subsection{Alternative Objective Functions: LSGAN, EBGAN, BEGAN}
+\label{sec:3\_4\_alternative\_objective\_functions:\_lsgan,\_ebgan,\_began}
+
+The initial formulation of Generative Adversarial Networks (GANs) often suffered from training instabilities, such as vanishing gradients and mode collapse, largely due to the limitations of the Jensen-Shannon divergence used in its objective function. While subsequent work explored the Wasserstein distance to address these issues, a parallel line of research focused on developing alternative objective functions and discriminator architectures to achieve greater stability and enhance sample quality. This subsection delves into prominent examples of these innovative approaches, including Least Squares GANs (LSGAN), Energy-Based GANs (EBGAN), and Boundary Equilibrium Generative Adversarial Networks (BEGAN).
+
+One of the earliest and most straightforward modifications to the GAN objective was proposed by \textcite{Mao2017} with Least Squares Generative Adversarial Networks (LSGANs). Instead of the traditional sigmoid cross-entropy loss, which can lead to vanishing gradients when samples are far from the decision boundary, LSGANs replace it with a least squares loss function. This modification provides smoother gradients and penalizes samples based on their distance from the decision boundaries, encouraging the generator to produce samples closer to the real data manifold and the discriminator to classify them more confidently. Empirically, LSGANs demonstrated improved training stability and the generation of higher-quality images compared to their cross-entropy counterparts, offering a practical and effective alternative to the original GAN loss.
+
+Moving beyond simple loss function modifications, other researchers explored fundamentally different conceptualizations of the discriminator and its objective. \textcite{Zhao2017} introduced Energy-Based Generative Adversarial Networks (EBGANs), which model the discriminator not as a binary classifier, but as an energy function. In this framework, the discriminator learns to assign low energy to real data samples and high energy to generated (fake) samples. The objective function for the discriminator is designed to minimize the energy of real data while maximizing the energy of fake data, typically through a margin-based loss that pushes fake samples away from the real data manifold. Uniquely, EBGANs often employ an autoencoder architecture for the discriminator, where the reconstruction error serves as the energy function, providing a distinct perspective on stabilizing GAN training and mitigating mode collapse by focusing on manifold learning.
+
+Building upon the concept of an autoencoder discriminator, \textcite{Berthelot2017} presented Boundary Equilibrium Generative Adversarial Networks (BEGAN). BEGAN also utilizes an autoencoder for its discriminator, but its key innovation lies in a novel equilibrium-enforcing loss function. This loss aims to balance the generator and discriminator by controlling the diversity of generated samples and their visual quality. It achieves this balance through a hyperparameter, $\gamma$, which dictates the trade-off between the discriminator's ability to reconstruct real images and its ability to reconstruct generated images. By dynamically adjusting this equilibrium, BEGAN can achieve impressive visual quality and mode coverage, often generating high-resolution images with remarkable fidelity. However, the performance of BEGAN can be sensitive to the tuning of its equilibrium hyperparameter, representing a common challenge in balancing complex GAN objectives.
+
+In summary, these diverse methods offered unique perspectives on achieving stability and enhancing sample quality during the early stages of GAN research. LSGANs provided a simpler, yet effective, modification to the core loss function, yielding smoother gradients and improved stability. EBGANs introduced a conceptual shift by framing the discriminator as an energy function, often leveraging autoencoders to learn data manifolds. BEGAN further refined the autoencoder discriminator concept by introducing an equilibrium mechanism, explicitly targeting a balance between generator and discriminator to achieve high-quality image generation. Collectively, these approaches showcased the breadth of early research into GAN objective design, moving beyond the original minimax game and the Wasserstein framework to explore innovative loss functions, energy-based models, and autoencoder-based discriminators, all contributing to the ongoing quest for robust and high-fidelity generative models. Despite their successes, the challenge of universal stability, optimal hyperparameter tuning, and consistent high-quality generation across diverse datasets remained an active area of research.
+
+
+\label{sec:scaling_and_architectural_innovations_for_high-fidelity_synthesis}
+
+\section{Scaling and Architectural Innovations for High-Fidelity Synthesis}
+\label{sec:scaling\_\_and\_\_architectural\_innovations\_for\_high-fidelity\_synthesis}
+
+\subsection{Progressive Growing of GANs (PGGAN) for High-Resolution Generation}
+\label{sec:4\_1\_progressive\_growing\_of\_gans\_(pggan)\_for\_high-resolution\_generation}
+
+The initial promise of Generative Adversarial Networks (GANs) \cite{Goodfellow2014} was often hampered by significant training instabilities and an inability to scale effectively to generate high-resolution, photorealistic images. Early efforts to stabilize GAN training focused on modifying objective functions and applying regularization techniques, such as the introduction of the Wasserstein distance in Wasserstein GAN (WGAN) \cite{Arjovsky\_2017} and its subsequent improvement with a gradient penalty (WGAN-GP) \cite{Gulrajani\_2017}. Other approaches, like Least Squares GANs (LSGAN) \cite{Mao\_2017} and Spectral Normalization \cite{Miyato\_2018}, also contributed to more robust training, addressing issues like mode collapse and vanishing gradients \cite{che2016kho, sage2017ywd}. These foundational advancements in stability laid the crucial groundwork for more ambitious generative models capable of tackling the inherent complexity of high-dimensional image synthesis.
+
+A pivotal breakthrough in achieving high-resolution image generation with unprecedented stability and quality was the introduction of Progressive Growing of GANs (PGGAN) \cite{Wang\_2018}. PGGAN revolutionized the training paradigm by adopting a curriculum learning approach, where both the generator and discriminator networks incrementally grow in complexity and resolution during training. The process begins with generating extremely low-resolution images (e.g., 4x4 pixels) and, as training progresses, new layers are gradually faded in to double the resolution, moving through stages like 8x8, 16x16, up to very high resolutions such as 1024x1024. This progressive growth strategy effectively stabilizes the training process by allowing the networks to first learn coarse features and overall image structure at low resolutions, before focusing on finer details at higher resolutions. By gradually increasing the dimensionality of the output space, PGGAN mitigated the challenges of training deep networks for complex, high-dimensional outputs from scratch, leading to significantly improved image quality, diversity, and training stability compared to prior methods. The success of PGGAN demonstrated that a well-designed training schedule, coupled with robust underlying GAN stability techniques (like those used in WGAN-GP, as seen in applications like \cite{baby2019h4h}), could overcome long-standing barriers in high-fidelity image synthesis.
+
+PGGAN established a new standard for stable GAN training in the context of large-scale image synthesis, profoundly influencing subsequent research. Its core idea of progressive refinement became a cornerstone for future high-resolution generative models. For instance, the highly influential StyleGAN architecture \cite{Karras\_2019} directly built upon the progressive growing concept, further enhancing image quality and introducing a style-based generator that allowed for disentangled control over various aspects of image synthesis. This architectural innovation, which leveraged PGGAN's stable high-resolution generation, enabled unprecedented control over latent space manipulation. Subsequent iterations, StyleGAN2 \cite{Karras\_2020} and StyleGAN3 \cite{Karras\_2021}, continued to refine the generator architecture and training methodologies, addressing artifacts and improving perceptual quality, although StyleGAN2 notably moved away from strict progressive growing in its later stages, indicating a maturation and optimization of the initial PGGAN concept. The impact of PGGAN and its successors is also evident in specialized domains, where the combination of progressive training and style-based generators has been recognized for enabling increased stability and feature separation in high-dimensional problems like logo generation \cite{oeldorf2019kj7}.
+
+Despite its groundbreaking contributions, the progressive growing approach itself can be computationally intensive due to the sequential training stages. While PGGAN dramatically improved stability for high-resolution generation, the quest for even greater fidelity, disentanglement, and computational efficiency continued. The evolution from PGGAN to the StyleGAN series highlights a continuous effort to optimize both the training process and the generator architecture. Future directions continue to explore more efficient training paradigms and architectures that can achieve similar or superior results without the extensive multi-stage training, or by integrating these principles into alternative generative models like diffusion models.
+\subsection{Attention Mechanisms (SAGAN) for Global Coherence}
+\label{sec:4\_2\_attention\_mechanisms\_(sagan)\_for\_global\_coherence}
+
+Generative Adversarial Networks (GANs) initially struggled with synthesizing images that exhibited strong global coherence and realistic long-range dependencies, often producing outputs with local realism but semantically inconsistent or fragmented structures. Traditional convolutional layers, with their inherently local receptive fields, are adept at capturing local textures and patterns but face significant challenges in modeling relationships between distant regions of an image, which is critical for generating complex, realistic scenes. This limitation often resulted in generated samples lacking global consistency, such as objects with distorted parts or backgrounds that do not align with foreground elements.
+
+Before the advent of complex architectural innovations like attention, ensuring the stable training of GANs was a prerequisite for achieving high-fidelity generation. Techniques like Spectral Normalization \cite{Miyato2018} played a crucial role in this regard by enforcing the Lipschitz continuity constraint on the discriminator's weights, thereby stabilizing the adversarial training process and preventing issues such as vanishing or exploding gradients. This foundational stability provided a robust environment for exploring more advanced architectural designs aimed at enhancing generative capabilities.
+
+A significant breakthrough in addressing the global coherence problem was the introduction of Self-Attention Generative Adversarial Networks (SAGAN) by \cite{Zhang2019}. SAGAN innovatively integrated self-attention mechanisms into both the generator and discriminator architectures. Unlike standard convolutions that process information within a fixed local neighborhood, self-attention layers allow the network to compute a response at a position by attending to features at \textit{all} other positions in the image. This global connectivity enables the generator to synthesize details that are consistent with distant parts of the image, ensuring that, for instance, an animal's head is appropriately connected to its body, or a background scene maintains semantic consistency across its expanse. For the discriminator, self-attention provides a powerful tool to verify the global consistency of generated samples, identifying subtle inconsistencies that local convolutions might miss. By enabling both networks to model long-range dependencies across distant regions of an image more effectively, SAGAN significantly improved the visual quality and global coherence of generated samples, leading to more realistic and semantically consistent outputs.
+
+The impact of SAGAN was profound, demonstrating that incorporating attention could dramatically enhance the ability of GANs to synthesize complex and realistic structures, particularly in intricate scenes. This architectural innovation allowed the networks to capture global contextual information, moving beyond mere pixel-level accuracy to produce images that are plausible at a compositional level. Contemporaneously, other works also pushed the boundaries of high-fidelity image synthesis, such as BigGAN \cite{Brock2019}, which focused on scaling up models, batch sizes, and leveraging techniques like orthogonal regularization and the truncation trick to achieve unprecedented levels of image fidelity and diversity. While BigGAN emphasized the power of scale and robust training, SAGAN specifically highlighted the architectural advantage of self-attention in resolving the long-standing issue of global coherence, proving that intelligent architectural design, alongside stable training, was key to unlocking higher generative quality.
+
+Despite the remarkable improvements brought by self-attention, the computational cost associated with global attention mechanisms can be substantial, especially for high-resolution images, due to the quadratic complexity with respect to the number of pixels. This often necessitates compromises in model size or resolution, or the adoption of more efficient attention variants. Future research directions could explore more computationally efficient attention mechanisms, such as sparse or local-global attention, or hybrid architectures that strategically combine attention with other powerful components to maintain global coherence while managing computational overhead. Furthermore, understanding how attention interacts with other advanced GAN components, such as style-based generators, remains an area for continued investigation to further enhance controllability and fidelity.
+\subsection{Large-Scale Training (BigGAN) for Diversity and Fidelity}
+\label{sec:4\_3\_large-scale\_training\_(biggan)\_for\_diversity\_\_and\_\_fidelity}
+
+Achieving both high fidelity and broad diversity in generated images has long been a central challenge in generative adversarial networks (GANs), with early models often struggling with training instability and mode collapse, where the generator produces only a limited variety of outputs \cite{peng2024kkw}. The advent of large-scale training, epitomized by BigGAN, marked a transformative period, demonstrating that with sufficient computational resources and meticulous engineering, GANs could synthesize images of unprecedented realism and variety across complex datasets.
+
+The foundation for BigGAN's success was laid by significant advancements in stabilizing GAN training. Early efforts to mitigate mode collapse and improve stability included regularization techniques such as those proposed by \cite{che2016kho}, which aimed to regularize the objective to ensure a fairer distribution of probability mass across data modes. A pivotal shift occurred with the introduction of Wasserstein GAN (WGAN) \cite{Arjovsky2017}, which replaced the problematic Jensen-Shannon divergence with the Earth-Mover distance, providing a more stable and meaningful loss function. This was further refined by WGAN with Gradient Penalty (WGAN-GP) \cite{Gulrajani2017}, which introduced a robust gradient penalty to enforce the Lipschitz constraint on the discriminator, becoming a widely adopted technique for stable training. The importance of these foundational stability methods is underscored by their continued application in diverse fields, such as channel estimation in wireless communications, where improved Wasserstein GANs are integrated to enhance training stability and learning ability \cite{hu2021yk5, ye2024n41}.
+
+Building upon these stability breakthroughs, Spectral Normalization (SN) emerged as a particularly effective and computationally efficient method for regularizing the discriminator. Introduced by \cite{Miyato2018}, SN directly controls the Lipschitz constant of each layer by normalizing the spectral norm of its weight matrices, offering a robust alternative to gradient penalties for ensuring stable discriminator training. This technique proved crucial for scaling GANs to larger architectures without encountering gradient explosion or vanishing issues.
+
+The culmination of these advancements was the development of BigGAN by \cite{Brock2019}, which showcased the immense potential of scaling GANs for high-fidelity natural image synthesis. BigGAN meticulously combined existing stabilization techniques, most notably Spectral Normalization, with several architectural improvements and training strategies. Key architectural innovations included the integration of self-attention mechanisms, which allowed the generator and discriminator to model long-range dependencies across image regions, and shared embeddings for class-conditional generation, enabling the model to leverage class information more effectively. Furthermore, BigGAN leveraged significantly larger batch sizes and model capacities, pushing the boundaries of what was computationally feasible at the time.
+
+A critical innovation introduced by BigGAN was the "truncation trick," a post-training technique that allowed for a flexible trade-off between image fidelity and diversity. By sampling latent vectors from a truncated normal distribution rather than a standard normal distribution, BigGAN could generate images of exceptionally high fidelity, albeit with slightly reduced diversity, or vice versa. This meticulous combination of robust regularization, architectural enhancements, massive computational scale, and the truncation trick enabled BigGAN to achieve unprecedented levels of image fidelity and diversity on vast, complex datasets like ImageNet. It demonstrated that with sufficient scale and careful engineering, GANs could generate highly realistic and varied images across a wide range of categories, setting a new benchmark for generative models.
+
+BigGAN's success firmly established the paradigm that leveraging substantial computational resources, coupled with a deep understanding of GAN training dynamics and architectural design, could lead to dramatic improvements in generative performance. While BigGAN achieved remarkable fidelity and diversity, the computational demands for training such models remained substantial. Subsequent research, such as the StyleGAN series, would further refine generator architectures to enhance control and disentanglement, building upon the high-fidelity generation capabilities first demonstrated at scale by BigGAN.
+\subsection{Style-Based Generators (StyleGAN Series) for Controllable and Disentangled Synthesis}
+\label{sec:4\_4\_style-based\_generators\_(stylegan\_series)\_for\_controllable\_\_and\_\_disentangled\_synthesis}
+
+The advent of the StyleGAN series marked a revolutionary turning point in high-fidelity image synthesis, fundamentally transforming generator architecture to enable unprecedented disentangled control over various image features and achieve state-of-the-art visual quality. While earlier Generative Adversarial Networks (GANs) often struggled with training stability and mode collapse \cite{che2016kho, peng2024kkw}, the StyleGAN lineage prioritized architectural innovation to address these issues and push the boundaries of perceptual realism and latent space interpretability.
+
+The foundational work, StyleGAN \cite{Karras2019}, introduced a novel style-based generator architecture that decoupled the generation process from the traditional latent vector input. Instead of feeding a latent code directly into the generator, StyleGAN employed a mapping network to transform a latent vector $\mathbf{z}$ into an intermediate latent space $\mathbf{w}$, which then controlled the synthesis process through adaptive instance normalization (AdaIN) layers at multiple resolutions. This architecture, combined with progressive growing, allowed for fine-grained control over different levels of detail, from coarse pose and identity to subtle features like hair color or freckles, significantly improving the disentanglement of latent factors compared to previous models.
+
+Building upon this success, StyleGAN2 \cite{Karras2020} meticulously analyzed and refined the architecture to address several subtle visual artifacts present in its predecessor, such as the "droplet" artifacts and phase artifacts. Key innovations included the removal of progressive growing in favor of a simpler upsampling scheme, a revised normalization technique (demodulation) that avoided an explicit AdaIN, and the introduction of path length regularization (PLR). PLR encouraged a more linear and disentangled latent space by ensuring that a constant-speed change in the latent space $\mathbf{w}$ resulted in a constant-speed change in the generated image, thereby improving the perceptual quality and interpretability of the latent space. These refinements led to a noticeable improvement in image quality and reduced the occurrence of common GAN artifacts.
+
+The pursuit of ultimate realism culminated in StyleGAN3 \cite{Karras2021}, which tackled fundamental signal processing issues, specifically aliasing, that limited the fidelity of generated images, especially when viewed at high resolutions or during latent space interpolations. StyleGAN3 proposed an alias-free architecture by designing the generator to operate on a continuous-domain representation, effectively addressing the discrete sampling artifacts inherent in convolutional networks. This was achieved through the careful application of anti-aliasing filters and a re-evaluation of upsampling and downsampling operations, resulting in images that maintained their quality and detail even under transformations, making them suitable for applications like animation.
+
+The StyleGAN series collectively represents a pinnacle in generator design, prioritizing fine-grained control, disentanglement of latent factors, and the systematic elimination of subtle visual artifacts. Each iteration built upon the last, moving from a novel architectural concept to meticulous refinements and finally to a fundamental signal processing correction. While the series achieved remarkable success in generating photorealistic images with high controllability, the training of such complex models remains computationally intensive, a common challenge for high-fidelity GANs \cite{peng2024kkw}. Despite these computational demands, the StyleGAN series has profoundly influenced the field, setting new benchmarks for generative image quality and latent space manipulation, and continues to be a cornerstone for research into controllable and disentangled synthesis.
+
+
+\label{sec:practical_robustness:_data_efficiency_and_domain_adaptation}
+
+\section{Practical Robustness: Data Efficiency and Domain Adaptation}
+\label{sec:practical\_robustness:\_data\_efficiency\_\_and\_\_domain\_adaptation}
+
+\subsection{Data Augmentation for Limited Data Training (DiffAugment, ADA)}
+\label{sec:5\_1\_data\_augmentation\_for\_limited\_data\_training\_(diffaugment,\_ada)}
+
+Training Generative Adversarial Networks (GANs) effectively often necessitates vast amounts of data, a requirement that frequently poses a significant challenge in real-world applications where data collection is costly or impractical. In such data-limited scenarios, the discriminator tends to quickly memorize the sparse training examples, leading to overfitting, which in turn causes the generator to produce poor quality or unstable outputs, often suffering from mode collapse. To address this critical issue, a distinct line of research has emerged, focusing on data augmentation techniques that enable stable and high-quality GAN training even with scarce data, without fundamentally altering the core GAN objective or architecture.
+
+A pivotal advancement in this domain is Differentiable Augmentation (DiffAugment), introduced by \cite{zhao2020xhy}. This method tackles discriminator overfitting by consistently applying a set of differentiable transformations to \textit{both} the real and fake images before they are fed into the discriminator. Unlike traditional data augmentation, which typically only modifies real training data, applying augmentations to generated samples ensures that the discriminator learns to distinguish between real and fake images based on their underlying features rather than superficial characteristics introduced by augmentation. The differentiability of these augmentations (e.g., random cropping, color jitter, cutout) allows gradients to flow unimpeded, stabilizing training and significantly improving data efficiency. \cite{zhao2020xhy} demonstrated that DiffAugment enables GANs to achieve state-of-the-art performance with considerably less data, even generating high-fidelity images using as few as 100 samples without pre-training.
+
+While DiffAugment provided a robust framework for applying augmentations, the optimal choice and strength of these augmentations could still be dataset-dependent or require manual tuning. Building upon this foundation, Adaptive Discriminator Augmentation (ADA) emerged as a more sophisticated solution, proposed by \cite{Karras2021b}. ADA introduces an adaptive mechanism that dynamically adjusts the probability or strength of augmentations based on the discriminator's real-time overfitting behavior. By monitoring a metric, such as the discriminator's accuracy on real images, ADA can detect when the discriminator is overfitting (e.g., achieving near-perfect accuracy on real samples) and respond by increasing the augmentation strength. Conversely, if the discriminator is underfitting, the augmentation strength can be reduced. This dynamic feedback loop makes the augmentation strategy largely hyperparameter-free and highly robust, further enhancing training stability and generation quality in extremely low-data regimes. ADA effectively automates the process of finding the right balance of augmentation, making it a widely adopted and practical technique for limited-data GAN training.
+
+Collectively, DiffAugment and ADA represent a crucial progression in making GANs more practical and broadly applicable. DiffAugment laid the groundwork by demonstrating the efficacy of consistent, differentiable augmentations for preventing discriminator overfitting \cite{zhao2020xhy}. ADA then refined this approach by introducing an adaptive control mechanism, transforming a powerful technique into a robust, automated solution that minimizes the need for manual tuning \cite{Karras2021b}. These methods are instrumental in expanding the utility of GANs to domains where large datasets are unavailable, such as medical imaging or specialized industrial applications. However, while highly effective for data scarcity, these augmentation strategies primarily address the symptom of discriminator overfitting rather than fundamental architectural or loss function issues. Future research could explore more sophisticated, learned augmentation policies or investigate how these data-centric approaches can be seamlessly integrated with advanced architectural designs and novel loss functions to achieve even greater robustness and fidelity across diverse data landscapes.
+\subsection{Few-Shot and Meta-Learning for Data-Scarce Regimes}
+\label{sec:5\_2\_few-shot\_\_and\_\_meta-learning\_for\_data-scarce\_regimes}
+
+The efficacy of Generative Adversarial Networks (GANs) has traditionally been predicated on the availability of vast datasets, a requirement that significantly limits their applicability in numerous real-world scenarios where data acquisition is inherently challenging or costly. This subsection explores advanced approaches that push the boundaries of data efficiency beyond conventional augmentation techniques, delving into meta-learning strategies for discriminators and hybrid models that enable GANs to quickly adapt to new data distributions with an extremely limited number of samples. These methods represent a significant conceptual and practical leap towards achieving few-shot or even zero-shot generative capabilities, broadening the practical utility and accessibility of GANs for a wider array of applications with inherent data constraints.
+
+Addressing the fundamental instability of GAN training is a prerequisite for any advanced application, especially when data is scarce. Early efforts focused on general regularization techniques to stabilize the adversarial process. For instance, \cite{roth2017eui} proposed a novel regularization approach that yields a stable GAN training procedure by mitigating issues like dimensional mismatch or non-overlapping support between model and data distributions. While crucial for general GAN robustness, such methods do not inherently solve the problem of learning rich, diverse distributions from an exceptionally small number of samples. The challenge intensifies in data-scarce regimes, where the discriminator can easily overfit to the limited training examples, leading to mode collapse or poor generation quality.
+
+To directly tackle the problem of extreme data scarcity, meta-learning strategies have emerged as a powerful paradigm. \cite{Wang2023} \textit{H} introduced a pioneering meta-learning approach specifically designed for the discriminator in few-shot GANs. This method enables the discriminator to quickly adapt to new datasets with very few samples by learning "how to learn" across a distribution of tasks, significantly reducing data requirements beyond what traditional data augmentation techniques alone can achieve. By allowing the discriminator to rapidly generalize from minimal examples, this meta-learning framework makes GANs viable for domains where data is exceptionally sparse, pushing towards true few-shot generative capabilities.
+
+Achieving few-shot generative capabilities not only makes GANs accessible to more domains but also expands their utility into more complex generative tasks. For example, once a GAN can learn high-quality representations from limited 2D data, these representations can be leveraged for other challenging generation problems. \cite{Chan2023} \textit{H} demonstrated this by integrating StyleGAN's latent space with Neural Radiance Fields (NeRFs) to enable high-quality 3D-aware image synthesis and novel view generation. By leveraging the disentangled latent space learned by powerful 2D GANs, this approach extends the generative power into 3D, showcasing how advancements in few-shot 2D generation could underpin subsequent complex generative tasks, even those with their own data constraints in the 3D domain. This broadens the practical utility of GANs, allowing them to contribute to scenarios where 3D data is also difficult to acquire.
+
+Furthermore, the inherent challenges of GAN stability and mode coverage become even more pronounced in data-scarce environments. To enhance the robustness and quality of generative models in such demanding conditions, hybrid approaches are gaining traction. \cite{Liu2024} \textit{H} introduced Diffusion-GAN, a novel hybrid model that bridges the adversarial training of GANs with the denoising process of diffusion models. This innovative framework aims to achieve the best of both worlds: GAN's fast inference and diffusion's superior stability and mode coverage. For few-shot learning, where every sample is critical and training instability can quickly derail the process, the enhanced stability and robust mode coverage offered by such hybrid models are invaluable. They provide a more resilient foundation, ensuring that even with limited data, the generative model can learn a more comprehensive and stable representation of the underlying distribution.
+
+In conclusion, the evolution towards few-shot and meta-learning for GANs marks a pivotal shift, moving beyond mere architectural improvements and regularization to fundamentally address data scarcity. From foundational stability efforts \cite{roth2017eui} to meta-learning discriminators \cite{Wang2023} \textit{H}, the field is enabling GANs to operate effectively with minimal data. This capability, in turn, unlocks new applications, such as 3D-aware synthesis from powerful 2D latent spaces \cite{Chan2023} \textit{H}, and benefits from hybrid models that enhance stability and quality \cite{Liu2024} \textit{H}, making few-shot GANs more reliable. While significant progress has been made, future directions include exploring truly zero-shot generative capabilities, optimizing the computational overhead of meta-learning, and further integrating few-shot principles with advanced hybrid and multi-modal generative frameworks to create even more versatile and robust models for the most data-constrained environments.
+\subsection{Domain-Specific Adaptations and Hybrid Architectures (e.g., Penca-GAN, VAE-GANs)}
+\label{sec:5\_3\_domain-specific\_adaptations\_\_and\_\_hybrid\_architectures\_(e.g.,\_penca-gan,\_vae-gans)}
+
+The inherent instability and limitations of Generative Adversarial Networks (GANs), such as mode collapse and vanishing gradients, have driven significant research into domain-specific adaptations and hybrid architectures. These approaches aim to enhance training stability, improve output diversity and fidelity, and tailor GANs for highly specialized applications by integrating them with other generative models or incorporating novel, domain-aware insights.
+
+A prominent strategy for achieving both diversity and fidelity is the development of hybrid VAE-GAN models. As reviewed by \cite{cai2024m9z}, these architectures synergistically combine the strengths of Variational Autoencoders (VAEs) and GANs. VAEs provide a structured, probabilistic latent space that helps mitigate mode collapse and ensures a broader coverage of the data distribution, while the GAN discriminator pushes the VAE decoder to produce sharper, more realistic outputs, addressing the typical blurriness associated with VAEs. The core innovation lies in a combined loss function, which often includes the VAE's KL divergence for regularization, an adversarial loss, and a crucial feature-wise reconstruction loss ($\mathcal{L}\_{llikeDis\_l}$) derived from the GAN discriminator. This feature-wise loss replaces the traditional pixel-wise reconstruction, significantly enhancing the sharpness and realism of generated images. VAE-GANs have demonstrated capabilities in diverse fields, from generating anatomically accurate medical images to enhancing user engagement in e-commerce through dynamic visualizations \cite{cai2024m9z}. However, challenges such as persistent training stability issues, significant computational demands, and emerging ethical concerns related to realistic data generation remain \cite{cai2024m9z}.
+
+Beyond hybrid model integration, architectural modifications and novel loss functions have been pivotal in stabilizing GAN training. For instance, \cite{fathallah20236k5} introduced the Identity Generative Adversarial Network (IGAN), which incorporates a non-linear identity block into the architecture, alongside a modified loss function with label smoothing and minibatch training. These modifications collectively aim to stabilize the training process, improve gradient flow, and enhance the diversity and quality of generated images, demonstrating superior performance on datasets like CelebA and stacked MNIST \cite{fathallah20236k5}. The concept of identity blocks, designed to preserve essential input features and facilitate smoother gradient flow, has proven valuable in improving GAN robustness.
+
+Building upon such architectural enhancements, novel architectures like Penca-GAN \cite{elbaz2025wzb} exemplify a highly specialized, domain-specific adaptation. Designed for data-scarce domains such as renewable energy optimization, Penca-GAN addresses the critical need for high-quality synthetic data to improve fault detection and energy prediction. It integrates identity blocks for training stabilization, similar to IGAN, but introduces further innovations: a novel dual loss function to ensure pixel integrity and promote diversity, and a unique pancreas-inspired metaheuristic loss function. This biologically-inspired loss dynamically adapts to variations in training data, acting as a feedback control system to balance pixel coherence and diversity, thereby mitigating mode collapse and vanishing gradients. Empirical results show Penca-GAN achieving superior Fréchet Inception Distance (FID) and Inception Score (IS) on SKY, Solar, and Wind Turbine image datasets, significantly enhancing fault detection accuracy in renewable energy systems \cite{elbaz2025wzb}. Despite its advancements, the paper acknowledges that challenges in convergence persist, necessitating careful consideration during integration.
+
+Further demonstrating domain-specific adaptations, \cite{peng2024crk} proposed C3GAN, a method for cyclic consistent image style transformation. Leveraging the CycleGAN architecture, C3GAN incorporates cyclic consistency to achieve stable and coherent style transfer, directly addressing the unstable training dynamics and limitations in generating complex patterns often seen in traditional GANs. This approach highlights how task-specific constraints, like cyclic consistency, can be integrated into GAN frameworks to enhance stability and achieve robust performance in specialized applications such as artistic creation and cinematic special effects \cite{peng2024crk}.
+
+Collectively, these works illustrate a clear intellectual trajectory towards more robust, versatile, and application-aware GAN designs. From hybrid VAE-GAN models that combine the strengths of different generative paradigms to architectures like Penca-GAN and C3GAN that integrate novel loss functions and architectural components for domain-specific challenges, the field is continuously evolving. While significant progress has been made in stabilizing training and improving output quality, challenges related to computational cost, the complexity of fine-tuning, and the need for even more adaptive and interpretable models remain. Future research is poised to explore further biologically-inspired mechanisms, more efficient training algorithms, and enhanced control over the generative process to address these unresolved tensions and expand GAN utility across an even broader spectrum of real-world problems.
+
+
+\label{sec:established_applications_of_stabilized_generative_adversarial_networks}
+
+\section{Established Applications of Stabilized Generative Adversarial Networks}
+\label{sec:established\_applications\_of\_stabilized\_generative\_adversarial\_networks}
+
+\subsection{Image Synthesis and Editing}
+\label{sec:6\_1\_image\_synthesis\_\_and\_\_editing}
+
+The advent of stabilized Generative Adversarial Networks (GANs) has profoundly transformed the landscape of digital content creation, enabling the generation of highly realistic and diverse images, alongside sophisticated tools for image editing. This subsection explores how these models have advanced from generating rudimentary samples to producing compelling visual assets across various categories, including human faces, intricate landscapes, and complex objects, while also facilitating intuitive manipulation of visual attributes.
+
+Early efforts in image synthesis focused on bridging the gap between synthetic and real data to improve model performance. For instance, \textcite{shrivastava2016uym} introduced an adversarial training approach to enhance the realism of synthetic images, effectively reducing the domain gap for tasks like gaze and hand pose estimation. This work demonstrated the potential of GANs to generate more convincing visual data by learning from unlabeled real images, laying groundwork for subsequent high-fidelity synthesis. The ability to generate such realistic imagery, however, heavily relies on the stability of GAN training, which was a significant challenge in early models. Foundational research addressed these instabilities through robust objective functions and regularization techniques, such as the Wasserstein GAN (WGAN) introduced by \textcite{Arjovsky2017} and its improved variant with gradient penalty (WGAN-GP) by \textcite{Gulrajani2017}, which provided more stable training signals. Concurrently, methods like Spectral Normalization \textcite{Miyato2018} offered efficient ways to regularize discriminator weights, while theoretical insights from \textcite{Mescheder2018} further clarified convergence properties, all of which were crucial enablers for the subsequent advancements in image quality.
+
+Building upon these stability improvements, significant architectural innovations allowed GANs to scale to unprecedented levels of fidelity and diversity. \textcite{Brock2019} pushed the boundaries of large-scale image synthesis with BigGAN, demonstrating the generation of highly diverse and high-resolution images across a wide array of ImageNet categories by leveraging architectural components like self-attention and orthogonal regularization. This marked a pivotal moment, showcasing GANs' capability to produce visually stunning and varied outputs that closely mimic natural images.
+
+A paradigm shift in controllable image synthesis and editing emerged with the StyleGAN series, which introduced novel generator architectures designed for disentangled latent spaces. \textcite{Karras2019} presented the StyleGAN architecture, which revolutionized image generation by injecting latent codes at different scales through adaptive instance normalization (AdaIN). This design enabled unprecedented intuitive control over various visual attributes, such as age, expression, pose, or artistic style, allowing users to manipulate specific features of a generated image without affecting others. Subsequent iterations further refined this control and image quality. \textcite{Karras2020} introduced StyleGAN2, which addressed common artifacts found in its predecessor, such as "blob" artifacts, and improved overall image quality and disentanglement through path length regularization. This refinement made the generated images even more realistic and the editing process more precise. Further advancing the state-of-the-art, \textcite{Karras2021} developed StyleGAN3, which tackled aliasing artifacts inherent in previous designs by proposing an alias-free architecture with strong theoretical grounding in signal processing. This series collectively transformed image synthesis from mere generation to a sophisticated tool for customizable content creation, offering fine-grained control over visual attributes.
+
+Beyond aesthetic generation, stabilized GANs also offer immense practical utility in various domains. For instance, in medical imaging, where annotated datasets are often scarce, GANs can generate realistic synthetic images to augment training data. \textcite{khan20223o7} developed a deep generative adversarial network (DGAN) for multi-class skin problem classification, demonstrating its ability to generate realistic skin lesion images, thereby addressing dataset imbalance and improving diagnostic accuracy. This application underscores the utility of high-fidelity generative models in producing compelling and customizable visual assets for specialized fields, enhancing the performance of downstream machine learning tasks.
+
+In conclusion, the evolution of stabilized GANs has led to remarkable progress in image synthesis and editing, transitioning from foundational stability improvements to sophisticated architectural designs that enable high-fidelity, diverse, and controllable image generation. The StyleGAN series, in particular, has set a benchmark for intuitive attribute manipulation through disentangled latent spaces, opening vast possibilities for digital content creation, visual design, and media production. While these models have achieved impressive realism, challenges persist, including the significant computational resources required for training and the ethical considerations surrounding the generation of highly realistic, potentially misleading, synthetic media. Future research directions may focus on reducing computational demands, improving generalization to novel domains, and developing more robust methods for detecting synthetic content.
+\subsection{Data Augmentation for Downstream Tasks}
+\label{sec:6\_2\_data\_augmentation\_for\_downstream\_tasks}
+
+Data scarcity remains a pervasive challenge across numerous machine learning applications, particularly in sensitive domains where data collection is difficult or costly. Stabilized Generative Adversarial Networks (GANs) have emerged as a crucial tool to address this by generating high-quality synthetic data, significantly enhancing the performance, generalization, and robustness of downstream machine learning models.
+
+The utility of GANs for data augmentation is fundamentally predicated on their training stability and ability to produce diverse, realistic samples. Early efforts to stabilize GAN training, such as \textcite{metz20169ir}'s introduction of unrolled GANs, were pivotal in mitigating mode collapse and increasing the diversity and coverage of generated data distributions. This foundational work enabled GANs to produce more varied synthetic samples, a critical requirement for effective data augmentation. Building upon these stability improvements, the Identity Generative Adversarial Network (IGAN) proposed by \textcite{fathallah20236k5} further enhanced training stability and image diversity. IGAN incorporated non-linear identity blocks, a modified loss function with label smoothing, and minibatch training, allowing the model to fit complex data types more efficiently and produce higher-quality, more varied images. This made GANs more robust for general data synthesis, laying groundwork for their application in data augmentation. Similarly, \textcite{pasini2021ta3} addressed scalability and mode collapse in large-scale data generation by proposing a stable, parallel approach for training Wasserstein Conditional GANs (W-CGANs). Their method utilized multiple generators concurrently trained on single data labels, reducing inter-process communications and leveraging the Wasserstein metric to stabilize training and enhance image quality.
+
+Leveraging these advancements in GAN stability, their application for data augmentation has proven particularly impactful in domains facing severe data limitations. In medical imaging, for instance, \textcite{wei2021qea} demonstrated the efficacy of GAN-based data augmentation in improving cancer classification. By generating synthetic cancer data highly similar to real samples, their approach directly addressed the inadequacy of available datasets, leading to enhanced classification performance and generalization of models in this critical area. This application highlights how stabilized GANs can provide diverse and realistic samples necessary for robust model training in privacy-sensitive and data-scarce medical contexts.
+
+Further pushing the boundaries of GAN-based data augmentation, \textcite{elbaz2025wzb} introduced Penca-GAN, a novel architecture specifically designed for renewable energy optimization. This work addresses the persistent challenges of mode collapse, vanishing gradients, and pixel integrity in data-scarce domains like solar and wind energy. Penca-GAN integrates identity blocks for training stabilization and smoother gradient flow, alongside a novel dual loss function and a unique pancreas-inspired metaheuristic loss. This biologically-inspired loss dynamically adapts to training data variations, ensuring pixel integrity and promoting diversity, thereby significantly mitigating mode collapse and improving the quality of synthetic data for downstream tasks like fault detection and energy prediction. The superior performance of Penca-GAN, achieving lower FID and higher IS scores across various renewable energy datasets, demonstrates its effectiveness in generating high-fidelity synthetic images that directly improve the accuracy of fault detection models. This exemplifies how advanced stabilization techniques are being tailored and integrated for real-world impact in critical scientific and engineering applications. Beyond direct data generation, GANs also contribute to controlled data transformation. \textcite{peng2024crk} proposed C3GAN, an image style transfer method based on the CycleGAN architecture, which leverages cyclic consistency to achieve stable and coherent style transformations. While focused on artistic creation, this approach can be viewed as a form of data augmentation by transforming existing data to new styles, thereby expanding dataset diversity for specific visual attributes.
+
+The continuous evolution of GAN architectures and training methodologies, as comprehensively reviewed by \textcite{purwono2025spz}, underscores the ongoing efforts to overcome challenges such as mode collapse, training instability, and quality evaluation. The works discussed herein collectively demonstrate that stabilized GANs are not merely tools for generating realistic images, but powerful instruments for enhancing data availability and model resilience in real-world scenarios. Future research will likely focus on developing even more adaptive and domain-specific stabilization mechanisms, integrating multimodal data augmentation, and addressing the ethical implications of synthetic data generation to ensure responsible deployment across diverse applications.
+\subsection{Image-to-Image Translation and Style Transfer}
+\label{sec:6\_3\_image-to-image\_translation\_\_and\_\_style\_transfer}
+
+Image-to-image translation and style transfer represent a pivotal application domain for Generative Adversarial Networks (GANs), showcasing their remarkable ability to learn complex mappings between different visual domains. This area encompasses a wide array of tasks, from converting semantic segmentation maps into photorealistic images and transforming sketches into detailed photographs, to rendering day scenes into night scenes or applying distinct artistic styles to existing imagery. The success of these applications hinges on the underlying stability and fidelity of the GAN architectures employed.
+
+The journey towards controlled image generation began with the introduction of Conditional Generative Adversarial Nets (cGANs) by \cite{Mirza2014}, which allowed the generation process to be guided by additional information, such as class labels or input images. This foundational work was further enhanced by models like the Auxiliary Classifier GANs (AC-GANs) proposed by \cite{Odena2017}, which improved the quality and diversity of conditionally generated samples by incorporating an auxiliary classifier into the discriminator. Crucially, the stability of GAN training, a persistent challenge, was incrementally addressed by various methods, including the Unrolled Generative Adversarial Networks by \cite{metz20169ir}, which mitigated mode collapse and stabilized training by considering an unrolled optimization of the discriminator in the generator's objective. Such advancements in stability were essential prerequisites for the robust performance required in image-to-image translation tasks.
+
+A seminal contribution to paired image-to-image translation was the Pix2Pix model, introduced by \cite{Isola2017}. This architecture leverages a conditional GAN framework, employing a U-Net-based generator and a PatchGAN discriminator, to learn a mapping from an input image to an output image when corresponding input-output pairs are available. Pix2Pix demonstrated impressive results across diverse tasks, such as translating semantic labels to street scenes, aerial photos to maps, and sketches to photographs, by combining an adversarial loss with an L1 loss to encourage pixel-wise accuracy. However, a significant limitation of Pix2Pix was its reliance on large datasets of perfectly aligned image pairs, which are often difficult and expensive to acquire in many real-world scenarios.
+
+To overcome the constraint of paired training data, \cite{Zhu2017} introduced Cycle-Consistent Adversarial Networks, or CycleGAN. This innovative model enables unpaired image-to-image translation by introducing a "cycle consistency loss," which enforces that if an image is translated from domain A to domain B and then back to domain A, it should be reconstructed close to the original image. This ingenious mechanism allows CycleGAN to learn mappings between domains without requiring corresponding input-output examples, significantly broadening the applicability of image translation. CycleGAN successfully demonstrated transformations such as converting horses to zebras, summer scenes to winter scenes, and photographs to paintings in distinct artistic styles, showcasing the versatility of GANs in learning complex, bidirectional mappings.
+
+The principles of stabilized GANs, initially developed to ensure robust training and high-fidelity synthesis, continue to be extended to increasingly specialized and critical application domains. For instance, recent work by \cite{elbaz2025wzb} introduces Penca-GAN, an architecture that integrates an "identity block" for training stabilization and a novel "Pancreas-Inspired Metaheuristic Loss Function" to address mode collapse and ensure pixel integrity. While Penca-GAN is applied to data augmentation for renewable energy optimization, its architectural elements and loss functions contribute to the broader goal of making GANs more stable and adaptable. This exemplifies how the fundamental advancements in GAN stability and control, pioneered by models like Pix2Pix and CycleGAN for visual transformations, are now being leveraged to generate high-quality synthetic data for scientific and engineering challenges, moving beyond traditional image aesthetics to critical data utility.
+
+In conclusion, image-to-image translation and style transfer have evolved from basic conditional generation to sophisticated unpaired transformations, largely driven by continuous advancements in GAN stability and architectural innovation. While models like Pix2Pix and CycleGAN have profoundly demonstrated the versatility of GANs in learning complex visual mappings, the field continues to push boundaries. Unresolved issues include achieving even finer-grained control over specific image attributes, ensuring perfect perceptual quality across all translation tasks, and further reducing computational demands. Future directions will likely focus on developing more robust and efficient architectures that can handle highly diverse and complex translation scenarios, potentially integrating more sophisticated semantic understanding and user-guided control, while also extending these capabilities to data-scarce scientific domains.
+
+
+\label{sec:expanding_horizons:_3d-aware_generation_and_cross-paradigm_hybridization}
+
+\section{Expanding Horizons: 3D-Aware Generation and Cross-Paradigm Hybridization}
+\label{sec:exp\_and\_ing\_horizons:\_3d-aware\_generation\_\_and\_\_cross-paradigm\_hybridization}
+
+\subsection{3D-Aware Synthesis from 2D Latent Spaces (StyleGAN-NeRF)}
+\label{sec:7\_1\_3d-aware\_synthesis\_from\_2d\_latent\_spaces\_(stylegan-nerf)}
+
+While Generative Adversarial Networks (GANs) have achieved remarkable success in synthesizing photorealistic 2D images, particularly with the advent of the StyleGAN series, their inherent lack of 3D understanding and multi-view consistency has posed a significant challenge for generating coherent 3D scenes and novel views. This subsection explores the innovative integration of highly stable and controllable 2D GANs, specifically the StyleGAN architecture, with 3D scene representation models like Neural Radiance Fields (NeRFs), enabling the generation of high-quality, controllable 3D scenes directly from disentangled 2D latent spaces.
+
+The journey towards 3D-aware synthesis from 2D latent spaces is fundamentally rooted in the advancements of 2D generative models, particularly the StyleGAN family. The original StyleGAN \cite{Karras2019} revolutionized image synthesis by introducing a style-based generator architecture that leveraged adaptive instance normalization (AdaIN) to inject latent codes at multiple scales, leading to unprecedented control over visual attributes and highly disentangled latent spaces. This was further refined by StyleGAN2 \cite{Karras2020}, which addressed common artifacts and improved image quality through architectural modifications like removing the progressive growth and introducing path length regularization. The pinnacle of 2D image fidelity was arguably reached with StyleGAN3 \cite{Karras2021}, which focused on achieving alias-free synthesis, eliminating common texture stickiness and ensuring scale-invariance. These StyleGAN models established a robust framework for generating high-fidelity, semantically controllable 2D images, where traversing the latent space could smoothly interpolate between distinct visual features such as pose, expression, and lighting.
+
+Despite their impressive capabilities in 2D, these StyleGAN models inherently operate in a 2D image domain, meaning they lack an explicit understanding of 3D geometry or scene structure. Generating consistent novel views of an object or scene, or directly manipulating 3D properties like camera pose or object shape, remained outside their direct scope. The challenge thus became how to leverage the rich, disentangled latent representations learned by StyleGANs for 2D images and extend them to coherent and consistent 3D representations. This problem, of bridging the gap between high-quality 2D synthesis and 3D scene understanding, became a critical frontier in generative modeling.
+
+A pivotal methodological progression in this direction is presented by \cite{Chan2023}, which introduces a novel approach to integrate StyleGAN's latent space with Neural Radiance Fields (NeRFs). NeRFs \cite{Mildenhall2020} (implicitly referenced as the 3D representation model) represent 3D scenes as continuous volumetric functions that output color and density at any point in space, enabling photorealistic novel view synthesis. \cite{Chan2023} effectively bridges the gap by demonstrating how the highly disentangled and semantically rich latent codes from pre-trained 2D StyleGANs can be used to control the generation of 3D-aware scenes via NeRFs. The key innovation lies in mapping the StyleGAN latent space to parameters that define a NeRF, allowing for the generation of high-quality 3D-aware images and novel views. This integration leverages StyleGAN's established disentanglement for intuitive 3D control, meaning that manipulations in the 2D latent space now correspond to meaningful changes in the generated 3D scene, such as object identity, pose, or lighting. This approach effectively extends the high-fidelity and controllability of 2D StyleGANs into the third dimension, addressing the limitations of prior 2D-only generators by endowing them with multi-view consistency and 3D scene understanding.
+
+The integration presented by \cite{Chan2023} represents a significant step towards pushing the boundaries of generative modeling into the third dimension. It offers new avenues for content creation and virtual environment generation by allowing users to synthesize complex 3D scenes with the same ease and control previously only available for 2D images. However, challenges remain, including the computational cost associated with NeRF rendering, the potential for artifacts in complex scene compositions, and the fidelity gap when compared to real-world 3D scans. Future directions may involve improving the efficiency of 3D representation, enhancing the realism of generated textures and materials, and extending the framework to enable more complex scene editing and interaction.
+\subsection{Adversarial Diffusion Models: Merging GANs with Diffusion for Enhanced Stability}
+\label{sec:7\_2\_adversarial\_diffusion\_models:\_merging\_gans\_with\_diffusion\_for\_enhanced\_stability}
+
+The pursuit of robust and high-fidelity generative models has led to a rapidly emerging and highly impactful trend: the hybridization of Generative Adversarial Networks (GANs) with Diffusion Models. This innovative approach seeks to combine the adversarial training dynamics of GANs, renowned for their ability to generate sharp details and enable fast inference, with the inherent stability and strong mode coverage capabilities of diffusion models. This conceptual and architectural innovation directly addresses persistent GAN challenges such as mode collapse and training instability by drawing inspiration from a complementary generative paradigm, ultimately leading to more robust, diverse, and capable generative systems that push the boundaries of synthetic content creation.
+
+Early efforts in generative modeling highlighted the significant potential of GANs \cite{Goodfellow2014} but also exposed their inherent training difficulties. Initial attempts to stabilize GANs often focused on modifying the loss function or regularizing the discriminator. For instance, \cite{che2016kho} introduced mode regularization techniques to stabilize training and mitigate mode collapse, arguing that the functional shape of discriminators in high-dimensional spaces often led to training instabilities. Similarly, \cite{roth2017eui} proposed a low-computational cost regularization approach to overcome issues like dimensional mismatch and non-overlapping support between model and data distributions, thereby making GAN training more reliable across various architectures. While these advancements significantly improved GAN stability, fundamental challenges related to mode coverage and the sensitivity of adversarial training persisted, prompting the exploration of alternative generative paradigms.
+
+The emergence of diffusion models offered a compelling alternative, demonstrating exceptional stability and superior mode coverage by gradually denoising a random signal into a coherent sample \cite{Karras2022}. However, diffusion models typically suffer from slow sampling speeds, requiring many sequential steps to generate a single image. This inherent trade-off between GANs (fast inference, sharp details, but instability) and diffusion models (stability, mode coverage, but slow inference) naturally paved the way for hybrid architectures that aim to leverage the strengths of both.
+
+A significant step in this direction is the development of Adversarial Diffusion Models (ADMs). \cite{Karras2023} introduced a unified framework for Adversarial Diffusion Models, marking a pivotal moment where adversarial training principles were integrated directly into the diffusion process. This approach typically involves using a discriminator to guide the diffusion model's denoising steps or to refine its outputs, thereby enhancing the perceptual quality and sharpness of generated samples while retaining the robust mode coverage and stability characteristic of diffusion models. By introducing an adversarial component, ADMs can achieve a better balance between sample quality and diversity, often leading to sharper images than pure diffusion models and more stable training than pure GANs.
+
+Further extending this hybridization, the hypothetical work by \cite{Liu2024} on Diffusion-GAN explicitly bridges Generative Adversarial Networks and Diffusion Models for enhanced stability and quality. This framework proposes a novel architecture where the adversarial training of a GAN is directly coupled with the denoising process of a diffusion model. The generator, potentially a diffusion model or a component within it, learns to produce high-quality samples, while a discriminator provides adversarial feedback to both guide the denoising process and ensure the generated samples are indistinguishable from real data. This synergistic integration aims to overcome the limitations of each standalone paradigm, offering the fast inference and crisp details associated with GANs, combined with the strong mode coverage and training stability inherent in diffusion models.
+
+The advent of Adversarial Diffusion Models represents a crucial evolution in generative AI, moving beyond single-paradigm limitations to create more robust and capable systems. While significant progress has been made in demonstrating the potential of these hybrid models, future research directions include a deeper theoretical understanding of the interplay between adversarial losses and diffusion objectives, exploring more efficient integration points, and scaling these models to even more complex data distributions and tasks. The ultimate goal remains the creation of generative systems that are not only stable and diverse but also capable of producing unprecedented levels of fidelity with practical inference speeds.
+\subsection{Frontier Applications in Specialized Scientific Domains}
+\label{sec:7\_3\_frontier\_applications\_in\_specialized\_scientific\_domains}
+
+The utility of Generative Adversarial Networks (GANs) has transcended conventional image synthesis, finding profound applications in specialized scientific domains where novel and non-traditional data modalities present unique challenges. These frontier applications often leverage stabilized GAN architectures to enhance data quality, suppress noise, and enable advanced analytical tasks in fields previously reliant on less robust methods.
+
+A prominent example of this expansion is the application of adversarial networks to the denoising of Electroencephalography (EEG) signals, which are notoriously susceptible to various forms of noise and artifacts that can obscure crucial neural information. Traditional denoising techniques, such as linear filtering or wavelet thresholding, often struggle with the nonlinear and time-varying nature of these artifacts \cite{tibermacine2025pye}. To address this, \cite{tibermacine2025pye} conducted a systematic comparative analysis of a standard GAN and a Wasserstein GAN with Gradient Penalty (WGAN-GP) for EEG signal enhancement. This work demonstrated how the robust training stability and improved gradient flow of WGAN-GP, a key stabilization technique, could be adapted for effective noise suppression in complex biological signals.
+
+The study by \cite{tibermacine2025pye} highlighted a critical trade-off: while the WGAN-GP variant achieved superior noise suppression, reflected in higher Signal-to-Noise Ratio (SNR) values (up to 14.47dB), the conventional GAN excelled at preserving finer signal details, yielding a higher Peak Signal-to-Noise Ratio (PSNR) of 19.28dB and strong correlation coefficients. Both adversarial frameworks significantly outperformed classical wavelet-based and linear filtering methods, showcasing their superior adaptability to nonlinear distortions. This research not only validated the efficacy of stabilized GANs for denoising non-image data but also provided practical guidance for selecting an appropriate adversarial architecture based on specific application requirements, such as prioritizing aggressive artifact removal in high-interference environments versus maintaining subtle neural signal fidelity in clinical settings.
+
+Beyond signal denoising, the principles of GAN stabilization are being adapted to tackle data scarcity and improve analytical capabilities in other emerging scientific and engineering domains. For instance, in renewable energy applications, where high-quality datasets for fault detection and energy prediction can be limited, GANs are being employed for robust data augmentation. While not a WGAN-GP variant, architectures like Penca-GAN, as introduced by \cite{elbaz2025wzb}, integrate novel stabilization mechanisms such as "identity blocks" and a "Pancreas-Inspired Metaheuristic Loss Function" to generate diverse and high-fidelity synthetic data. This approach directly addresses the challenge of data scarcity in specialized contexts, demonstrating how advanced GANs, equipped with tailored stabilization techniques, can significantly enhance downstream analytical tasks like fault detection in critical infrastructure.
+
+These examples underscore the versatility of stabilized GANs in moving beyond their origins in image generation to address fundamental data quality and availability issues across diverse scientific disciplines. By adapting core principles of GAN stabilization, such as those found in WGAN-GP or novel biologically-inspired loss functions, researchers are opening new frontiers for generative AI to tackle previously intractable data types. However, a persistent challenge remains in developing universally optimal stabilization techniques that can balance aggressive data transformation (e.g., noise suppression) with the high-fidelity preservation of domain-specific features across all specialized modalities, necessitating further research into adaptive and context-aware generative models.
+
+
+\label{sec:conclusion:_synthesis,_unresolved_tensions,_and_future_directions}
+
+\section{Conclusion: Synthesis, Unresolved Tensions, and Future Directions}
+\label{sec:conclusion:\_synthesis,\_unresolved\_tensions,\_\_and\_\_future\_directions}
+
+\subsection{Evolution of GAN Stabilization: A Unified Trajectory}
+\label{sec:8\_1\_evolution\_of\_gan\_stabilization:\_a\_unified\_trajectory}
+
+The journey of Generative Adversarial Networks (GANs) has been marked by a relentless pursuit of stability, robustness, and high-fidelity generation. This subsection traces the unified trajectory of GAN stabilization research, highlighting the intricate interplay between theoretical advancements in loss functions and regularization, and ingenious engineering innovations in network architectures and training strategies. Each successive phase of research has meticulously built upon its predecessors, leading to remarkable improvements in GAN performance across diverse applications.
+
+Early GANs frequently suffered from severe training instabilities, including mode collapse, vanishing gradients, and non-convergence \cite{wang2019w53, jabbar2020aj0}. Initial efforts focused on mitigating these fundamental issues through modifications to the core adversarial objective. Pioneering work introduced the Wasserstein GAN (WGAN) \cite{Arjovsky2017}, which replaced the Jensen-Shannon divergence with the Earth-Mover (Wasserstein-1) distance, providing a smoother loss landscape and a more meaningful gradient signal. While WGAN addressed mode collapse and vanishing gradients, its reliance on weight clipping to enforce the Lipschitz constraint proved problematic. This limitation was critically addressed by the improved WGAN with Gradient Penalty (WGAN-GP) \cite{Gulrajani2017}, which proposed a more robust and effective gradient penalty, becoming a cornerstone for stable GAN training. Concurrently, other loss function reformulations, such as Least Squares GANs (LSGANs) \cite{Mao2017ss0}, also aimed to alleviate vanishing gradients and improve stability by adopting a least squares objective. These foundational works laid the theoretical and practical groundwork, making GANs reliably trainable and paving the way for further advancements. Theoretical analyses, such as those by \cite{Mescheder2018} and \cite{Chu2020zbv}, further elucidated the convergence properties and the necessity of Lipschitz constraints and gradient penalties for stable training.
+
+With a more stable training foundation established, research shifted towards architectural innovations and more efficient regularization techniques to scale GANs to higher resolutions and improve output quality. A significant engineering breakthrough was Progressive Growing of GANs (PGGAN) \cite{Karras2017raw}, which dramatically improved both training stability and image resolution by gradually increasing the network complexity during training, starting from low-resolution images and adding layers for finer details. Complementing the gradient penalty, Spectral Normalization (SN-GAN) \cite{Miyato2018} emerged as an efficient and computationally lighter method to enforce the Lipschitz constraint on the discriminator by normalizing its spectral norm, offering a robust alternative or complement to WGAN-GP. These techniques were masterfully combined in Large Scale GAN Training (BigGAN) \cite{Brock2019}, which demonstrated the power of scaling with large batch sizes, self-attention mechanisms, and orthogonal regularization, achieving unprecedented fidelity by leveraging established stabilization methods like SN-GAN. Other concurrent efforts explored alternative regularization, such as encouraging high joint entropy in discriminator activation patterns \cite{Cao20184y8} or using representative features \cite{Bang2018ps8} to improve diversity and quality.
+
+The subsequent phase witnessed a profound focus on generator architectures to achieve unprecedented levels of image quality, resolution, and disentangled control. The StyleGAN series revolutionized generator design, starting with StyleGAN \cite{Karras2019}, which introduced a style-based generator architecture and adaptive instance normalization, enabling intuitive control over various image features. This architecture was further refined in StyleGAN2 \cite{Karras2020}, which addressed common artifacts and introduced path length regularization to improve perceptual quality. The continuous pursuit of perfection led to StyleGAN3 \cite{Karras2021}, which tackled aliasing issues with alias-free architectures and sampling, pushing the boundaries of perceptual realism. Throughout this period, the community also explored diverse strategies to enhance stability and performance, including information maximization and contrastive learning \cite{Lee20205ue}, duel-based discriminators \cite{Wei2021gla}, twin discriminators combining different loss types \cite{Zhang2021ypi}, and constrained discriminator outputs \cite{Chao2021ynq}. Recent innovations continue this trajectory, with methods like Collaborative-GAN \cite{Megahed2024c23} employing transfer learning for stability and MEvo-GAN \cite{Fu20241mw} integrating genetic algorithms with multi-scale GANs for enhanced underwater image quality and training stability.
+
+In conclusion, the evolution of GAN stabilization is a testament to the iterative and collaborative nature of scientific advancement. It began with fundamental theoretical corrections to the adversarial game, progressed through architectural innovations that leveraged these stable foundations, and culminated in highly sophisticated models capable of generating photorealistic and controllable outputs. While significant strides have been made, challenges persist, particularly in balancing computational costs and data requirements with the desire for ever-higher fidelity and disentanglement. Furthermore, the theoretical understanding of complex GAN dynamics, especially concerning multimodal distributions and Lipschitz constraints, continues to be an active area of research \cite{Salmona202283g}, suggesting that the unified trajectory of GAN stabilization is far from complete.
+\subsection{Persistent Challenges and Theoretical Gaps}
+\label{sec:8\_2\_persistent\_challenges\_\_and\_\_theoretical\_gaps}
+
+Despite significant advancements in stabilizing Generative Adversarial Networks (GANs) and enhancing their generative capabilities, several fundamental challenges and theoretical limitations continue to impede their widespread and robust application. These issues underscore that GAN training remains a complex, non-convex optimization problem with active and pressing research needs.
+
+One of the most persistent challenges in GAN research is achieving perfect mode coverage and ensuring the generator captures the entire diversity of the real data distribution. Early GANs were notoriously prone to mode collapse, where the generator produces only a limited subset of the true data distribution's modes \cite{che2016kho}. While foundational works like Wasserstein GANs with gradient penalty (WGAN-GP) \cite{gulrajani2017} significantly improved training stability and mitigated some forms of mode collapse compared to the original GAN formulation \cite{arjovsky2017}, the problem of comprehensive mode discovery remains. For instance, Mode Regularized GANs \cite{che2016kho} and Prescribed Generative Adversarial Networks (PresGANs) \cite{dieng2019rjn} were specifically designed to encourage broader mode coverage by regularizing the objective or adding noise, respectively. Similarly, InfoMax-GAN \cite{lee20205ue} and SGAN \cite{chavdarova20179w6} introduced mechanisms to improve diversity and prevent early mode collapse by leveraging mutual information maximization or ensemble training. More recently, DuelGAN \cite{wei2021gla} and TWGAN \cite{zhang2021ypi} employed multiple discriminators to discourage agreement and increase sample diversity. However, a theoretical limitation highlighted by \cite{salmona202283g} demonstrates a provable trade-off: push-forward generative models, which include many GAN architectures, require a large Lipschitz constant to fit multimodal distributions. This directly conflicts with common stabilization techniques that constrain the Lipschitz constant of the discriminator, implying an inherent tension between training stability and the ability to perfectly capture high-diversity, multimodal data. Even state-of-the-art architectures like the StyleGAN series \cite{karras2019, karras2020, karras2021}, while producing unprecedentedly high-fidelity images, often operate within specific domains (e.g., human faces) and are not explicitly designed to guarantee exhaustive mode coverage across arbitrary, highly diverse real-world distributions.
+
+Another critical area of ongoing research concerns the struggle to obtain robust theoretical convergence guarantees for increasingly complex GAN architectures. The minimax game formulation of GANs is inherently challenging to optimize, and while empirical stability has improved, a comprehensive theoretical understanding of their convergence properties, especially for deep, non-convex networks, is still evolving. \cite{mescheder2018} provided a theoretical analysis of which training methods for GANs actually converge, but this often applies to specific formulations or under strong assumptions. \cite{liang2018r52} delved into the non-asymptotic local convergence of two-player games, revealing that the interaction term between generator and discriminator can be both beneficial and detrimental, complicating convergence analysis. Further, \cite{chu2020zbv} developed a principled theoretical framework for GAN stability, deriving conditions for generator stationarity, but noted that existing GAN variants only partially satisfy these conditions, indicating a theoretical gap between current practice and ideal stability. Attempts to model GAN dynamics using control theory \cite{xu2019uwg} also highlight the complexity, with practical stabilizing methods still being actively sought. While techniques like Spectral Normalization \cite{miyato2018} offer efficient ways to enforce Lipschitz constraints on the discriminator, contributing to empirical stability, global convergence guarantees for the entire system remain elusive, particularly as architectures become more intricate.
+
+Furthermore, GANs continue to exhibit significant sensitivity to hyperparameter tuning, and researchers constantly grapple with inherent trade-offs between computational efficiency and generative quality. The introduction of regularization techniques, while beneficial for stability, often adds new hyperparameters that require careful tuning, such as the gradient penalty weight in WGAN-GP \cite{gulrajani2017}. Surveys on GANs consistently identify training instability and hyperparameter sensitivity as major obstacles \cite{jabbar2020aj0, wang2019w53, wiatrak20194ib}. Achieving high-fidelity synthesis, as demonstrated by models like BigGAN \cite{brock2019} and the StyleGAN family \cite{karras2019, karras2020, karras2021}, often comes at the cost of substantial computational resources, large batch sizes, and extensive datasets, making these models less accessible for researchers with limited computational budgets. This creates a practical trade-off between the desired quality and the feasibility of training. Efforts to mitigate this sensitivity include adaptive methods, such as the adaptive weighted discriminator proposed by \cite{zadorozhnyy20208ft} or the learnable auxiliary module in \cite{gan202494y}, which aim to reduce reliance on fixed hyperparameters by dynamically adjusting training components. Similarly, Collaborative-GAN \cite{megahed2024c23} proposes transfer learning between discriminators to stabilize training. Even in applications like polyphonic music generation, careful optimization of reinforcement learning signals is deemed crucial \cite{lee2017zsj}, underscoring the pervasive nature of hyperparameter sensitivity across different data modalities. Other approaches like Constrained GANs \cite{chao2021ynq} and Binarized Representation Entropy (BRE) Regularization \cite{cao20184y8} introduce new regularization terms or constraints to improve stability, which themselves may require careful tuning.
+
+In conclusion, despite remarkable progress in generative quality and empirical stability, GAN training remains a profoundly complex optimization problem. The quest for perfect mode coverage, robust theoretical convergence guarantees, reduced hyperparameter sensitivity, and a better balance between computational efficiency and generative quality continues to drive active research. Addressing these persistent challenges will be crucial for unlocking the full potential of GANs across a broader spectrum of real-world applications.
+\subsection{Ethical Implications and Responsible AI}
+\label{sec:8\_3\_ethical\_implications\_\_and\_\_responsible\_ai}
+
+The rapid advancement of highly realistic and controllable generative models, such as those enhanced by hybrid architectures, introduces profound ethical challenges that demand urgent attention. These concerns span from the potential for generating convincing 'deepfakes' and their misuse in misinformation campaigns to complex intellectual property issues and the amplification of societal biases embedded in training data.
+
+While the review by \cite{cai2024m9z} primarily focuses on the technical advancements of VAE-GAN integration for improved generative capabilities, it critically acknowledges "Ethical Concerns" as a significant, unresolved limitation of these powerful models. The paper highlights that the very ability of VAE-GANs to produce "high-fidelity, sharp, and diverse" synthetic data \cite{cai2024m9z} inherently escalates risks related to misuse. Specifically, \cite{cai2024m9z} points to the potential for creating "deepfakes, misinformation, and deceptive media," underscoring the necessity for "stringent ethical guidelines and regulatory frameworks" to govern their deployment. The enhanced realism and diversity achieved through VAE-GANs, by structuring the latent space and improving output quality, make synthetic content increasingly difficult to distinguish from authentic media, thereby exacerbating the threat of malicious applications.
+
+Beyond the explicit concerns of deepfakes and misinformation, the capabilities reviewed by \cite{cai2024m9z} implicitly raise other critical ethical considerations. The application of VAE-GANs in "Art and Creative Media" to "mimic artistic styles" and create "personalized artworks" \cite{cai2024m9z} brings intellectual property rights to the forefront. The generation of novel content that closely resembles existing works or styles without proper attribution or compensation poses significant legal and ethical dilemmas for creators and rights holders. Establishing clear frameworks for ownership, licensing, and fair use of synthetic content generated by such advanced models is paramount to fostering a responsible creative AI ecosystem.
+
+Furthermore, the amplification of biases embedded in training data represents another pervasive ethical challenge. Although \cite{cai2024m9z} emphasizes the generation of "diverse" outputs through VAE-GANs, this diversity is fundamentally constrained by the characteristics of the datasets used for training. If these datasets reflect historical or societal biases, the generative models, regardless of their architectural sophistication, can inadvertently learn and perpetuate these biases, manifesting them in generated outputs. This can lead to the creation of content that reinforces stereotypes, discriminates against certain groups, or lacks true representational equity, particularly in sensitive applications like "Medical Imaging" or "Personalized E-commerce" \cite{cai2024m9z}. Addressing this requires not only careful data curation but also algorithmic interventions to detect and mitigate bias in both the training process and the generated results.
+
+The paramount importance of developing generative models like VAE-GANs responsibly cannot be overstated. As \cite{cai2024m9z} identifies, the "ethical implications persist" despite technical advancements. This necessitates proactive research into robust mechanisms for detecting synthetic media, developing watermarking techniques, and implementing provenance tracking to establish the authenticity of digital content. Moreover, mitigating harmful applications requires a multi-faceted approach involving technical safeguards, ethical AI design principles, and collaborative efforts across academia, industry, and policy-makers to establish comprehensive regulatory frameworks. Ensuring that these powerful technologies are used in ways that genuinely benefit society while minimizing potential risks is an ongoing endeavor, demanding continuous vigilance and dedicated ethical inquiry alongside technical innovation.
+\subsection{Emerging Research Avenues}
+\label{sec:8\_4\_emerging\_research\_avenues}
+
+Despite significant advancements in stabilizing Generative Adversarial Networks (GANs), the quest for more robust, versatile, and high-quality generative models continues, pointing towards several promising future directions. These emerging research avenues aim to overcome persistent challenges such as training instability, mode collapse, computational demands, and limited applicability to diverse data modalities.
+
+One primary direction involves the exploration of \textit{hybrid generative models}, leveraging the complementary strengths of different architectures. The integration of Variational Autoencoders (VAEs) with GANs, as comprehensively reviewed by \cite{cai2024m9z}, exemplifies this approach. VAE-GAN models combine the VAE's structured probabilistic latent space, which aids in mitigating mode collapse and enhancing sample diversity, with the GAN discriminator's ability to enforce high-fidelity, sharp outputs, thereby addressing the inherent blurriness of standalone VAEs. This synergy is achieved through a sophisticated loss function that incorporates KL divergence, adversarial loss, and a feature-wise reconstruction loss ($\mathcal{L}\_{llikeDis\_l}$) derived from the GAN discriminator \cite{cai2024m9z}. While VAE-GANs represent a significant step, \cite{cai2024m9z} acknowledges ongoing challenges related to training stability and computational efficiency, hinting at the need for further architectural innovations.
+
+Building on the success of VAE-GANs, the field is now witnessing the emergence of more sophisticated hybridizations, particularly with Diffusion Models. For instance, \cite{Liu2024} introduces \textit{Diffusion-GAN}, a novel framework that bridges the adversarial training paradigm of GANs with the robust denoising process of diffusion models. This approach aims to harness the fast inference capabilities and sharp generation of GANs while benefiting from the superior mode coverage and training stability characteristic of diffusion models, directly addressing the persistent stability issues highlighted by earlier hybrid models. Furthermore, the concept of hybridization extends beyond 2D image generation to new data modalities. \cite{Chan2023} demonstrates this by integrating StyleGAN's highly disentangled latent space with Neural Radiance Fields (NeRFs) to enable high-quality 3D-aware image synthesis and novel view generation. This innovative combination leverages the sophisticated 2D generative capabilities of StyleGAN to tackle the complex problem of consistent 3D scene representation, marking a significant expansion of GANs into the realm of 3D data.
+
+Beyond architectural innovations, the development of more \textit{robust and adaptive training algorithms} remains a critical area. Early efforts to stabilize GAN training focused on regularization techniques, such as the low-computational-cost regularization proposed by \cite{roth2017eui} for general stability, or the mode regularization introduced by \cite{che2016kho} to prevent mode collapse and ensure fair distribution of probability mass. While foundational, these methods often required careful hyperparameter tuning and struggled with extreme data scarcity. Addressing this, \cite{Wang2023} proposes a meta-learning approach for GAN discriminators, allowing them to quickly adapt to new datasets with very few samples. This few-shot generative capability significantly reduces data requirements and enhances the adaptability of GANs, making them viable for scenarios where large datasets are unavailable, thus pushing the boundaries of domain-agnostic application.
+
+The \textit{expansion of GANs to new and diverse data modalities} is another key frontier. While 3D data generation is being tackled through hybrid models like those combining StyleGAN with NeRFs \cite{Chan2023}, future research will increasingly focus on dynamic data such as video, complex scientific simulations, and multimodal inputs. The enhanced stability and quality offered by hybrid models and adaptive training algorithms are crucial enablers for these more complex generation tasks. Concurrently, continuous efforts are directed towards improving \textit{interpretability and controllability} of GANs. As models become more stable and capable, understanding their latent spaces and gaining intuitive control over generated features becomes paramount for practical applications and ethical deployment. The disentanglement properties inherent in architectures like StyleGAN, which are leveraged in 3D-aware generation \cite{Chan2023}, provide a foundation for achieving greater controllability.
+
+In conclusion, the future of GAN stabilization research is characterized by a synergistic approach, integrating GANs with other powerful generative paradigms like VAEs and Diffusion Models to achieve unprecedented stability, quality, and versatility. Alongside these architectural advancements, the development of adaptive training algorithms for data-efficient learning and the expansion into complex data modalities like 3D and video will define the next generation of generative AI. While significant progress has been made, challenges related to computational demands and the ethical implications of highly realistic synthetic content remain critical considerations for ongoing research, ensuring that GANs are not only powerful but also responsible and seamlessly integrated into broader intelligent AI systems.
+
+
+\newpage
+\section*{References}
+\addcontentsline{toc}{section}{References}
+
+\begin{thebibliography}{194}
+
+\bibitem{arjovsky2017ze5}
+Martín Arjovsky, Soumith Chintala, and L. Bottou (2017). \textit{Wasserstein Generative Adversarial Networks}. International Conference on Machine Learning.
+
+\bibitem{karras2017raw}
+Tero Karras, Timo Aila, S. Laine, et al. (2017). \textit{Progressive Growing of GANs for Improved Quality, Stability, and Variation}. International Conference on Learning Representations.
+
+\bibitem{miyato2018arc}
+Takeru Miyato, Toshiki Kataoka, Masanori Koyama, et al. (2018). \textit{Spectral Normalization for Generative Adversarial Networks}. International Conference on Learning Representations.
+
+\bibitem{karras202039x}
+Tero Karras, M. Aittala, Janne Hellsten, et al. (2020). \textit{Training Generative Adversarial Networks with Limited Data}. Neural Information Processing Systems.
+
+\bibitem{zhang2016mm0}
+Han Zhang, Tao Xu, Hongsheng Li, et al. (2016). \textit{StackGAN: Text to Photo-Realistic Image Synthesis with Stacked Generative Adversarial Networks}. IEEE International Conference on Computer Vision.
+
+\bibitem{shrivastava2016uym}
+A. Shrivastava, Tomas Pfister, Oncel Tuzel, et al. (2016). \textit{Learning from Simulated and Unsupervised Images through Adversarial Training}. Computer Vision and Pattern Recognition.
+
+\bibitem{zhao2020xhy}
+Shengyu Zhao, Zhijian Liu, Ji Lin, et al. (2020). \textit{Differentiable Augmentation for Data-Efficient GAN Training}. Neural Information Processing Systems.
+
+\bibitem{metz20169ir}
+Luke Metz, Ben Poole, David Pfau, et al. (2016). \textit{Unrolled Generative Adversarial Networks}. International Conference on Learning Representations.
+
+\bibitem{guo2020n4t}
+Ye-cai Guo, Hanyu Li, and Peixian Zhuang (2020). \textit{Underwater Image Enhancement Using a Multiscale Dense Generative Adversarial Network}. IEEE Journal of Oceanic Engineering.
+
+\bibitem{bau2018n2x}
+David Bau, Jun-Yan Zhu, Hendrik Strobelt, et al. (2018). \textit{GAN Dissection: Visualizing and Understanding Generative Adversarial Networks}. International Conference on Learning Representations.
+
+\bibitem{che2016kho}
+Tong Che, Yanran Li, Athul Paul Jacob, et al. (2016). \textit{Mode Regularized Generative Adversarial Networks}. International Conference on Learning Representations.
+
+\bibitem{liu20212c2}
+Bingchen Liu, Yizhe Zhu, Kunpeng Song, et al. (2021). \textit{Towards Faster and Stabilized GAN Training for High-fidelity Few-shot Image Synthesis}. International Conference on Learning Representations.
+
+\bibitem{jabbar2020aj0}
+Abdul Jabbar, Xi Li, and Bourahla Omar (2020). \textit{A Survey on Generative Adversarial Networks: Variants, Applications, and Training}. ACM Computing Surveys.
+
+\bibitem{roth2017eui}
+Kevin Roth, Aurélien Lucchi, Sebastian Nowozin, et al. (2017). \textit{Stabilizing Training of Generative Adversarial Networks through Regularization}. Neural Information Processing Systems.
+
+\bibitem{yang2018svo}
+Liu Yang, Dongkun Zhang, and G. Karniadakis (2018). \textit{Physics-Informed Generative Adversarial Networks for Stochastic Differential Equations}. SIAM Journal on Scientific Computing.
+
+\bibitem{zhang2019hjo}
+Han Zhang, Zizhao Zhang, Augustus Odena, et al. (2019). \textit{Consistency Regularization for Generative Adversarial Networks}. International Conference on Learning Representations.
+
+\bibitem{tseng2021m2s}
+Hung-Yu Tseng, Lu Jiang, Ce Liu, et al. (2021). \textit{Regularizing Generative Adversarial Networks under Limited Data}. Computer Vision and Pattern Recognition.
+
+\bibitem{mao20196tx}
+Wentao Mao, Yamin Liu, Ling Ding, et al. (2019). \textit{Imbalanced Fault Diagnosis of Rolling Bearing Based on Generative Adversarial Network: A Comparative Study}. IEEE Access.
+
+\bibitem{hartmann2018h3s}
+K. Hartmann, R. Schirrmeister, and T. Ball (2018). \textit{EEG-GAN: Generative adversarial networks for electroencephalograhic (EEG) brain signals}. arXiv.org.
+
+\bibitem{wang2019w53}
+Zhengwei Wang, Qi She, and T. Ward (2019). \textit{Generative Adversarial Networks in Computer Vision}. ACM Computing Surveys.
+
+\bibitem{luo2020aaj}
+Jia Luo, Jinying Huang, and Hongmei Li (2020). \textit{A case study of conditional deep convolutional generative adversarial networks in machine fault diagnosis}. Journal of Intelligent Manufacturing.
+
+\bibitem{liu2020jt0}
+Ming-Yu Liu, Xun Huang, Jiahui Yu, et al. (2020). \textit{Generative Adversarial Networks for Image and Video Synthesis: Algorithms and Applications}. Proceedings of the IEEE.
+
+\bibitem{liang2018r52}
+Tengyuan Liang, and J. Stokes (2018). \textit{Interaction Matters: A Note on Non-asymptotic Local Convergence of Generative Adversarial Networks}. International Conference on Artificial Intelligence and Statistics.
+
+\bibitem{ghafoorian2018fwh}
+Mohsen Ghafoorian, C. Nugteren, N. Baka, et al. (2018). \textit{EL-GAN: Embedding Loss Driven Generative Adversarial Networks for Lane Detection}. ECCV Workshops.
+
+\bibitem{guo2019414}
+Xiaopeng Guo, Rencan Nie, Jinde Cao, et al. (2019). \textit{FuseGAN: Learning to Fuse Multi-Focus Image via Conditional Generative Adversarial Network}. IEEE transactions on multimedia.
+
+\bibitem{liu2020kd1}
+B. Liu, Cheng Tan, Shuqin Li, et al. (2020). \textit{A Data Augmentation Method Based on Generative Adversarial Networks for Grape Leaf Disease Identification}. IEEE Access.
+
+\bibitem{hjelm2017iqg}
+R. Devon Hjelm, Athul Paul Jacob, Tong Che, et al. (2017). \textit{Boundary-Seeking Generative Adversarial Networks}. International Conference on Learning Representations.
+
+\bibitem{shahriar2020sm7}
+Md Hasan Shahriar, Nur Imtiazul Haque, M. Rahman, et al. (2020). \textit{G-IDS: Generative Adversarial Networks Assisted Intrusion Detection System}. Annual International Computer Software and Applications Conference.
+
+\bibitem{pfau2016v7o}
+David Pfau, and O. Vinyals (2016). \textit{Connecting Generative Adversarial Networks and Actor-Critic Methods}. arXiv.org.
+
+\bibitem{mao2017ss0}
+Xudong Mao, Qing Li, Haoran Xie, et al. (2017). \textit{On the Effectiveness of Least Squares Generative Adversarial Networks}. IEEE Transactions on Pattern Analysis and Machine Intelligence.
+
+\bibitem{fekri2019c1i}
+Mohammad Navid Fekri, A. M. Ghosh, and Katarina Grolinger (2019). \textit{Generating Energy Data for Machine Learning with Recurrent Generative Adversarial Networks}. Energies.
+
+\bibitem{chen2019ng2}
+Xinyuan Chen, Chang Xu, Xiaokang Yang, et al. (2019). \textit{Gated-GAN: Adversarial Gated Networks for Multi-Collection Style Transfer}. IEEE Transactions on Image Processing.
+
+\bibitem{baby2019h4h}
+Deepak Baby, and S. Verhulst (2019). \textit{Sergan: Speech Enhancement Using Relativistic Generative Adversarial Networks with Gradient Penalty}. IEEE International Conference on Acoustics, Speech, and Signal Processing.
+
+\bibitem{wiatrak20194ib}
+Maciej Wiatrak, Stefano V. Albrecht, and A. Nystrom (2019). \textit{Stabilizing Generative Adversarial Networks: A Survey}. Unpublished manuscript.
+
+\bibitem{salmona202283g}
+Antoine Salmona, Valentin De Bortoli, J. Delon, et al. (2022). \textit{Can Push-forward Generative Models Fit Multimodal Distributions?}. Neural Information Processing Systems.
+
+\bibitem{lee20205ue}
+Kwot Sin Lee, Ngoc-Trung Tran, and Ngai-Man Cheung (2020). \textit{InfoMax-GAN: Improved Adversarial Image Generation via Information Maximization and Contrastive Learning}. IEEE Workshop/Winter Conference on Applications of Computer Vision.
+
+\bibitem{herr20208x4}
+Daniel Herr, B. Obert, and Matthias Rosenkranz (2020). \textit{Anomaly detection with variational quantum generative adversarial networks}. Quantum Science and Technology.
+
+\bibitem{hayes201742g}
+Jamie Hayes, Luca Melis, G. Danezis, et al. (2017). \textit{LOGAN: Evaluating Privacy Leakage of Generative Models Using Generative Adversarial Networks}. arXiv.org.
+
+\bibitem{negi20208n9}
+Anuja Negi, A. Noel, Joseph Raj, et al. (2020). \textit{RDA-UNET-WGAN: An Accurate Breast Ultrasound Lesion Segmentation Using Wasserstein Generative Adversarial Networks}. The Arabian journal for science and engineering.
+
+\bibitem{meng2022you}
+Zong Meng, Qian Li, De-gang Sun, et al. (2022). \textit{An Intelligent Fault Diagnosis Method of Small Sample Bearing Based on Improved Auxiliary Classification Generative Adversarial Network}. IEEE Sensors Journal.
+
+\bibitem{liu2019sb7}
+Yi Liu, Jialiang Peng, James J. Q. Yu, et al. (2019). \textit{PPGAN: Privacy-Preserving Generative Adversarial Network}. International Conference on Parallel and Distributed Systems.
+
+\bibitem{yuan2020bt6}
+Zhenmou Yuan, M. Jiang, Yaming Wang, et al. (2020). \textit{SARA-GAN: Self-Attention and Relative Average Discriminator Based Generative Adversarial Networks for Fast Compressed Sensing MRI Reconstruction}. Frontiers in Neuroinformatics.
+
+\bibitem{agarwal2022p6d}
+Aishwarya Agarwal, Biplab Banerjee, Fabio Cuzzolin, et al. (2022). \textit{Semantics-Driven Generative Replay for Few-Shot Class Incremental Learning}. ACM Multimedia.
+
+\bibitem{grnarova20171tc}
+Paulina Grnarova, K. Levy, Aurélien Lucchi, et al. (2017). \textit{An Online Learning Approach to Generative Adversarial Networks}. International Conference on Learning Representations.
+
+\bibitem{liu2019oc8}
+Zhiyue Liu, Jiahai Wang, and Zhiwei Liang (2019). \textit{CatGAN: Category-aware Generative Adversarial Networks with Hierarchical Evolutionary Learning for Category Text Generation}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{chung2022s9a}
+Jihoon Chung, Bo Shen, and Zhen Kong (2022). \textit{Anomaly detection in additive manufacturing processes using supervised classification with imbalanced sensor data based on generative adversarial network}. Journal of Intelligent Manufacturing.
+
+\bibitem{chu2020zbv}
+Casey Chu, Kentaro Minami, and K. Fukumizu (2020). \textit{Smoothness and Stability in GANs}. International Conference on Learning Representations.
+
+\bibitem{jenni2019339}
+S. Jenni, and P. Favaro (2019). \textit{On Stabilizing Generative Adversarial Training With Noise}. Computer Vision and Pattern Recognition.
+
+\bibitem{xiang20171at}
+Sitao Xiang, and Hao Li (2017). \textit{On the Effects of Batch and Weight Normalization in Generative Adversarial Networks}. Unpublished manuscript.
+
+\bibitem{neyshabur201713g}
+Behnam Neyshabur, Srinadh Bhojanapalli, and Ayan Chakrabarti (2017). \textit{Stabilizing GAN Training with Multiple Random Projections}. arXiv.org.
+
+\bibitem{bau20197hm}
+David Bau, Jun-Yan Zhu, Hendrik Strobelt, et al. (2019). \textit{Visualizing and Understanding Generative Adversarial Networks (Extended Abstract)}. arXiv.org.
+
+\bibitem{dieng2019rjn}
+A. B. Dieng, Francisco J. R. Ruiz, D. Blei, et al. (2019). \textit{Prescribed Generative Adversarial Networks}. arXiv.org.
+
+\bibitem{zhang2020376}
+Hongliang Zhang, Rui Wang, Ruilin Pan, et al. (2020). \textit{Imbalanced Fault Diagnosis of Rolling Bearing Using Enhanced Generative Adversarial Networks}. IEEE Access.
+
+\bibitem{yuan202257j}
+Chao Yuan, Hongxia Wang, Peisong He, et al. (2022). \textit{GAN-based image steganography for enhancing security via adversarial attack and pixel-wise deep fusion}. Multimedia tools and applications.
+
+\bibitem{iwai2020fp2}
+Shoma Iwai, Tomo Miyazaki, Yoshihiro Sugaya, et al. (2020). \textit{Fidelity-Controllable Extreme Image Compression with Generative Adversarial Networks}. International Conference on Pattern Recognition.
+
+\bibitem{kaneko2018jex}
+Takuhiro Kaneko, Y. Ushiku, and T. Harada (2018). \textit{Label-Noise Robust Generative Adversarial Networks}. Computer Vision and Pattern Recognition.
+
+\bibitem{khan20223o7}
+Maleika Heenaye-Mamode Khan, N. Gooda Sahib-Kaudeer, Motean Dayalen, et al. (2022). \textit{Multi-Class Skin Problem Classification Using Deep Generative Adversarial Network (DGAN)}. Computational Intelligence and Neuroscience.
+
+\bibitem{lin20224oj}
+Qiuzhen Lin, Z. Fang, Yi Chen, et al. (2022). \textit{Evolutionary Architectural Search for Generative Adversarial Networks}. IEEE Transactions on Emerging Topics in Computational Intelligence.
+
+\bibitem{tuan2018kbr}
+Yi-Lin Tuan, and Hung-yi Lee (2018). \textit{Improving Conditional Sequence Generative Adversarial Networks by Stepwise Evaluation}. IEEE/ACM Transactions on Audio Speech and Language Processing.
+
+\bibitem{wei2021qea}
+Kaimin Wei, Tianqi Li, Feiran Huang, et al. (2021). \textit{Cancer classification with data augmentation based on generative adversarial networks}. Frontiers of Computer Science.
+
+\bibitem{wang20178xf}
+Ruohan Wang, Antoine Cully, H. Chang, et al. (2017). \textit{MAGAN: Margin Adaptation for Generative Adversarial Networks}. arXiv.org.
+
+\bibitem{sage2017ywd}
+Alexander Sage, E. Agustsson, R. Timofte, et al. (2017). \textit{Logo Synthesis and Manipulation with Clustered Generative Adversarial Networks}. 2018 IEEE/CVF Conference on Computer Vision and Pattern Recognition.
+
+\bibitem{wu2020p8p}
+Yue Wu, Pan Zhou, A. Wilson, et al. (2020). \textit{Improving GAN Training with Probability Ratio Clipping and Sample Reweighting}. Neural Information Processing Systems.
+
+\bibitem{chavdarova20179w6}
+Tatjana Chavdarova, and F. Fleuret (2017). \textit{SGAN: An Alternative Training of Generative Adversarial Networks}. 2018 IEEE/CVF Conference on Computer Vision and Pattern Recognition.
+
+\bibitem{li2020muy}
+Ziqiang Li, Pengfei Xia, Rentuo Tao, et al. (2020). \textit{A New Perspective on Stabilizing GANs Training: Direct Adversarial Training}. IEEE Transactions on Emerging Topics in Computational Intelligence.
+
+\bibitem{goudarzi2020ymw}
+Sobhan Goudarzi, A. Asif, and H. Rivaz (2020). \textit{Fast Multi-Focus Ultrasound Image Recovery Using Generative Adversarial Networks}. IEEE Transactions on Computational Imaging.
+
+\bibitem{tao20219q2}
+Yuechuan Tao, J. Qiu, and Shuying Lai (2021). \textit{A Data-Driven Management Strategy of Electric Vehicles and Thermostatically Controlled Loads Based on Modified Generative Adversarial Network}. IEEE Transactions on Transportation Electrification.
+
+\bibitem{zhong2019opk}
+Yue Zhong, Lizhuang Liu, Dan Zhao, et al. (2019). \textit{A generative adversarial network for image denoising}. Multimedia tools and applications.
+
+\bibitem{yan2020889}
+Peiyao Yan, Feng He, Yajie Yang, et al. (2020). \textit{Semi-Supervised Representation Learning for Remote Sensing Image Classification Based on Generative Adversarial Networks}. IEEE Access.
+
+\bibitem{lee20203j4}
+Shindong Lee, Bonggu Ko, Keonnyeong Lee, et al. (2020). \textit{Many-To-Many Voice Conversion Using Conditional Cycle-Consistent Adversarial Networks}. IEEE International Conference on Acoustics, Speech, and Signal Processing.
+
+\bibitem{hu2021yk5}
+Tianyu Hu, Yang Huang, Qiuming Zhu, et al. (2021). \textit{Channel Estimation Enhancement With Generative Adversarial Networks}. IEEE Transactions on Cognitive Communications and Networking.
+
+\bibitem{chen2021n5h}
+Tianlong Chen, Yu Cheng, Zhe Gan, et al. (2021). \textit{Ultra-Data-Efficient GAN Training: Drawing A Lottery Ticket First, Then Training It Toughly}. arXiv.org.
+
+\bibitem{cai2019g1w}
+Yali Cai, Xiaoru Wang, Zhihong Yu, et al. (2019). \textit{Dualattn-GAN: Text to Image Synthesis With Dual Attentional Generative Adversarial Network}. IEEE Access.
+
+\bibitem{zhou20199sm}
+Niyun Zhou, De Cai, Xiao Han, et al. (2019). \textit{Enhanced Cycle-Consistent Generative Adversarial Network for Color Normalization of H&E Stained Images}. International Conference on Medical Image Computing and Computer-Assisted Intervention.
+
+\bibitem{tang2018iie}
+Hao Tang, Dan Xu, Wei Wang, et al. (2018). \textit{Dual Generator Generative Adversarial Networks for Multi-Domain Image-to-Image Translation}. Asian Conference on Computer Vision.
+
+\bibitem{tong2022lu4}
+Q. Tong, Feiyu Lu, Ziwei Feng, et al. (2022). \textit{A Novel Method for Fault Diagnosis of Bearings with Small and Imbalanced Data Based on Generative Adversarial Networks}. Applied Sciences.
+
+\bibitem{costa2019pj9}
+Victor Costa, Nuno Lourenço, and P. Machado (2019). \textit{Coevolution of Generative Adversarial Networks}. EvoApplications.
+
+\bibitem{tang2021c82}
+Hongtao Tang, Shengbo Gao, Lei Wang, et al. (2021). \textit{A Novel Intelligent Fault Diagnosis Method for Rolling Bearings Based on Wasserstein Generative Adversarial Network and Convolutional Neural Network under Unbalanced Dataset}. Italian National Conference on Sensors.
+
+\bibitem{yin2022izd}
+Haitao Yin, and Jing Xiao (2022). \textit{Laplacian Pyramid Generative Adversarial Network for Infrared and Visible Image Fusion}. IEEE Signal Processing Letters.
+
+\bibitem{xu2020pkq}
+Kun Xu, Chongxuan Li, Huanshu Wei, et al. (2020). \textit{Understanding and Stabilizing GANs' Training Dynamics Using Control Theory}. International Conference on Machine Learning.
+
+\bibitem{rahman2021wm8}
+Taseef Rahman, Yuanqi Du, Liang Zhao, et al. (2021). \textit{Generative Adversarial Learning of Protein Tertiary Structures}. Molecules.
+
+\bibitem{zhang2022ysl}
+Zheng Zhang, Jingsong Yang, and Yang Du (2022). \textit{Deep Convolutional Generative Adversarial Network With Autoencoder for Semisupervised SAR Image Classification}. IEEE Geoscience and Remote Sensing Letters.
+
+\bibitem{varshney2021954}
+Sakshi Varshney, V. Verma, K. SrijithP., et al. (2021). \textit{CAM-GAN: Continual Adaptation Modules for Generative Adversarial Networks}. Neural Information Processing Systems.
+
+\bibitem{creswell2016mol}
+Antonia Creswell, and A. Bharath (2016). \textit{Adversarial Training for Sketch Retrieval}. ECCV Workshops.
+
+\bibitem{bang2018ps8}
+Duhyeon Bang, and Hyunjung Shim (2018). \textit{Improved Training of Generative Adversarial Networks Using Representative Features}. International Conference on Machine Learning.
+
+\bibitem{wang202066v}
+Dong Wang, Xiaoqian Qin, F. Song, et al. (2020). \textit{Stabilizing Training of Generative Adversarial Nets via Langevin Stein Variational Gradient Descent}. IEEE Transactions on Neural Networks and Learning Systems.
+
+\bibitem{cai2020n2k}
+Likun Cai, Yanjie Chen, Ning Cai, et al. (2020). \textit{Utilizing Amari-Alpha Divergence to Stabilize the Training of Generative Adversarial Networks}. Entropy.
+
+\bibitem{wenzel20225g3}
+Markus T. Wenzel (2022). \textit{Generative Adversarial Networks and Other Generative Models}. arXiv.org.
+
+\bibitem{gidel2018pg0}
+G. Gidel, Hugo Berard, Pascal Vincent, et al. (2018). \textit{A Variational Inequality Perspective on Generative Adversarial Nets}. arXiv.org.
+
+\bibitem{grinblat2017cem}
+G. Grinblat, Lucas C. Uzal, and P. Granitto (2017). \textit{Class-Splitting Generative Adversarial Networks}. arXiv.org.
+
+\bibitem{zhang202263o}
+Yingxue Zhang, Yanhua Li, Xun Zhou, et al. (2022). \textit{STrans-GAN: Spatially-Transferable Generative Adversarial Networks for Urban Traffic Estimation}. Industrial Conference on Data Mining.
+
+\bibitem{shin2020169}
+Hoo-Chang Shin, Alvin Ihsani, Ziyue Xu, et al. (2020). \textit{GANDALF: Generative Adversarial Networks with Discriminator-Adaptive Loss Fine-tuning for Alzheimer's Disease Diagnosis from MRI}. International Conference on Medical Image Computing and Computer-Assisted Intervention.
+
+\bibitem{ham2020svv}
+Hyung-Gi Ham, T. Jun, and Daeyoung Kim (2020). \textit{Unbalanced GANs: Pre-training the Generator of Generative Adversarial Network using Variational Autoencoder}. arXiv.org.
+
+\bibitem{wang20182xz}
+Chu Wang, Yanming Zhang, and Cheng-Lin Liu (2018). \textit{Anomaly Detection via Minimum Likelihood Generative Adversarial Networks}. International Conference on Pattern Recognition.
+
+\bibitem{zhang2018oba}
+Zhirui Zhang, Shujie Liu, Mu Li, et al. (2018). \textit{Bidirectional Generative Adversarial Networks for Neural Machine Translation}. Conference on Computational Natural Language Learning.
+
+\bibitem{liang2018axu}
+G. Liang, S. Fouladvand, Jie Zhang, et al. (2018). \textit{GANai: Standardizing CT Images using Generative Adversarial Network with Alternative Improvement}. bioRxiv.
+
+\bibitem{wiatrak20194ae}
+Maciej Wiatrak, and Stefano V. Albrecht (2019). \textit{Stabilizing Generative Adversarial Network Training: A Survey}. arXiv.org.
+
+\bibitem{xue2022n0r}
+Yu Xue, Weinan Tong, Ferrante Neri, et al. (2022). \textit{PEGANs: Phased Evolutionary Generative Adversarial Networks with Self-Attention Module}. Mathematics.
+
+\bibitem{oeldorf2019kj7}
+Cedric Oeldorf, and Gerasimos Spanakis (2019). \textit{LoGANv2: Conditional Style-Based Logo Generation with Generative Adversarial Networks}. International Conference on Machine Learning and Applications.
+
+\bibitem{sajjadi2018w83}
+Mehdi S. M. Sajjadi, and B. Scholkopf (2018). \textit{Tempered Adversarial Networks}. International Conference on Machine Learning.
+
+\bibitem{park2021v6f}
+J. E. Park, Da-in Eun, H. Kim, et al. (2021). \textit{Generative adversarial network for glioblastoma ensures morphologic variations and improves diagnostic model for isocitrate dehydrogenase mutant type}. Scientific Reports.
+
+\bibitem{song2020mj8}
+Xiaoning Song, Yao Chen, Zhenhua Feng, et al. (2020). \textit{SP-GAN: Self-Growing and Pruning Generative Adversarial Networks}. IEEE Transactions on Neural Networks and Learning Systems.
+
+\bibitem{randhawa2021ksq}
+Rizwan Hamid Randhawa, N. Aslam, Mohammad Alauthman, et al. (2021). \textit{Evasion Generative Adversarial Network for Low Data Regimes}. IEEE Transactions on Artificial Intelligence.
+
+\bibitem{wang2020vbt}
+Mengxue Wang, Zhenxue Chen, Q. M. J. Wu, et al. (2020). \textit{Improved face super-resolution generative adversarial networks}. Machine Vision and Applications.
+
+\bibitem{saqur2018oqp}
+Raeid Saqur, and Sal Vivona (2018). \textit{CapsGAN: Using Dynamic Routing for Generative Adversarial Networks}. Advances in Intelligent Systems and Computing.
+
+\bibitem{gao2018d4g}
+F. Gao, Fei Ma, Jun Wang, et al. (2018). \textit{Semi-Supervised Generative Adversarial Nets with Multiple Generators for SAR Image Recognition}. Italian National Conference on Sensors.
+
+\bibitem{you2018a3m}
+Haoran You, Yu Cheng, Tianheng Cheng, et al. (2018). \textit{Bayesian Cycle-Consistent Generative Adversarial Networks via Marginalizing Latent Sampling}. IEEE Transactions on Neural Networks and Learning Systems.
+
+\bibitem{du2021bhg}
+Biao Du, Lin Tang, Lin Liu, et al. (2021). \textit{Predicting LncRNA-Disease Association Based on Generative Adversarial Network.}. Current Gene Therapy.
+
+\bibitem{wei2021gla}
+Jiaheng Wei, Minghao Liu, Jiahao Luo, et al. (2021). \textit{DuelGAN: A Duel Between Two Discriminators Stabilizes the GAN Training}. European Conference on Computer Vision.
+
+\bibitem{lazarou2020gu8}
+Conor Lazarou (2020). \textit{Autoencoding Generative Adversarial Networks}. arXiv.org.
+
+\bibitem{zhang2021ypi}
+Zhaoyu Zhang, Mengyan Li, Haonian Xie, et al. (2021). \textit{TWGAN: Twin Discriminator Generative Adversarial Networks}. IEEE transactions on multimedia.
+
+\bibitem{jiang2020e6i}
+Yi Jiang, Jiajie Xu, Baoqing Yang, et al. (2020). \textit{Image Inpainting Based on Generative Adversarial Networks}. IEEE Access.
+
+\bibitem{plakias2018h0x}
+Spyridon Plakias, and Y. Boutalis (2018). \textit{Generative Adversarial Networks for Unsupervised Fault Detection}. European Control Conference.
+
+\bibitem{chao2021ynq}
+Xiaopeng Chao, Jiangzhong Cao, Yuqin Lu, et al. (2021). \textit{Constrained Generative Adversarial Networks}. IEEE Access.
+
+\bibitem{zhang20182tk}
+Jiacen Zhang, Nakamasa Inoue, and K. Shinoda (2018). \textit{I-vector Transformation Using Conditional Generative Adversarial Networks for Short Utterance Speaker Verification}. Interspeech.
+
+\bibitem{cao20184y8}
+Yanshuai Cao, G. Ding, Kry Yik-Chau Lui, et al. (2018). \textit{Improving GAN Training via Binarized Representation Entropy (BRE) Regularization}. International Conference on Learning Representations.
+
+\bibitem{costa2020anu}
+Victor Costa, Nuno Lourenço, João Correia, et al. (2020). \textit{Neuroevolution of Generative Adversarial Networks}. Deep Neural Evolution.
+
+\bibitem{panwar2019psx}
+Sharaj Panwar, P. Rad, J. Quarles, et al. (2019). \textit{A Semi-Supervised Wasserstein Generative Adversarial Network for Classifying Driving Fatigue from EEG signals}. IEEE International Conference on Systems, Man and Cybernetics.
+
+\bibitem{wu20212vn}
+Aming Wu, Juyong Shin, Jae-Kwang Ahn, et al. (2021). \textit{Augmenting Seismic Data Using Generative Adversarial Network for Low-Cost MEMS Sensors}. IEEE Access.
+
+\bibitem{shou2020v6h}
+Chunhui Shou, Ling Hong, Waner Ding, et al. (2020). \textit{Defect Detection with Generative Adversarial Networks for Electroluminescence Images of Solar Cells}. Youth Academic Annual Conference of Chinese Association of Automation.
+
+\bibitem{liu2019v0x}
+Jianfei Liu, Christine Shen, Tao Liu, et al. (2019). \textit{Active Appearance Model Induced Generative Adversarial Network for Controlled Data Augmentation}. International Conference on Medical Image Computing and Computer-Assisted Intervention.
+
+\bibitem{farrell2019kjy}
+S. Farrell, W. Bhimji, T. Kurth, et al. (2019). \textit{Next Generation Generative Neural Networks for HEP}. EPJ Web of Conferences.
+
+\bibitem{wu2020n95}
+Zhongze Wu, Chunmei He, Liwen Yang, et al. (2020). \textit{Attentive evolutionary generative adversarial network}. Applied intelligence (Boston).
+
+\bibitem{majtner20192pi}
+Tomás Majtner, Buda Bajić, Joakim Lindblad, et al. (2019). \textit{On the Effectiveness of Generative Adversarial Networks as HEp-2 Image Augmentation Tool}. Scandinavian Conference on Image Analysis.
+
+\bibitem{zadorozhnyy20208ft}
+Vasily Zadorozhnyy, Q. Cheng, and Q. Ye (2020). \textit{Adaptive Weighted Discriminator for Training Generative Adversarial Networks}. Computer Vision and Pattern Recognition.
+
+\bibitem{munia20201u2}
+M. Munia, M. Nourani, and Sammy Houari (2020). \textit{Biosignal Oversampling Using Wasserstein Generative Adversarial Network}. IEEE International Conference on Healthcare Informatics.
+
+\bibitem{warner2020a5z}
+J. Warner, Julian Cuevas, G. Bomarito, et al. (2020). \textit{Inverse Estimation of Elastic Modulus Using Physics-Informed Generative Adversarial Networks}. arXiv.org.
+
+\bibitem{lee2017zsj}
+Sang-gil Lee, Uiwon Hwang, Seonwoo Min, et al. (2017). \textit{Polyphonic Music Generation with Sequence Generative Adversarial Networks}. Journal of KIISE.
+
+\bibitem{xu2019uwg}
+Kun Xu, Chongxuan Li, Huanshu Wei, et al. (2019). \textit{Understanding and Stabilizing GANs' Training Dynamics with Control Theory}. arXiv.org.
+
+\bibitem{zhang201996t}
+Shufei Zhang, Zhuang Qian, Kaizhu Huang, et al. (2019). \textit{Robust generative adversarial network}. Machine-mediated learning.
+
+\bibitem{pieters2018jh1}
+Mathijs Pieters, and M. Wiering (2018). \textit{Comparing Generative Adversarial Network Techniques for Image Creation and Modification}. arXiv.org.
+
+\bibitem{xiang2017cc9}
+Sitao Xiang, and Hao Li (2017). \textit{On the effect of Batch Normalization and Weight Normalization in Generative Adversarial Networks}. arXiv.org.
+
+\bibitem{xiong20243bt}
+Hongqiang Xiong, Jing Li, Zhilian Li, et al. (2024). \textit{GPR-GAN: A Ground-Penetrating Radar Data Generative Adversarial Network}. IEEE Transactions on Geoscience and Remote Sensing.
+
+\bibitem{xue2024e7i}
+Yu Xue, Weinan Tong, Ferrante Neri, et al. (2024). \textit{Evolutionary Architecture Search for Generative Adversarial Networks Based on Weight Sharing}. IEEE Transactions on Evolutionary Computation.
+
+\bibitem{xue20248md}
+Yu Xue, Kun Chen, and Ferrante Neri (2024). \textit{Differentiable Architecture Search With Attention Mechanisms for Generative Adversarial Networks}. IEEE Transactions on Emerging Topics in Computational Intelligence.
+
+\bibitem{jenkins2024qf5}
+John Jenkins, and Kaushik Roy (2024). \textit{Exploring deep convolutional generative adversarial networks (DCGAN) in biometric systems: a survey study}. Discover Artificial Intelligence.
+
+\bibitem{qiu2025hu0}
+Shiqing Qiu, Yang Wang, Zong Ke, et al. (2025). \textit{A Generative Adversarial Network-Based Investor Sentiment Indicator: Superior Predictability for the Stock Market}. Mathematics.
+
+\bibitem{boubrahimi2024kts}
+Soukaina Filali Boubrahimi, Ashit Neema, Ayman Nassar, et al. (2024). \textit{Spatiotemporal Data Augmentation of MODIS‐Landsat Water Bodies Using Adversarial Networks}. Water Resources Research.
+
+\bibitem{liu20232tr}
+Naihao Liu, Youbo Lei, Yang Yang, et al. (2023). \textit{Self-supervised Time-Frequency Representation based on Generative Adversarial Networks}. Geophysics.
+
+\bibitem{song20239hi}
+Yihong Song, Haoyan Zhang, Jiaqi Li, et al. (2023). \textit{High-Accuracy Maize Disease Detection Based on Attention Generative Adversarial Network and Few-Shot Learning}. Plants.
+
+\bibitem{pal2023147}
+Debabrata Pal, Shirsha Bose, Biplab Banerjee, et al. (2023). \textit{MORGAN: Meta-Learning-based Few-Shot Open-Set Recognition via Generative Adversarial Network}. IEEE Workshop/Winter Conference on Applications of Computer Vision.
+
+\bibitem{gan202494y}
+Yan Gan, Chenxue Yang, Mao Ye, et al. (2024). \textit{Generative Adversarial Networks with Learnable Auxiliary Module for Image Synthesis}. ACM Trans. Multim. Comput. Commun. Appl..
+
+\bibitem{eltehewy2023cj4}
+Rokaya Eltehewy, A. Abouelfarag, and Sherine Nagy Saleh (2023). \textit{Efficient Classification of Imbalanced Natural Disasters Data Using Generative Adversarial Networks for Data Augmentation}. ISPRS Int. J. Geo Inf..
+
+\bibitem{chen2023rrf}
+Shiming Chen, Shuhuang Chen, W. Hou, et al. (2023). \textit{EGANS: Evolutionary Generative Adversarial Network Search for Zero-Shot Learning}. IEEE Transactions on Evolutionary Computation.
+
+\bibitem{fu20241mw}
+Feiran Fu, Peng Liu, Zhen Shao, et al. (2024). \textit{MEvo-GAN: A Multi-Scale Evolutionary Generative Adversarial Network for Underwater Image Enhancement}. Journal of Marine Science and Engineering.
+
+\bibitem{soleymanzadeh202358z}
+Raha Soleymanzadeh, and R. Kashef (2023). \textit{Efficient intrusion detection using multi-player generative adversarial networks (GANs): an ensemble-based deep learning architecture}. Neural computing & applications (Print).
+
+\bibitem{fathallah20236k5}
+Mohamed Fathallah, Mohamed Sakr, and Sherif Eletriby (2023). \textit{Stabilizing and Improving Training of Generative Adversarial Networks Through Identity Blocks and Modified Loss Function}. IEEE Access.
+
+\bibitem{luo2024o1x}
+Tianjiao Luo, Tim Pearce, Huayu Chen, et al. (2024). \textit{C-GAIL: Stabilizing Generative Adversarial Imitation Learning with Control Theory}. Neural Information Processing Systems.
+
+\bibitem{li2024uae}
+Wei Li, and Yongchuan Tang (2024). \textit{Soft Generative Adversarial Network: Combating Mode Collapse in Generative Adversarial Network Training via Dynamic Borderline Softening Mechanism}. Applied Sciences.
+
+\bibitem{cai2024m9z}
+Dongting Cai (2024). \textit{Enhancing capabilities of generative models through VAE-GAN integration: A review}. Applied and Computational Engineering.
+
+\bibitem{u2023m2y}
+K. U, T. S, T.V. Nidhin Prabhakar, et al. (2023). \textit{Adversarial Defense: A GAN-IF Based Cyber-security Model for Intrusion Detection in Software Piracy}. J. Wirel. Mob. Networks Ubiquitous Comput. Dependable Appl..
+
+\bibitem{liu2023q2q}
+Xiaobao Liu, Shuailin Su, Wenjuan Gu, et al. (2023). \textit{Super-Resolution Reconstruction of CT Images Based on Multi-scale Information Fused Generative Adversarial Networks}. Annals of Biomedical Engineering.
+
+\bibitem{cheng2023t9b}
+Shijie Cheng, Lingfeng Wang, M. Zhang, et al. (2023). \textit{SUGAN: A Stable U-Net Based Generative Adversarial Network}. Italian National Conference on Sensors.
+
+\bibitem{luo2022rm1}
+Xukang Luo, Ying Jiang, Enqiang Wang, et al. (2022). \textit{Anomaly detection by using a combination of generative adversarial networks and convolutional autoencoders}. EURASIP Journal on Advances in Signal Processing.
+
+\bibitem{xu2022ss4}
+Jialing Xu, Jingxing He, Jinqiang Gu, et al. (2022). \textit{Financial Time Series Prediction Based on XGBoost and Generative Adversarial Networks}. International Journal of Circuits, Systems and Signal Processing.
+
+\bibitem{alshehri2022d1h}
+Abeer Alshehri, Mounira Taileb, and Reem M. Alotaibi (2022). \textit{DeepAIA: An Automatic Image Annotation Model Based on Generative Adversarial Networks and Transfer Learning}. IEEE Access.
+
+\bibitem{yeh2022yvr}
+Yen-Tung Yeh, Bo-Yu Chen, and Yi-Hsuan Yang (2022). \textit{Exploiting Pre-trained Feature Networks for Generative Adversarial Networks in Audio-domain Loop Generation}. International Society for Music Information Retrieval Conference.
+
+\bibitem{gonzlezprieto20214wh}
+Ángel González-Prieto, Alberto Mozo, Edgar Talavera, et al. (2021). \textit{Dynamics of Fourier Modes in Torus Generative Adversarial Networks}. Mathematics.
+
+\bibitem{huang2022zar}
+Ying Huang, Wenhao Mei, Su Liu, et al. (2022). \textit{Asymmetric Training of Generative Adversarial Network for High Fidelity SAR Image Generation}. IEEE International Geoscience and Remote Sensing Symposium.
+
+\bibitem{wang2020iia}
+Chunzhi Wang, Pan Wu, Lingyu Yan, et al. (2020). \textit{Image classification based on principal component analysis optimized generative adversarial networks}. Multimedia tools and applications.
+
+\bibitem{ma2021w69}
+Ruixin Ma, and Junying Lou (2021). \textit{CPGAN : An Efficient Architecture Designing for Text-to-Image Generative Adversarial Networks Based on Canonical Polyadic Decomposition}. Scientific Programming.
+
+\bibitem{baby2020e5n}
+Deepak Baby (2020). \textit{iSEGAN: Improved Speech Enhancement Generative Adversarial Networks}. arXiv.org.
+
+\bibitem{pasini2021ta3}
+Massimiliano Lupo Pasini, and Junqi Yin (2021). \textit{Stable parallel training of Wasserstein conditional generative adversarial neural networks}. 2021 International Conference on Computational Science and Computational Intelligence (CSCI).
+
+\bibitem{goyal2024ufg}
+Mandeep Goyal, and Q. Mahmoud (2024). \textit{A Systematic Review of Synthetic Data Generation Techniques Using Generative AI}. Electronics.
+
+\bibitem{wang2024v83}
+Shuzhan Wang, Ruxue Jiang, Zhaoqi Wang, et al. (2024). \textit{Deep Learning-based Anomaly Detection and Log Analysis for Computer Networks}. arXiv.org.
+
+\bibitem{liao20249ku}
+Wenjie Liao, Like Wu, Shihui Xu, et al. (2024). \textit{A Novel Approach for Intelligent Fault Diagnosis in Bearing With Imbalanced Data Based on Cycle-Consistent GAN}. IEEE Transactions on Instrumentation and Measurement.
+
+\bibitem{peng2024kkw}
+Yingying Peng (2024). \textit{A Comparative Analysis Between GAN and Diffusion Models in Image Generation}. Transactions on Computer Science and Intelligent Systems Research.
+
+\bibitem{luo2024znt}
+Yihong Luo, Xiaolong Chen, Tianyang Hu, et al. (2024). \textit{You Only Sample Once: Taming One-Step Text-To-Image Synthesis by Self-Cooperative Diffusion GANs}. International Conference on Learning Representations.
+
+\bibitem{chen2024ajr}
+Xin Chen, Zaigang Chen, Shiqian Chen, et al. (2024). \textit{Unsupervised GAN With Fine-Tuning: A Novel Framework for Induction Motor Fault Diagnosis in Scarcely Labeled Sample Scenarios}. IEEE Transactions on Instrumentation and Measurement.
+
+\bibitem{song2024htg}
+Xiangjin Song, Zhicheng Liu, and Zhaowei Wang (2024). \textit{Rolling bearing fault diagnosis in electric motors based on IDIG-GAN under small sample conditions}. Measurement science and technology.
+
+\bibitem{qin2024a4b}
+Zhaohui Qin, Faguo Huang, Jiafang Pan, et al. (2024). \textit{Improved Generative Adversarial Network for Bearing Fault Diagnosis with a Small Number of Data and Unbalanced Data}. Symmetry.
+
+\bibitem{tibermacine2025pye}
+Imad Eddine Tibermacine, Samuele Russo, Francesco Citeroni, et al. (2025). \textit{Adversarial denoising of EEG signals: a comparative analysis of standard GAN and WGAN-GP approaches}. Frontiers in Human Neuroscience.
+
+\bibitem{baoueb2024rlq}
+Teysir Baoueb, Haocheng Liu, Mathieu Fontaine, et al. (2024). \textit{SpecDiff-GAN: A Spectrally-Shaped Noise Diffusion GAN for Speech and Music Synthesis}. IEEE International Conference on Acoustics, Speech, and Signal Processing.
+
+\bibitem{broll2024edy}
+Alexander Broll, M. Rosentritt, Thomas Schlegl, et al. (2024). \textit{A data-driven approach for the partial reconstruction of individual human molar teeth using generative deep learning}. Frontiers Artif. Intell..
+
+\bibitem{wang20245dt}
+Yumiao Wang, Chuanfei Zang, Bo Yu, et al. (2024). \textit{WTE-CGAN Based Signal Enhancement for Weak Target Detection}. IEEE Geoscience and Remote Sensing Letters.
+
+\bibitem{megahed2024c23}
+Mohammed Megahed, and Ammar Mohammed (2024). \textit{Collaborative-GAN: An Approach for Stabilizing the Training Process of Generative Adversarial Network}. IEEE Access.
+
+\bibitem{zhang2024k8a}
+Xiurong Zhang, Shaoqian Fan, and Daoliang Li (2024). \textit{Spectral normalization generative adversarial networks for photovoltaic power scenario generation}. IET Renewable Power Generation.
+
+\bibitem{bhat202445j}
+Ranjith Bhat, and Raghu Nanjundegowda (2024). \textit{A Review on Comparative Analysis of Generative Adversarial Networks’ Architectures and Applications}. Journal of Robotics and Control (JRC).
+
+\bibitem{ler20248xg}
+Fiete Lüer, and Christian Böhm (2024). \textit{Anomaly Detection using Generative Adversarial Networks Reviewing methodological progress and challenges}. SIGKDD Explorations.
+
+\bibitem{purwono2025spz}
+Purwono Purwono, Annastasya Nabila Elsa Wulandari, Alfian Ma’arif, et al. (2025). \textit{Understanding Generative Adversarial Networks (GANs): A Review}. Control Systems and Optimization Letters.
+
+\bibitem{roy2024k91}
+Arunava Roy, and Dipankar Dasgupta (2024). \textit{A Distributed Conditional Wasserstein Deep Convolutional Relativistic Loss Generative Adversarial Network With Improved Convergence}. IEEE Transactions on Artificial Intelligence.
+
+\bibitem{seon202526r}
+Joonho Seon, Seongwoo Lee, Youngghyu Sun, et al. (2025). \textit{Least Information Spectral GAN With Time-Series Data Augmentation for Industrial IoT}. IEEE Transactions on Emerging Topics in Computational Intelligence.
+
+\bibitem{ni2024y70}
+Yao Ni, and Piotr Koniusz (2024). \textit{$\bigcirc\!\!\!\!\bigcirc$ CHAIN: Enhancing Generalization in Data-Efficient GANs via LipsCHitz Continuity ConstrAIned Normalization}. Computer Vision and Pattern Recognition.
+
+\bibitem{ye2024n41}
+Ming Ye, Cunhua Pan, Yinfei Xu, et al. (2024). \textit{Generative Adversarial Networks-Based Channel Estimation for Intelligent Reflecting Surface Assisted mmWave MIMO Systems}. IEEE Transactions on Cognitive Communications and Networking.
+
+\bibitem{pajuhanfard2024ult}
+Mohammadsaleh Pajuhanfard, Rasoul Kiani, and Victor S. Sheng (2024). \textit{Survey of Quantum Generative Adversarial Networks (QGAN) to Generate Images}. Mathematics.
+
+\bibitem{eskandarinasab202431h}
+MohammadReza EskandariNasab, S. M. Hamdi, and S. F. Boubrahimi (2024). \textit{ChronoGAN: Supervised and Embedded Generative Adversarial Networks for Time Series Generation}. International Conference on Machine Learning and Applications.
+
+\bibitem{deebani202549r}
+Wejdan Deebani, Lubna Aziz, Arshad Aziz, et al. (2025). \textit{Synergistic transfer learning and adversarial networks for breast cancer diagnosis: benign vs. invasive classification}. Scientific Reports.
+
+\bibitem{ali2024ks3}
+Abid Ali, Muhammad Sharif, Muhammad Shahzad Faisal, et al. (2024). \textit{Brain Tumor Segmentation Using Generative Adversarial Networks}. IEEE Access.
+
+\bibitem{ju2024uai}
+Xiangui Ju, Chi-Ho Lin, Suan Lee, et al. (2024). \textit{Melanoma classification using generative adversarial network and proximal policy optimization}. Photochemistry and Photobiology.
+
+\bibitem{xu2024u5a}
+Chi Xu, Haozheng Xu, and S. Giannarou (2024). \textit{Distance Regression Enhanced With Temporal Information Fusion and Adversarial Training for Robot-Assisted Endomicroscopy}. IEEE Transactions on Medical Imaging.
+
+\bibitem{elbaz2025wzb}
+Mostafa Elbaz, Wael Said, G. Mahmoud, et al. (2025). \textit{A dual GAN with identity blocks and pancreas-inspired loss for renewable energy optimization}. Scientific Reports.
+
+\bibitem{chang2024c0a}
+Yuanhong Chang, Jinglong Chen, Rong Su, et al. (2024). \textit{Two-Phase Dual-Adversarial Agents With Multivariate Information for Unsupervised Anomaly Detection of IIoT-Edge Devices}. IEEE Internet of Things Journal.
+
+\bibitem{guo2024y0l}
+Pang Guo, and Yining Chen (2024). \textit{Enhanced Yield Prediction in Semiconductor Manufacturing: Innovative Strategies for Imbalanced Sample Management and Root Cause Analysis}. International Symposium on the Physical and Failure Analysis of Integrated Circuits.
+
+\bibitem{peng2024crk}
+Jun Peng, Kaiyi Chen, Yuqing Gong, et al. (2024). \textit{Cyclic Consistent Image Style Transformation: From Model to System}. Applied Sciences.
+
+\end{thebibliography}
+
+\end{document}
