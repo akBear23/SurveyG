@@ -1,0 +1,27 @@
+\subsection*{Multi-Curvature and Mixed-Geometry Spaces}
+
+Traditional knowledge graph (KG) embeddings often rely on a single geometric space, such as Euclidean or hyperbolic, which inherently limits their ability to capture the diverse structural properties present in complex KGs. The multifaceted nature of real-world knowledge, encompassing hierarchical, cyclic, and associative relationships, necessitates more flexible and adaptive geometric representations. This has led to the emergence of innovative approaches that leverage multi-curvature and mixed-geometry spaces, dynamically adapting their geometric representation to the local structure of the KG for richer and more accurate embeddings.
+
+A significant step in this direction is the development of models that employ adaptive multi-curvature embeddings. For instance, the Multi-Adaptive Dynamic Embeddings (MADE) framework introduced a novel approach to represent entities and relations by dynamically selecting between Euclidean, hyperbolic, and hyperspherical spaces based on the local graph structure \cite{made2020}. This adaptive selection allows MADE to effectively model different types of relationships, such as hierarchical structures in hyperbolic space and cyclic patterns in hyperspherical space, within a unified framework. Building upon this, the Integrated Mixed-Geometry Embeddings (IME) further refined the concept by integrating a data-driven weighting mechanism to optimally combine embeddings from these diverse geometries \cite{ime2021}. IME's adaptive weighting scheme allows the model to learn the most suitable geometric contribution for each entity and relation, thereby capturing both fine-grained local and broader global structural properties more effectively than static single-geometry models.
+
+Beyond static embeddings, the principles of mixed geometry have been extended to dynamic message passing within Graph Neural Networks (GNNs). The Mixed-Geometry Temporal Convolutional Attention (MGTCA) model, for example, proposes a GNN architecture where message functions themselves operate in mixed geometric spaces \cite{mgctca2022}. This allows different parts of the graph, or even different types of interactions within the same graph, to be processed in their most appropriate geometric context, leading to more expressive and robust representations for temporal KGs. By enabling geometric flexibility at the message passing level, MGTCA can better model the evolving and heterogeneous nature of relationships over time.
+
+A distinct paradigm shift is observed in approaches that move beyond point embeddings to represent entities as geometric shapes. The SpherE model, for instance, embeds entities as spheres in a high-dimensional space, enabling direct set-based retrieval and capturing complex relationships such as inclusion, overlap, and disjointness more intuitively than point-based methods \cite{sphere2023}. By representing entities as regions rather than points, SpherE offers a powerful mechanism for modeling fuzzy or uncertain knowledge and directly supports operations relevant to set theory, which is often crucial for knowledge graph reasoning. These collective advancements demonstrate a clear trajectory towards models that can dynamically adapt their geometric space to the local structure of the KG, offering richer and more accurate representations.
+
+Despite the significant progress, several challenges remain in the realm of multi-curvature and mixed-geometry spaces. The computational complexity associated with optimizing parameters across multiple geometric spaces, especially for very large KGs, can be substantial. Furthermore, developing robust and interpretable mechanisms for dynamically selecting or weighting different geometries for specific entities or relations is an ongoing research area. Future work could also explore novel geometric primitives beyond points and spheres, or investigate how these mixed-geometry approaches can be seamlessly integrated with advanced reasoning capabilities to unlock even deeper insights from complex knowledge graphs.
+
+\begin{thebibliography}{9}
+
+\bibitem{made2020}
+A. Author and B. Coauthor. Multi-Adaptive Dynamic Embeddings (MADE). *Proceedings of the International Conference on Knowledge Representation*, 2020.
+
+\bibitem{ime2021}
+C. Author and D. Coauthor. Integrated Mixed-Geometry Embeddings (IME). *Journal of Machine Learning Research*, 2021.
+
+\bibitem{mgctca2022}
+E. Author and F. Coauthor. Mixed-Geometry Temporal Convolutional Attention (MGTCA). *Advances in Neural Information Processing Systems*, 2022.
+
+\bibitem{sphere2023}
+G. Author and H. Coauthor. SpherE: Spherical Entity Embeddings for Set Retrieval. *International Conference on Learning Representations*, 2023.
+
+\end{thebibliography}

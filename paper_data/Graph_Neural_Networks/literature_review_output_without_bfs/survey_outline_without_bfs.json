@@ -1,0 +1,277 @@
+[
+  {
+    "section_number": "1",
+    "section_title": "Introduction",
+    "section_focus": "This section establishes the foundational context for Graph Neural Networks (GNNs). It begins by explaining the inherent value of graph-structured data in representing complex relationships across various domains, from social networks to molecular structures. The section then introduces GNNs as a powerful paradigm for learning on such data, highlighting their evolution from traditional graph algorithms and neural networks. Finally, it delineates the scope and organization of this comprehensive literature review, setting the stage for a deep dive into the theoretical underpinnings, methodological advancements, and practical applications of GNNs.",
+    "subsections": [
+      {
+        "number": "1.1",
+        "title": "Graph Data and its Significance",
+        "subsection_focus": "This subsection introduces the fundamental concepts of graph-structured data, defining its core components: nodes (entities), edges (relationships), and their associated attributes. It highlights the pervasive nature of graphs in modeling complex real-world systems, ranging from social networks and biological interactions to chemical compounds and communication infrastructures. The discussion emphasizes the unique challenges and opportunities presented by graph data for machine learning, particularly the non-Euclidean nature of the data and the interdependence of elements. Understanding these characteristics is crucial for appreciating why specialized models, capable of capturing intricate relational patterns and structural information, are indispensable for effective analysis and prediction in graph domains.",
+        "proof_ids": [
+          "layer_1",
+          "community_0",
+          "community_1"
+        ]
+      },
+      {
+        "number": "1.2",
+        "title": "Historical Context and Evolution of Graph Neural Networks",
+        "subsection_focus": "This subsection traces the historical trajectory of Graph Neural Networks (GNNs), positioning them as a significant advancement that addresses the inherent limitations of both traditional graph analysis algorithms and standard neural networks when applied to non-Euclidean graph data. It explains how GNNs overcome the rigidity of handcrafted features and the inability of conventional neural networks to directly process graph topology by enabling end-to-end learning of rich, distributed representations directly from graph structure and node features. This paradigm shift, moving towards adaptive, data-driven feature extraction on graphs, has been pivotal in unlocking new capabilities for tasks like node classification, link prediction, and graph classification, leading to their widespread adoption across numerous scientific and industrial applications.",
+        "proof_ids": [
+          "community_4",
+          "community_5"
+        ]
+      }
+    ]
+  },
+  {
+    "section_number": "2",
+    "section_title": "Foundational Concepts and Early Models",
+    "section_focus": "This section establishes the bedrock of Graph Neural Networks, guiding the reader through the essential graph theory concepts necessary for understanding these models. It meticulously traces the intellectual lineage of GNNs, beginning with their earliest theoretical conceptualizations rooted in fixed-point iteration and recursive neural networks. Subsequently, it details the pivotal shift towards practical and scalable message-passing architectures, such as Graph Convolutional Networks (GCNs), GraphSAGE, and Graph Attention Networks (GATs). This progression highlights how foundational principles were translated into effective models, laying the crucial groundwork for all subsequent advancements in the field and demonstrating the evolution from abstract theory to widely applicable paradigms.",
+    "subsections": [
+      {
+        "number": "2.1",
+        "title": "Graph Theory Basics and Representation",
+        "subsection_focus": "This subsection provides a concise yet comprehensive overview of essential graph theory concepts that are fundamental to understanding Graph Neural Networks. It defines key elements such as nodes, edges, and their attributes, and introduces common graph representations like adjacency matrices and feature matrices, which form the input for GNNs. The discussion also differentiates between various graph types, including directed, undirected, weighted, and attributed graphs, highlighting how these structural variations influence GNN design and application. By establishing this foundational vocabulary and understanding of graph data structures, this subsection prepares the reader to grasp the intricate mechanics of how GNNs process and learn from complex relational information.",
+        "proof_ids": [
+          "community_4",
+          "community_5"
+        ]
+      },
+      {
+        "number": "2.2",
+        "title": "Early Graph Neural Network Models: Fixed-Point Iteration",
+        "subsection_focus": "This subsection explores the very first conceptualizations of Graph Neural Networks, tracing their origins to models that learned node representations through an iterative information propagation process, aiming to reach a stable fixed-point. It delves into the theoretical underpinnings of these pioneering models, such as those proposed by Gori et al. and Scarselli et al., emphasizing their connection to recursive neural networks and their ability to approximate universal functions on graphs. While foundational in laying the mathematical and conceptual groundwork for the entire field, these early GNNs faced significant practical limitations, particularly concerning computational complexity, the convergence of fixed-point iterations, and scalability to large graphs, which spurred subsequent research into more efficient architectures.",
+        "proof_ids": [
+          "Gori05",
+          "Scarselli09",
+          "community_4",
+          "community_5"
+        ]
+      },
+      {
+        "number": "2.3",
+        "title": "Message-Passing Paradigm: GCNs, GraphSAGE, and GATs",
+        "subsection_focus": "This subsection details the emergence of the message-passing paradigm, which significantly simplified and popularized GNNs, making them widely accessible and effective. It focuses on key architectural breakthroughs: Graph Convolutional Networks (GCNs) for their spectral simplification and semi-supervised learning capabilities; GraphSAGE for enabling inductive learning and scalability through efficient neighbor sampling; and Graph Attention Networks (GATs) for their ability to learn adaptive importance weights for different neighbors, overcoming the limitation of fixed-weight aggregation. This subsection highlights how these models addressed practical limitations and became widely adopted, forming the backbone of many subsequent GNN developments and demonstrating the power of localized message aggregation for learning on graph structures.",
+        "proof_ids": [
+          "Kipf17",
+          "Hamilton17",
+          "Velickovic18",
+          "community_4",
+          "community_5"
+        ]
+      }
+    ]
+  },
+  {
+    "section_number": "3",
+    "section_title": "Enhancing Expressive Power and Deep Architectures",
+    "section_focus": "This section addresses the fundamental capabilities and inherent limitations of Graph Neural Networks, focusing on concerted efforts to significantly enhance their expressive power and enable the construction of deeper, more sophisticated models. It begins by meticulously examining the theoretical bounds of GNNs, particularly in relation to graph isomorphism tests, and then explores innovative architectural designs specifically engineered to overcome these inherent limitations. The section also delves into the critical challenges encountered when building truly deep GNNs, such as the pervasive issues of over-smoothing and over-squashing, reviewing various advanced strategies developed to effectively mitigate these problems, thereby pushing the boundaries of what GNNs can effectively model and achieve.",
+    "subsections": [
+      {
+        "number": "3.1",
+        "title": "Understanding GNN Expressivity: Weisfeiler-Lehman Test and Beyond",
+        "subsection_focus": "This subsection discusses the theoretical expressive power of GNNs, particularly their connection to the Weisfeiler-Lehman (WL) test for graph isomorphism. It explains how many standard GNNs are upper-bounded by the 1-WL test, limiting their ability to distinguish certain non-isomorphic graphs or count specific substructures. The discussion reviews methods proposed to enhance expressivity, such as k-GNNs and other higher-order architectures that capture richer structural information by considering larger computational graphs or more complex aggregation functions, thereby pushing beyond the inherent limitations of simple message-passing. Understanding these theoretical bounds is crucial for designing more powerful and discriminative GNN models.",
+        "proof_ids": [
+          "Xu19",
+          "morris20185sd",
+          "community_2",
+          "community_4"
+        ]
+      },
+      {
+        "number": "3.2",
+        "title": "Overcoming Depth Limitations: Over-smoothing and Over-squashing",
+        "subsection_focus": "This subsection explores the critical challenges encountered when building deep GNNs, specifically over-smoothing (where node representations become indistinguishable across layers) and over-squashing (where information from distant nodes is compressed and lost). It reviews various mitigation strategies, including decoupling prediction from propagation (e.g., PPNP/APPNP), incorporating residual connections, applying Dirichlet energy regularization, and proposing novel non-convolutional designs. These techniques aim to enable GNNs to leverage deeper layers effectively, capture long-range dependencies, and maintain discriminative power without succumbing to information loss or homogenization, thereby extending the practical utility of GNNs for complex tasks.",
+        "proof_ids": [
+          "klicpera20186xu",
+          "liu2020w3t",
+          "rusch2023xev",
+          "community_0",
+          "community_2"
+        ]
+      },
+      {
+        "number": "3.3",
+        "title": "Higher-Order and Equivariant GNNs",
+        "subsection_focus": "This subsection delves into advanced GNN architectures designed to capture more complex structural patterns or respect inherent symmetries in data. It discusses higher-order GNNs that operate on k-tuples or subgraphs to increase discriminative power beyond the 1-WL test, enabling them to identify intricate motifs and substructures. Furthermore, it introduces equivariant GNNs (e.g., EGNNs) that are specifically designed for physical and geometric tasks, ensuring that predictions transform predictably under geometric transformations. This property is crucial for domains like molecular modeling, quantum chemistry, and physics, where preserving symmetries leads to more accurate and physically consistent representations, significantly advancing GNN capabilities in scientific discovery.",
+        "proof_ids": [
+          "morris20185sd",
+          "satorras2021pzl",
+          "community_2",
+          "layer_1"
+        ]
+      }
+    ]
+  },
+  {
+    "section_number": "4",
+    "section_title": "Robustness, Adaptability, and Trustworthiness",
+    "section_focus": "This section critically examines the imperative of developing Graph Neural Networks that are not only performant but also reliable, ethical, and adaptable for complex real-world deployment. It comprehensively addresses the challenges of making GNNs robust to various imperfections, including noisy or adversarial data, and capable of handling diverse graph structures like heterophily. Furthermore, the section delves into the crucial dimensions of trustworthy AI, exploring methods to ensure fairness in GNN predictions, protect sensitive information against privacy attacks, and mitigate inherent biases. This holistic approach underscores the field's maturation towards responsible GNN development, highlighting unique vulnerabilities and mitigation strategies specific to graph-structured data.",
+    "subsections": [
+      {
+        "number": "4.1",
+        "title": "Handling Real-World Graph Imperfections: Heterophily and Structure Learning",
+        "subsection_focus": "This subsection addresses the challenges of applying GNNs to real-world graphs that often deviate from ideal homophilic assumptions, exhibiting heterophily (nodes connecting to dissimilar neighbors) or having incomplete/noisy structures. It reviews adaptive filtering mechanisms, node-wise expert mixtures, and methods for learning or augmenting graph structures (e.g., self-supervision for structure learning, iterative deep graph learning) to improve GNN performance and generalization on complex, imperfect data. These innovations are vital for extending GNN utility beyond synthetic datasets to the messy realities of real-world graph data, where structural patterns are often complex and non-uniform, demanding more flexible and robust models.",
+        "proof_ids": [
+          "ma2021sim",
+          "zheng2022qxr",
+          "chen2020bvl",
+          "community_0"
+        ]
+      },
+      {
+        "number": "4.2",
+        "title": "Adversarial Robustness and Defenses",
+        "subsection_focus": "This subsection examines the vulnerability of GNNs to adversarial attacks, where small, imperceptible perturbations to graph structure or features can drastically alter predictions, posing significant security risks in critical applications. It discusses various types of attacks (e.g., poisoning, evasion, global, local) and the corresponding defense mechanisms, including robust aggregation, adversarial training, and graph pruning. The discussion critically evaluates the effectiveness of existing defenses, acknowledging the ongoing challenge of creating truly robust GNNs against adaptive adversaries who can circumvent naive protective measures, highlighting a crucial area for continued research in GNN security and reliability.",
+        "proof_ids": [
+          "zgner2019bbi",
+          "xu2019l8n",
+          "mujkanovic20238fi",
+          "community_1"
+        ]
+      },
+      {
+        "number": "4.3",
+        "title": "Fairness and Privacy in GNNs",
+        "subsection_focus": "This subsection explores the ethical dimensions of GNNs, focusing on ensuring fair outcomes and protecting sensitive information, which are paramount for responsible AI deployment. It discusses sources of bias in graph data and GNN models, and reviews techniques for mitigating unfairness, such as adversarial debiasing, re-balancing, and invariant learning. Additionally, it covers privacy concerns like link stealing and node attribute inference, along with methods to enhance privacy through differential privacy or anonymization. This subsection highlights the unique challenges posed by the relational nature of graph data, where information propagation can inadvertently amplify biases or leak sensitive details, necessitating careful design and evaluation to build trustworthy GNN systems.",
+        "proof_ids": [
+          "wang2022531",
+          "he2020kz4",
+          "dong202183w",
+          "community_1"
+        ]
+      }
+    ]
+  },
+  {
+    "section_number": "5",
+    "section_title": "Advanced Learning Paradigms: Pre-training and Explainability",
+    "section_focus": "This section explores advanced learning paradigms that significantly enhance the utility and transparency of GNNs. It first delves into pre-training strategies, which leverage abundant unlabeled graph data to learn generalizable representations, overcoming the limitations of data scarcity in downstream tasks. Following this, the section examines prompt-based learning, a cutting-edge approach for efficiently adapting pre-trained GNNs to new tasks with minimal fine-tuning. Finally, it addresses the critical need for interpretability by reviewing various methods developed to explain GNN predictions, fostering trust and understanding in complex graph models.",
+    "subsections": [
+      {
+        "number": "5.1",
+        "title": "Self-Supervised and Generative Pre-training for GNNs",
+        "subsection_focus": "This subsection discusses the development of pre-training strategies to learn robust and transferable representations from large amounts of unlabeled graph data, addressing the common challenge of labeled data scarcity in many real-world applications. It covers self-supervised tasks like context prediction, attribute masking, and contrastive learning, which enable GNNs to learn meaningful features without explicit supervision. Furthermore, it explores generative pre-training approaches that model the underlying graph structure and features, allowing GNNs to acquire general graph knowledge that can be efficiently fine-tuned for various downstream tasks, thereby overcoming issues like negative transfer and improving generalization across diverse graph-based problems.",
+        "proof_ids": [
+          "hu2019r47",
+          "hu2020u8o",
+          "lu20213kr",
+          "community_3",
+          "layer_1"
+        ]
+      },
+      {
+        "number": "5.2",
+        "title": "Prompt-based Learning and Task Adaptation",
+        "subsection_focus": "This subsection introduces the emerging and highly efficient paradigm of prompt-based learning for Graph Neural Networks, which aims to adapt pre-trained GNNs to diverse downstream tasks with minimal or no fine-tuning of the entire model. It explores various prompting strategies, such as reformulating downstream tasks to explicitly align with pre-training objectives using 'token pairs,' introducing universal prompts that modify input features, or designing learnable prompts for the readout operation. This approach significantly minimizes the 'objective gap' between pre-training and downstream tasks, enabling efficient knowledge transfer and facilitating few-shot or even zero-shot generalization. Recent advancements also highlight the potential for bridging GNNs with large language models through multi-modal prompting, opening avenues for more semantically aware graph models.",
+        "proof_ids": [
+          "sun2022d18",
+          "fang2022tjj",
+          "liu2023ent",
+          "community_3"
+        ]
+      },
+      {
+        "number": "5.3",
+        "title": "Interpreting GNN Decisions: Explainability Methods",
+        "subsection_focus": "This subsection addresses the crucial need for understanding *why* GNNs make specific predictions, fostering trust and enabling debugging in complex graph models. It reviews various explainability methods, categorizing them into instance-level (identifying influential subgraphs/features for a single prediction) and model-level (uncovering general patterns or rules learned by the GNN). The discussion covers techniques like perturbation-based methods, mutual information maximization, and generative models, alongside critical evaluations of their faithfulness and generalizability. This subsection also highlights recent critiques that expose approximation failures of certain interpretable GNNs, underscoring the ongoing challenge of developing truly reliable and faithful explanation mechanisms for GNNs.",
+        "proof_ids": [
+          "ying2019rza",
+          "yuan2020fnk",
+          "chen2024woq",
+          "community_1"
+        ]
+      }
+    ]
+  },
+  {
+    "section_number": "6",
+    "section_title": "Scalability, Benchmarking, and Real-World Applications",
+    "section_focus": "This section transitions from theoretical advancements to the practical deployment and tangible impact of Graph Neural Networks in real-world settings. It first tackles the critical challenge of scaling GNNs to effectively handle massive, complex graphs, reviewing various innovative techniques for efficient training and inference. Subsequently, it emphasizes the paramount importance of rigorous and standardized evaluation by discussing the development of comprehensive benchmarking frameworks and diverse datasets. Finally, the section comprehensively showcases the broad utility and transformative potential of GNNs across a diverse array of real-world applications, demonstrating their significant contributions in various scientific and industrial domains and solidifying their practical relevance.",
+    "subsections": [
+      {
+        "number": "6.1",
+        "title": "Scaling GNNs to Large Graphs",
+        "subsection_focus": "This subsection addresses the critical computational and memory bottlenecks that arise when applying Graph Neural Networks to massive, real-world graphs, which can contain billions of nodes and edges. It reviews various techniques developed to enable efficient training and inference at scale, including sophisticated graph sampling strategies like neighbor sampling (e.g., GraphSAGE) and random walks (e.g., PinSage), which reduce the computational graph for each node. Other approaches discussed include graph condensation, which aims to synthesize smaller, representative graphs, and distributed computing frameworks. The subsection highlights how architectural and system-level innovations are crucial for overcoming these practical limitations, allowing GNNs to operate effectively and efficiently in web-scale recommender systems and other large-scale applications.",
+        "proof_ids": [
+          "ying20189jc",
+          "jin2021pf0",
+          "geisler2021dcq",
+          "layer_1",
+          "community_0",
+          "community_1"
+        ]
+      },
+      {
+        "number": "6.2",
+        "title": "Standardized Benchmarking and Evaluation",
+        "subsection_focus": "This subsection discusses the critical role of rigorous and standardized evaluation in ensuring the robust advancement of Graph Neural Network research. It reviews the development of comprehensive benchmarking frameworks, such as the Open Graph Benchmark (OGB) and specialized datasets like PowerGraph and BrainGB, which provide diverse and discriminative testbeds for GNN models. The discussion emphasizes the importance of consistent experimental protocols, including fixed parameter budgets and standardized metrics, to enable fair comparisons between different GNN architectures. These initiatives are crucial for addressing the historical lack of consistent evaluation practices and the prevalence of non-discriminative datasets, thereby accelerating the identification of truly impactful architectural advancements and fostering reproducible research within the GNN community.",
+        "proof_ids": [
+          "dwivedi20239ab",
+          "Hu20",
+          "varbella20242iz",
+          "layer_1",
+          "community_1",
+          "community_2",
+          "community_4"
+        ]
+      },
+      {
+        "number": "6.3",
+        "title": "Diverse Applications of Graph Neural Networks",
+        "subsection_focus": "This subsection showcases the wide-ranging practical utility and transformative potential of Graph Neural Networks across an increasingly diverse array of real-world domains. It presents compelling application examples, including their pivotal role in enhancing recommender systems (e.g., social and sequential recommendation), improving link prediction accuracy, analyzing complex social networks, and advancing molecular science (e.g., drug discovery). Further applications span urban computing, natural language processing (e.g., text classification), and defensive cyber operations. By effectively modeling intricate relational data and leveraging structural information, GNNs have demonstrated significant impact in solving complex real-world problems, moving beyond academic research to drive innovation in various scientific and industrial sectors.",
+        "proof_ids": [
+          "fan2019k6u",
+          "zhang2018kdl",
+          "chang2021yyt",
+          "layer_1",
+          "community_0",
+          "community_1",
+          "community_2"
+        ]
+      }
+    ]
+  },
+  {
+    "section_number": "7",
+    "section_title": "Conclusion and Future Directions",
+    "section_focus": "This concluding section synthesizes the major advancements and intellectual trajectory of Graph Neural Networks, providing a comprehensive overview of the field's evolution from foundational theories to cutting-edge applications. It summarizes the key breakthroughs in expressivity, depth, robustness, and learning paradigms. Furthermore, the section identifies persistent open challenges, theoretical gaps, and practical limitations that require future research. Finally, it discusses emerging trends, potential future directions, and the broader ethical considerations and societal impact of GNN technology, offering a forward-looking perspective on the field.",
+    "subsections": [
+      {
+        "number": "7.1",
+        "title": "Summary of Key Advancements",
+        "subsection_focus": "This subsection provides a concise recap of the most significant developments and intellectual milestones in Graph Neural Network research, drawing explicit connections between the various thematic sections of this review. It highlights the field's remarkable progression, starting from the foundational theoretical models and their initial conceptualizations, through the emergence of practical and scalable message-passing architectures, and culminating in the recent focus on enhancing expressivity, robustness, trustworthiness, and interpretability. The summary emphasizes how these collective advancements have not only addressed fundamental challenges but have also profoundly transformed the landscape of machine learning on graph-structured data, establishing GNNs as a powerful and versatile paradigm for complex relational reasoning.",
+        "proof_ids": [
+          "layer_1",
+          "community_0",
+          "community_1",
+          "community_3",
+          "community_4",
+          "community_5"
+        ]
+      },
+      {
+        "number": "7.2",
+        "title": "Open Challenges and Research Gaps",
+        "subsection_focus": "This subsection identifies critical unresolved issues and areas requiring further investigation in GNN research, outlining the frontiers of the field. It discusses challenges such as developing truly universal pre-training objectives that generalize across vastly different domains, achieving robust defenses against increasingly sophisticated adaptive attacks, designing intrinsically interpretable GNNs that offer faithful explanations, handling dynamic and heterogeneous graphs more effectively, and scaling to even larger and more complex real-world systems with billions of nodes and edges. This subsection highlights the inherent trade-offs between expressive power, scalability, and trustworthiness, which continue to drive innovation and define the next generation of GNN research.",
+        "proof_ids": [
+          "layer_1",
+          "community_0",
+          "community_1",
+          "community_3"
+        ]
+      },
+      {
+        "number": "7.3",
+        "title": "Ethical Considerations and Societal Impact",
+        "subsection_focus": "This subsection explores the broader implications of Graph Neural Network technology, encompassing both its profound societal benefits and potential ethical concerns. It discusses the transformative impact of GNNs in critical areas such as accelerating drug discovery, enhancing climate modeling, and enabling personalized medicine, showcasing their capacity to address grand societal challenges. Concurrently, it delves into potential ethical pitfalls, including the risk of bias amplification inherent in graph data, privacy concerns related to sensitive information leakage (e.g., link stealing), and the challenges of ensuring fair and equitable outcomes. The discussion emphasizes the paramount importance of developing GNNs that are not only powerful but also transparent, accountable, and deployed responsibly, fostering public trust and mitigating unintended negative consequences.",
+        "proof_ids": [
+          "zhang20222g3",
+          "community_1"
+        ]
+      }
+    ]
+  }
+]

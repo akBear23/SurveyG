@@ -1,0 +1,283 @@
+[
+  {
+    "section_number": "1",
+    "section_title": "Introduction",
+    "section_focus": "This section establishes the foundational context for knowledge graph embeddings. It begins by explaining the evolution of knowledge representation, introduces the core challenges that knowledge graph embeddings address, and delineates the scope and organization of this review. The section sets the stage for understanding why embedding methods have become central to modern knowledge graph research and applications, highlighting their ability to bridge symbolic knowledge with modern machine learning techniques for enhanced reasoning and prediction capabilities. It provides the necessary background for readers to appreciate the subsequent discussions on various KGE models and their impact.",
+    "subsections": [
+      {
+        "number": "1.1",
+        "title": "Background: Knowledge Graphs",
+        "subsection_focus": "Introduces the fundamental concepts of knowledge graphs (KGs), defining them as structured representations of factual information in the form of (head entity, relation, tail entity) triples. It traces their historical development from semantic networks to modern large-scale knowledge bases like Freebase, DBpedia, and Wikidata, which play a crucial role in organizing vast amounts of world knowledge and powering intelligent systems. This subsection emphasizes the inherent challenges of symbolic representation, such as data sparsity, difficulty in performing statistical inference, and the computational overhead of rule-based reasoning, which collectively motivate the need for more flexible and continuous representations.",
+        "proof_ids": [
+          "layer_1",
+          "community_2",
+          "community_4",
+          "community_5"
+        ]
+      },
+      {
+        "number": "1.2",
+        "title": "Role of KG Embedding",
+        "subsection_focus": "Explains the motivation for embedding knowledge graphs into continuous, low-dimensional vector spaces. It highlights how KGE addresses the limitations of symbolic representations by transforming discrete entities and relations into dense vectors, enabling efficient computation and integration with machine learning models. This process allows for the capture of latent semantic relationships and structural patterns, facilitating tasks such as link prediction, entity alignment, and question answering. KGE acts as a crucial bridge between symbolic knowledge representation and neural approaches, offering scalability and improved performance in various AI applications by representing complex information in a machine-readable format.",
+        "proof_ids": [
+          "layer_1",
+          "community_0",
+          "community_1",
+          "community_2",
+          "community_3",
+          "community_4",
+          "community_5"
+        ]
+      },
+      {
+        "number": "1.3",
+        "title": "Scope and Organization of the Review",
+        "subsection_focus": "Outlines the comprehensive structure of this literature review, detailing its pedagogical progression from foundational models to advanced techniques, diverse applications, and future research directions. It specifies the types of KGE models covered, including geometric, neural, and temporal approaches, and highlights key applications such as link prediction, entity alignment, and recommendation systems. This subsection prepares the reader for a structured journey through the diverse and rapidly evolving landscape of knowledge graph embedding research, ensuring a clear understanding of the review's boundaries, objectives, and the overarching themes that guide the discussion, which are informed by identified paper communities and evolutionary paths.",
+        "proof_ids": [
+          "layer_1"
+        ]
+      }
+    ]
+  },
+  {
+    "section_number": "2",
+    "section_title": "Foundational KGE Paradigms",
+    "section_focus": "Building upon the motivation established in the Introduction, this section delves into the initial breakthroughs and core paradigms that established the field of knowledge graph embedding. It traces the evolution from simple translational models, which interpret relations as vector translations, to semantic matching models that use algebraic operations for scoring, and finally to early rotational models. The focus is on understanding the fundamental mathematical intuitions and the progression of ideas that addressed the limitations of earlier approaches, setting the stage for more complex and expressive KGE techniques by demonstrating how different mathematical frameworks can capture distinct relational properties.",
+    "subsections": [
+      {
+        "number": "2.1",
+        "title": "Translational Models: From TransE to TransD",
+        "subsection_focus": "Discusses the pioneering translational models, starting with TransE [Bordes et al., 2013], which models relations as simple translations in embedding space (h + r ≈ t). While groundbreaking for its simplicity and efficiency, TransE struggled with complex relation types like 1-to-N, N-to-1, and N-to-N. This led to advancements such as TransH [Wang et al., 2014], which projected entities onto relation-specific hyperplanes, and TransR/CTransR [Lin et al., 2015], which used separate entity and relation spaces. TransD [Ji et al., 2015] further refined this by employing dynamic mapping matrices, significantly improving expressiveness and addressing the diversity of entities and relations. These models collectively established the translational paradigm, offering initial solutions for link prediction and knowledge graph completion.",
+        "proof_ids": [
+          "community_4",
+          "community_5",
+          "layer_1",
+          "community_0"
+        ]
+      },
+      {
+        "number": "2.2",
+        "title": "Semantic Matching Models: RESCAL and ComplEx",
+        "subsection_focus": "Explores alternative foundational paradigms that moved beyond strict geometric translations, focusing on semantic matching and tensor factorization. RESCAL [Nickel et al., 2016] introduced a tensor factorization approach, representing relations as matrices that directly interact with entity vectors, allowing for a richer, more direct semantic matching between entities. ComplEx [Trouillon et al., 2016] further advanced this by introducing complex-valued embeddings and a Hermitian dot product, which naturally models symmetric and antisymmetric relations without explicit constraints. These models offered different mathematical frameworks for scoring triple validity, enhancing expressiveness for specific relational patterns and demonstrating the power of algebraic operations in capturing nuanced semantic relationships, albeit with RESCAL facing scalability challenges.",
+        "proof_ids": [
+          "community_4",
+          "community_5"
+        ]
+      },
+      {
+        "number": "2.3",
+        "title": "Rotational Models: Capturing Complex Relation Patterns",
+        "subsection_focus": "Details the emergence of rotational models, particularly RotatE [Sun et al., 2019], which represents a significant generalization of translational models. RotatE interprets relations as rotations in a complex vector space, where the head entity embedding is rotated to align with the tail entity embedding. This elegant geometric operation allows RotatE to simultaneously capture diverse relational patterns, including symmetry, anti-symmetry, inversion, and composition, within a unified framework. Its ability to model complex logical properties more effectively than earlier translational or semantic matching approaches marked a significant contribution to improving KGE expressiveness and set a new standard for capturing intricate relational semantics.",
+        "proof_ids": [
+          "community_4",
+          "community_5",
+          "layer_1"
+        ]
+      }
+    ]
+  },
+  {
+    "section_number": "3",
+    "section_title": "Advanced Geometric and Non-Euclidean Embeddings",
+    "section_focus": "Building directly upon the foundational KGE paradigms introduced in Section 2, this section critically examines the evolution of embedding techniques beyond basic Euclidean spaces. It delves into advanced geometric and algebraic models that leverage non-Euclidean geometries and more sophisticated transformations, specifically addressing the inherent limitations of earlier translational and semantic matching approaches in capturing complex relational patterns and hierarchical structures. By covering hyperbolic spaces for hierarchical data, Lie groups for efficient representation, and compound operations, this section demonstrates how these mathematically richer frameworks significantly enhance model expressiveness, capture nuanced relational semantics, and push the boundaries of what KGE can represent for intricate graph structures.",
+    "subsections": [
+      {
+        "number": "3.1",
+        "title": "Hyperbolic Embeddings for Hierarchical Structures",
+        "subsection_focus": "Discusses the application of hyperbolic geometry, such as the Poincaré Ball and Lorentz model, to Knowledge Graph Embedding. Hyperbolic spaces naturally accommodate hierarchical structures with exponentially increasing capacity, making them particularly suitable for representing tree-like or hierarchical knowledge graphs more efficiently than Euclidean spaces. Models like Hyperbolic Hierarchy-Aware KGE [Pan et al., 2021] and Fully Hyperbolic Rotation for KGE [Liang et al., 2024] leverage these properties to improve link prediction and capture fine-grained relational semantics, especially in complex hierarchies, by performing operations directly in hyperbolic space without frequent mappings, thus enhancing both expressiveness and efficiency.",
+        "proof_ids": [
+          "community_2"
+        ]
+      },
+      {
+        "number": "3.2",
+        "title": "Lie Group and Compound Operations for Enhanced Expressiveness",
+        "subsection_focus": "Examines models that embed KGs on Lie groups, such as TorusE [Ebisu et al., 2017], which resolves regularization conflicts and improves efficiency by embedding on a torus, offering a novel geometric approach. This subsection further explores compound operations, exemplified by CompoundE [Ge et al., 2022], which combines translation, rotation, and scaling to provide a more generalized and expressive framework for geometric transformations. Additionally, HousE [Li et al., 2022] utilizes Householder parameterization for high-dimensional rotations and invertible projections. These approaches offer superior expressiveness for all relation patterns and mapping properties, providing a more versatile and powerful framework for geometric transformations in KGE by capturing intricate relational semantics.",
+        "proof_ids": [
+          "community_2"
+        ]
+      },
+      {
+        "number": "3.3",
+        "title": "Spherical and Quaternion Embeddings for Diverse Semantics",
+        "subsection_focus": "Introduces models that utilize alternative embedding spaces to capture diverse semantic properties. SpherE [Li et al., 2024] represents entities as spheres, which is particularly effective for set retrieval and modeling many-to-many relations by capturing entity extents and overlaps. Additionally, the use of quaternion embeddings, as seen in models for fuzzy spatiotemporal KGs [Ji et al., 2024], allows for the representation of richer, multi-dimensional semantic relationships by leveraging the properties of quaternions for rotations and projections in 4D space. These advanced embedding spaces provide novel ways to model complex entity and relation properties, pushing the boundaries of KGE expressiveness beyond traditional vector representations and enhancing their applicability to specialized tasks.",
+        "proof_ids": [
+          "community_2"
+        ]
+      }
+    ]
+  },
+  {
+    "section_number": "4",
+    "section_title": "Contextual and Graph Neural Network-based KGE",
+    "section_focus": "Moving beyond the purely geometric and algebraic transformations discussed in Section 3, this section shifts focus to KGE models that enhance representations by incorporating richer contextual information and leveraging advanced neural network architectures. It explores how textual descriptions, entity types, and logical rules can augment embeddings, and how convolutional, attention-based, and Graph Neural Network (GNN) models capture multi-hop structural dependencies. The emphasis is on enhancing expressiveness, enabling inductive learning for unseen entities, and moving towards more sophisticated, context-aware representations of knowledge graphs by integrating diverse data sources and advanced processing capabilities, thereby addressing the limitations of models relying solely on triple-level interactions.",
+    "subsections": [
+      {
+        "number": "4.1",
+        "title": "Integrating Auxiliary Information: Text, Types, and Rules",
+        "subsection_focus": "Discusses KGE models that enrich embeddings by incorporating auxiliary information beyond the basic (h,r,t) triple structure. This includes leveraging textual descriptions (e.g., SSP [Xiao et al., 2016], LASS), semantic categories (e.g., SSE [Guo et al., 2015]), explicit or implicit entity types (e.g., TransET [Wang et al., 2021], TaKE [He et al., 2023]), and logical rules (e.g., RUGE [Guo et al., 2017], RulE [Tang et al., 2022], Soft Logical Regularity [Guo et al., 2020]). These external data sources provide valuable context, improve semantic consistency, and enhance the quality of learned representations, particularly for sparse or incomplete knowledge graphs, by adding a richer understanding of entities and relations.",
+        "proof_ids": [
+          "community_0"
+        ]
+      },
+      {
+        "number": "4.2",
+        "title": "Convolutional and Attention-based Architectures",
+        "subsection_focus": "Examines the application of Convolutional Neural Networks (CNNs) and attention mechanisms in KGE. Models like ConvE [Dettmers et al., 2018] learn rich, non-linear features from concatenated entity and relation embeddings, significantly improving expressiveness over simpler models. Attention networks, such as those in GAATs [Wang et al., 2020] and Logic Attention [Wang et al., 2018], are employed to dynamically aggregate neighborhood information, assigning varying importance to different parts of the graph. These architectures capture complex interactions and relational patterns more effectively, leading to more expressive and contextually aware embeddings by moving beyond fixed scoring functions to data-driven feature learning.",
+        "proof_ids": [
+          "community_2",
+          "community_4",
+          "community_0"
+        ]
+      },
+      {
+        "number": "4.3",
+        "title": "Graph Neural Networks and Transformers for Structural Learning",
+        "subsection_focus": "Details the integration of Graph Neural Networks (GNNs) and Transformer architectures into KGE. Models like R-GCN [Zhang et al., 2020] use message passing to aggregate multi-hop structural information from an entity's neighborhood, explicitly incorporating broader graph context. More recent Graph Transformers, such as TGformer [Shi et al., 2025], further capture global and local structural features by leveraging self-attention mechanisms. These advanced architectures enable inductive learning for unseen entities and relations, providing a powerful framework for learning context-rich embeddings by explicitly modeling graph topology and complex relational paths, thereby addressing the limitations of transductive models and enhancing generalization capabilities.",
+        "proof_ids": [
+          "community_2",
+          "community_5"
+        ]
+      }
+    ]
+  },
+  {
+    "section_number": "5",
+    "section_title": "Temporal Knowledge Graph Embedding",
+    "section_focus": "While previous sections focused on static knowledge graph embeddings, this section is dedicated to the specialized field of Temporal Knowledge Graph Embedding (TKGE), which addresses the crucial challenge of modeling dynamic knowledge that evolves over time. It explores various methodologies for integrating temporal information, from foundational approaches that explicitly encode timestamps to advanced models leveraging rotations, multi-curvature spaces, and graph neural networks. The focus is on how TKGE models capture temporal dependencies, predict future facts, and handle the inherent uncertainty and complexity of time-varying knowledge, which is crucial for real-world applications where knowledge is constantly changing and static representations fall short.",
+    "subsections": [
+      {
+        "number": "5.1",
+        "title": "Early Approaches to Temporal Integration",
+        "subsection_focus": "Discusses foundational methods for incorporating temporal information into KGE. This includes geometric approaches like HyTE [Dasgupta et al., 2018], which associates each timestamp with a hyperplane, enabling temporally-guided inference and prediction of temporal scopes. Tensor decomposition methods [Lin et al., 2020] represent facts as higher-order tensors to inherently capture time, offering a generalizable framework. Models like ATiSE [Xu et al., 2019] innovated by modeling entity/relation evolution as additive time series with Gaussian distributions, explicitly accounting for temporal uncertainty. More recently, TeAST [Li et al., 2023] introduced a novel Archimedean spiral timeline for relations. These early models laid the groundwork for explicitly handling the temporal dimension in KGs, moving beyond static representations.",
+        "proof_ids": [
+          "community_1",
+          "layer_1"
+        ]
+      },
+      {
+        "number": "5.2",
+        "title": "Rotation-based Models for Temporal Dynamics",
+        "subsection_focus": "Focuses on models that leverage rotation in complex or k-dimensional spaces to model temporal evolution, building on the success of RotatE. TeRo [Xu et al., 2020] introduced temporal rotation in complex space for entity evolution, effectively handling diverse relation patterns and time intervals. ChronoR [Sadeghian et al., 2021] generalized rotation to k-dimensions, proposing an inner product scoring function and advanced regularization for temporal smoothness. FSTRE [Ji et al., 2024] further extended this paradigm by integrating fuzziness and spatial information alongside temporal rotation in a complex vector space, addressing uncertain and dynamic knowledge. These models demonstrate high expressiveness for diverse relation patterns and temporal dynamics, offering an elegant way to capture time-dependent changes and their interactions.",
+        "proof_ids": [
+          "community_1"
+        ]
+      },
+      {
+        "number": "5.3",
+        "title": "Multi-Curvature and GNNs for Evolving KGs",
+        "subsection_focus": "Explores advanced approaches that tackle the inherent geometric complexity and intricate interactions within Temporal Knowledge Graphs. Both MADE [Wang et al., 2024] and IME [Wang et al., 2024] address limitations of single-space embeddings by modeling TKGs in multiple curvature spaces (Euclidean, hyperbolic, hyperspherical), with IME integrating 'space-shared' and 'space-specific' properties. TARGAT [Xie et al., 2023], on the other hand, introduces a Graph Neural Network (GNN) based approach with a dynamic time-aware relational generator to explicitly capture multi-fact interactions across different timestamps. These methods represent the cutting edge in handling complex temporal dependencies and geometric structures, offering enhanced flexibility and expressiveness for dynamic knowledge representation.",
+        "proof_ids": [
+          "community_1"
+        ]
+      }
+    ]
+  },
+  {
+    "section_number": "6",
+    "section_title": "KGE for Downstream Applications and Practical Considerations",
+    "section_focus": "Having explored the diverse methodologies for static and temporal KGE in preceding sections, this section now highlights the practical utility of knowledge graph embeddings by showcasing their application in various downstream tasks and addressing real-world deployment challenges. It covers how KGE models are adapted for crucial tasks like entity alignment, recommendation systems, and question answering, demonstrating their impact beyond simple link prediction. Furthermore, it delves into critical practical aspects such as improving efficiency, ensuring scalability for large-scale KGs, and enhancing the robustness of KGE training and inference processes, which are essential for their successful adoption in diverse industrial and research settings.",
+    "subsections": [
+      {
+        "number": "6.1",
+        "title": "Entity Alignment",
+        "subsection_focus": "Details the application of KGE to the crucial task of entity alignment, which involves identifying equivalent entities across different knowledge graphs to facilitate integration. BootEA [Sun et al., 2018] introduced a pioneering bootstrapping approach with global optimization to mitigate error accumulation. SEA [Pei et al., 2019] further addressed data scarcity through semi-supervised learning, incorporating adversarial training for degree differences. MultiKE [Zhang et al., 2019] innovated by unifying multiple entity 'views' (name, relation, attribute) into a comprehensive embedding framework. Most recently, OntoEA [Xiang et al., 2021] integrated ontological schema into joint KG-ontology embedding. These approaches demonstrate how KGE facilitates the integration and enrichment of heterogeneous knowledge bases by effectively mapping entities, crucial for building comprehensive knowledge systems.",
+        "proof_ids": [
+          "community_3",
+          "layer_1"
+        ]
+      },
+      {
+        "number": "6.2",
+        "title": "Recommendation Systems and Question Answering",
+        "subsection_focus": "Explores the significant role of KGE in enhancing recommendation systems and knowledge graph-based question answering (KGQA). For recommendations, models like RKGE [Sun et al., 2018] learn path semantics within KGs to improve personalized suggestions. Cross-Domain KGE [Liu et al., 2023] tackles multi-domain item recommendations, while CKGE [Yang et al., 2023] provides explainable recommendations by integrating motivation-aware context. In KGQA, systems such as KEQA [Huang et al., 2019] and Marie and BERT [Zhou et al., 2023] leverage KGE to understand natural language queries and retrieve relevant information from KGs, demonstrating KGE's versatility in intelligent information retrieval and decision-making processes.",
+        "proof_ids": [
+          "community_0",
+          "community_2",
+          "layer_1"
+        ]
+      },
+      {
+        "number": "6.3",
+        "title": "Efficiency, Scalability, and Robustness in Training",
+        "subsection_focus": "Addresses critical practical challenges in KGE, including computational efficiency, scalability for massive KGs, and robustness to noise and incompleteness. Techniques like knowledge distillation (DualDE [Zhu et al., 2020]) and lightweight frameworks (LightKG [Wang et al., 2021]) reduce resource consumption. Advanced negative sampling methods (NSCaching [Zhang et al., 2018], Confidence-Aware NS [Shan et al., 2018], Modality-Aware NS [Zhang et al., 2023]) improve training effectiveness. Federated learning (FedS [Zhang et al., 2024]) enables distributed training, while graph partitioning (CPa-WAC [Modak et al., 2024]) enhances scalability for GNN-based KGE. Probability calibration (Tabacof et al., 2019) ensures reliable predictions, making KGE models deployable in real-world, resource-constrained environments by balancing performance with practical constraints.",
+        "proof_ids": [
+          "community_0",
+          "community_2"
+        ]
+      }
+    ]
+  },
+  {
+    "section_number": "7",
+    "section_title": "Emerging Trends and Future Directions",
+    "section_focus": "Building upon the comprehensive overview of KGE models and their applications, this section looks ahead, identifying cutting-edge research directions and unresolved challenges that will shape the future of knowledge graph embedding. It covers the move towards automated model design, the integration of multimodal information, and the increasing demand for explainable and ethical AI in KGE. The section synthesizes theoretical gaps and practical hurdles, such as scalability for dynamic and extremely large KGs, robustly handling uncertainty, and ensuring interpretability, providing a roadmap for future research and development in the field. It highlights areas where significant innovation is still needed to unlock the full potential of KGE and address its limitations.",
+    "subsections": [
+      {
+        "number": "7.1",
+        "title": "Automated KGE and Meta-Learning",
+        "subsection_focus": "Discusses the growing trend towards automating the KGE model design process and leveraging meta-learning for dynamic and adaptive embeddings. AutoSF [Zhang et al., 2019] exemplifies an AutoML framework for automatically searching optimal scoring functions, reducing manual effort and improving adaptability to diverse KG characteristics. MetaHG [Sun et al., 2024] utilizes meta-learning for dynamic updates in evolving service ecosystems, enabling continuous learning and adaptation to changing knowledge. These approaches aim to reduce manual effort, improve model adaptability to diverse KGs, and enable continuous learning in dynamic environments, pushing KGE towards more intelligent, autonomous, and self-optimizing systems.",
+        "proof_ids": [
+          "community_2"
+        ]
+      },
+      {
+        "number": "7.2",
+        "title": "Multimodal KGE and Explainability",
+        "subsection_focus": "Explores the integration of multimodal information (e.g., images, audio, text) into KGE, moving beyond purely symbolic graphs to richer, more comprehensive representations. This involves addressing challenges and opportunities in multimodal reasoning and embedding, such as combining visual features with relational facts. Additionally, this subsection addresses the growing importance of explainability in KGE, focusing on methods that provide insights into model predictions and learned representations. Explainable KGE is crucial for building trust and understanding in AI systems, especially in sensitive domains like healthcare (e.g., SEConv [Yang et al., 2025]), where transparency and interpretability are paramount for adoption and ethical deployment.",
+        "proof_ids": [
+          "community_2",
+          "community_3"
+        ]
+      },
+      {
+        "number": "7.3",
+        "title": "Open Challenges and Ethical Considerations",
+        "subsection_focus": "Identifies persistent and emerging challenges in KGE research, including scalability for extremely large and dynamic KGs, robust handling of inherent uncertainty and incompleteness in real-world data, and the continuous need for improved model interpretability. Furthermore, this subsection discusses the critical ethical implications of KGE, such as potential biases embedded in learned representations, data privacy concerns, and the responsible deployment of KGE-powered AI systems in various applications. This provides a critical assessment of the field's current limitations and outlines crucial areas for future investigation to ensure the development of robust, fair, and impactful KGE techniques that align with societal values.",
+        "proof_ids": [
+          "community_0",
+          "community_1",
+          "community_2",
+          "community_3",
+          "community_4",
+          "community_5"
+        ]
+      }
+    ]
+  },
+  {
+    "section_number": "8",
+    "section_title": "Conclusion",
+    "section_focus": "This concluding section synthesizes the key advancements and intellectual trajectory of knowledge graph embedding research, drawing insights from the identified paper communities and evolutionary paths, from its foundational paradigms to its most cutting-edge developments and diverse applications. It reiterates the significant progress made in representing complex knowledge, enabling various AI tasks, and addressing practical challenges across various domains. The section concludes by summarizing the persistent open research questions and outlining promising future directions, emphasizing the ongoing evolution towards more robust, intelligent, and context-aware knowledge representation. This continuous innovation is crucial for effectively bridging symbolic and neural AI paradigms, ultimately unlocking the full potential of knowledge graphs in real-world intelligent systems.",
+    "subsections": [
+      {
+        "number": "8.1",
+        "title": "Synthesis of Key Developments",
+        "subsection_focus": "Provides a concise summary of the major milestones and paradigm shifts discussed throughout the review. It highlights the progression from simple translational models like TransE to advanced geometric models leveraging non-Euclidean spaces, and further to sophisticated neural architectures including GNNs and Transformers. The synthesis emphasizes how the field has continuously evolved to capture richer semantics, handle complex structures, and adapt to dynamic knowledge, showcasing the increasing sophistication and expressiveness of KGE models across different research clusters. This progression underscores the field's commitment to developing more powerful and versatile knowledge representation techniques.",
+        "proof_ids": [
+          "layer_1",
+          "community_0",
+          "community_1",
+          "community_2",
+          "community_3",
+          "community_4",
+          "community_5"
+        ]
+      },
+      {
+        "number": "8.2",
+        "title": "Remaining Challenges and Future Research Avenues",
+        "subsection_focus": "Reaffirms the critical challenges that continue to drive KGE research, such as achieving scalability for massive and evolving KGs, robustly handling noisy and incomplete data, and the persistent need for greater interpretability and explainability in complex models. It identifies promising future research avenues, including the deeper integration of multimodal information, the development of more automated and adaptive model design techniques, and the crucial need for developing ethically aligned and fair embedding techniques. This subsection guides researchers toward impactful contributions in the next generation of knowledge graph intelligence, addressing both theoretical gaps and practical deployment hurdles.",
+        "proof_ids": [
+          "layer_1",
+          "community_0",
+          "community_1",
+          "community_2",
+          "community_3",
+          "community_4",
+          "community_5"
+        ]
+      }
+    ]
+  }
+]

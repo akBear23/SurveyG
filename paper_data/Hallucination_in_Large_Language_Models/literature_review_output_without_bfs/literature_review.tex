@@ -1,0 +1,1246 @@
+\documentclass[12pt,a4paper]{article}
+    \usepackage[utf8]{inputenc}
+    \usepackage[T1]{fontenc}
+    \usepackage{amsmath,amsfonts,amssymb}
+    \usepackage{graphicx}
+    \usepackage[margin=2.5cm]{geometry}
+    \usepackage{setspace}
+    \usepackage{natbib}
+    \usepackage{url}
+    \usepackage{hyperref}
+    \usepackage{booktabs}
+    \usepackage{longtable}
+    \usepackage{array}
+    \usepackage{multirow}
+    \usepackage{wrapfig}
+    \usepackage{float}
+    \usepackage{colortbl}
+    \usepackage{pdflscape}
+    \usepackage{tabu}
+    \usepackage{threeparttable}
+    \usepackage{threeparttablex}
+    \usepackage[normalem]{ulem}
+    \usepackage{makecell}
+    \usepackage{xcolor}
+
+    % Set line spacing
+    \doublespacing
+
+    % Configure hyperref
+    \hypersetup{
+        colorlinks=true,
+        linkcolor=blue,
+        filecolor=magenta,      
+        urlcolor=cyan,
+        citecolor=red,
+    }
+
+    % Title and author information
+    \title{A Comprehensive Literature Review with Self-Reflection}
+    \author{Literature Review}
+    \date{\today}
+
+    \begin{document}
+
+    \maketitle
+
+    % Abstract (optional)
+    \begin{abstract}
+    This literature review provides a comprehensive analysis of recent research in the field. The review synthesizes findings from 277 research papers, identifying key themes, methodological approaches, and future research directions.
+    \end{abstract}
+
+    \newpage
+    \tableofcontents
+    \newpage
+
+    \label{sec:introduction_to_hallucination_in_large_language_models}
+
+\section{Introduction to Hallucination in Large Language Models}
+\label{sec:introduction\_to\_hallucination\_in\_large\_language\_models}
+
+\subsection{Initial Recognition and Challenges in Defining Hallucination}
+\label{sec:1\_1\_initial\_recognition\_\_and\_\_challenges\_in\_defining\_hallucination}
+
+The advent of Large Language Models (LLMs) marked a significant leap in natural language generation, demonstrating unprecedented fluency and coherence. However, this impressive capability was quickly accompanied by a pervasive and problematic tendency: the generation of plausible-sounding but factually incorrect, inconsistent, or nonsensical information. This phenomenon, colloquially termed "hallucination," rapidly emerged as a critical challenge, fundamentally undermining the reliability and trustworthiness of LLM outputs across nascent applications. Early efforts to precisely define this elusive behavior were fraught with inherent ambiguity and context-dependency, complicating initial attempts to systematically categorize factual inconsistencies.
+
+Initial observations and informal characterizations of hallucination often materialized in tasks requiring adherence to source material, such as abstractive summarization. Models would frequently generate content that, while grammatically sound, lacked support from the provided input document. A seminal contribution by \cite{maynez2020h3q} provided one of the first systematic human evaluations and categorizations, offering a foundational understanding of the problem. They meticulously distinguished between "intrinsic hallucinations," which misrepresent information explicitly present in the source document, and "extrinsic hallucinations," which introduce information not directly inferable from the source. Their findings were stark: over 70\\% of single-sentence summaries contained hallucinations, predominantly extrinsic and often erroneous. This early work was instrumental in conceptualizing hallucination as a deviation from factual accuracy or faithfulness to the source, highlighting the inadequacy of traditional metrics like ROUGE, which primarily measure lexical overlap rather than semantic or factual correctness.
+
+However, Maynez et al.'s work also inadvertently illuminated the profound challenges in establishing a universally precise definition. The authors noted the nuanced case of "factual extrinsic hallucinations"—instances where models added correct information not present in the source. While technically a deviation from faithfulness to the input, such additions could, in some contexts, be perceived as improving summary quality by providing beneficial background. This observation underscored a core definitional dilemma: is any deviation from the source a hallucination, even if factually correct and potentially helpful? This ambiguity highlighted the context-dependency of what constitutes a "hallucination," blurring the lines between harmful fabrication and potentially benevolent information enrichment.
+
+The difficulty in defining hallucination was further exacerbated as LLMs evolved beyond strictly source-grounded tasks like summarization to more free-form, open-ended, and interactive generation. In these broader contexts, where no single source document dictates truth, the very concept of "faithfulness" became harder to apply. Without a clear ground truth reference, distinguishing between a model's creative inference, general world knowledge, or outright fabrication became a significant conceptual hurdle. The anthropomorphic term "hallucination" itself, while evocative, also presented a challenge, as it implies a cognitive process of perception without external stimulus, which does not accurately reflect the probabilistic token generation mechanisms of LLMs. This semantic debate further complicated the establishment of a neutral, universally accepted definition, moving beyond a simple factual error to encompass broader issues of coherence, consistency, and adherence to implicit user intent.
+
+Consequently, the initial recognition of hallucination was not merely about identifying factual errors but grappling with the fundamental conceptual challenges inherent in defining truth, faithfulness, and consistency in machine-generated text. The early systematic investigations, exemplified by \cite{maynez2020h3q}, laid crucial groundwork by providing empirical evidence and initial categorizations. Yet, they simultaneously revealed the deep complexities arising from the nuanced nature of factual accuracy, the context-dependent utility of generated content, and the expanding capabilities of LLMs. These definitional struggles underscored the imperative for more rigorous taxonomies, systematic evaluation frameworks, and a deeper theoretical understanding of hallucination's origins, which would become the focus of subsequent research efforts.
+\subsection{The Critical Impact and Significance of Hallucination}
+\label{sec:1\_2\_the\_critical\_impact\_\_and\_\_significance\_of\_hallucination}
+
+The pervasive phenomenon of hallucination, where Large Language Models (LLMs) generate plausible but factually incorrect or unfaithful information, presents a significant challenge to their practical deployment and trustworthiness across diverse sectors \cite{rejeleene2024okw, ahmadi2024j88, li2025qzg}. This issue extends beyond mere technical imperfection, fundamentally undermining user confidence, propagating misinformation, and introducing substantial risks in sensitive applications such as healthcare, legal analysis, and financial advising \cite{liu2024gxh}. Addressing hallucination is therefore a crucial aspect of responsible AI development and fostering reliable human-AI collaboration.
+
+The erosion of user confidence is a direct and immediate consequence of hallucination. When LLMs consistently produce convincing but false information, users quickly lose trust in their reliability, perceiving them as unreliable sources rather than intelligent assistants. This can be particularly insidious due to phenomena like "sycophantic hallucination," where models generate answers that align with misleading keywords provided by users, thereby amplifying existing biases or misinformation and further eroding confidence in the model's objectivity and factual grounding \cite{rrv2024gw0}. The propagation of misinformation, whether intentional or unintentional, carries severe societal consequences, impacting public discourse, decision-making, and the integrity of information ecosystems \cite{liu2024gxh}. This highlights the critical need for LLMs to not only be accurate but also to be perceived as trustworthy, a perception directly threatened by hallucinatory outputs.
+
+The most critical implications of hallucination manifest in high-stakes domains where factual accuracy is paramount. In \textbf{healthcare}, for instance, LLM hallucinations can lead to dangerous outcomes. Studies have shown that LLMs are highly susceptible to adversarial hallucination attacks in clinical decision support, frequently elaborating on fabricated clinical details embedded in prompts, with hallucination rates ranging from 50\\% to 82\\% across various models \cite{omar2025cc3, omar2025us3}. Such errors could result in misdiagnoses, incorrect treatment recommendations, or the omission of critical patient information, directly jeopardizing patient safety. Furthermore, in pharmacovigilance, LLM inaccuracies can lead to "never event" errors, such as incorrect drug identification or misrepresentation of adverse event reports, which are wholly preventable and unacceptable in medical contexts \cite{hakim2024d4u}. These findings underscore the urgent need for robust guardrails and verification mechanisms before LLMs can be safely integrated into clinical workflows.
+
+Similarly, in \textbf{legal analysis}, the generation of fabricated legal precedents, non-existent statutes, or incorrect interpretations of law by LLMs can have profound repercussions, leading to flawed legal advice, erroneous court filings, and significant legal disputes \cite{li2025qzg}. The \textbf{financial sector} also faces substantial risks, with LLM-generated misinformation potentially causing incorrect investment advice, market manipulation, or significant economic losses \cite{li2025qzg}. Empirical examinations of LLMs in financial tasks, such as abbreviation recognition, term explanations, and stock price queries, reveal severe hallucination tendencies, with off-the-shelf models often providing outdated or incorrect information \cite{kang20238j0}. The plausible nature of hallucinatory content makes it particularly insidious, as users may not immediately discern the falsehoods, especially in complex or specialized domains where they lack expert knowledge.
+
+Beyond these high-stakes professional domains, the consequences of hallucination are also felt in areas such as \textbf{education}, where students may rely on faulty information for learning, and in \textbf{journalism}, where it threatens to accelerate the spread of sophisticated disinformation and erode public trust in news sources \cite{liu2024gxh}. \textbf{Scientific research} also faces risks, as LLMs might generate plausible but incorrect hypotheses or summaries, leading to misdirection or wasted effort. The widespread impact across these diverse sectors underscores that hallucination is not merely a technical glitch but a fundamental impediment to the beneficial and ethical integration of AI into society.
+
+The significance of hallucination is further amplified by a growing understanding of its fundamental nature. While a detailed theoretical proof will be discussed in Section 2.3, it is important to acknowledge here that emerging arguments suggest hallucination may be an inherent and inevitable characteristic of computable LLMs \cite{li2025qzg}. This perspective reframes the problem not as a temporary bug to be eliminated, but as an enduring aspect that necessitates continuous management and mitigation strategies. Some researchers even propose reframing AI hallucinations as a distinctive feature rather than a mere limitation, arguing that attempts to completely eliminate them might inadvertently lead to increased model rigidity \cite{hamid2024pwn}. Regardless of whether it is viewed as an inherent limitation or a feature to be managed, this fundamental aspect makes the consequences of hallucination even more critical, demanding a proactive and ongoing commitment to ensuring reliability and safety.
+
+In light of these profound implications, mitigating hallucination is presented not merely as a technical challenge but as a crucial imperative for responsible AI development and fostering reliable human-AI collaboration. The pervasive nature of hallucination, as highlighted by \textcite{rejeleene2024okw}, necessitates robust solutions that span from foundational understanding to sophisticated detection and mitigation strategies. Having established the critical impact of hallucination, the following sections of this review will delve into its theoretical underpinnings, beginning with a systematic taxonomy of the phenomenon, followed by an exploration of its root causes, detection methodologies, and various mitigation strategies.
+
+
+\label{sec:foundational_understanding_and_theoretical_limits_of_hallucination}
+
+\section{Foundational Understanding and Theoretical Limits of Hallucination}
+\label{sec:foundational\_underst\_and\_ing\_\_and\_\_theoretical\_limits\_of\_hallucination}
+
+\subsection{Systematic Taxonomies and Categorization of Hallucinations}
+\label{sec:2\_1\_systematic\_taxonomies\_\_and\_\_categorization\_of\_hallucinations}
+
+The accurate identification and mitigation of hallucinations in Large Language Models (LLMs) necessitate a systematic understanding and categorization of this multifaceted problem. Early efforts to formalize hallucination primarily focused on abstractive summarization, where \textcite{maynez2020h3q} pioneered a foundational distinction between \textit{intrinsic} and \textit{extrinsic} hallucinations. Intrinsic hallucinations misrepresent information present in the source document, while extrinsic hallucinations introduce information not directly inferable from the input. Their work, based on extensive human evaluation, highlighted the prevalence of these issues and advocated for semantic-aware evaluation metrics beyond traditional surface-level scores.
+
+As LLMs evolved into more general-purpose agents, the need for more fine-grained and LLM-specific taxonomies became apparent. \textcite{liu2021mo6} contributed to this empirical understanding by introducing HADES, a token-level, reference-free hallucination detection benchmark. Their analysis of the dataset characterized various hallucination types, including domain-specific knowledge errors, commonsense knowledge conflicts, and incoherence, providing early insights into the diverse manifestations of LLM errors. Building on such observations, \textcite{zhang2023k1j} proposed a comprehensive LLM-centric taxonomy, categorizing hallucinations based on their relation to the input: \textit{input-conflicting}, \textit{context-conflicting}, and \textit{fact-conflicting}. This framework emphasized the growing challenge of fact-conflicting hallucinations, where generated content contradicts established world knowledge, often without any explicit input or context to ground it.
+
+Further refining these classifications, \textcite{rawte2023ao8} introduced an extensive framework that profiles hallucination across multiple dimensions. Their taxonomy includes degrees of severity (mild, moderate, alarming), orientations (Factual Mirage and Silver Lining, each with intrinsic and extrinsic sub-categories), and six specific types such as Acronym Ambiguity, Numeric Nuisance, and Geographic Erratum. This detailed categorization was instrumental in developing their Hallucination Vulnerability Index (HVI), a quantitative metric for assessing LLM susceptibility to hallucination. Complementing these descriptive taxonomies, \textcite{du2023qu7} offered a capability-based perspective, attributing hallucinations to deficiencies in fundamental model capabilities like commonsense memorization, relational reasoning, and instruction following. This mechanistic view provides insights into the underlying causes rather than just the observable phenomena.
+
+The evolving understanding of hallucination also led to more specialized classifications. \textcite{li2024qrj} focused specifically on \textit{factuality hallucination}, proposing a detailed taxonomy that includes Entity-error, Relation-error, Incompleteness, Outdatedness, Overclaim, and Unverifiability. This fine-grained breakdown of factual errors, coupled with their HaluEval 2.0 benchmark, enabled a more precise analysis of LLM factual accuracy. Similarly, for conversational AI, \textcite{chen2024c4k} developed DiaHalu, a dialogue-level hallucination benchmark, and introduced a comprehensive taxonomy for dialogue contexts. This included subtypes such as Non-factual, Incoherence (further divided into input-conflicting, context-conflicting, and self-conflicting), Irrelevance, Overreliance, and Reasoning Error, reflecting the unique complexities of multi-turn interactions.
+
+The problem's complexity extends significantly into multimodal contexts. \textcite{li2023249} conducted the first systematic empirical study of "object hallucination" in Large Vision-Language Models (LVLMs), where models describe objects inconsistent with or absent from the target images. Their work, which introduced the POPE evaluation method, highlighted that object frequency and co-occurrence in training data are key drivers of this specific type of hallucination. Building on this, \textcite{liu2023882} implicitly categorized multimodal hallucinations through their robust instruction tuning dataset, LRV-Instruction, which included negative instructions designed to address nonexistent object manipulation, existent object manipulation with inconsistent attributes, and knowledge manipulation. These efforts illustrate how hallucination manifests differently across modalities and generation tasks, requiring tailored categorization and evaluation.
+
+Finally, review papers like \textcite{ye2023yom} synthesize these diverse categorizations, offering a broad taxonomy of hallucinations observed across various text generation tasks (e.g., machine translation, question answering, dialogue, summarization, knowledge graph generation, and cross-modal systems). They also provide a systematic analysis of hallucination origins, linking them to factors such as data collection, knowledge gaps, and the optimization process. This comprehensive overview underscores the dynamic nature of hallucination and the continuous need for refined taxonomies. The dimensions of information quality, such as consistency, relevance, and accuracy, as formalized by \textcite{rejeleene2024okw} in their IQ model, also implicitly contribute to categorization by defining the attributes that hallucinated content violates.
+
+In conclusion, the systematic categorization of LLM hallucinations has evolved from initial broad distinctions like intrinsic versus extrinsic to highly granular, task-specific, and modality-specific taxonomies. This progression reflects an deepening understanding of the problem's diverse manifestations and underlying causes. However, the rapid advancement of LLM capabilities and the emergence of new generation paradigms necessitate ongoing research into dynamic and comprehensive categorization frameworks that can adapt to novel forms of hallucination and provide actionable insights for mitigation. A universally applicable, yet sufficiently granular, taxonomy remains a critical area for future research to ensure the trustworthiness and reliability of LLM applications.
+\subsection{Root Causes and Generative Mechanisms}
+\label{sec:2\_2\_root\_causes\_\_and\_\_generative\_mechanisms}
+
+Large Language Model (LLM) hallucination, characterized by the generation of plausible but factually incorrect or unfaithful content, arises from a complex interplay of inherent model limitations, data imperfections, and the probabilistic nature of their generative process. A comprehensive understanding of these underlying factors is paramount for developing effective detection and mitigation strategies \cite{ye2023yom, zhang2023k1j, liu2024p39}.
+
+A primary category of generative mechanisms stems from \textbf{data-centric pathologies} embedded throughout the LLM lifecycle, from pre-training to fine-tuning. The vast, web-scale datasets used for pre-training often contain fabricated, outdated, or biased information, making it challenging to eliminate sources of factual inconsistencies \cite{zhang2023k1j, yin2024iau}. \textcite{rejeleene2024okw} highlight how suboptimal tokenization, lack of data diversity, and inherent biases within pre-training data directly compromise information quality and trustworthiness. Furthermore, noisy or imperfect reference summaries in training datasets, particularly in low-resource or specialized domains like clinical notes, have been shown to directly contribute to unfaithful generation \cite{adams202289x}. Another significant data-related issue is the "knowledge cutoff," where LLMs struggle with rapidly evolving world knowledge, leading to the generation of outdated or false information. This limitation is empirically demonstrated by \textcite{vu202337s} through their dynamic FRESH QA benchmark, underscoring the static nature of parametric knowledge acquired during training.
+
+Beyond data quality, \textbf{model architecture and knowledge representation flaws} contribute significantly to hallucination. LLMs, despite their scale, possess inherent limitations in capacity and their ability to perfectly represent and recall all knowledge. \textcite{du2023qu7} provide a quantitative attribution framework, linking hallucination to specific model capability deficiencies, such as commonsense memorization, relational reasoning, and instruction following. Their analysis reveals that lower frequency of pre-training knowledge, increased complexity in reasoning tasks, and conflicts between pre-training and fine-tuning objectives significantly correlate with higher hallucination rates. The black-box nature of LLMs and their often vague knowledge boundaries further complicate the identification and rectification of these internal inconsistencies \cite{zhang2023k1j}. A critical challenge arises from the conflict between a model's parametric knowledge (learned during pre-training) and contextual knowledge (provided in the prompt or retrieved documents). Even when augmented with retrieval systems, LLMs can struggle to effectively process long and potentially noisy contexts. \textcite{lv2024k5x} demonstrate that irrelevant information within retrieved documents can distract LLMs, leading to knowledge hallucination, even for models designed for long inputs. This difficulty in discerning relevant from irrelevant information is further highlighted by \textcite{chen2023h04}, whose RAG benchmark shows that LLMs often lack robustness to noise, fail to reject negative information, and struggle with integrating facts from multiple documents, frequently prioritizing incorrect retrieved information over their own correct internal knowledge. \textcite{song2024v5n} identify a specific "false negative problem" where LLMs exhibit a bias towards negative judgments when assessing statements against context, leading to input-conflicting hallucinations and overconfidence in false responses.
+
+Finally, \textbf{training and inference procedure artifacts} are crucial generative mechanisms. The inherent probabilistic nature of next-token prediction means LLMs can assign probabilities to non-factual information, leading to factual inaccuracies. This uncertainty in output entities, characterized by low predictive probability and high entropy, is leveraged by \textcite{su2024gnz} for real-time hallucination detection, underscoring the direct link between probabilistic generation and factual inaccuracies. The standard maximum-likelihood estimation (MLE) training objective, while promoting fluency, can inadvertently encourage the generation of plausible but incorrect information by prioritizing token sequences that are statistically probable over those that are factually accurate \cite{liu2024p39, li2025qzg}. This "exposure bias" during training, where models are only exposed to ground truth sequences, can lead to compounding errors during free-form generation \cite{liu2024p39}. Decoding strategies further modulate the manifestation of hallucinations. While not a root cause itself, the choice of decoding algorithm (e.g., greedy, beam search, nucleus sampling) can amplify or mitigate the risk of hallucination by influencing the model's exploration of the token probability space. The inherent difficulty for LLMs to distinguish between plausible but incorrect information and verifiable facts is a persistent challenge, often leading to a "snowballing" effect where LLMs maintain coherence with earlier incorrect statements, propagating errors through multi-step reasoning \cite{ye2023yom}. The very necessity for post-hoc verification frameworks, as explored in mitigation strategies, underscores this fundamental generative mechanism: the model's inability to perform concurrent fact-checking during generation. Even when augmented with structured knowledge graphs (KGs), LLMs can still exhibit hallucinations, especially when KGs are perturbed or contain errors, as empirically studied by \textcite{sui20242u1}, highlighting the ongoing challenge of robust knowledge integration and the model's internal processing of such information. The complexity of multi-turn interactions also introduces unique hallucination patterns, including incoherence and reasoning errors, as explored by \textcite{chen2024c4k} in their dialogue-level benchmark, pointing to the difficulty in maintaining consistent internal states over extended conversations.
+
+In summary, LLM hallucinations are not attributable to a single factor but emerge from a confluence of issues: imperfect training data, limitations in model capacity and knowledge representation, and the probabilistic, fluency-oriented nature of their training and inference processes. These mechanisms collectively highlight the challenge in achieving complete factual consistency, laying the groundwork for the necessity of robust detection and mitigation efforts.
+\subsection{The Inevitability of Hallucination: A Theoretical Perspective}
+\label{sec:2\_3\_the\_inevitability\_of\_hallucination:\_a\_theoretical\_perspective}
+
+The phenomenon of hallucination in Large Language Models (LLMs), characterized by the generation of plausible but factually incorrect or nonsensical content, has transitioned from an empirical observation to a profound theoretical insight regarding the inherent limitations of these models. While early research meticulously cataloged and categorized hallucinations, the understanding of their fundamental nature underwent a significant paradigm shift with the groundbreaking theoretical work by \cite{xu2024n76}. This paper provides a formal definition of hallucination within a "formal world" of computable functions and, crucially, employs a diagonalization argument to prove its inevitability for all computable LLMs. This theoretical proof establishes that no LLM, irrespective of its architecture, training data volume, or computational capacity, can perfectly avoid generating hallucinatory content on some, and indeed infinitely many, inputs. This reframes the problem from one of complete eradication to one of inherent limitation, suggesting that hallucination is an innate characteristic of such computational systems. A parallel statistical lower bound on hallucination rates for calibrated LLMs by \cite{kalai2023statistical} further reinforces this theoretical ceiling, indicating a fundamental boundary to LLM factual accuracy.
+
+To grasp the profound implication of \cite{xu2024n76}'s findings, it is essential to understand the intuition behind the diagonalization argument. Analogous to Turing's proof of the Halting Problem or Gödel's Incompleteness Theorems, this argument constructs a paradoxical input that any given computable LLM is forced to misinterpret or misrepresent, thereby generating a hallucination. In essence, the proof demonstrates that for any hypothetical "perfect" LLM designed to never hallucinate, one can always construct a specific query for which that LLM will inevitably produce an incorrect or unfaithful response. This is because LLMs, as computable functions, cannot perfectly learn or represent all possible computable ground truth functions. This inherent limitation dictates that LLMs will always encounter inputs for which their learned internal representations are insufficient or misleading, leading to the generation of fallacious content. \cite{li2025qzg} further elaborates on these "Mathematical Origins" of hallucination, drawing parallels to undecidability principles and mathematical constraints inherent in LLM architectures, thereby solidifying the theoretical foundation for this inevitability.
+
+The theoretical inevitability of hallucination carries direct and profound implications for both detection and mitigation strategies. For detection, if hallucinations cannot be entirely eliminated, then perfect, automated detection also faces fundamental boundaries. \cite{karbasi2025j7n} explore this by establishing an equivalence between hallucination detection and the classical task of language identification. Their work demonstrates that automated hallucination detection is fundamentally impossible for most language collections if the detector is trained solely on correct examples. This theoretical impossibility highlights the critical role of expert-labeled feedback (i.e., both correct and incorrect examples) in making automated detection feasible, providing theoretical support for feedback-based methods like Reinforcement Learning with Human Feedback (RLHF) that are crucial for practical, reliable LLM deployment. This underscores that even detection is not a straightforward task, but one constrained by the very nature of the problem.
+
+For mitigation, the theoretical limits imply that solutions must focus on robust management—reducing the \textit{frequency}, \textit{severity}, and \textit{impact} of hallucinations, rather than pursuing their complete elimination. This necessitates a deeper understanding of the specific causal mechanisms through which these inevitable hallucinations manifest. For instance, \cite{zhang2024qq9} identify "knowledge overshadowing" as a specific type of amalgamated hallucination, where dominant conditions in training data overshadow others, leading to incorrect outputs even with factually correct data. They provide a theoretical interpretation of this phenomenon as over-generalization, deriving a generalization bound that connects hallucination rates with data imbalance and condition length. Such insights into the \textit{why} of specific hallucination types, grounded in theoretical analysis of model learning dynamics, become crucial for developing targeted mitigation strategies that work within the acknowledged boundaries of LLM capabilities.
+
+In conclusion, the theoretical grounding provided by \cite{xu2024n76}, supported by related works, fundamentally shifts the research agenda. Acknowledging that hallucination is an inherent and unavoidable limitation for all computable LLMs moves the focus from a futile pursuit of complete elimination to the development of robust, theoretically informed detection mechanisms, effective mitigation strategies, and responsible deployment guidelines. Future research must therefore concentrate on enhancing the transparency, verifiability, and controllability of LLM outputs, ensuring that these powerful models are used as reliable tools with a clear understanding of their fundamental, inherent boundaries, rather than as infallible oracles. This theoretical perspective underpins the necessity for the diverse applied research in detection and mitigation explored in subsequent sections, guiding the field towards realistic and impactful advancements.
+
+
+\label{sec:benchmarking_and_detection_methodologies_for_hallucination}
+
+\section{Benchmarking and Detection Methodologies for Hallucination}
+\label{sec:benchmarking\_\_and\_\_detection\_methodologies\_for\_hallucination}
+
+\subsection{Early Evaluation Approaches and Metrics}
+\label{sec:3\_1\_early\_evaluation\_approaches\_\_and\_\_metrics}
+
+The initial efforts to assess the factuality and faithfulness of text generation, particularly in abstractive summarization, quickly exposed the profound limitations of traditional surface-level metrics. While widely adopted metrics like ROUGE and BERTScore proved effective in quantifying lexical overlap, fluency, and content similarity, they consistently failed to capture semantic accuracy or subtle factual errors \cite{maynez2020h3q}. This critical inadequacy meant that models could generate fluent but entirely fabricated content, yet still score highly on these metrics, leading to a significant gap in reliably understanding model trustworthiness and reliability. This realization spurred a crucial shift towards developing more robust evaluation methodologies that prioritized human judgment and deeper semantic analysis.
+
+A seminal contribution in this evolving landscape was made by \cite{maynez2020h3q}, who introduced a systematic human evaluation framework to rigorously characterize and quantify hallucinations in abstractive summaries. Their meticulous annotation scheme categorized hallucinations into "intrinsic" (content inconsistent with the source document) and "extrinsic" (plausible but uninferable information not present in the source). This work empirically demonstrated that a substantial proportion of summaries (over 70\\% in single-sentence examples) contained such errors, and, critically, that traditional metrics correlated poorly with human judgments of faithfulness. Maynez et al. (2020) further proposed that textual entailment measures could serve as a more semantically-aware automatic proxy for faithfulness, laying foundational groundwork for moving beyond superficial text similarity.
+
+Building on the need for more granular semantic evaluation, \cite{chen2022gkm} introduced PropSegmEnt, a large-scale corpus designed for proposition-level segmentation and entailment recognition. This work highlighted that even a single sentence often contains multiple propositions, each carrying distinct truth values, and argued for the necessity of evaluating entailment at this fine-grained level. By enabling the recognition of textual entailment for individual propositions, PropSegmEnt offered a more precise mechanism for detecting factual inconsistencies than sentence- or paragraph-level Natural Language Inference (NLI), directly addressing the limitations of coarser semantic checks. Extending these semantic evaluation principles to diverse linguistic contexts, \cite{aharoni2022ioz} explored factual consistency evaluation in multilingual summarization. Their mFACE approach leveraged multilingual NLI models to mitigate hallucinations, demonstrating the applicability of semantically-aware evaluation beyond English and highlighting early efforts to ensure factual consistency across different languages.
+
+The inherent complexity of reliably measuring hallucination, especially in black-box models lacking accessible internal probabilities or requiring expensive human annotation, necessitated the development of early automated and reference-free detection techniques. \cite{liu2021mo6} addressed the challenge of reference-free evaluation by proposing a token-level hallucination detection task and introducing HADES, an annotated dataset created through contextual perturbation and iterative model-in-the-loop annotation. This represented an early step towards fine-grained, automatic detection without relying on ground-truth references, a common bottleneck in real-world free-form generation. Further advancing black-box evaluation, \cite{manakul20236ex} introduced SelfCheckGPT. This novel zero-resource method leverages the consistency of stochastically sampled LLM outputs, operating on the premise that genuinely known facts yield consistent samples, whereas hallucinations result in divergent or contradictory responses. By employing various consistency measures, including BERTScore and NLI, SelfCheckGPT provided a practical baseline for assessing factuality in proprietary models, thus tackling the initial challenges of measuring this complex phenomenon without internal model access or external knowledge bases.
+
+As the field progressed, there was also a continued refinement of human evaluation methodologies. \cite{wang2023hgw} introduced expert-aligned evaluation for summarization, annotating new test sets based on the "Lasswell Communication Model" to focus on more fine-grained news elements. This approach aimed to address issues of factual hallucination and information redundancy in existing datasets like CNN/DailyMail and BBC XSum, demonstrating an ongoing effort to improve the quality and diagnostic power of human annotations beyond initial broad categorizations.
+
+In conclusion, these early evaluation approaches marked a pivotal transition in understanding and measuring hallucination in text generation. They decisively moved beyond the limitations of traditional lexical overlap metrics, establishing systematic human evaluation as the gold standard for assessing faithfulness and factuality, particularly in abstractive summarization \cite{maynez2020h3q}. Concurrently, researchers began exploring more semantically-aware automatic methods, such as proposition-level entailment \cite{chen2022gkm} and multilingual NLI-based evaluations \cite{aharoni2022ioz}, to capture nuanced factual errors. The emergence of reference-free and black-box detection techniques like HADES \cite{liu2021mo6} and SelfCheckGPT \cite{manakul20236ex} addressed critical scalability and accessibility challenges, providing initial tools for practical assessment. While these pioneering efforts laid essential groundwork, they also highlighted the persistent difficulty in achieving comprehensive, scalable, and fully automated diagnostic evaluation, thereby motivating the development of more advanced benchmarks and sophisticated detection methodologies in subsequent research.
+\subsection{Advanced Benchmarks for Text-based LLMs}
+\label{sec:3\_2\_advanced\_benchmarks\_for\_text-based\_llms}
+
+The escalating prevalence of hallucination in Large Language Models (LLMs) has necessitated a paradigm shift from rudimentary accuracy metrics to sophisticated, diagnostic benchmarks capable of providing comprehensive and nuanced evaluations across diverse generation scenarios. Early efforts, such as the intrinsic and extrinsic categories identified by \cite{maynez2020h3q} in abstractive summarization, underscored the limitations of traditional, reference-dependent metrics, propelling the development of more semantically aware and fine-grained evaluation frameworks. As \cite{zhang2023k1j} highlights in their comprehensive survey, the unique challenges of LLM hallucination, particularly fact-conflicting types, demand benchmarks that can probe deeper into factual consistency and reasoning processes.
+
+A significant trajectory in advanced benchmark design focuses on \textbf{enhancing factual grounding and verifiability}. Building on the need for verifiable outputs, \cite{gao2023ht7} introduced ALCE (Automatic LLMs’ Citation Evaluation), a reproducible benchmark for assessing LLMs' ability to generate text with verifiable citations. ALCE employs novel NLI-based metrics for citation recall and precision, demonstrating a strong correlation with human judgments and offering a scalable method to evaluate whether generated statements are fully supported by their cited passages. Complementing this, \cite{oh2024xa3} proposed ERBench, an Entity-Relationship based benchmark that leverages existing relational databases (RDBs) and their integrity constraints (Functional Dependencies and Foreign Key Constraints). Unlike ALCE, which focuses on natural language inference for citation support, ERBench automatically constructs complex multi-hop questions and, crucially, verifies not only the LLM's answer but also its underlying rationale by checking for critical keywords inferred from the database schema. This provides a highly automated, extensible, and fine-grained method for evaluating factual hallucination and reasoning processes against structured knowledge. Further extending the assessment of reasoning, \cite{ghosh2024tj5} introduced novel datasets (FreebaseLFC, NELLLFC, WikiLFC) and quantitative measures to evaluate the \textit{logical consistency} of LLMs in fact-checking tasks, particularly for propositional logic queries derived from Knowledge Graphs. This work moves beyond simple factual accuracy to rigorously test an LLM's adherence to logical rules, a critical aspect of trustworthy reasoning.
+
+The rise of Retrieval-Augmented Generation (RAG) as a primary mitigation strategy has spurred the creation of \textbf{diagnostic benchmarks specifically for RAG capabilities}. \cite{chen2023h04} developed RGB (Retrieval-Augmented Generation Benchmark), a multi-lingual corpus designed to diagnose four fundamental RAG abilities: Noise Robustness, Negative Rejection, Information Integration, and Counterfactual Robustness. By constructing instances from \textit{latest news information} and systematically introducing noise or conflicting facts, RGB provides a granular diagnostic tool to understand how LLMs interact with and process external knowledge, revealing their struggles with rejecting irrelevant information or synthesizing facts from multiple documents. Extending this diagnostic approach, \cite{zhang2024o58} introduced a benchmarking procedure to evaluate LLMs' ability to make \textit{utility judgments}—that is, to identify passages with genuine utility in supporting question answering within RAG contexts, distinguishing utility from mere relevance. This highlights a nuanced aspect of RAG performance often overlooked by simpler benchmarks.
+
+Beyond static factuality, benchmarks are evolving to address \textbf{dynamic, evolving, and context-specific knowledge}. Recognising that LLMs struggle with rapidly changing information, \cite{vu202337s} introduced FRESH QA, a dynamic benchmark focusing on current, fast-changing, and false-premise knowledge. This benchmark employs a rigorous two-mode (RELAXED and STRICT) human evaluation protocol to capture nuanced aspects of factuality and hallucination in an ever-changing information landscape. For conversational AI, \cite{chen2024c4k} developed DiaHalu, the first dedicated dialogue-level hallucination evaluation benchmark. DiaHalu features a comprehensive taxonomy of hallucination (including non-factual, incoherence, irrelevance, overreliance, and reasoning errors) across multiple dialogue domains, simulating natural human-machine interactions to capture complex, multi-turn hallucination patterns. Addressing language-specific challenges and the bias of constrained generation, \cite{liang20236sh} proposed UHGEval, an Unconstrained Hallucination Generation benchmark for Chinese LLMs, which uses multiple LLMs for generating unconstrained text continuations and introduces a novel \texttt{kwPrec} metric for factual relevance, offering a more realistic assessment of hallucination in real-world usage. Furthermore, \cite{xie20247zk} introduced a novel benchmark method that assesses LLM consistency by comparing responses generated through different \textit{reasoning orders}, revealing instances where LLMs fabricate answers and subsequently generate justifications. This diagnostic approach sheds light on the internal reasoning processes and their impact on factual output.
+
+While many advanced benchmarks still rely on human annotation, there is a growing trend towards \textbf{leveraging LLMs themselves for automated evaluation}. For instance, \cite{li2024qrj} presented HaluEval 2.0, a comprehensive benchmark for factuality hallucination, alongside a simple yet effective LLM-based framework for automatic detection. However, this approach raises critical questions about potential circularity or inherent biases when using LLMs to evaluate other LLMs. As theoretically explored by \cite{karbasi2025j7n}, automated hallucination detection, akin to language identification, is fundamentally challenging for most language collections if the detector is trained solely on correct examples. Their work highlights that the use of expert-labeled \textit{negative examples} is crucial for making automated detection feasible, providing a theoretical underpinning for the need for diverse and robust benchmark construction that includes explicit instances of hallucination.
+
+In conclusion, the evolution of benchmarks for text-based LLMs demonstrates a clear progression towards more comprehensive, diagnostic, and context-aware evaluations. From citation-based verification and structured knowledge grounding to specialized RAG diagnostics and dynamic conversational contexts, these benchmarks offer increasingly fine-grained insights into LLM reliability. However, challenges persist, particularly concerning the scalability of creating diverse, high-quality negative examples, the potential biases of LLM-as-evaluators, and the continuous need for benchmarks that can adapt to the dynamic nature of knowledge and the evolving capabilities and failure modes of LLMs. Future research must continue to focus on creating benchmarks that are not only scalable and fine-grained but also robust to these inherent complexities, ultimately fostering more trustworthy and reliable AI systems.
+\subsection{Automated and Reference-Free Detection Techniques}
+\label{sec:3\_3\_automated\_\_and\_\_reference-free\_detection\_techniques}
+
+The increasing scale and widespread deployment of Large Language Models (LLMs) necessitate efficient and scalable methods for detecting hallucinations, particularly those that significantly reduce reliance on costly human annotations or external ground truth. This subsection explores innovative automated and reference-free techniques designed to address this critical need, moving towards more self-contained and efficient hallucination identification.
+
+Early efforts to establish fine-grained hallucination detection laid foundational groundwork. \cite{liu2021mo6} introduced the HADES benchmark, pioneering the task of token-level, reference-free hallucination detection for free-form text generation. Their methodology involved contextual perturbation of text and an iterative model-in-the-loop annotation process to create a dataset for this novel task. However, this approach primarily focused on perturbed existing text rather than purely generative outputs, and its perturbation method might not fully capture the diverse error modes of large generative models.
+
+A prominent direction in reference-free detection leverages the inherent self-consistency of LLMs. The concept, exemplified by approaches like \texttt{SelfCheckGPT} (Manakul et al., 2023), posits that if an LLM is consistent across multiple stochastically sampled outputs for the same input, its response is likely factual. Building on this principle, \cite{cao2023ecl} introduced \texttt{AutoHall}, a dual-purpose framework. \texttt{AutoHall} first provides an automated pipeline for generating model-specific hallucination datasets, eliminating the need for laborious manual annotation by having an LLM classify its own generated references against ground truth. Concurrently, its zero-resource, black-box detection method operates by querying the LLM multiple times and flagging the original response as hallucinatory if contradictions are found between the initial output and independently sampled references. While effective, a limitation of such self-consistency approaches is that LLMs can sometimes consistently repeat their own hallucinations, leading to false negatives.
+
+To address this challenge, \cite{yang20251dw} proposed \texttt{MetaQA}, a more robust self-contained hallucination detection approach utilizing \textbf{metamorphic relations (MRs)} and prompt mutation. Instead of merely re-sampling, \texttt{MetaQA} generates diverse \textit{synonymous and antonymous mutations} of an LLM's response, then prompts the LLM itself to verify the factual consistency of these mutations. This technique forces the LLM to reason about related but distinct statements, making it harder to consistently hallucinate and thereby exposing inconsistencies more effectively. \texttt{MetaQA} is zero-resource, compatible with black-box LLMs, and has demonstrated superior performance over simpler self-consistency baselines.
+
+Beyond sampling-based consistency, other methods leverage internal model signals for detection. \cite{su2024gnz} introduced Real-time Hallucination Detection (RHD) as part of their Dynamic Retrieval Augmentation based on hallucination Detection (DRAD) framework. RHD identifies potential hallucinations by analyzing the uncertainty of \textit{output entities} (specifically, those with low predictive probability and high entropy) \textit{without relying on external models or generating multiple responses}. This approach provides a truly reference-free and model-agnostic detection mechanism based on the LLM's internal confidence.
+
+While not strictly "reference-free" in the sense of requiring no external knowledge, some approaches automate the \textit{verification} process to reduce human annotation. For instance, \cite{oh2024xa3} developed \texttt{ERBench}, an Entity-Relationship based benchmark that leverages existing relational databases (RDBs) to construct complex, automatically verifiable questions and rationales. By utilizing database schemas and integrity constraints, \texttt{ERBench} can automatically check both the correctness of an LLM's answer and the factual consistency of its generated rationale, effectively automating the ground truth verification process. Similarly, \cite{dhuliawala2023rqn}'s Chain-of-Verification (CoVe) method, primarily a mitigation strategy, includes a crucial internal, automated verification step where the LLM generates and answers its own verification questions, further illustrating the trend towards LLM self-assessment for factual accuracy.
+
+In conclusion, the field of automated and reference-free hallucination detection has advanced significantly from foundational efforts in token-level detection to sophisticated self-consistency checks, metamorphic relations, and internal uncertainty analysis. Techniques like \texttt{AutoHall} \cite{cao2023ecl} and \texttt{MetaQA} \cite{yang20251dw} exemplify the move towards self-contained detection and automated dataset generation, addressing the critical need for scalability and efficiency. However, challenges remain in ensuring robustness across all types of hallucinations, managing the computational cost of multi-sampling or complex verification steps, and improving the generalizability of internal uncertainty signals for diverse LLM architectures and tasks without external ground truth. Future research will likely focus on hybrid approaches that combine internal model signals with structured knowledge verification, further refining LLMs' capacity for autonomous self-assessment and factual grounding.
+
+
+\label{sec:mitigation_strategies:_external_grounding_and_reasoning_enhancement}
+
+\section{Mitigation Strategies: External Grounding and Reasoning Enhancement}
+\label{sec:mitigation\_strategies:\_external\_grounding\_\_and\_\_reasoning\_enhancement}
+
+\subsection{Retrieval-Augmented Generation (RAG) for Factual Grounding}
+\label{sec:4\_1\_retrieval-augmented\_generation\_(rag)\_for\_factual\_grounding}
+
+Large Language Models (LLMs) are prone to generating plausible but factually incorrect information, a phenomenon known as hallucination \cite{maynez2020h3q, zhang2023k1j, ye2023yom}. To mitigate this inherent limitation \cite{xu2024n76}, Retrieval-Augmented Generation (RAG) has emerged as a primary strategy, dynamically integrating external knowledge to ground LLM responses and enhance their factual accuracy. This approach allows LLMs to query and retrieve relevant information from external databases or search engines, thereby reducing factual errors and providing verifiable citations.
+
+A foundational aspect of RAG is enabling LLMs to generate text that is directly supported by external evidence. \cite{gao2023ht7} demonstrated this by introducing ALCE (Automatic LLMs’ Citation Evaluation), the first reproducible benchmark for evaluating end-to-end systems that retrieve supporting evidence, generate answers, and provide explicit citations. Their work highlighted that even state-of-the-art LLMs struggle to fully support their generations with citations, with around 50\\% of statements lacking complete support in some cases, underscoring the ongoing challenge in achieving perfect verifiability.
+
+Building upon the concept of external grounding, advanced RAG techniques have focused on more dynamic and integrated retrieval processes. \cite{yao20229uz} laid conceptual groundwork with ReAct, a paradigm that synergizes reasoning ("thoughts") with task-specific actions (e.g., API calls) to ground LLM responses in external environments, thereby reducing hallucination by allowing the model to "act to reason" and "reason to act." Extending this, \cite{trivedi2022qsf} introduced Interleaving Retrieval with Chain-of-Thought (IRCoT) reasoning, which dynamically uses intermediate Chain-of-Thought steps as queries for iterative knowledge retrieval. This approach significantly reduced factual errors in multi-step knowledge-intensive question answering by allowing the LLM to refine its information needs as its reasoning progressed, overcoming the limitations of static, one-shot retrieval.
+
+Further refinements in RAG address the challenge of effectively utilizing retrieved long contexts. \cite{lv2024k5x} proposed Coarse-to-Fine Highlighting (COFT), a method that intelligently identifies and emphasizes key lexical units within retrieved documents. By leveraging external knowledge graphs and a novel scoring mechanism, COFT helps LLMs focus on the most relevant information at varying granularities (word, sentence, paragraph), thereby reducing knowledge hallucination that often arises when models "get lost in long contexts." This improves factual precision by over 30\\% on hallucination benchmarks.
+
+The efficiency and precision of retrieval in RAG are also critical. \cite{su2024gnz} introduced Dynamic Retrieval Augmentation based on hallucination Detection (DRAD), a framework that synchronizes retrieval with real-time hallucination detection during generation. DRAD conditionally triggers retrieval only when potential entity-level hallucinations are detected, making the RAG process more efficient and targeted than indiscriminate retrieval. This approach significantly reduced hallucinations across diverse text generation benchmarks. Similarly, \cite{li2023v3v} developed Chain-of-Knowledge (CoK), a framework that grounds LLMs via dynamic knowledge adapting over heterogeneous sources (both structured and unstructured). CoK's adaptive query generator and progressive rationale correction mechanism prevent error propagation, leading to an average performance improvement of 4.3\\% over Chain-of-Thought baselines in knowledge-intensive tasks.
+
+Beyond static databases, RAG also incorporates real-time information. \cite{vu202337s} addressed the problem of LLMs becoming outdated by proposing FreshLLMs, which refreshes models with search engine augmentation. Their FRESH QA benchmark and FRESH PROMPT method demonstrated that intelligently integrating diverse and chronologically ordered search results into the prompt can dramatically boost LLM factuality, with improvements of up to 49\\% in strict accuracy over vanilla LLMs on fast-changing and false-premise questions. This highlights the importance of dynamic, up-to-date external knowledge for factual grounding.
+
+While RAG offers substantial benefits, its effectiveness and limitations require rigorous evaluation. \cite{chen2023h04} developed the Retrieval-Augmented Generation Benchmark (RGB) to systematically diagnose RAG capabilities across four dimensions: noise robustness, negative rejection, information integration, and counterfactual robustness. Their findings revealed that current LLMs, even with RAG, still struggle significantly with these fundamental challenges. For instance, models often fail to reject answering when no relevant information is available (negative rejection) and can be unduly influenced by factually incorrect retrieved information, even when warned. These insights are crucial for guiding future research toward more robust RAG systems.
+
+In conclusion, RAG represents a significant advancement in enhancing the factual grounding and trustworthiness of LLM outputs by providing an external anchor of verifiable information. From enabling explicit citations \cite{gao2023ht7} to dynamically interleaving reasoning and retrieval \cite{trivedi2022qsf}, intelligently utilizing context \cite{lv2024k5x}, and refreshing knowledge with real-time search \cite{vu202337s}, RAG techniques continually evolve. However, challenges persist in areas such as handling noisy or conflicting retrieved information and ensuring robust information integration, as highlighted by comprehensive benchmarks \cite{chen2023h04}. Future work in RAG will likely focus on improving the robustness of retrieval, enhancing LLMs' ability to synthesize information from multiple sources, and developing more sophisticated mechanisms for real-time hallucination detection and targeted self-correction.
+\subsection{Chain-of-Thought and Self-Correction Mechanisms}
+\label{sec:4\_2\_chain-of-thought\_\_and\_\_self-correction\_mechanisms}
+
+Enhancing Large Language Models' (LLMs) internal reasoning capabilities and enabling robust self-verification are crucial steps towards mitigating hallucination and improving factual accuracy. This research direction focuses on empowering LLMs to deliberate, plan, and critique their own outputs, moving beyond mere generation to more grounded and trustworthy responses primarily through internal cognitive processes.
+
+\subsubsection{Linear Reasoning and Action Paradigms}
+A foundational approach to structured reasoning is Chain-of-Thought (CoT) prompting, which encourages LLMs to articulate their intermediate reasoning steps. Building upon this, \cite{yao20229uz} introduced \textit{ReAct} (Reasoning and Acting), a paradigm that synergizes verbal reasoning with external actions. ReAct prompts LLMs to generate interleaved "thoughts" (internal reasoning) and "actions" (interactions with external environments or tools, such as a search API). While ReAct involves external actions, its core contribution to self-correction lies in how these actions are used to \textit{verify} and \textit{refine} the internal reasoning. The dynamic interplay allows the LLM to "reason to act" by formulating plans and strategies, and simultaneously "act to reason" by gathering external information to refine its understanding or correct factual inaccuracies. This mechanism effectively grounds LLM reasoning in verifiable external information, mitigating hallucination and error propagation inherent in purely internal, unverified CoT.
+
+\subsubsection{Post-hoc Verification and Iterative Refinement}
+Beyond interleaved reasoning and action, other strategies focus on explicit internal verification and iterative refinement. \cite{dhuliawala2023rqn} proposed \textit{Chain-of-Verification} (CoVe), a systematic approach that prompts LLMs to check their own generated facts. CoVe involves a multi-step process: first, the LLM generates a baseline response; second, it formulates a list of specific verification questions based on that response; third, it answers these questions; and finally, it revises its initial response. A critical innovation is the "factored" variant of CoVe, which executes verification questions independently, without conditioning on the potentially hallucinated baseline response or other verification answers. This design significantly reduces the likelihood of the model repeating its own mistakes, demonstrating a consistent decrease in hallucinations and improved factual precision.
+
+Generalizing this concept, \cite{ji2023vhv} developed an iterative \textit{self-reflection methodology} for mitigating hallucination, particularly in high-stakes domains like medical generative question-answering. This approach establishes a dynamic feedback loop where the LLM iteratively generates, scores, and refines both its background knowledge and its answers until satisfactory levels of factuality, consistency, and entailment are achieved. This introspective process allows LLMs to actively identify and correct shortcomings, leading to demonstrably more reliable outputs. The broader landscape of such automated correction strategies is comprehensively surveyed by \cite{pan2023mwu} and \cite{pan2024y3a}, which categorize techniques based on the correction target, feedback source, timing, and application method, highlighting the growing interest in autonomous error rectification to reduce reliance on costly human feedback.
+
+\subsubsection{Advanced Non-Linear Reasoning Structures}
+While linear CoT and ReAct enhance sequential reasoning, more complex problems often benefit from exploring multiple reasoning paths. \cite{yao2023tot} introduced \textit{Tree-of-Thoughts} (ToT), which generalizes CoT by enabling LLMs to explore diverse reasoning steps, evaluate intermediate thoughts, and backtrack when necessary. Instead of a single linear chain, ToT constructs a tree of possible thoughts, allowing the model to explicitly consider multiple paths, prune unpromising ones, and self-correct by selecting the most coherent and factually consistent reasoning trajectory. This multi-path exploration inherently provides a more robust self-correction mechanism compared to linear CoT, as it allows the model to identify and discard erroneous intermediate steps before committing to a final answer.
+
+Further extending this, \cite{besta2023got} proposed \textit{Graph-of-Thoughts} (GoT), which moves beyond the tree structure to a more flexible graph representation. GoT allows for arbitrary connections between thoughts, enabling more complex reasoning patterns like cycles, parallel processing, and dynamic merging of ideas. This flexibility facilitates richer internal deliberation, where LLMs can iteratively refine and interconnect thoughts, leading to more sophisticated self-correction capabilities. By explicitly representing and manipulating a graph of ideas, GoT offers enhanced transparency and control over the reasoning process, making it easier to diagnose and correct errors compared to opaque end-to-end generation. The ability to explore, evaluate, and refine multiple interconnected thoughts significantly reduces the propagation of initial errors, a common source of hallucination in simpler reasoning paradigms.
+
+\subsubsection{Decoding-Level Interventions}
+Beyond explicit reasoning steps, self-correction can also be integrated at the decoding level. \cite{zhang202396g} introduced \textit{Induce-then-Contrast Decoding (ICD)} to alleviate hallucinations by influencing token generation probabilities. ICD constructs a "factually weak LLM" by inducing hallucinations and then, during generation, subtracts the log probabilities of this weak model from the original model's predictions. This contrastive approach effectively penalizes untruthful tokens, guiding the model towards more factual outputs without requiring extensive retraining. This method represents a more implicit form of self-correction, where the model's internal "critic" is encoded within the decoding process itself.
+
+Despite these significant advancements, challenges remain. The computational cost of multi-step reasoning, especially for iterative self-correction and multi-path exploration (e.g., ToT, GoT), can be substantial, limiting their application in real-time or resource-constrained scenarios. The robustness of internal "critics" or self-evaluation mechanisms is still dependent on the LLM's inherent capabilities and can sometimes perpetuate errors if the model's internal knowledge is flawed or its self-assessment is inaccurate. Future work will likely focus on developing more efficient and sophisticated internal critics, seamlessly integrating external tools with internal deliberation while maintaining a clear focus on internal reasoning, and ensuring generalizability of these self-correction mechanisms across diverse hallucination types and domains.
+\subsection{Knowledge Graph Integration for Structured Factual Grounding}
+\label{sec:4\_3\_knowledge\_graph\_integration\_for\_structured\_factual\_grounding}
+
+Large Language Models (LLMs) frequently generate plausible but factually incorrect information, a phenomenon known as hallucination, which severely undermines their trustworthiness and utility \cite{zhang2023k1j, du2023qu7, ye2023yom}. To mitigate this, Knowledge Graphs (KGs) offer a powerful solution by providing structured, verifiable factual knowledge that can explicitly ground LLM generations. This approach leverages the explicit relational information within KGs to enhance the factual consistency and reliability of LLM outputs, particularly in complex tasks like open-ended question answering and dialogue systems.
+
+One prominent strategy for integrating KGs involves sophisticated prompting techniques that enable LLMs to reason over structured graphical inputs. MindMap \cite{wen2023t6v} introduces a novel pipeline that allows LLMs to comprehend and aggregate evidence sub-graphs from KGs, converting them into a natural language reasoning graph. This method goes beyond simple retrieval-augmentation by prompting LLMs to build an internal "mind map" for synergistic inference, combining explicit KG facts with their implicit knowledge to generate more transparent and factually grounded answers. This addresses the limitation of earlier KG retrieval methods that often treated structured knowledge as plain text, making responses harder to validate and more prone to hallucination.
+
+Complementing sophisticated prompting, dynamic knowledge adapting over heterogeneous sources further strengthens factual grounding. Chain-of-Knowledge (CoK) \cite{li2023v3v} proposes a three-stage framework that dynamically incorporates grounding information from diverse knowledge sources, including both unstructured (e.g., Wikipedia) and structured (e.g., Wikidata, tables) data. A key innovation is its Adaptive Query Generator (AQG), which can generate queries tailored to each source's specific language (e.g., SPARQL for KGs, SQL for tables), and a progressive rationale correction mechanism that prevents error propagation by sequentially rectifying reasoning steps. This approach overcomes the limitations of fixed knowledge sources and enhances factual accuracy across various knowledge-intensive tasks.
+
+The efficacy of KG integration is particularly evident in complex applications like open-ended question answering. An empirical study by \cite{sui20242u1} introduces OKGQA, a benchmark specifically designed for evaluating LLMs augmented with KGs in open-ended, real-world QA scenarios, and OKGQA-P to assess robustness under perturbed KGs. Their proposed RAG-like framework, featuring "Graph-guided retrieval" with a prize-cost strategy for efficient subgraph extraction, demonstrates that integrating KG information significantly reduces factual errors, even when the KG itself contains imperfections. This highlights the practical utility of KGs in making LLMs more trustworthy for nuanced, paragraph-long answers.
+
+Similarly, in dialogue systems, KGs play a pivotal role in mitigating hallucinations. NEURAL PATH HUNTER (NPH) \cite{dziri2021bw9} employs a generate-then-refine strategy to amend generated responses using a KG. It features a token-level hallucination critic that identifies and masks erroneous entity mentions, followed by an entity mention retriever that queries a local k-hop subgraph of the KG to retrieve factually correct entities. This method effectively addresses the "source-reference divergence problem" in dialogue systems, where training on reference data alone often fails to guarantee faithfulness to auxiliary knowledge, providing a concrete mechanism for real-time factual correction in conversational AI.
+
+These KG integration strategies fall under the broader category of "external knowledge grounding" for hallucination mitigation, as comprehensively surveyed by \cite{tonmoy20244e4} and \cite{pan2024y3a}. They offer a crucial counterpoint to methods relying solely on internal model mechanisms, such as self-correction \cite{dhuliawala2023rqn, ji2023vhv} or induced hallucinations \cite{zhang202396g}, by providing an explicit, verifiable source of truth. The inherent inevitability of hallucination in LLMs, as theoretically proven by \cite{xu2024n76}, underscores the critical need for such robust external grounding mechanisms. Furthermore, benchmarks like RGB \cite{chen2023h04} reveal that LLMs often struggle with noise robustness, negative rejection, and information integration in Retrieval-Augmented Generation (RAG) settings, emphasizing the value of structured, high-quality knowledge from KGs.
+
+Despite the significant advancements, challenges remain. The scalability and maintenance of KGs, especially for rapidly evolving or highly specialized domains, continue to be a concern. Optimal fusion strategies that seamlessly blend the implicit knowledge and reasoning capabilities of LLMs with the explicit, structured facts from KGs are still an active area of research. Future work will likely focus on developing more adaptive and dynamic KG construction and integration techniques, alongside robust evaluation benchmarks that can precisely measure the impact of KG grounding on various types of hallucinations across diverse applications.
+
+
+\label{sec:hallucination_in_multimodal_large_language_models}
+
+\section{Hallucination in Multimodal Large Language Models}
+\label{sec:hallucination\_in\_multimodal\_large\_language\_models}
+
+\subsection{Characterization and Unique Challenges in Multimodal Contexts}
+\label{sec:5\_1\_characterization\_\_and\_\_unique\_challenges\_in\_multimodal\_contexts}
+
+Hallucination in Multimodal Large Language Models (MMLMs) presents a critical challenge, manifesting as inconsistencies between generated textual content and diverse sensory inputs such as visual, audio, or video data. Unlike their unimodal counterparts, MMLMs face the complex task of accurately grounding language in heterogeneous modalities and maintaining cross-modal consistency, leading to distinct forms of factual errors.
+
+Early investigations into visual hallucination in Vision-Language Pre-trained (VLP) models, such as that by \cite{dai20229aa}, revealed that even models optimized for standard metrics could exhibit high rates of object hallucination, where non-existent objects are described. Building on this, \cite{li2023249} provided the first systematic empirical study of "object hallucination" in Large Vision-Language Models (LVLMs), introducing the Polling-based Object Probing Evaluation (POPE) to robustly assess the generation of non-existent objects. Their work crucially identified object frequency and co-occurrence in training data as significant drivers of this phenomenon. Extending this, \cite{chen2024vy7} further characterized the more complex problem of "multi-object hallucination," demonstrating that LVLMs struggle significantly more when recognizing and reasoning about multiple objects simultaneously, often inventing objects or being misled by spurious correlations.
+
+Beyond individual objects, MMLMs also grapple with misrepresenting the interactions between entities. \cite{wu2024bxt} systematically evaluated and analyzed "relationship hallucinations" in LVLMs, where models inaccurately describe inter-object relationships within an image. They introduced R-Bench, a novel benchmark designed to prevent data leakage and provide fine-grained evaluation of these more complex inconsistencies. Further refining this understanding, \cite{zheng20246fk} proposed Reefknot, a comprehensive benchmark that categorizes relation hallucinations into "perceptive" (concrete spatial relations) and "cognitive" (abstract interactions), revealing that MLLMs are surprisingly more susceptible to perceptive errors.
+
+The temporal dimension introduces further complexities, particularly for video-language models. \cite{li2024wyb} characterized "temporal hallucinations" in MMLMs for video understanding, where models inaccurately narrate actions, temporal sequences, or scene transitions. Their VIDHALLUC benchmark, the largest of its kind, specifically targets these dynamic inconsistencies by curating adversarial video pairs. Complementing this, \cite{wang2024rta} introduced VideoHallucer, a comprehensive benchmark for evaluating both "intrinsic" (contradicting video content) and "extrinsic" (unverifiable from video) hallucinations in Large Video-Language Models, including temporal aspects, further highlighting the challenges of dynamic grounding.
+
+The problem extends beyond the visual domain. \cite{kuan20249pm} investigated "object hallucination" in Large Audio-Language Models (LALMs), demonstrating that these models also generate or affirm the presence of non-existent objects in audio inputs. Their work, introducing ECHO and Cover metrics, revealed a critical discrepancy where LALMs perform well on generative tasks (audio captioning) but struggle with discriminative queries, indicating a weakness in understanding the \textit{nature} of discriminative questions rather than a fundamental inability to process audio. This highlights the unique challenge of grounding language in auditory inputs and the model's struggle with precise factual verification across modalities.
+
+The inherent difficulty in maintaining cross-modal consistency leads to more entangled forms of hallucination. \cite{sungbin2024r2g} introduced AVHBench, the first benchmark for "cross-modal hallucinations" in Audio-Visual Large Language Models, where misinterpretations arise from the interaction between audio and visual signals, such as perceiving imaginary sounds from visual cues or fake visual events from audio cues. This underscores how MMLMs can over-rely on one modality or misinterpret subtle inter-modal relationships. \cite{guan2023z15} further explored this entanglement with Hallusionbench, a diagnostic suite for "language hallucination and visual illusion," revealing that LVLMs often exhibit a pronounced language bias, where parametric knowledge conflicts with visual context, leading to overconfident yet erroneous assertions.
+
+Moreover, these inconsistencies can propagate in interactive settings. \cite{zhong2024mfi} identified "multimodal hallucination snowballing," demonstrating that initial hallucinations can influence an LVLM's subsequent generations, leading to further incorrect responses even when ground visual information is available. This phenomenon poses a significant challenge for conversational MMLMs. The problem is exacerbated in specialized domains, as shown by \cite{chen2024hfe}, who characterized "medical hallucinations" in LVLMs, highlighting the critical need for fine-grained, clinically relevant evaluation due to the severe consequences of factual errors in healthcare. The ultimate challenge in cross-modal consistency is presented by \cite{zhang2025pex}, who introduced CCHall to evaluate "joint cross-lingual and cross-modal hallucinations," where MLLMs must align visual content with text across multiple languages, leading to significantly increased hallucination rates in these complex, real-world scenarios.
+
+The pervasive nature and diverse manifestations of hallucination in multimodal contexts underscore the fundamental challenge of robustly grounding language in rich, heterogeneous sensory inputs. While significant progress has been made in characterizing specific hallucination types across modalities, the field continues to grapple with the inherent difficulty of achieving perfect cross-modal consistency and preventing the propagation of subtle inconsistencies. The meta-evaluation by \cite{yan2024ux8} further highlights that even the benchmarks designed to characterize these problems often suffer from reliability and validity issues, indicating that the very tools for understanding these challenges require continuous refinement. Therefore, future research must focus on more holistic and dynamic evaluation frameworks that account for the intricate interplay of modalities and the cascading effects of errors, moving towards MMLMs that are not only capable but also consistently trustworthy.
+\subsection{Multimodal Hallucination Evaluation and Benchmarking}
+\label{sec:5\_2\_multimodal\_hallucination\_evaluation\_\_and\_\_benchmarking}
+
+The pervasive issue of hallucination in Multimodal Large Language Models (MMLMs), where generated content deviates from factual multimodal inputs, necessitates robust and specialized evaluation frameworks. Systematically measuring these complex errors is crucial for diagnosing and addressing the underlying causes, moving beyond subjective assessments to quantitative diagnostics. The field has evolved from basic object presence checks to sophisticated analyses of temporal, relational, and cross-modal inconsistencies.
+
+Early efforts to quantify hallucinations primarily focused on object-level inconsistencies. \cite{dai20229aa} conducted a systematic study of object hallucination in Vision-Language Pre-trained (VLP) models, revealing that optimizing for standard metrics could paradoxically increase hallucination and introducing ObjMLM to mitigate this. Building on this, \cite{kaul2024ta7} distinguished between Type I (free-form) and Type II (fixed-format) object hallucinations, introducing THRONE, an object-based benchmark for free-form generations, which highlighted that existing benchmarks like POPE \cite{dai20229aa} often underestimate hallucinations due to sampling biases. Furthering the complexity, \cite{chen2024vy7} addressed \textit{multi-object hallucination}, proposing the Recognition-based Object Probing Evaluation (ROPE) protocol. ROPE utilizes visual referring prompts to eliminate ambiguity and systematically analyzes hallucination across various object class distributions, revealing how models exploit shortcuts and spurious correlations.
+
+As MMLMs advanced, the scope of hallucination evaluation expanded beyond simple object presence to more intricate visual reasoning. \cite{wu2024bxt} introduced R-Bench, a novel benchmark specifically designed to evaluate and analyze \textit{relationship hallucinations} in Large Vision-Language Models (LVLMs), a critical gap previously overlooked by object-focused benchmarks. Extending this, \cite{zheng20246fk} developed Reefknot, a comprehensive benchmark for \textit{relation hallucination} that categorizes errors into perceptive and cognitive types and proposes a "Detect-then-Calibrate" mitigation strategy based on token-level confidence. This work underscored that MMLMs struggle significantly with relational understanding, often exhibiting a bias towards 'Yes' answers.
+
+The advent of MMLMs capable of processing diverse modalities necessitated benchmarks tailored to cross-modal interactions. \cite{sungbin2024r2g} introduced AVHBench, the first comprehensive benchmark for \textit{cross-modal hallucinations} in Audio-Visual Large Language Models (AV-LLMs). AVHBench evaluates both audio-driven video hallucination and video-driven audio hallucination, utilizing a semi-automatic annotation pipeline and synthetic videos to create challenging scenarios. Similarly, \cite{kuan20249pm} specifically investigated \textit{object hallucination in Large Audio-Language Models}, proposing ECHO and Cover metrics for generative tasks and highlighting LALMs' struggle with discriminative queries. For video-language models, \cite{wang2024rta} presented VideoHallucer, a benchmark evaluating \textit{intrinsic and extrinsic hallucinations} related to dynamic video content and temporal reasoning, and introduced the Self-PEP framework for mitigation. Complementing this, \cite{li2024wyb} developed VidHalluc, the largest benchmark for evaluating \textit{temporal hallucinations}, focusing on action, temporal sequence, and scene transition inconsistencies, and proposed DINO-HEAL for training-free mitigation. These benchmarks collectively emphasize the unique challenges of evaluating dynamic and multi-sensory information.
+
+Beyond static or single-turn evaluations, researchers also began to investigate how hallucinations propagate in interactive settings. \cite{zhong2024mfi} identified and systematically investigated "Multimodal Hallucination Snowballing," where an LVLM's own generated hallucinations influence subsequent responses. Their MMHalSnowball framework and Residual Visual Decoding (RVD) mitigation method highlighted the need for models to maintain direct access to visual information to prevent error accumulation.
+
+The growing complexity and deployment of MMLMs in high-stakes domains also spurred the development of domain-specific and unified evaluation approaches. \cite{chen2024hfe} introduced Med-HallMark, the first benchmark for detecting and evaluating \textit{medical hallucinations} in LVLMs, emphasizing the critical need for clinically relevant, fine-grained assessment and proposing the MediHall Score and Detector. To unify disparate evaluation efforts, \cite{chen2024lc5} proposed UNIHD (Unified Multimodal Hallucination Detection), a task-agnostic, tool-enhanced framework with the MHaluBench meta-evaluation benchmark, covering various hallucination categories and multimodal tasks. Further refining the granularity, \cite{jiang2024792} presented Hal-Eval, a universal and fine-grained framework that introduced "Event Hallucination" as a new category, involving fictional narratives around non-existent entities. Addressing global applicability, \cite{zhang2025pex} developed CCHall, a novel benchmark for detecting \textit{joint cross-lingual and cross-modal hallucinations}, revealing significantly worse performance in these compounded scenarios.
+
+Crucially, the proliferation of benchmarks led to a critical meta-evaluation of their quality. \cite{yan2024ux8} introduced the Hallucination benchmark Quality Measurement (HQM) framework, a psychometrics-inspired approach to assess benchmark reliability and validity. Their analysis revealed significant issues in existing benchmarks, such as response bias in closed-ended tasks and misalignment with human judgment in open-ended evaluations, leading to the proposal of the High-Quality Hallucination Benchmark (HQH). Similarly, \cite{guan2023z15} developed Hallusionbench, an advanced diagnostic suite for "entangled language hallucination and visual illusion," utilizing human-edited images and control groups to systematically dissect complex failure modes. These works underscore the critical importance of tailored evaluation metrics and diagnostic suites that capture nuanced errors from cross-modal interactions, while also highlighting the persistent challenges of creating unbiased, human-aligned, and truly reliable assessments.
+
+In conclusion, the evaluation of multimodal hallucinations has progressed significantly, moving from simple object presence to complex relational, temporal, and cross-modal interactions. However, despite the development of numerous specialized benchmarks and diagnostic suites, significant challenges remain. The meta-evaluation studies reveal that many existing benchmarks suffer from reliability and validity issues, including response biases and misalignment with human judgment. The dynamic nature of MMLMs, coupled with the inherent complexity of cross-modal reasoning, necessitates continuous innovation in evaluation methodologies. Future directions must prioritize the creation of robust, unbiased, and human-aligned diagnostic tools that not only quantify hallucinations but also provide fine-grained insights into their root causes, enabling more targeted and effective mitigation strategies.
+\subsection{Training-Based Mitigation for Multimodal Models}
+\label{sec:5\_3\_training-based\_mitigation\_for\_multimodal\_models}
+
+Proactive strategies to reduce multimodal hallucinations focus on modifying the model's training process, aiming to instill robustness directly into its learned parameters. This approach seeks to build more factually consistent Multimodal Large Language Models (MLLMs) from the ground up, rather than relying solely on post-hoc corrections.
+
+An early investigation into foundational training objectives by \cite{dai20229aa} revealed that standard Vision-Language Pre-training (VLP) can inadvertently increase object hallucination, particularly when optimizing for metrics like CIDEr. To counter this, they proposed ObjMLM (Object-Masked Language Modeling), a novel pre-training objective that enhances token-level image-text alignment and controlled generation to reduce object hallucination by up to 17.4\\%. Building on the idea of improving visual grounding through data, \cite{wang2023ubf} tackled fine-grained hallucinations (incorrect attributes or behaviors) by fine-tuning Large Vision-Language Models (LVLMs) with carefully rewritten captions. Their ReCaption framework leverages ChatGPT to generate diverse, high-quality captions, enriching the training data to improve fine-grained visual-text alignment and reduce hallucination.
+
+Moving towards more efficient and scalable data generation for training, \cite{deng202405j} introduced a "judge-free" self-improvement framework for MLLMs. This approach generates controllable negative samples by blending conditional and unconditional decoding paths, and then uses a lightweight CLIP model for objective, average sentence-level verification and preference data inversion for Direct Preference Optimization (DPO). This method significantly reduces the computational costs and biases associated with relying on MLLMs as judges for feedback. Further advancing preference learning, \cite{xiao2024hv1} developed Hallucination Severity-Aware Direct Preference Optimization (HSA-DPO), which incorporates fine-grained AI feedback (including hallucination type, severity, and rationale) into the DPO objective. Their "detect-then-rewrite" pipeline for data generation enables severity-aware mitigation, prioritizing the reduction of critical hallucinations and achieving state-of-the-art performance in reducing hallucination rates.
+
+Complementing these data-centric and preference-learning approaches, \cite{wu2024n00} proposed NoiseBoost, a generalizable technique that injects Gaussian noise into projected visual tokens during various training stages, including Supervised Fine-tuning (SFT), Reinforcement Learning (RL), and Semi-Supervised Learning (SSL). This noise perturbation increases the "hardship" in visual understanding, compelling the MLLM to distribute its attention more evenly between visual and linguistic tokens, thereby reducing over-reliance on language priors and improving hallucination resistance with negligible additional training costs.
+
+Collectively, these training-based mitigation strategies demonstrate a clear progression from modifying fundamental pre-training objectives to sophisticated fine-tuning with curated data, efficient self-improvement via DPO, advanced Reinforcement Learning from AI Feedback (RLAIF), and novel regularization techniques like noise perturbation. While these methods aim to embed robustness directly into the model's parameters, they often face challenges related to the scalability of high-quality data, the computational expense of extensive retraining, and the potential for new biases introduced by synthetic data or reward models. Future research must continue to explore more efficient and robust ways to integrate factual consistency and visual grounding into the very fabric of MLLM learning.
+\subsection{Inference-Time Mitigation for Multimodal Models}
+\label{sec:5\_4\_inference-time\_mitigation\_for\_multimodal\_models}
+
+Inference-time mitigation strategies for multimodal models focus on correcting or preventing hallucinations during the generation phase or as post-processing steps, crucially without altering the core model parameters. These methods offer a flexible and often computationally efficient alternative to extensive retraining, aiming to enhance visual grounding and balance modality priors efficiently during generation.
+
+Early approaches to post-hoc correction, such as \textit{Woodpecker} \cite{yin2023hx3}, established a foundational pipeline for hallucination correction. This framework leverages external expert models, including an open-set object detector (Grounding DINO) for object existence and counts, and a pre-trained VQA model (BLIP-2-FlanT5 XXL) for attribute verification, alongside a Large Language Model (LLM) like GPT-3.5 for key concept extraction, question formulation, and final response correction. While effective in boosting factual accuracy, \textit{Woodpecker}'s fixed, multi-stage pipeline and reliance on multiple external models presented limitations in adaptability to diverse query types.
+
+Addressing this, \textit{Dentist} \cite{chang2024u3t} introduced a unified, adaptive framework that first classifies the query type (e.g., perception or reasoning) and then applies a tailored mitigation strategy within an iterative validation loop. For perception queries, it employs visual verification with sub-questions, while for reasoning queries, it uses Chain-of-Thought (CoT) prompting, all orchestrated by an external LLM (ChatGPT). This adaptive approach improves upon fixed pipelines by dynamically responding to the nature of the user's request, although it still depends heavily on the external LLM for classification and iterative refinement.
+
+Moving beyond external verification, several methods focus on intervening directly within the model's internal mechanisms during inference to improve visual grounding and balance modality priors. \textit{ClearSight} \cite{yin2025s2b} proposes Visual Amplification Fusion (VAF), a plug-and-play technique that enhances attention to visual signals specifically within the model's middle layers, where modality fusion predominantly occurs. This method argues that language bias stems from insufficient visual attention, and by amplifying visual features, it mitigates object hallucinations without the quality degradation or inference slowdown often associated with contrastive decoding. Similarly, \textit{CAUSAL MM} \cite{zhou2024lvp} employs a principled causal inference framework, applying structural causal modeling and counterfactual reasoning to attention mechanisms. By treating modality priors as confounding factors, it systematically balances visual and language attention to produce outputs more aligned with multimodal inputs, offering a deeper, more theoretical approach to modality balance.
+
+Further refining internal interventions, \textit{ICT} (Image-Object Cross-Level Trusted Intervention) \cite{chen2024j0g} operates during the forward pass to mitigate object hallucination. It calculates an "intervention direction" to shift the model's focus towards both overall image information and fine-grained object details by identifying and adjusting specific attention heads using trusted and untrusted data pairs. This method avoids additional inference latency and aims to preserve beneficial language priors, a key distinction from some contrastive decoding techniques. Complementing these, \textit{MemVR} (Memory-Space Visual Retracing) \cite{zou2024dp7} draws inspiration from human cognition's "look-twice" mechanism. It re-injects visual tokens as supplementary evidence into the model's Feed Forward Networks (FFNs) at intermediate layers, dynamically activating this process when the model exhibits high uncertainty. This aims to counteract the model's "amnesia" about visual information, enhancing factual alignment efficiently.
+
+Other inference-time strategies involve sophisticated decoding and prompting techniques. \textit{Counterfactual Inception} \cite{kim2024ozf} introduces a training-free method that prompts Large Multi-modal Models (LMMs) to self-generate "counterfactual keywords" (e.g., non-existent objects or attributes) and then explicitly instructs the model to avoid these in its response. A Plausibility Verification Process (PVP) using CLIP scores filters these keywords, ensuring they are meaningful yet sufficiently counterfactual to guide the model's reasoning. This method leverages the LMM's own generative capabilities for self-correction. In a different vein, \textit{ConVis} \cite{park20247cm} employs a Text-to-Image (T2I) model for "hallucination visualization" during contrastive decoding. It generates an image from the MLLM's initial caption, and then uses the discrepancies between this T2I-generated image and the original input to penalize hallucinated tokens during the final decoding step, offering a novel visual feedback loop.
+
+Finally, the \textit{MVP} (Multi-View Multi-Path Reasoning) framework \cite{qu2024pqc} provides a training-free and tool-free solution (within the LVLM itself) to alleviate hallucinations. It enhances visual understanding by generating multi-view captions (top-down, regular, bottom-up) from the LVLM, enriching the global visual context. Subsequently, it employs a "certainty-driven reasoning" mechanism that quantifies the certainty of answer tokens across multiple decoding paths and information views, selecting the most reliable output. This approach maximizes the innate capabilities of existing LVLMs without external tools or additional training.
+
+Despite the advancements, inference-time mitigation still faces challenges. A common limitation is the reliance on external LLMs or specialized tools, which can introduce dependencies, computational overhead, or new biases. Furthermore, the effectiveness of internal interventions is often tied to specific model architectures or internal behaviors (e.g., attention patterns, uncertainty scores). Future directions will likely focus on developing more robust, truly architecture-agnostic solutions that can efficiently balance modality priors and improve visual grounding without compromising other aspects of generation, such as fluency and diversity.
+
+
+\label{sec:future_directions,_open_challenges,_and_ethical_considerations}
+
+\section{Future Directions, Open Challenges, and Ethical Considerations}
+\label{sec:future\_directions,\_open\_challenges,\_\_and\_\_ethical\_considerations}
+
+\subsection{Towards More Robust and Trustworthy LLMs}
+\label{sec:6\_1\_towards\_more\_robust\_\_and\_\_trustworthy\_llms}
+
+The persistent challenge of hallucination fundamentally impedes the widespread adoption and trustworthiness of Large Language Models (LLMs) in critical applications. While theoretical proofs establish hallucination as an inherent and unavoidable limitation for all computable LLMs \cite{xu2024n76, li2025qzg}, the overarching goal of future research has shifted from complete eradication to robust management and mitigation. This necessitates developing models that are not only resilient to factual errors but also consistently trustworthy, providing transparent, verifiable, and explainable outputs \cite{rejeleene2024okw}. Achieving this demands a paradigm shift towards sophisticated, adaptive hybrid approaches that dynamically integrate diverse mitigation strategies, fostering greater confidence in LLM applications across complex domains.
+
+The next frontier in building trustworthy LLMs lies in \textbf{adaptive and agentic external grounding and reasoning}. While Retrieval-Augmented Generation (RAG) has emerged as a powerful paradigm (as discussed in Section 4.1), current implementations, even advanced ones, face limitations such as struggling with noisy or irrelevant retrieved documents, negative rejection, and complex information integration \cite{gao20232zb}. A critical challenge is the LLM's ability to accurately judge the \textit{utility} of retrieved passages for answering a question, rather than just their relevance \cite{zhang2024o58}. Future RAG frameworks must evolve beyond static pipelines to become more intelligent and context-aware agents that can dynamically \textit{learn} to retrieve, filter, and synthesize information. This includes developing systems that can perform conditional retrieval, activating external knowledge sources only when potential hallucinations are detected, as exemplified by early steps like DRAD \cite{su2024gnz}. Furthermore, managing long contexts and prioritizing relevant information, as explored by COFT \cite{lv2024k5x}, needs to be integrated with more sophisticated mechanisms for handling contradictory or ambiguous retrieved sources. Beyond document retrieval, the deeper integration of Knowledge Graphs (KGs) (as explored in Section 4.3) is crucial. While MindMap \cite{wen2023t6v} and Chain-of-Knowledge \cite{li2023v3v} represent significant advancements, future research must focus on enabling LLMs to not just \textit{use} KGs, but to \textit{reason with} them in a logically consistent and verifiable manner. This means moving towards methodologies like R$^3$ \cite{toroghi2024mxf}, which aims for "Right for Right Reasons" by explicitly grounding every factual reasoning step on KG triples, thereby providing transparent and auditable processes. Addressing the significant logical inconsistency of LLMs, even when presented with factual KGs \cite{ghosh2024tj5}, is paramount for true trustworthiness, demanding supervised fine-tuning and novel architectures that enforce adherence to logical rules beyond mere factual recall.
+
+Complementing external grounding, \textbf{autonomous and inherently robust internal verifiability and self-correction mechanisms} are paramount. Current self-correction strategies (detailed in Section 4.2), such as Chain-of-Verification (CoVe) \cite{dhuliawala2023rqn} and iterative self-reflection \cite{ji2023vhv}, empower LLMs to self-critique. However, these often incur significant computational costs, may not generalize across all tasks, and can still be susceptible to repeating their own errors or being influenced by the order of reasoning \cite{pan2023mwu, pan2024y3a, xie20247zk}. The future demands more efficient, adaptive, and less prompt-dependent self-correction. This involves developing methods that instill robustness directly into the model's foundational training, rather than relying solely on inference-time interventions. Early efforts like ReDRESS \cite{adams202289x} (revising noisy references) and ObjMLM loss \cite{dai20229aa} (enhancing object faithfulness) are steps in this direction. A promising avenue is the development of novel decoding strategies that actively \textit{penalize} untruthful generations. For instance, Induce-then-Contrast Decoding (ICD) \cite{zhang202396g} creates a "factually weak" model to induce hallucinations, then subtracts its knowledge from the original model's output space, effectively guiding the LLM towards factuality. This represents a proactive, internal mechanism for enhancing factual consistency. Furthermore, self-contained hallucination detection approaches leveraging metamorphic relations and prompt mutation, such as MetaQA \cite{yang20251dw}, point towards a future where models can diagnose their own inconsistencies with minimal external reliance.
+
+The integration of \textbf{causally-aware multimodal grounding} is another critical future direction, especially given that hallucinations are often exacerbated in multimodal contexts \cite{liu2024sn3}. While specialized benchmarks (Section 5.2) like ECHO and Cover for audio-language models \cite{kuan20249pm}, R-Bench for relationship hallucinations \cite{wu2024bxt}, and AVHBench for cross-modal hallucinations \cite{sungbin2024r2g} continue to diagnose unique challenges, future MMLMs must achieve robust cross-modal consistency through deeper, more principled interventions. This means moving beyond reactive post-correction pipelines like Woodpecker \cite{yin2023hx3} towards methods that embed causal understanding directly into MMLM architectures. The CAUSAL MM framework \cite{zhou2024lvp}, which employs causal inference on attention mechanisms to balance visual and language priors, represents a significant step. Future research must build upon this to develop MMLMs that are inherently robust to modality prior-induced hallucinations from the ground up. This includes advanced training interventions like HSA-DPO \cite{xiao2024hv1} for severity-aware mitigation, Residual Visual Decoding (RVD) \cite{zhong2024mfi} for re-emphasizing visual information, and ICT \cite{chen2024j0g} for enhanced visual grounding. Furthermore, addressing specific multimodal challenges like spatial hallucination in embodied AI, through prompt engineering and reinforcement learning integration \cite{zhang2025p1z}, will be crucial. Self-improvement frameworks for MLLMs using lightweight verification \cite{deng202405j} and counterfactual prompting \cite{kim2024ozf} will continue to evolve, enabling models to proactively guide themselves away from inconsistencies by seeking multi-view information and performing certainty-driven reasoning \cite{qu2024pqc}.
+
+Crucially, fostering trustworthiness extends beyond mere factual accuracy to \textbf{inherent explainability and uncertainty quantification}. While verifiability ensures correctness, true trust requires understanding \textit{why} an LLM generated a particular output and \textit{how confident} it is in that output. Future research must focus on developing LLMs that can generate inherently interpretable reasoning paths, rather than just post-hoc explanations. This involves advancing techniques for uncertainty quantification, which can stem from both the provided demonstrations and ambiguities tied to the model’s configurations \cite{ling2024hqv}. By quantifying and exposing these uncertainties, LLMs can provide users with a more nuanced understanding of their reliability. Furthermore, frameworks like LLMAuditor \cite{amirizaniani2024cad}, which integrate human-in-the-loop verification for generating probes to audit LLM inconsistencies, will be vital for ensuring transparency and verifiability at scale. This integration of XAI principles will enable LLMs to not only avoid factual errors but also to articulate their reasoning and limitations, moving towards a future where LLMs are perceived not as black boxes, but as transparent, accountable, and ultimately, more trustworthy collaborators.
+
+Despite significant progress, challenges persist in developing truly robust and trustworthy LLMs. The generalizability of these hybrid mitigation strategies across diverse domains and complex, multi-step reasoning tasks remains an active research area. Balancing computational efficiency with the depth of verification and self-correction is a continuous trade-off. Future research will likely focus on creating more adaptive, context-aware, and causally-informed hybrid systems that seamlessly integrate dynamic knowledge bases, sophisticated self-correction, and fine-grained multimodal grounding. This includes developing more intelligent agents for autonomous verification and fostering a deeper causal understanding of model failures to build truly transparent, verifiable, and explainable LLMs \cite{li2025qzg}. Ultimately, the trajectory is towards LLMs that not only perform tasks accurately but also provide clear, justifiable reasoning, inspiring unwavering confidence in their deployment across critical applications.
+\subsection{Open Challenges and Research Gaps}
+\label{sec:6\_2\_open\_challenges\_\_and\_\_research\_gaps}
+
+Despite significant advancements in understanding, detecting, and mitigating hallucinations in Large Language Models (LLMs) and Multimodal Large Language Models (MLLMs), several fundamental challenges and research gaps persist. A pivotal insight, theoretically proven by \cite{xu2024n76}, is the inherent inevitability of hallucination for any computable LLM, shifting the research paradigm from complete elimination to robust management and containment. This theoretical boundary underscores the ongoing need for more efficient, effective, and generalizable methods to combat this pervasive issue.
+
+One critical area of ongoing challenge lies in the \textbf{limitations of existing benchmarks} for evaluating hallucination. Many current benchmarks suffer from scalability issues, often relying on expensive and time-consuming human annotation \cite{cao2023ecl, oh2024xa3}. For instance, \cite{cao2023ecl} developed AutoHall to automate dataset generation, yet the underlying verification still often relies on powerful LLMs like GPT-4, raising concerns about potential circularity or inherent biases in the evaluation process \cite{li2024qrj}. Furthermore, a significant gap exists in evaluating nuanced hallucination types, particularly in dynamic and multimodal contexts. Traditional benchmarks often focus on simple object presence \cite{kaul2024ta7} or factuality at a sentence level \cite{li2024qrj}, failing to capture complex phenomena like dialogue-level inconsistencies \cite{chen2024c4k}, cross-modal driven hallucinations in audio-visual models \cite{sungbin2024r2g, kuan20249pm}, or temporal hallucinations in video understanding \cite{li2024wyb}. Benchmarks like \cite{wu2024bxt}'s R-Bench and \cite{zheng20246fk}'s Reefknot attempt to address relationship hallucinations in LVLMs, but even these can be prone to data leakage or limited in scope. The quality of these evaluation tools themselves is a concern, as highlighted by \cite{yan2024ux8}'s HQM framework, which revealed issues like response bias and misalignment with human judgment in many existing benchmarks. The need for more robust, unbiased, dynamic, and comprehensive benchmarks that can accurately reflect real-world, unconstrained generation scenarios \cite{liang20236sh} and verify complex reasoning paths \cite{oh2024xa3} remains a significant open problem.
+
+Another major hurdle is the \textbf{scalability and computational cost} associated with current detection and mitigation techniques. Many effective strategies, such as multi-step reasoning approaches like Chain-of-Verification (CoVe) \cite{dhuliawala2023rqn} or Chain-of-Knowledge (CoK) \cite{li2023v3v}, while improving factual accuracy, incur substantial computational overhead due to multiple inference calls. Similarly, advanced decoding strategies, including various forms of contrastive decoding, can significantly increase inference latency, sometimes doubling the generation time \cite{yin2025s2b, zou2024dp7, zhou2024lvp}. This makes them impractical for real-time, high-throughput applications. While efforts like Visual Amplification Fusion (VAF) \cite{yin2025s2b}, Memory-space Visual Retracing (MemVR) \cite{zou2024dp7}, and Image-Object Cross-Level Trusted Intervention (ICT) \cite{chen2024j0g} aim to reduce inference costs by operating within the forward pass or without additional passes, the fundamental trade-off between robustness and efficiency remains. Training-based mitigation techniques, such as fine-tuning with AI feedback \cite{xiao2024hv1} or caption rewrites \cite{wang2023ubf}, also demand significant computational resources and large, high-quality datasets, which are expensive to create and maintain. The "judge-free" self-improvement approach by \cite{deng202405j} attempts to mitigate this by using lightweight verifiers, but the overall cost of iterative improvement for large models remains a challenge.
+
+The \textbf{generalizability of solutions} across different LLM architectures, tasks, and hallucination types is also a prominent research gap. As comprehensive surveys by \cite{tonmoy20244e4, pan2023mwu, pan2024y3a, zhang2023k1j, ye2023yom, liu2024gxh, liu2024sn3} demonstrate, the landscape of mitigation techniques is highly diverse, often tailored to specific tasks (e.g., summarization \cite{maynez2020h3q}, dialogue systems \cite{dziri2021bw9}) or hallucination categories (e.g., object hallucination in LVLMs \cite{dai20229aa, chen2024vy7}). A unified framework that can adaptively address various types of hallucinations (e.g., perception vs. reasoning \cite{chang2024u3t}) or generalize across modalities (e.g., cross-lingual and cross-modal \cite{zhang2025pex}) is still largely elusive. While \cite{chen2024lc5}'s UNIHD framework attempts unified detection, and \cite{kim2024ozf}'s Counterfactual Inception offers a training-free, generalizable prompting method, a truly universal solution that is robust to the evolving nature of LLM errors is yet to emerge. Furthermore, the "multimodal hallucination snowballing" effect, where initial errors propagate and accumulate in multi-turn interactions \cite{zhong2024mfi}, highlights the need for more robust, context-aware, and self-correcting mechanisms, as explored by \cite{ji2023vhv}'s self-reflection methodology.
+
+Finally, \textbf{dynamic knowledge updating} to prevent 'knowledge cutoff' hallucinations remains a persistent challenge. LLMs are trained on static datasets, rendering them susceptible to generating outdated or factually incorrect information when faced with rapidly evolving real-world knowledge \cite{vu202337s}. Retrieval-Augmented Generation (RAG) approaches, such as those explored by \cite{gao2023ht7} and \cite{li2023v3v}'s Chain-of-Knowledge, aim to ground LLMs in external, up-to-date information. However, the effectiveness of RAG heavily depends on the quality and dynamism of the retrieved knowledge, as well as the LLM's ability to robustly integrate and synthesize information from potentially noisy or conflicting sources \cite{chen2023h04, sui20242u1}. The challenge extends to ensuring that LLMs can intelligently decide \textit{when} to retrieve information and \textit{how} to best integrate it without introducing new biases or hallucinations, as addressed by \cite{su2024gnz}'s DRAD framework. The integration of Knowledge Graphs (KGs) offers a promising avenue for structured, verifiable knowledge \cite{wen2023t6v}, but their scalability and real-time synchronization with LLMs also present complexities.
+
+In conclusion, while significant strides have been made in characterizing and managing LLM hallucinations, the field continues to grapple with fundamental limitations. The theoretical inevitability of hallucination necessitates a shift towards robust management rather than outright elimination. Key research gaps include developing more scalable and unbiased evaluation benchmarks, creating computationally efficient and generalizable detection and mitigation techniques, and ensuring seamless, dynamic knowledge updating without introducing new forms of misinformation. Addressing these challenges is paramount for fostering trust and enabling the safe and reliable deployment of LLMs in increasingly complex and high-stakes applications, moving towards more trustworthy and context-aware AI systems \cite{rejeleene2024okw}.
+\subsection{Ethical Implications and Responsible AI Development}
+\label{sec:6\_3\_ethical\_implications\_\_and\_\_responsible\_ai\_development}
+
+The pervasive phenomenon of hallucination in Large Language Models (LLMs) transcends mere technical imperfection, presenting profound societal and ethical challenges that necessitate a rigorous focus on responsible AI development. The generation of plausible but factually incorrect or ungrounded information by LLMs carries a significant potential for widespread misinformation, which can severely erode public trust in AI systems and lead to tangible harm in critical applications \cite{liu2024gxh, zhang2023k1j, ye2023yom, gao20242nu}.
+
+A primary ethical concern is the insidious nature of misinformation propagated by hallucinatory LLMs. Surveys consistently highlight how the imperceptibility of errors undermines the reliability and trustworthiness of these models, leading to severe consequences \cite{zhang2023k1j, ye2023yom}. \textcite{rawte2023ao8} specifically address the "troubling emergence of hallucination" and its societal concerns regarding the spread of untruths, proposing a Hallucination Vulnerability Index (HVI) to quantify risks for policymakers. The ease with which LLMs can generate convincing but false narratives poses an epistemic challenge, blurring the lines between fact and fiction and potentially manipulating public opinion or reinforcing harmful stereotypes. \textcite{li2024qrj} emphasize that hallucination "severely hinders the trustworthy and reliable deployment of LLMs in real-world applications where factual accuracy is paramount." To counter this, \textcite{liu2024gxh} provide a comprehensive tutorial on preventing and detecting misinformation, outlining strategies like AI alignment training, prompt guardrails, and retrieval augmentation as essential components of responsible deployment. Further emphasizing the need for trustworthy outputs, \textcite{rejeleene2024okw} propose a mathematical framework to evaluate the Information Quality (IQ) of LLM-generated content, focusing on consistency, relevance, and accuracy to align with human expectations and build trust.
+
+The deployment of hallucinatory models in high-stakes environments, such as medical diagnostics, legal advice, or financial analysis, presents particularly acute risks. Inaccurate information in these domains can have dire consequences, from misdiagnoses and flawed legal strategies to erroneous financial decisions, directly impacting individuals' well-being and livelihoods. \textcite{ji2023vhv} specifically address hallucination in medical generative question-answering systems, highlighting the "severe social and patient care risks" associated with inaccurate medical information and proposing mitigation strategies. Similarly, \textcite{wen2023t6v} introduce MindMap, a knowledge graph prompting approach, to reduce hallucination and enhance transparency in "high-stakes applications, such as medical diagnosis, where factual correctness, explainability, and up-to-date knowledge are critical." Even in tasks like clinical summarization, \textcite{adams202289x} found that a significant portion of reference summaries contained unsupported entities, underscoring the pervasive nature of unfaithful information in medical contexts. \textcite{du2023qu7} reinforce this by noting that hallucination "severely threatens the reliability and trustworthiness of LLMs, limiting their application in critical domains." The need for verifiable rationales in such "safety-critical LLM applications" is further emphasized by \textcite{oh2024xa3}, who develop ERBench, a benchmark for automatically verifying LLM thought processes using relational databases.
+
+Beyond factual inaccuracies, hallucinations can manifest in ways that amplify societal biases or undermine user autonomy. LLMs, trained on vast datasets reflecting human biases, can inadvertently generate content that is not only false but also discriminatory or harmful. The phenomenon of "sycophancy," where LLMs excessively agree with or flatter users, as discussed by \textcite{malmqvist2024k7x}, represents another ethical challenge. This behavior, related to hallucination, can manipulate users, erode critical thinking, and undermine the model's objectivity, posing risks to AI alignment and ethical deployment. Furthermore, specific biases, such as the "false negative problem" identified by \textcite{song2024v5n}, where LLMs are predisposed to return negative judgments even when information is consistent with the input, can lead to input-conflicting hallucinations that disproportionately affect certain contexts or user queries. These forms of hallucination raise critical questions about fairness, justice, and the potential for LLMs to exacerbate existing social inequalities if not carefully managed.
+
+Given these profound implications, the imperative for responsible AI development, encompassing transparency, accountability, fairness, and robust safety mechanisms, is paramount. Transparency is crucial for users to understand the reliability of AI outputs and the limitations of the models. Mechanisms that enable LLMs to "generate text with citations" \cite{gao2023ht7} offer a direct pathway for verifiability and accountability, allowing external scrutiny and helping users assess trustworthiness. However, the ethical question remains: what level of transparency is truly sufficient, especially when the underlying generative process remains opaque? Accountability frameworks are essential to assign responsibility when AI-generated harm occurs, a complex challenge given the probabilistic nature of LLM outputs and the distributed responsibility across developers, deployers, and users. Robust safety mechanisms, including advanced detection, mitigation, and self-correction strategies \cite{pan2023mwu, pan2024y3a, dhuliawala2023rqn}, are not merely technical fixes but ethical necessities to minimize the risk of harm. These efforts aim to ensure that LLMs adhere to principles of non-maleficence and beneficence.
+
+Ultimately, the theoretical proof by \textcite{xu2024n76} and further elaborated by \textcite{li2025qzg} that "hallucination is inevitable" for all computable LLMs fundamentally shifts the focus of responsible AI from eradication to robust management. This theoretical grounding underscores that complete elimination is not a realistic goal, necessitating a continuous ethical commitment to advanced detection, effective mitigation, and transparent deployment strategies to minimize potential harm. The ethical challenge then becomes one of governing inherently fallible systems: how do we design, deploy, and regulate LLMs to maximize their benefits while rigorously managing their unavoidable risks? This requires not only technical ingenuity but also robust ethical frameworks, clear liability guidelines, and ongoing societal dialogue to ensure that LLMs are integrated beneficially and equitably into society.
+
+
+\label{sec:conclusion}
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+\subsection{Summary of Key Developments and Trajectory}
+\label{sec:7\_1\_summary\_of\_key\_developments\_\_and\_\_trajectory}
+
+Research into Large Language Model (LLM) hallucination has undergone a significant intellectual evolution, progressing from initial problem definition and empirical detection to sophisticated mitigation strategies, and ultimately, to a theoretical understanding of its inherent inevitability. This trajectory reflects a shift in the community's perspective from aiming for complete eradication to focusing on effective management and robust deployment.
+
+The foundational understanding of hallucination began with early efforts to define and categorize the problem. \cite{maynez2020h3q} pioneered a systematic human evaluation, distinguishing between intrinsic (contradicting source) and extrinsic (adding unsupportable facts) hallucinations in abstractive summarization, highlighting the inadequacy of traditional metrics. Building on this, comprehensive surveys like \cite{zhang2023k1j} and \cite{ye2023yom} expanded these taxonomies to encompass input-conflicting, context-conflicting, and fact-conflicting hallucinations, emphasizing the unique challenges posed by LLMs' scale and versatility. \cite{rawte2023ao8} further refined this with a fine-grained categorization based on degree, orientation, and specific types, while \cite{du2023qu7} introduced association analysis to quantify and attribute hallucinations to specific model capability deficiencies. The economic and trustworthiness implications of poor information quality were underscored by \cite{rejeleene2024okw}. This foundational work culminated in the profound theoretical insight from \cite{xu2024n76}, which, using a diagonalization argument, provided a formal proof that hallucination is an inherent and inevitable limitation for all computable LLMs. This theoretical grounding fundamentally shifted the paradigm, suggesting that complete elimination is impossible and redirecting research towards effective management.
+
+With the problem characterized and its inevitability understood, research intensified on robust detection mechanisms. Early efforts, such as \cite{liu2021mo6}'s HADES dataset, focused on token-level, reference-free hallucination detection for free-form text generation, providing fine-grained signals. Addressing the challenge of black-box models, \cite{manakul20236ex} introduced SelfCheckGPT, a zero-resource method that leverages the consistency of stochastically sampled LLM outputs to identify non-factual statements. However, SelfCheckGPT sometimes struggled with LLMs generating identical hallucinated samples, a limitation addressed by \cite{yang20251dw}'s MetaQA, which utilized metamorphic relations and prompt mutation for more robust self-contained detection. The creation of specialized benchmarks became crucial for rigorous evaluation. \cite{cao2023ecl} developed AutoHall for automated, model-specific hallucination dataset generation, reducing manual annotation costs. For Retrieval-Augmented Generation (RAG) systems, \cite{chen2023h04} introduced the RGB benchmark to diagnose specific RAG capabilities like noise robustness and negative rejection, revealing persistent challenges. Dialogue-level hallucinations, a complex multi-turn phenomenon, were addressed by \cite{chen2024c4k}'s DiaHalu benchmark, while \cite{vu202337s} introduced FreshLLMs for evaluating LLMs on rapidly changing world knowledge with search engine augmentation. More recently, \cite{oh2024xa3}'s ERBench leveraged relational databases for automatically verifiable rationales, and \cite{liang20236sh}'s UHGEval provided an unconstrained generation benchmark for Chinese LLMs. The quality of these benchmarks themselves became a focus, with \cite{yan2024ux8} proposing a framework to evaluate their reliability and validity. A comprehensive empirical study by \cite{li2024qrj} further analyzed factuality hallucination across the entire LLM lifecycle, from pre-training to inference.
+
+Concurrently with detection, diverse mitigation strategies emerged, broadly categorized into external grounding and internal self-correction. For text-based LLMs, external grounding became a prominent approach. \cite{yao20229uz} introduced ReAct, a seminal paradigm interleaving verbal reasoning ("thoughts") with task-specific actions (e.g., API calls) to ground LLM responses in external environments. This was further refined by \cite{trivedi2022qsf}'s IRCoT, which dynamically used intermediate Chain-of-Thought steps as queries for iterative knowledge retrieval, significantly reducing factual errors. To enhance trustworthiness, \cite{gao2023ht7} developed ALCE, a benchmark and evaluation framework for enabling LLMs to generate text with verifiable citations. Knowledge graph integration also gained traction, with \cite{wen2023t6v}'s MindMap enabling LLMs to reason over structured graphical inputs, and \cite{sui20242u1}'s OKGQA benchmark assessing KG-augmented LLMs in open-ended QA. Earlier, \cite{dziri2021bw9}'s Neural Path Hunter used KGs for post-hoc entity correction in dialogue systems, and \cite{li2023v3v}'s Chain-of-Knowledge dynamically adapted knowledge from heterogeneous sources. Internal self-correction mechanisms also advanced, with \cite{dhuliawala2023rqn}'s Chain-of-Verification enabling LLMs to self-critique and correct factual claims by generating independent verification questions. \cite{ji2023vhv} further explored iterative self-reflection for high-stakes domains like medical QA. Novel decoding strategies also emerged, such as \cite{zhang202396g}'s Induce-then-Contrast Decoding, which leveraged "induced hallucinations" to improve factuality without retraining. More dynamic RAG approaches, like \cite{su2024gnz}'s DRAD, integrated real-time hallucination detection to conditionally trigger retrieval, while \cite{lv2024k5x}'s COFT used coarse-to-fine highlighting to reduce hallucination in long contexts. Comprehensive surveys like \cite{tonmoy20244e4}, \cite{pan2023mwu}, \cite{pan2024y3a}, and \cite{liu2024gxh} have categorized these diverse mitigation techniques, from prompt engineering to model development.
+
+As LLMs evolved into multimodal models, new and complex forms of hallucination emerged, necessitating tailored approaches. \cite{li2023249} conducted the first systematic empirical study of "object hallucination" in Large Vision-Language Models (LVLMs), proposing POPE as a more stable evaluation method and identifying object frequency as a key driver. This built on earlier work by \cite{dai20229aa} that probed object hallucination in VLP models and proposed ObjMLM loss. The field rapidly developed specialized benchmarks to characterize these multimodal failures: \cite{kuan20249pm} introduced ECHO/Cover for object hallucination in audio-language models, \cite{wu2024bxt}'s R-Bench focused on relationship hallucinations, and \cite{sungbin2024r2g}'s AVHBench addressed cross-modal hallucinations in audio-visual LLMs. Medical hallucinations were specifically targeted by \cite{chen2024hfe}'s Med-HallMark, while \cite{zheng20246fk}'s Reefknot provided a comprehensive benchmark for relation hallucinations. More complex forms include entangled language hallucination and visual illusion (\cite{guan2023z15}'s Hallusionbench), multi-object hallucination (\cite{chen2024vy7}'s ROPE), temporal hallucinations in video (\cite{li2024wyb}'s VidHalluc), and joint cross-lingual and cross-modal hallucinations (\cite{zhang2025pex}'s CCHall). \cite{jiang2024792}'s Hal-Eval introduced "event hallucination" for a universal, fine-grained evaluation. Unified detection frameworks like \cite{chen2024lc5}'s UNIHD emerged to cover various tasks and hallucination types. Mitigation strategies for multimodal models also diversified. Training-based approaches included \cite{liu2023882}'s LRV-Instruction dataset with negative instructions for robust instruction tuning, \cite{wang2023ubf}'s ReCaption for fine-grained hallucination mitigation via caption rewrites, \cite{wu2024n00}'s NoiseBoost for alleviating hallucination with noise perturbation, and \cite{xiao2024hv1}'s fine-grained AI feedback for severity-aware DPO. \cite{deng202405j} proposed a model-level judge-free self-improvement framework to reduce computational costs. Inference-time and post-hoc methods also proliferated: \cite{yin2023hx3}'s Woodpecker offered a training-free pipeline for post-generation correction, \cite{chang2024u3t}'s "Dentist" framework adaptively applied visual verification or Chain-of-Thought based on query type, and \cite{yin2025s2b}'s ClearSight enhanced visual signals to mitigate object hallucination. Other methods intervened in attention mechanisms or hidden states, such as \cite{zou2024dp7}'s Memory-space Visual Retracing, \cite{zhou2024lvp}'s CAUSAL MM for deciphering attention causality, and \cite{chen2024j0g}'s ICT for cross-level trusted intervention. Cognitive-inspired approaches like \cite{kim2024ozf}'s Counterfactual Inception prompted models to think counterfactually, while \cite{qu2024pqc}'s MVP used multi-view multi-path reasoning. The complex phenomenon of multimodal hallucination snowballing was investigated and mitigated by \cite{zhong2024mfi}. Diagnostic tools like \cite{wang2025jen}'s hallucination attack, which exploits attention sinks, also emerged to expose vulnerabilities. These developments are comprehensively surveyed by \cite{liu2024sn3}.
+
+The overall trajectory of LLM hallucination research reflects a mature understanding of its complexity. While initial efforts focused on defining and detecting the problem, the theoretical proof of its inevitability by \cite{xu2024n76} marked a pivotal shift. The field has since moved towards sophisticated management strategies, including external grounding through retrieval and knowledge graphs, internal self-correction via reasoning and verification, and specialized multimodal approaches. Despite significant progress in detection and mitigation, challenges remain in achieving complete robustness, particularly in handling dynamic, multi-modal, and conversational contexts. Future directions will likely focus on more adaptive, real-time, and resource-efficient solutions that can seamlessly integrate diverse knowledge sources and self-correction mechanisms, continually refining the balance between model creativity and factual fidelity for trustworthy AI deployment.
+\subsection{Final Outlook on Trustworthy LLMs}
+\label{sec:7\_2\_final\_outlook\_on\_trustworthy\_llms}
+
+The trajectory of Large Language Model (LLM) research, particularly concerning hallucination, culminates in a crucial paradigm shift: from the unattainable goal of complete eradication to the imperative of robust, intelligent management. The theoretical proof by \cite{xu2024n76}, demonstrating the inherent inevitability of hallucination for all computable LLMs, serves as a foundational anchor for this outlook. It underscores that future progress hinges not on eliminating this intrinsic characteristic, but on developing sophisticated mechanisms for its detection, mitigation, and, most critically, a deeper causal understanding of its origins. This ensures LLMs can be deployed beneficially and reliably, fostering confidence in their increasingly widespread applications.
+
+A primary pillar of this forward-looking perspective involves \textbf{deepening the causal understanding of model failures through white-box analysis}. While early research focused on defining and categorizing hallucinations \cite{maynez2020h3q}, and subsequent efforts developed black-box detection methods like \textit{SelfCheckGPT} \cite{manakul20236ex} and its successors \cite{yang20251dw}, the future demands a more profound mechanistic insight. Surveys like \cite{ye2023yom} have begun to systematically attribute hallucination to factors spanning data collection, knowledge gaps, and optimization processes. Critically, recent work by \cite{mckenna2023pzc} has unveiled specific biases, such as attestation and relative frequency biases, that drive hallucination in inference tasks, revealing how LLMs often rely on superficial statistical patterns rather than robust logical reasoning. Further, white-box approaches like \textit{PoLLMgraph} \cite{zhu2024hll} are pioneering the detection and forecasting of hallucination by analyzing LLM's internal state transition dynamics. This move towards understanding \textit{why} models hallucinate, by probing internal representations and decision-making processes, will enable the development of more principled prevention strategies, moving beyond reactive corrections to proactive architectural and training interventions.
+
+The second crucial theme for trustworthy LLMs is the development of \textbf{integrated and adaptive mitigation systems}. No single strategy can fully address the multifaceted nature of hallucination. The future will see a convergence of techniques, combining the strengths of external grounding, internal self-correction, and multimodal verification. Retrieval-Augmented Generation (RAG), exemplified by foundational work like \textit{ReAct} \cite{yao20229uz} and its advancements \cite{trivedi2022qsf}, will continue to evolve, becoming more robust to noisy retrieval and capable of dynamic knowledge refreshing \cite{vu202337s}. However, as highlighted by \cite{chen2023h04}'s \textit{RGB} benchmark, RAG systems still face challenges in noise robustness and information integration. This necessitates hybrid approaches that interleave RAG with sophisticated self-correction mechanisms, as comprehensively surveyed by \cite{pan2024y3a}. These systems will leverage internal consistency checks, Chain-of-Verification \cite{dhuliawala2023rqn}, and even knowledge graph integration \cite{wen2023t6v, sui20242u1} to iteratively refine and validate generated content. Furthermore, in multimodal contexts, adaptive inference strategies like \textit{Dentist} \cite{chang2024u3t} will dynamically apply visual verification or causal interventions \cite{zhou2024lvp} based on query type and perceived uncertainty, balancing modality priors and enhancing grounding. The overarching goal is to create systems that can intelligently assess their own confidence, seek external validation when uncertain, and correct errors autonomously, leading to greater precision in language generation \cite{ahmadi2024j88}.
+
+Thirdly, the future demands \textbf{dynamic, 'in-the-wild' evaluation and continuous monitoring}. Current benchmarks, while valuable, often represent static snapshots and may not fully capture the complexities and adversarial conditions of real-world deployment. The proliferation of specialized benchmarks for multimodal hallucination \cite{li2023249, kuan20249pm, wu2024bxt, sungbin2024r2g, bai2024tkm} highlights the need for context-specific evaluations. Future evaluation frameworks must move towards continuous assessment, incorporating human feedback loops, adversarial testing, and real-time anomaly detection to identify emerging hallucination patterns. This includes meta-evaluation of benchmark quality \cite{yan2024ux8} to ensure that our measurement tools are themselves reliable. The challenge of cross-lingual and cross-modal hallucinations \cite{zhang2025pex} further underscores the need for generalizable and robust evaluation methodologies that can adapt to diverse linguistic and sensory inputs.
+
+Finally, the outlook on trustworthy LLMs is inextricably linked to \textbf{responsible AI development and socio-technical integration}. Acknowledging the inevitability of hallucination means that LLMs must be deployed with clear awareness of their limitations, not just by developers but also by end-users. This necessitates robust safeguards, transparent communication about model uncertainties, and mechanisms for human oversight and intervention. The ethical implications of hallucination, including the potential for misinformation and erosion of public trust \cite{gao20242nu}, demand a strong commitment to accountability and safety. Future research must not only focus on technical solutions but also on the human-AI interface, designing systems that are inherently interpretable, explainable, and capable of conveying their confidence levels. This holistic approach, encompassing technical advancements, ethical considerations, and user education, will be paramount in fostering confidence and ensuring the beneficial integration of LLMs into society, despite their inherent imperfections.
+
+
+\newpage
+\section*{References}
+\addcontentsline{toc}{section}{References}
+
+\begin{thebibliography}{277}
+
+\bibitem{vu202337s}
+Tu Vu, Mohit Iyyer, Xuezhi Wang, et al. (2023). \textit{FreshLLMs: Refreshing Large Language Models with Search Engine Augmentation}. Annual Meeting of the Association for Computational Linguistics.
+
+\bibitem{chang2024u3t}
+Yue Chang, Liqiang Jing, Xiaopeng Zhang, et al. (2024). \textit{A Unified Hallucination Mitigation Framework for Large Vision-Language Models}. Trans. Mach. Learn. Res..
+
+\bibitem{wang2024vym}
+Jiaqi Wang, Yifei Gao, and Jitao Sang (2024). \textit{VaLiD: Mitigating the Hallucination of Large Vision Language Models by Visual Layer Fusion Contrastive Decoding}. arXiv.org.
+
+\bibitem{niu2024v97}
+Mengjia Niu, Hao Li, Jie Shi, et al. (2024). \textit{Mitigating Hallucinations in Large Language Models via Self-Refinement-Enhanced Knowledge Retrieval}. arXiv.org.
+
+\bibitem{liu2024gxh}
+Aiwei Liu, Qiang Sheng, and Xuming Hu (2024). \textit{Preventing and Detecting Misinformation Generated by Large Language Models}. Annual International ACM SIGIR Conference on Research and Development in Information Retrieval.
+
+\bibitem{li2023v3v}
+Xingxuan Li, Ruochen Zhao, Yew Ken Chia, et al. (2023). \textit{Chain-of-Knowledge: Grounding Large Language Models via Dynamic Knowledge Adapting over Heterogeneous Sources}. International Conference on Learning Representations.
+
+\bibitem{liang2024hoo}
+Mengfei Liang, Archish Arun, Zekun Wu, et al. (2024). \textit{THaMES: An End-to-End Tool for Hallucination Mitigation and Evaluation in Large Language Models}. arXiv.org.
+
+\bibitem{zhang2023k1j}
+Yue Zhang, Yafu Li, Leyang Cui, et al. (2023). \textit{Siren's Song in the AI Ocean: A Survey on Hallucination in Large Language Models}. Computational Linguistics.
+
+\bibitem{zhou2024lvp}
+Guanyu Zhou, Yibo Yan, Xin Zou, et al. (2024). \textit{Mitigating Modality Prior-Induced Hallucinations in Multimodal Large Language Models via Deciphering Attention Causality}. International Conference on Learning Representations.
+
+\bibitem{bai2024tkm}
+Zechen Bai, Pichao Wang, Tianjun Xiao, et al. (2024). \textit{Hallucination of Multimodal Large Language Models: A Survey}. arXiv.org.
+
+\bibitem{yin2023hx3}
+Shukang Yin, Chaoyou Fu, Sirui Zhao, et al. (2023). \textit{Woodpecker: Hallucination Correction for Multimodal Large Language Models}. Science China Information Sciences.
+
+\bibitem{cao2023ecl}
+Zouying Cao, Yifei Yang, and Hai Zhao (2023). \textit{AutoHall: Automated Hallucination Dataset Generation for Large Language Models}. arXiv.org.
+
+\bibitem{wu2024bxt}
+Ming-Kuan Wu, Jiayi Ji, Oucheng Huang, et al. (2024). \textit{Evaluating and Analyzing Relationship Hallucinations in Large Vision-Language Models}. International Conference on Machine Learning.
+
+\bibitem{ghosh2024tj5}
+Bishwamittra Ghosh, Sarah Hasan, Naheed Anjum Arafat, et al. (2024). \textit{Logical Consistency of Large Language Models in Fact-checking}. International Conference on Learning Representations.
+
+\bibitem{gao2023ht7}
+Tianyu Gao, Howard Yen, Jiatong Yu, et al. (2023). \textit{Enabling Large Language Models to Generate Text with Citations}. Conference on Empirical Methods in Natural Language Processing.
+
+\bibitem{yang20251dw}
+Borui Yang, Md Afif Al Mamun, Jie M. Zhang, et al. (2025). \textit{Hallucination Detection in Large Language Models with Metamorphic Relations}. Proc. ACM Softw. Eng..
+
+\bibitem{zhang2025pex}
+Yongheng Zhang, Xu Liu, Ruoxi Zhou, et al. (2025). \textit{CCHall: A Novel Benchmark for Joint Cross-Lingual and Cross-Modal Hallucinations Detection in Large Language Models}. Annual Meeting of the Association for Computational Linguistics.
+
+\bibitem{xing2024itg}
+Shangyu Xing, Fei Zhao, Zhen Wu, et al. (2024). \textit{EFUF: Efficient Fine-Grained Unlearning Framework for Mitigating Hallucinations in Multimodal Large Language Models}. Conference on Empirical Methods in Natural Language Processing.
+
+\bibitem{leng2023ohr}
+Sicong Leng, Hang Zhang, Guanzheng Chen, et al. (2023). \textit{Mitigating Object Hallucinations in Large Vision-Language Models through Visual Contrastive Decoding}. Computer Vision and Pattern Recognition.
+
+\bibitem{kim2024ozf}
+Junho Kim, Yeonju Kim, and Yonghyun Ro (2024). \textit{What if...?: Thinking Counterfactual Keywords Helps to Mitigate Hallucination in Large Multi-modal Models}. Conference on Empirical Methods in Natural Language Processing.
+
+\bibitem{li2024wyb}
+Chaoyu Li, Eun Woo Im, and Pooyan Fazli (2024). \textit{VidHalluc: Evaluating Temporal Hallucinations in Multimodal Large Language Models for Video Understanding}. Computer Vision and Pattern Recognition.
+
+\bibitem{ji20243j6}
+Ziwei Ji, Yuzhe Gu, Wenwei Zhang, et al. (2024). \textit{ANAH: Analytical Annotation of Hallucinations in Large Language Models}. Annual Meeting of the Association for Computational Linguistics.
+
+\bibitem{gao20232zb}
+Yunfan Gao, Yun Xiong, Xinyu Gao, et al. (2023). \textit{Retrieval-Augmented Generation for Large Language Models: A Survey}. arXiv.org.
+
+\bibitem{ji20227ii}
+Ziwei Ji, Zihan Liu, Nayeon Lee, et al. (2022). \textit{RHO ($ρ$): Reducing Hallucination in Open-domain Dialogues with Knowledge Grounding}. Annual Meeting of the Association for Computational Linguistics.
+
+\bibitem{adams202289x}
+Griffin Adams, Han-Chin Shing, Q. Sun, et al. (2022). \textit{Learning to Revise References for Faithful Summarization}. Conference on Empirical Methods in Natural Language Processing.
+
+\bibitem{su2024gnz}
+Weihang Su, Yichen Tang, Qingyao Ai, et al. (2024). \textit{Mitigating Entity-Level Hallucination in Large Language Models}. SIGIR-AP.
+
+\bibitem{du2023qu7}
+LI DU, Yequan Wang, Xingrun Xing, et al. (2023). \textit{Quantifying and Attributing the Hallucination of Large Language Models via Association Analysis}. arXiv.org.
+
+\bibitem{ji2023vhv}
+Ziwei Ji, Tiezheng Yu, Yan Xu, et al. (2023). \textit{Towards Mitigating Hallucination in Large Language Models via Self-Reflection}. arXiv.org.
+
+\bibitem{pan2023mwu}
+Liangming Pan, Michael Stephen Saxon, Wenda Xu, et al. (2023). \textit{Automatically Correcting Large Language Models: Surveying the landscape of diverse self-correction strategies}. arXiv.org.
+
+\bibitem{kang20238j0}
+Haoqiang Kang, and Xiao-Yang Liu (2023). \textit{Deficiency of Large Language Models in Finance: An Empirical Examination of Hallucination}. arXiv.org.
+
+\bibitem{kang202378c}
+Haoqiang Kang, Juntong Ni, and Huaxiu Yao (2023). \textit{Ever: Mitigating Hallucination in Large Language Models through Real-Time Verification and Rectification}. arXiv.org.
+
+\bibitem{dong20223yz}
+Yue Dong, J. Wieting, and Pat Verga (2022). \textit{Faithful to the Document or to the World? Mitigating Hallucinations via Entity-linked Knowledge in Abstractive Summarization}. Conference on Empirical Methods in Natural Language Processing.
+
+\bibitem{qu20240f7}
+Xiaoye Qu, Mingyang Song, Wei Wei, et al. (2024). \textit{Mitigating Multilingual Hallucination in Large Vision-Language Models}. arXiv.org.
+
+\bibitem{mckenna2023pzc}
+Nick McKenna, Tianyi Li, Liang Cheng, et al. (2023). \textit{Sources of Hallucination by Large Language Models on Inference Tasks}. Conference on Empirical Methods in Natural Language Processing.
+
+\bibitem{rejeleene2024okw}
+Rick Rejeleene, Xiaowei Xu, and John R. Talburt (2024). \textit{Towards Trustable Language Models: Investigating Information Quality of Large Language Models}. arXiv.org.
+
+\bibitem{liu2024p39}
+Xinxin Liu (2024). \textit{A Survey of Hallucination Problems Based on Large Language Models}. Applied and Computational Engineering.
+
+\bibitem{liu2024sn3}
+Hanchao Liu, Wenyuan Xue, Yifei Chen, et al. (2024). \textit{A Survey on Hallucination in Large Vision-Language Models}. arXiv.org.
+
+\bibitem{chen2024hfe}
+Jiawei Chen, Dingkang Yang, Tong Wu, et al. (2024). \textit{Detecting and Evaluating Medical Hallucinations in Large Vision Language Models}. arXiv.org.
+
+\bibitem{li2024hdc}
+Qing Li, Chenyang Lyu, Jiahui Geng, et al. (2024). \textit{Reference-free Hallucination Detection for Large Vision-Language Models}. Conference on Empirical Methods in Natural Language Processing.
+
+\bibitem{yan2024ux8}
+Bei Yan, Jie Zhang, Zheng Yuan, et al. (2024). \textit{Evaluating the Quality of Hallucination Benchmarks for Large Vision-Language Models}. arXiv.org.
+
+\bibitem{wang2024rta}
+Yuxuan Wang, Yueqian Wang, Dongyan Zhao, et al. (2024). \textit{VideoHallucer: Evaluating Intrinsic and Extrinsic Hallucinations in Large Video-Language Models}. arXiv.org.
+
+\bibitem{xie2024l8a}
+Yuxi Xie, Guanzhen Li, Xiao Xu, et al. (2024). \textit{V-DPO: Mitigating Hallucination in Large Vision Language Models via Vision-Guided Direct Preference Optimization}. Conference on Empirical Methods in Natural Language Processing.
+
+\bibitem{guan2023z15}
+Tianrui Guan, Fuxiao Liu, Xiyang Wu, et al. (2023). \textit{Hallusionbench: An Advanced Diagnostic Suite for Entangled Language Hallucination and Visual Illusion in Large Vision-Language Models}. Computer Vision and Pattern Recognition.
+
+\bibitem{liang20236sh}
+Xun Liang, Shichao Song, Simin Niu, et al. (2023). \textit{UHGEval: Benchmarking the Hallucination of Chinese Large Language Models via Unconstrained Generation}. Annual Meeting of the Association for Computational Linguistics.
+
+\bibitem{huang2023akj}
+Lei Huang, Weijiang Yu, Weitao Ma, et al. (2023). \textit{A Survey on Hallucination in Large Language Models: Principles, Taxonomy, Challenges, and Open Questions}. ACM Trans. Inf. Syst..
+
+\bibitem{lv2024k5x}
+Qitan Lv, Jie Wang, Hanzhu Chen, et al. (2024). \textit{Coarse-to-Fine Highlighting: Reducing Knowledge Hallucination in Large Language Models}. International Conference on Machine Learning.
+
+\bibitem{gu202414e}
+Yuzhe Gu, Ziwei Ji, Wenwei Zhang, et al. (2024). \textit{ANAH-v2: Scaling Analytical Hallucination Annotation of Large Language Models}. Neural Information Processing Systems.
+
+\bibitem{huang20247wn}
+Wen Huang, Hongbin Liu, Minxin Guo, et al. (2024). \textit{Visual Hallucinations of Multi-modal Large Language Models}. Annual Meeting of the Association for Computational Linguistics.
+
+\bibitem{liu2023882}
+Fuxiao Liu, Kevin Lin, Linjie Li, et al. (2023). \textit{Mitigating Hallucination in Large Multi-Modal Models via Robust Instruction Tuning}. International Conference on Learning Representations.
+
+\bibitem{ding2024o88}
+Peng Ding, Jingyu Wu, Jun Kuang, et al. (2024). \textit{Hallu-PI: Evaluating Hallucination in Multi-modal Large Language Models within Perturbed Inputs}. ACM Multimedia.
+
+\bibitem{rawte2023ao8}
+Vipula Rawte, Swagata Chakraborty, Agnibh Pathak, et al. (2023). \textit{The Troubling Emergence of Hallucination in Large Language Models - An Extensive Definition, Quantification, and Prescriptive Remediations}. Conference on Empirical Methods in Natural Language Processing.
+
+\bibitem{pan2024y3a}
+Liangming Pan, Michael Stephen Saxon, Wenda Xu, et al. (2024). \textit{Automatically Correcting Large Language Models: Surveying the Landscape of Diverse Automated Correction Strategies}. Transactions of the Association for Computational Linguistics.
+
+\bibitem{li2023rvf}
+Junyi Li, Xiaoxue Cheng, Wayne Xin Zhao, et al. (2023). \textit{HaluEval: A Large-Scale Hallucination Evaluation Benchmark for Large Language Models}. Conference on Empirical Methods in Natural Language Processing.
+
+\bibitem{zhou2023zu6}
+Yiyang Zhou, Chenhang Cui, Jaehong Yoon, et al. (2023). \textit{Analyzing and Mitigating Object Hallucination in Large Vision-Language Models}. International Conference on Learning Representations.
+
+\bibitem{han202439z}
+Zongbo Han, Zechen Bai, Haiyang Mei, et al. (2024). \textit{Skip \n: A Simple Method to Reduce Hallucination in Large Vision-Language Models}. arXiv.org.
+
+\bibitem{wang2025jen}
+Yining Wang, Mi Zhang, Junjie Sun, et al. (2025). \textit{Mirage in the Eyes: Hallucination Attack on Multi-modal Large Language Models with Only Attention Sink}. arXiv.org.
+
+\bibitem{qu2024pqc}
+Xiaoye Qu, Jiashuo Sun, Wei Wei, et al. (2024). \textit{Look, Compare, Decide: Alleviating Hallucination in Large Vision-Language Models via Multi-View Multi-Path Reasoning}. International Conference on Computational Linguistics.
+
+\bibitem{dai20229aa}
+Wenliang Dai, Zihan Liu, Ziwei Ji, et al. (2022). \textit{Plausible May Not Be Faithful: Probing Object Hallucination in Vision-Language Pre-training}. Conference of the European Chapter of the Association for Computational Linguistics.
+
+\bibitem{dziri2021bw9}
+Nouha Dziri, Andrea Madotto, Osmar Zaiane, et al. (2021). \textit{Neural Path Hunter: Reducing Hallucination in Dialogue Systems via Path Grounding}. Conference on Empirical Methods in Natural Language Processing.
+
+\bibitem{sungbin2024r2g}
+Kim Sung-Bin, Oh Hyun-Bin, JungMok Lee, et al. (2024). \textit{AVHBench: A Cross-Modal Hallucination Benchmark for Audio-Visual Large Language Models}. International Conference on Learning Representations.
+
+\bibitem{hakim2024d4u}
+Joe B Hakim, Jeffery L. Painter, D. Ramcharran, et al. (2024). \textit{The Need for Guardrails with Large Language Models in Medical Safety-Critical Settings: An Artificial Intelligence Application in the Pharmacovigilance Ecosystem}. arXiv.org.
+
+\bibitem{li2025qzg}
+Chaozhuo Li, Pengbo Wang, Chenxu Wang, et al. (2025). \textit{Loki's Dance of Illusions: A Comprehensive Survey of Hallucination in Large Language Models}. arXiv.org.
+
+\bibitem{wang2023ubf}
+Lei Wang, Jiabang He, Shenshen Li, et al. (2023). \textit{Mitigating Fine-Grained Hallucination by Fine-Tuning Large Vision-Language Models with Caption Rewrites}. Conference on Multimedia Modeling.
+
+\bibitem{chen2024c4k}
+Kedi Chen, Qin Chen, Jie Zhou, et al. (2024). \textit{DiaHalu: A Dialogue-level Hallucination Evaluation Benchmark for Large Language Models}. Conference on Empirical Methods in Natural Language Processing.
+
+\bibitem{ding20244yr}
+Hanxing Ding, Liang Pang, Zihao Wei, et al. (2024). \textit{Retrieve Only When It Needs: Adaptive Retrieval Augmentation for Hallucination Mitigation in Large Language Models}. arXiv.org.
+
+\bibitem{deng202405j}
+Shijian Deng, Wentian Zhao, Yu-Jhe Li, et al. (2024). \textit{Efficient Self-Improvement in Multimodal Large Language Models: A Model-Level Judge-Free Approach}. arXiv.org.
+
+\bibitem{chen2024j0g}
+Junzhe Chen, Tianshu Zhang, Shiyu Huang, et al. (2024). \textit{ICT: Image-Object Cross-Level Trusted Intervention for Mitigating Object Hallucination in Large Vision-Language Models}. Computer Vision and Pattern Recognition.
+
+\bibitem{chen20247jb}
+Beitao Chen, Xinyu Lyu, Lianli Gao, et al. (2024). \textit{Alleviating Hallucinations in Large Vision-Language Models through Hallucination-Induced Optimization}. Neural Information Processing Systems.
+
+\bibitem{maynez2020h3q}
+Joshua Maynez, Shashi Narayan, Bernd Bohnet, et al. (2020). \textit{On Faithfulness and Factuality in Abstractive Summarization}. Annual Meeting of the Association for Computational Linguistics.
+
+\bibitem{qu20246yn}
+Xiaoye Qu, Qiyuan Chen, Wei Wei, et al. (2024). \textit{Alleviating Hallucination in Large Vision-Language Models with Active Retrieval Augmentation}. ACM Transactions on Multimedia Computing, Communications, and Applications (TOMCCAP).
+
+\bibitem{chen2023h04}
+Jiawei Chen, Hongyu Lin, Xianpei Han, et al. (2023). \textit{Benchmarking Large Language Models in Retrieval-Augmented Generation}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{zhou2024wbi}
+Yiyang Zhou, Chenhang Cui, Rafael Rafailov, et al. (2024). \textit{Aligning Modalities in Vision Large Language Models via Preference Fine-tuning}. arXiv.org.
+
+\bibitem{jiang2024792}
+Chaoya Jiang, Wei Ye, Mengfan Dong, et al. (2024). \textit{Hal-Eval: A Universal and Fine-grained Hallucination Evaluation Framework for Large Vision Language Models}. ACM Multimedia.
+
+\bibitem{tjandra2024umq}
+Benedict Aaron Tjandra, Muhammed Razzak, Jannik Kossen, et al. (2024). \textit{Fine-Tuning Large Language Models to Appropriately Abstain with Semantic Entropy}. arXiv.org.
+
+\bibitem{umapathi2023puv}
+Logesh Kumar Umapathi, Ankit Pal, and Malaikannan Sankarasubbu (2023). \textit{Med-HALT: Medical Domain Hallucination Test for Large Language Models}. Conference on Computational Natural Language Learning.
+
+\bibitem{zou2024dp7}
+Xin Zou, Yizhou Wang, Yibo Yan, et al. (2024). \textit{Look Twice Before You Answer: Memory-Space Visual Retracing for Hallucination Mitigation in Multimodal Large Language Models}. arXiv.org.
+
+\bibitem{li2024osp}
+Ningke Li, Yuekang Li, Yi Liu, et al. (2024). \textit{Drowzee: Metamorphic Testing for Fact-Conflicting Hallucination Detection in Large Language Models}. Proc. ACM Program. Lang..
+
+\bibitem{chuang20248ey}
+Yung-Sung Chuang, Linlu Qiu, Cheng-Yu Hsieh, et al. (2024). \textit{Lookback Lens: Detecting and Mitigating Contextual Hallucinations in Large Language Models Using Only Attention Maps}. Conference on Empirical Methods in Natural Language Processing.
+
+\bibitem{li2024qrj}
+Junyi Li, Jie Chen, Ruiyang Ren, et al. (2024). \textit{The Dawn After the Dark: An Empirical Study on Factuality Hallucination in Large Language Models}. Annual Meeting of the Association for Computational Linguistics.
+
+\bibitem{wang2023zop}
+Junyan Wang, Yi Zhou, Guohai Xu, et al. (2023). \textit{Evaluation and Analysis of Hallucination in Large Vision-Language Models}. arXiv.org.
+
+\bibitem{xu2024n76}
+Ziwei Xu, Sanjay Jain, and Mohan Kankanhalli (2024). \textit{Hallucination is Inevitable: An Innate Limitation of Large Language Models}. arXiv.org.
+
+\bibitem{liu2021mo6}
+Tianyu Liu, Yizhe Zhang, C. Brockett, et al. (2021). \textit{A Token-level Reference-free Hallucination Detection Benchmark for Free-form Text Generation}. Annual Meeting of the Association for Computational Linguistics.
+
+\bibitem{manakul20236ex}
+Potsawee Manakul, Adian Liusie, and M. Gales (2023). \textit{SelfCheckGPT: Zero-Resource Black-Box Hallucination Detection for Generative Large Language Models}. Conference on Empirical Methods in Natural Language Processing.
+
+\bibitem{zhong2024mfi}
+Weihong Zhong, Xiaocheng Feng, Liang Zhao, et al. (2024). \textit{Investigating and Mitigating the Multimodal Hallucination Snowballing in Large Vision-Language Models}. Annual Meeting of the Association for Computational Linguistics.
+
+\bibitem{zhang2024qq9}
+Yuji Zhang, Sha Li, Jiateng Liu, et al. (2024). \textit{Knowledge Overshadowing Causes Amalgamated Hallucination in Large Language Models}. arXiv.org.
+
+\bibitem{wu20241us}
+J. Wu, Tsz Ting Chung, Kai Chen, et al. (2024). \textit{Unified Triplet-Level Hallucination Evaluation for Large Vision-Language Models}. Trans. Mach. Learn. Res..
+
+\bibitem{tonmoy20244e4}
+S. Tonmoy, S. M. M. Zaman, Vinija Jain, et al. (2024). \textit{A Comprehensive Survey of Hallucination Mitigation Techniques in Large Language Models}. arXiv.org.
+
+\bibitem{wu2024n00}
+Kai Wu, Boyuan Jiang, Zhengkai Jiang, et al. (2024). \textit{NoiseBoost: Alleviating Hallucination with Noise Perturbation for Multimodal Large Language Models}. arXiv.org.
+
+\bibitem{wen2023t6v}
+Yilin Wen, Zifeng Wang, and Jimeng Sun (2023). \textit{MindMap: Knowledge Graph Prompting Sparks Graph of Thoughts in Large Language Models}. Annual Meeting of the Association for Computational Linguistics.
+
+\bibitem{li2023249}
+Yifan Li, Yifan Du, Kun Zhou, et al. (2023). \textit{Evaluating Object Hallucination in Large Vision-Language Models}. Conference on Empirical Methods in Natural Language Processing.
+
+\bibitem{lan20240yz}
+Wei Lan, Wenyi Chen, Qingfeng Chen, et al. (2024). \textit{A Survey of Hallucination in Large Visual Language Models}. arXiv.org.
+
+\bibitem{dhuliawala2023rqn}
+S. Dhuliawala, M. Komeili, Jing Xu, et al. (2023). \textit{Chain-of-Verification Reduces Hallucination in Large Language Models}. Annual Meeting of the Association for Computational Linguistics.
+
+\bibitem{sui20242u1}
+Yuan Sui, and Bryan Hooi (2024). \textit{Can Knowledge Graphs Make Large Language Models More Trustworthy? An Empirical Study over Open-ended Question Answering}. Annual Meeting of the Association for Computational Linguistics.
+
+\bibitem{xiao2024hv1}
+Wenyi Xiao, Ziwei Huang, Leilei Gan, et al. (2024). \textit{Detecting and Mitigating Hallucination in Large Vision Language Models via Fine-Grained AI Feedback}. arXiv.org.
+
+\bibitem{trivedi2022qsf}
+H. Trivedi, Niranjan Balasubramanian, Tushar Khot, et al. (2022). \textit{Interleaving Retrieval with Chain-of-Thought Reasoning for Knowledge-Intensive Multi-Step Questions}. Annual Meeting of the Association for Computational Linguistics.
+
+\bibitem{park20247cm}
+Yeji Park, Deokyeong Lee, Junsuk Choe, et al. (2024). \textit{ConVis: Contrastive Decoding with Hallucination Visualization for Mitigating Hallucinations in Multimodal Large Language Models}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{sridhar2022l1c}
+A. Sridhar, and Erik M. Visser (2022). \textit{Improved Beam Search for Hallucination Mitigation in Abstractive Summarization}. arXiv.org.
+
+\bibitem{su2024lem}
+Weihang Su, Changyue Wang, Qingyao Ai, et al. (2024). \textit{Unsupervised Real-Time Hallucination Detection based on the Internal States of Large Language Models}. Annual Meeting of the Association for Computational Linguistics.
+
+\bibitem{luo2023xyc}
+Junyu Luo, Cao Xiao, and Fenglong Ma (2023). \textit{Zero-Resource Hallucination Prevention for Large Language Models}. Conference on Empirical Methods in Natural Language Processing.
+
+\bibitem{wu2024h81}
+Jun Wu, Q. Liu, Ding Wang, et al. (2024). \textit{Logical Closed Loop: Uncovering Object Hallucinations in Large Vision-Language Models}. Annual Meeting of the Association for Computational Linguistics.
+
+\bibitem{chen2024vy7}
+Xuweiyi Chen, Ziqiao Ma, Xuejun Zhang, et al. (2024). \textit{Multi-Object Hallucination in Vision-Language Models}. Neural Information Processing Systems.
+
+\bibitem{zheng20246fk}
+Kening Zheng, Junkai Chen, Yibo Yan, et al. (2024). \textit{Reefknot: A Comprehensive Benchmark for Relation Hallucination Evaluation, Analysis and Mitigation in Multimodal Large Language Models}. Annual Meeting of the Association for Computational Linguistics.
+
+\bibitem{chen2024lc5}
+Xiang Chen, Chenxi Wang, Yida Xue, et al. (2024). \textit{Unified Hallucination Detection for Multimodal Large Language Models}. Annual Meeting of the Association for Computational Linguistics.
+
+\bibitem{sahoo2024hcb}
+Pranab Sahoo, Prabhash Meharia, Akash Ghosh, et al. (2024). \textit{A Comprehensive Survey of Hallucination in Large Language, Image, Video and Audio Foundation Models}. Conference on Empirical Methods in Natural Language Processing.
+
+\bibitem{zhang2024mmj}
+Ruiyang Zhang, Hu Zhang, and Zhedong Zheng (2024). \textit{VL-Uncertainty: Detecting Hallucination in Large Vision-Language Model via Uncertainty Estimation}. arXiv.org.
+
+\bibitem{qiu2024zyc}
+Han Qiu, Jiaxing Huang, Peng Gao, et al. (2024). \textit{LongHalQA: Long-Context Hallucination Evaluation for MultiModal Large Language Models}. arXiv.org.
+
+\bibitem{oh2024xa3}
+Jio Oh, Soyeon Kim, Junseok Seo, et al. (2024). \textit{ERBench: An Entity-Relationship based Automatically Verifiable Hallucination Benchmark for Large Language Models}. Neural Information Processing Systems.
+
+\bibitem{zhang202396g}
+Yue Zhang, Leyang Cui, Wei Bi, et al. (2023). \textit{Alleviating Hallucinations of Large Language Models through Induced Hallucinations}. North American Chapter of the Association for Computational Linguistics.
+
+\bibitem{yin2025s2b}
+Hao Yin, Guangzong Si, and Zilei Wang (2025). \textit{ClearSight: Visual Signal Enhancement for Object Hallucination Mitigation in Multimodal Large Language Models}. Computer Vision and Pattern Recognition.
+
+\bibitem{goyal2021onb}
+Tanya Goyal, Jiacheng Xu, J. Li, et al. (2021). \textit{Training Dynamics for Text Summarization Models}. Findings.
+
+\bibitem{kuan20249pm}
+Chun-Yi Kuan, Wei-Ping Huang, and Hung-yi Lee (2024). \textit{Understanding Sounds, Missing the Questions: The Challenge of Object Hallucination in Large Audio-Language Models}. Interspeech.
+
+\bibitem{kaul2024ta7}
+Prannay Kaul, Zhizhong Li, Hao Yang, et al. (2024). \textit{THRONE: An Object-Based Hallucination Benchmark for the Free-Form Generations of Large Vision-Language Models}. Computer Vision and Pattern Recognition.
+
+\bibitem{yebin2024txh}
+Moon Ye-Bin, Nam Hyeon-Woo, Wonseok Choi, et al. (2024). \textit{BEAF: Observing BEfore-AFter Changes to Evaluate Hallucination in Vision-language Models}. European Conference on Computer Vision.
+
+\bibitem{zhao2024ge8}
+Linxi Zhao, Yihe Deng, Weitong Zhang, et al. (2024). \textit{Mitigating Object Hallucination in Large Vision-Language Models via Image-Grounded Guidance}. Unpublished manuscript.
+
+\bibitem{ye2023yom}
+Hongbin Ye, Tong Liu, Aijia Zhang, et al. (2023). \textit{Cognitive Mirage: A Review of Hallucinations in Large Language Models}. LKM@IJCAI.
+
+\bibitem{zhang2023k5a}
+Hanning Zhang, Shizhe Diao, Yong Lin, et al. (2023). \textit{R-Tuning: Instructing Large Language Models to Say ‘I Don’t Know’}. North American Chapter of the Association for Computational Linguistics.
+
+\bibitem{li2022ypy}
+Yanyang Li, Jianqiao Zhao, M. Lyu, et al. (2022). \textit{Eliciting Knowledge from Large Pre-Trained Models for Unsupervised Knowledge-Grounded Conversation}. Conference on Empirical Methods in Natural Language Processing.
+
+\bibitem{huang2023du3}
+Qidong Huang, Xiao-wen Dong, Pan Zhang, et al. (2023). \textit{OPERA: Alleviating Hallucination in Multi-Modal Large Language Models via Over-Trust Penalty and Retrospection-Allocation}. Computer Vision and Pattern Recognition.
+
+\bibitem{tang2024a1j}
+Jianheng Tang, Qifan Zhang, Yuhan Li, et al. (2024). \textit{GraphArena: Evaluating and Exploring Large Language Models on Graph Computation}. International Conference on Learning Representations.
+
+\bibitem{fu2024yqj}
+Yuhan Fu, Ruobing Xie, Xingwu Sun, et al. (2024). \textit{Mitigating Hallucination in Multimodal Large Language Model via Hallucination-targeted Direct Preference Optimization}. Annual Meeting of the Association for Computational Linguistics.
+
+\bibitem{yao20229uz}
+Shunyu Yao, Jeffrey Zhao, Dian Yu, et al. (2022). \textit{ReAct: Synergizing Reasoning and Acting in Language Models}. International Conference on Learning Representations.
+
+\bibitem{kanthara2022kuj}
+Shankar Kanthara, Rixie Tiffany Ko Leong, Xiang Lin, et al. (2022). \textit{Chart-to-Text: A Large-Scale Benchmark for Chart Summarization}. Annual Meeting of the Association for Computational Linguistics.
+
+\bibitem{kim2021obx}
+Boseop Kim, Hyoungseok Kim, Sang-Woo Lee, et al. (2021). \textit{What Changes Can Large-scale Language Models Bring? Intensive Study on HyperCLOVA: Billions-scale Korean Generative Pretrained Transformers}. Conference on Empirical Methods in Natural Language Processing.
+
+\bibitem{xia20224cl}
+Mengzhou Xia, Mikel Artetxe, Chunting Zhou, et al. (2022). \textit{Training Trajectories of Language Models Across Scales}. Annual Meeting of the Association for Computational Linguistics.
+
+\bibitem{aharoni2022ioz}
+Roee Aharoni, Shashi Narayan, Joshua Maynez, et al. (2022). \textit{mFACE: Multilingual Summarization with Factual Consistency Evaluation}. Annual Meeting of the Association for Computational Linguistics.
+
+\bibitem{zhang2022p55}
+Haopeng Zhang, Semih Yavuz, Wojciech Kryscinski, et al. (2022). \textit{Improving the Faithfulness of Abstractive Summarization via Entity Coverage Control}. NAACL-HLT.
+
+\bibitem{jiang2022reg}
+Wenhui Jiang, Minwei Zhu, Yuming Fang, et al. (2022). \textit{Visual Cluster Grounding for Image Captioning}. IEEE Transactions on Image Processing.
+
+\bibitem{wang2020vz6}
+Hongmin Wang (2020). \textit{Revisiting Challenges in Data-to-Text Generation with Fact Grounding}. International Conference on Natural Language Generation.
+
+\bibitem{chen2022gkm}
+Sihao Chen, S. Buthpitiya, Alex Fabrikant, et al. (2022). \textit{PropSegmEnt: A Large-Scale Corpus for Proposition-Level Segmentation and Entailment Recognition}. Annual Meeting of the Association for Computational Linguistics.
+
+\bibitem{korbak202191w}
+Tomasz Korbak, Hady ElSahar, Germán Kruszewski, et al. (2021). \textit{Controlling Conditional Language Models without Catastrophic Forgetting}. International Conference on Machine Learning.
+
+\bibitem{raman20229ce}
+K. Raman, Iftekhar Naim, Jiecao Chen, et al. (2022). \textit{Transforming Sequence Tagging Into A Seq2Seq Task}. Conference on Empirical Methods in Natural Language Processing.
+
+\bibitem{liu2021h6c}
+Ling Liu, and Mans Hulden (2021). \textit{Can a Transformer Pass the Wug Test? Tuning Copying Bias in Neural Morphological Inflection Models}. Annual Meeting of the Association for Computational Linguistics.
+
+\bibitem{norlund2021462}
+Tobias Norlund, Lovisa Hagström, and Richard Johansson (2021). \textit{Transferring Knowledge from Vision to Language: How to Achieve it and how to Measure it?}. BlackboxNLP Workshop on Analyzing and Interpreting Neural Networks for NLP.
+
+\bibitem{wu20206gt}
+Tao Wu, E. Chio, Heng-Tze Cheng, et al. (2020). \textit{Zero-Shot Heterogeneous Transfer Learning from Recommender Systems to Cold-Start Search Retrieval}. International Conference on Information and Knowledge Management.
+
+\bibitem{liu2022hw7}
+Yongtai Liu, Joshua Maynez, Gonçalo Simões, et al. (2022). \textit{Data Augmentation for Low-Resource Dialogue Summarization}. NAACL-HLT.
+
+\bibitem{jelinek2016205}
+L. Jelinek, M. Hauschildt, C. Wittekind, et al. (2016). \textit{Efficacy of Metacognitive Training for Depression: A Randomized Controlled Trial}. Psychotherapy and Psychosomatics.
+
+\bibitem{raunak2022r58}
+Vikas Raunak, and Arul Menezes (2022). \textit{Finding Memo: Extractive Memorization in Constrained Sequence Generation Tasks}. Conference on Empirical Methods in Natural Language Processing.
+
+\bibitem{saha20229lo}
+Swarnadeep Saha, Xinyan Velocity Yu, Mohit Bansal, et al. (2022). \textit{MURMUR: Modular Multi-Step Reasoning for Semi-Structured Data-to-Text Generation}. Annual Meeting of the Association for Computational Linguistics.
+
+\bibitem{ham20213fx}
+Soomin Ham, Kibaek Park, Yeongjun Jang, et al. (2021). \textit{KSL-Guide: A Large-scale Korean Sign Language Dataset Including Interrogative Sentences for Guiding the Deaf and Hard-of-Hearing}. IEEE International Conference on Automatic Face & Gesture Recognition.
+
+\bibitem{jeong20180d2}
+Eunji Jeong, Sungwoo Cho, Gyeong-In Yu, et al. (2018). \textit{JANUS: Fast and Flexible Deep Learning via Symbolic Graph Execution of Imperative Programs}. Symposium on Networked Systems Design and Implementation.
+
+\bibitem{kedia2022c03}
+Akhil Kedia, Mohd Abbas Zaidi, and Haejun Lee (2022). \textit{FiE: Building a Global Probability Space by Leveraging Early Fusion in Encoder for Open-Domain Question Answering}. Conference on Empirical Methods in Natural Language Processing.
+
+\bibitem{gallace201080s}
+A. Gallace, and A. Gallace (2010). \textit{Touch and the body: The role of the somatosensory cortex in tactile awareness}. Unpublished manuscript.
+
+\bibitem{li20203k7}
+Xintong Li, Aleksandre Maskharashvili, S. Stevens-Guille, et al. (2020). \textit{Leveraging Large Pretrained Models for WebNLG 2020}. WEBNLG.
+
+\bibitem{zhou2011j8m}
+Tom Chao Zhou, Chin-Yew Lin, Irwin King, et al. (2011). \textit{Learning to Suggest Questions in Online Forums}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{injae2016yq6}
+Shin In-Jae, Byungkwen Song, and D. Eom (2016). \textit{Auto-Mapping and Configuration Method of IEC 61850 Information Model Based on OPC UA}. Unpublished manuscript.
+
+\bibitem{jeong2019z3k}
+Eunji Jeong, Sungwoo Cho, Gyeong-In Yu, et al. (2019). \textit{Speculative Symbolic Graph Execution of Imperative Deep Learning Programs}. ACM SIGOPS Operating Systems Review.
+
+\bibitem{rajani20171n9}
+Nazneen Rajani, Mihaela A. Bornea, and Ken Barker (2017). \textit{Stacking With Auxiliary Features for Entity Linking in the Medical Domain}. Workshop on Biomedical Natural Language Processing.
+
+\bibitem{wang202379k}
+Shuhe Wang, Xiaofei Sun, Xiaoya Li, et al. (2023). \textit{GPT-NER: Named Entity Recognition via Large Language Models}. North American Chapter of the Association for Computational Linguistics.
+
+\bibitem{alshahwan2024v64}
+N. Alshahwan, Jubin Chheda, Anastasia Finogenova, et al. (2024). \textit{Automated Unit Test Improvement using Large Language Models at Meta}. SIGSOFT FSE Companion.
+
+\bibitem{zou2024ucl}
+Wei Zou, Runpeng Geng, Binghui Wang, et al. (2024). \textit{PoisonedRAG: Knowledge Poisoning Attacks to Retrieval-Augmented Generation of Large Language Models}. arXiv.org.
+
+\bibitem{fadeeva2024lt8}
+Ekaterina Fadeeva, Aleksandr Rubashevskii, Artem Shelmanov, et al. (2024). \textit{Fact-Checking the Output of Large Language Models via Token-Level Uncertainty Quantification}. Annual Meeting of the Association for Computational Linguistics.
+
+\bibitem{nguyen2023obn}
+Thuat Nguyen, C. Nguyen, Viet Dac Lai, et al. (2023). \textit{CulturaX: A Cleaned, Enormous, and Multilingual Dataset for Large Language Models in 167 Languages}. International Conference on Language Resources and Evaluation.
+
+\bibitem{zou2024c26}
+Wei Zou, Runpeng Geng, Binghui Wang, et al. (2024). \textit{PoisonedRAG: Knowledge Corruption Attacks to Retrieval-Augmented Generation of Large Language Models}. Unpublished manuscript.
+
+\bibitem{li2023f7d}
+Huao Li, Yu Quan Chong, Simon Stepputtis, et al. (2023). \textit{Theory of Mind for Multi-Agent Collaboration via Large Language Models}. Conference on Empirical Methods in Natural Language Processing.
+
+\bibitem{wang2023hgw}
+Yiming Wang, Zhuosheng Zhang, and Rui Wang (2023). \textit{Element-aware Summarization with Large Language Models: Expert-aligned Evaluation and Chain-of-Thought Method}. Annual Meeting of the Association for Computational Linguistics.
+
+\bibitem{chen2023gii}
+Yuyan Chen, Qiang Fu, Yichen Yuan, et al. (2023). \textit{Hallucination Detection: Robustly Discerning Reliable Answers in Large Language Models}. International Conference on Information and Knowledge Management.
+
+\bibitem{gilbert2024uu2}
+S. Gilbert, J. Kather, and Aidan Hogan (2024). \textit{Augmented non-hallucinating large language models as medical information curators}. npj Digit. Medicine.
+
+\bibitem{kim2024vgn}
+Sunkyu Kim, Choong-kun Lee, and Seung-seob Kim (2024). \textit{Large Language Models: A Guide for Radiologists}. Korean Journal of Radiology.
+
+\bibitem{wang2024sae}
+Jianing Wang, Junda Wu, Yupeng Hou, et al. (2024). \textit{InstructGraph: Boosting Large Language Models via Graph-centric Instruction Tuning and Preference Alignment}. Annual Meeting of the Association for Computational Linguistics.
+
+\bibitem{huang20233v0}
+Yuheng Huang, Jiayang Song, Zhijie Wang, et al. (2023). \textit{Look Before You Leap: An Exploratory Study of Uncertainty Measurement for Large Language Models}. arXiv.org.
+
+\bibitem{zhao2024s3a}
+Linxi Zhao, Yihe Deng, Weitong Zhang, et al. (2024). \textit{Mitigating Object Hallucination in Large Vision-Language Models via Classifier-Free Guidance}. arXiv.org.
+
+\bibitem{leiser2024kfo}
+Florian Leiser, S. Eckhardt, Valentin Leuthe, et al. (2024). \textit{HILL: A Hallucination Identifier for Large Language Models}. International Conference on Human Factors in Computing Systems.
+
+\bibitem{malmqvist2024k7x}
+Lars Malmqvist (2024). \textit{Sycophancy in Large Language Models: Causes and Mitigations}. arXiv.org.
+
+\bibitem{lin2024gru}
+Sheng-Chieh Lin, Luyu Gao, Barlas Oğuz, et al. (2024). \textit{FLAME: Factuality-Aware Alignment for Large Language Models}. Neural Information Processing Systems.
+
+\bibitem{li2023dw0}
+Xingxuan Li, Ruochen Zhao, Yew Ken Chia, et al. (2023). \textit{Chain of Knowledge: A Framework for Grounding Large Language Models with Structured Knowledge Bases}. arXiv.org.
+
+\bibitem{ma2023mka}
+Fan Ma, Xiaojie Jin, Heng Wang, et al. (2023). \textit{Vista-llama: Reducing Hallucination in Video Language Models via Equal Distance to Visual Tokens}. Computer Vision and Pattern Recognition.
+
+\bibitem{song2024t8k}
+Peiyang Song, Kaiyu Yang, and Anima Anandkumar (2024). \textit{Towards Large Language Models as Copilots for Theorem Proving in Lean}. arXiv.org.
+
+\bibitem{jiang20242kz}
+Che Jiang, Biqing Qi, Xiangyu Hong, et al. (2024). \textit{On Large Language Models’ Hallucination with Regard to Known Facts}. North American Chapter of the Association for Computational Linguistics.
+
+\bibitem{song2024br2}
+Peiyang Song, Kaiyu Yang, and Anima Anandkumar (2024). \textit{Lean Copilot: Large Language Models as Copilots for Theorem Proving in Lean}. NeuS.
+
+\bibitem{liu2024ker}
+Haochen Liu, Song Wang, Yaochen Zhu, et al. (2024). \textit{Knowledge Graph-Enhanced Large Language Models via Path Selection}. Annual Meeting of the Association for Computational Linguistics.
+
+\bibitem{sun2024z6b}
+Yuhong Sun, Zhangyue Yin, Qipeng Guo, et al. (2024). \textit{Benchmarking Hallucination in Large Language Models Based on Unanswerable Math Word Problem}. International Conference on Language Resources and Evaluation.
+
+\bibitem{ling2024hqv}
+Chen Ling, Xujiang Zhao, Wei Cheng, et al. (2024). \textit{Uncertainty Quantification for In-Context Learning of Large Language Models}. North American Chapter of the Association for Computational Linguistics.
+
+\bibitem{li2024jbb}
+Moxin Li, Wenjie Wang, Fuli Feng, et al. (2024). \textit{Think Twice Before Trusting: Self-Detection for Large Language Models through Comprehensive Answer Reflection}. Conference on Empirical Methods in Natural Language Processing.
+
+\bibitem{smith2023i8w}
+Andrew L Smith, Felix Greaves, and T. Panch (2023). \textit{Hallucination or Confabulation? Neuroanatomy as metaphor in Large Language Models}. PLOS Digital Health.
+
+\bibitem{shah20242sx}
+Savyasachi V. Shah (2024). \textit{Accuracy, Consistency, and Hallucination of Large Language Models When Analyzing Unstructured Clinical Notes in Electronic Medical Records.}. JAMA Network Open.
+
+\bibitem{pan2024hm4}
+Zhenyu Pan, Haozheng Luo, Manling Li, et al. (2024). \textit{Chain-of-Action: Faithful and Multimodal Question Answering through Large Language Models}. International Conference on Learning Representations.
+
+\bibitem{zhang2024o58}
+Hengran Zhang, Ruqing Zhang, J. Guo, et al. (2024). \textit{Are Large Language Models Good at Utility Judgments?}. Annual International ACM SIGIR Conference on Research and Development in Information Retrieval.
+
+\bibitem{tang2024cxa}
+Jianheng Tang, Qifan Zhang, Yuhan Li, et al. (2024). \textit{GraphArena: Benchmarking Large Language Models on Graph Computational Problems}. arXiv.org.
+
+\bibitem{zhou2024d14}
+Xiongtao Zhou, Jie He, Yuhua Ke, et al. (2024). \textit{An Empirical Study on Parameter-Efficient Fine-Tuning for MultiModal Large Language Models}. Annual Meeting of the Association for Computational Linguistics.
+
+\bibitem{zhao2024g9c}
+Ruilin Zhao, Feng Zhao, Long Wang, et al. (2024). \textit{KG-CoT: Chain-of-Thought Prompting of Large Language Models over Knowledge Graphs for Knowledge-Aware Question Answering}. International Joint Conference on Artificial Intelligence.
+
+\bibitem{pan2024uot}
+Zhenyu Pan, Haozheng Luo, Manling Li, et al. (2024). \textit{Conv-CoA: Improving Open-domain Question Answering in Large Language Models via Conversational Chain-of-Action}. arXiv.org.
+
+\bibitem{zhu2024hll}
+Derui Zhu, Dingfan Chen, Qing Li, et al. (2024). \textit{PoLLMgraph: Unraveling Hallucinations in Large Language Models via State Transition Dynamics}. NAACL-HLT.
+
+\bibitem{zhang20252at}
+Wan Zhang, and Jing Zhang (2025). \textit{Hallucination Mitigation for Retrieval-Augmented Large Language Models: A Review}. Mathematics.
+
+\bibitem{chen2024kgu}
+Lida Chen, Zujie Liang, Xintao Wang, et al. (2024). \textit{Teaching Large Language Models to Express Knowledge Boundary from Their Own Signals}. Proceedings of the 3rd Workshop on Towards Knowledgeable Foundation Models (KnowFM).
+
+\bibitem{dernbach2024w0b}
+Stefan Dernbach, Khushbu Agarwal, Alejandro Zuniga, et al. (2024). \textit{GLaM: Fine-Tuning Large Language Models for Domain Knowledge Graph Alignment via Neighborhood Partitioning and Generative Subgraph Encoding}. AAAI Spring Symposia.
+
+\bibitem{wu202407f}
+Jiageng Wu, Xian Wu, and Jie Yang (2024). \textit{Guiding Clinical Reasoning with Large Language Models via Knowledge Seeds}. International Joint Conference on Artificial Intelligence.
+
+\bibitem{ahn2024r1o}
+Jaewoo Ahn, Taehyun Lee, Junyoung Lim, et al. (2024). \textit{TimeChara: Evaluating Point-in-Time Character Hallucination of Role-Playing Large Language Models}. Annual Meeting of the Association for Computational Linguistics.
+
+\bibitem{mou2024fsy}
+Xinyi Mou, Zejun Li, Hanjia Lyu, et al. (2024). \textit{Unifying Local and Global Knowledge: Empowering Large Language Models as Political Experts with Knowledge Graphs}. The Web Conference.
+
+\bibitem{xu2024f68}
+Derong Xu, Ziheng Zhang, Zhihong Zhu, et al. (2024). \textit{Editing Factual Knowledge and Explanatory Ability of Medical Large Language Models}. International Conference on Information and Knowledge Management.
+
+\bibitem{hu2024fnt}
+Xiangkun Hu, Dongyu Ru, Lin Qiu, et al. (2024). \textit{RefChecker: Reference-based Fine-grained Hallucination Checker and Benchmark for Large Language Models}. arXiv.org.
+
+\bibitem{mukherjee2024o5w}
+Subhojyoti Mukherjee, Anusha Lalitha, Sailik Sengupta, et al. (2024). \textit{Multi-Objective Alignment of Large Language Models Through Hypervolume Maximization}. arXiv.org.
+
+\bibitem{jiao2024l4e}
+Qirui Jiao, Daoyuan Chen, Yilun Huang, et al. (2024). \textit{Enhancing Multimodal Large Language Models with Vision Detection Models: An Empirical Study}. arXiv.org.
+
+\bibitem{ding20245e3}
+Hao Ding, Ziwei Fan, Ingo Gühring, et al. (2024). \textit{Reasoning and Planning with Large Language Models in Code Development}. Knowledge Discovery and Data Mining.
+
+\bibitem{wang2024swy}
+Chengpeng Wang, Wuqi Zhang, Zian Su, et al. (2024). \textit{Sanitizing Large Language Models in Bug Detection with Data-Flow}. Conference on Empirical Methods in Natural Language Processing.
+
+\bibitem{chen2024md6}
+Zhuo Chen, Jiawei Liu, Haotan Liu, et al. (2024). \textit{Black-Box Opinion Manipulation Attacks to Retrieval-Augmented Generation of Large Language Models}. arXiv.org.
+
+\bibitem{wang2023ynd}
+Xiaohua Wang, Yuliang Yan, Longtao Huang, et al. (2023). \textit{Hallucination Detection for Generative Large Language Models by Bayesian Sequential Estimation}. Conference on Empirical Methods in Natural Language Processing.
+
+\bibitem{yeo2024g7d}
+Wei Jie Yeo, Teddy Ferdinan, Przemysław Kazienko, et al. (2024). \textit{Self-training Large Language Models through Knowledge Detection}. Conference on Empirical Methods in Natural Language Processing.
+
+\bibitem{hu2024fld}
+Sihao Hu, Tiansheng Huang, and Ling Liu (2024). \textit{PokeLLMon: A Human-Parity Agent for Pokemon Battles with Large Language Models}. arXiv.org.
+
+\bibitem{zhang2024ia4}
+Zhenhong Zhang, Jiajing Chen, Weiyan Shi, et al. (2024). \textit{Contrastive Learning for Knowledge-Based Question Generation in Large Language Models}. 2024 5th International Conference on Intelligent Computing and Human-Computer Interaction (ICHCI).
+
+\bibitem{yang2024iia}
+Dingkang Yang, Dongling Xiao, Jinjie Wei, et al. (2024). \textit{Improving Factuality in Large Language Models via Decoding-Time Hallucinatory and Truthful Comparators}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{yu2023ine}
+Xiaodong Yu, Hao Cheng, Xiaodong Liu, et al. (2023). \textit{ReEval: Automatic Hallucination Evaluation for Retrieval-Augmented Large Language Models via Transferable Adversarial Attacks}. NAACL-HLT.
+
+\bibitem{gu2024eig}
+Zishan Gu, Changchang Yin, Fenglin Liu, et al. (2024). \textit{MedVH: Towards Systematic Evaluation of Hallucination for Large Vision Language Models in the Medical Context}. arXiv.org.
+
+\bibitem{liu2024kf2}
+Lihui Liu, Zihao Wang, Ruizhong Qiu, et al. (2024). \textit{Logic Query of Thoughts: Guiding Large Language Models to Answer Complex Logic Queries with Knowledge Graphs}. arXiv.org.
+
+\bibitem{woo2024dtm}
+B. Woo, Tom Huynh, Arthur Tang, et al. (2024). \textit{Transforming nursing with large language models: from concept to practice.}. European Journal of Cardiovascular Nursing.
+
+\bibitem{zhao20246wi}
+Xiutian Zhao, Ke Wang, and Wei Peng (2024). \textit{Measuring the Inconsistency of Large Language Models in Preferential Ranking}. KNOWLLM.
+
+\bibitem{qian2024mj9}
+Xinying Qian, Ying Zhang, Yu Zhao, et al. (2024). \textit{TimeR^4 : Time-aware Retrieval-Augmented Large Language Models for Temporal Knowledge Graph Question Answering}. Conference on Empirical Methods in Natural Language Processing.
+
+\bibitem{butler20242xs}
+J. Butler, James Puleo, Michael Harrington, et al. (2024). \textit{From technical to understandable: Artificial Intelligence Large Language Models improve the readability of knee radiology reports.}. Knee Surgery, Sports Traumatology, Arthroscopy.
+
+\bibitem{sahoo202420w}
+N. R. Sahoo, Ashita Saxena, Kishan Maharaj, et al. (2024). \textit{Addressing Bias and Hallucination in Large Language Models}. International Conference on Language Resources and Evaluation.
+
+\bibitem{zuo20242i0}
+Kaiwen Zuo, and Yirui Jiang (2024). \textit{MedHallBench: A New Benchmark for Assessing Hallucination in Medical Large Language Models}. arXiv.org.
+
+\bibitem{parente2024vlq}
+D. J. Parente (2024). \textit{Generative Artificial Intelligence and Large Language Models in Primary Care Medical Education.}. Family Medicine.
+
+\bibitem{zhao2024h5n}
+Haiyan Zhao, Fan Yang, Himabindu Lakkaraju, et al. (2024). \textit{Opening the Black Box of Large Language Models: Two Views on Holistic Interpretability}. arXiv.org.
+
+\bibitem{zhou2024b0u}
+Yue Zhou, Henry Peng Zou, Barbara Di Eugenio, et al. (2024). \textit{Large Language Models Are Involuntary Truth-Tellers: Exploiting Fallacy Failure for Jailbreak Attacks}. Conference on Empirical Methods in Natural Language Processing.
+
+\bibitem{adewumi2024lv9}
+Tosin P. Adewumi, Nudrat Habib, Lama Alkhaled, et al. (2024). \textit{On the Limitations of Large Language Models (LLMs): False Attribution}. arXiv.org.
+
+\bibitem{toroghi2024mxf}
+Armin Toroghi, Willis Guo, Mohammad Mahdi Torabi pour, et al. (2024). \textit{Right for Right Reasons: Large Language Models for Verifiable Commonsense Knowledge Graph Question Answering}. Conference on Empirical Methods in Natural Language Processing.
+
+\bibitem{taveekitworachai2024aql}
+Pittawat Taveekitworachai, Febri Abdullah, and R. Thawonmas (2024). \textit{Null-Shot Prompting: Rethinking Prompting Large Language Models With Hallucination}. Conference on Empirical Methods in Natural Language Processing.
+
+\bibitem{wan2024mh1}
+Fanqi Wan, Xinting Huang, Leyang Cui, et al. (2024). \textit{Mitigating Hallucinations of Large Language Models via Knowledge Consistent Alignment}. arXiv.org.
+
+\bibitem{alsadat2024i78}
+Shayan Meshkat Alsadat, Jean-Raphael Gaglione, D. Neider, et al. (2024). \textit{Using Large Language Models to Automate and Expedite Reinforcement Learning with Reward Machine}. American Control Conference.
+
+\bibitem{cao2024o9a}
+Qingxing Cao, Junhao Cheng, Xiaodan Liang, et al. (2024). \textit{VisDiaHalBench: A Visual Dialogue Benchmark For Diagnosing Hallucination in Large Vision-Language Models}. Annual Meeting of the Association for Computational Linguistics.
+
+\bibitem{benkirane202494i}
+Kenza Benkirane, Laura Gongas, Shahar Pelles, et al. (2024). \textit{Machine Translation Hallucination Detection for Low and High Resource Languages using Large Language Models}. Conference on Empirical Methods in Natural Language Processing.
+
+\bibitem{jin2024jpw}
+Lifeng Jin, Baolin Peng, Linfeng Song, et al. (2024). \textit{Collaborative decoding of critical tokens for boosting factuality of large language models}. arXiv.org.
+
+\bibitem{mu2024f3b}
+Yida Mu, Peizhen Bai, Kalina Bontcheva, et al. (2024). \textit{Addressing Topic Granularity and Hallucination in Large Language Models for Topic Modelling}. arXiv.org.
+
+\bibitem{yu2024pp9}
+Jun Yu, Yunxiang Zhang, Zerui Zhang, et al. (2024). \textit{RAG-Guided Large Language Models for Visual Spatial Description with Adaptive Hallucination Corrector}. ACM Multimedia.
+
+\bibitem{amirizaniani2024cad}
+Maryam Amirizaniani, Jihan Yao, Adrian Lavergne, et al. (2024). \textit{LLMAuditor: A Framework for Auditing Large Language Models Using Human-in-the-Loop}. Unpublished manuscript.
+
+\bibitem{ling2024qto}
+Chen Ling, Xujiang Zhao, Wei Cheng, et al. (2024). \textit{Uncertainty Decomposition and Quantification for In-Context Learning of Large Language Models}. arXiv.org.
+
+\bibitem{sarmah2023cuq}
+Bhaskarjit Sarmah, Dhagash Mehta, Stefano Pasquali, et al. (2023). \textit{Towards reducing hallucination in extracting information from financial reports using Large Language Models}. International Conference on AI-ML-Systems.
+
+\bibitem{nathani202338c}
+Deepak Nathani, David Wang, Liangming Pan, et al. (2023). \textit{MAF: Multi-Aspect Feedback for Improving Reasoning in Large Language Models}. Conference on Empirical Methods in Natural Language Processing.
+
+\bibitem{chataigner2024cr0}
+Cl'ea Chataigner, Afaf Taïk, and G. Farnadi (2024). \textit{Multilingual Hallucination Gaps in Large Language Models}. arXiv.org.
+
+\bibitem{liu2025xwv}
+Q. Liu, Xinlong Chen, Yue Ding, et al. (2025). \textit{Attention-guided Self-reflection for Zero-shot Hallucination Detection in Large Language Models}. arXiv.org.
+
+\bibitem{song2024v5n}
+Jongyoon Song, Sangwon Yu, and Sungroh Yoon (2024). \textit{Large Language Models are Skeptics: False Negative Problem of Input-conflicting Hallucination}. arXiv.org.
+
+\bibitem{barkley202472d}
+Liam Barkley, and Brink van der Merwe (2024). \textit{Investigating the Role of Prompting and External Tools in Hallucination Rates of Large Language Models}. arXiv.org.
+
+\bibitem{huang2024c9t}
+Chao-Wei Huang, and Yun-Nung Chen (2024). \textit{FactAlign: Long-form Factuality Alignment of Large Language Models}. Conference on Empirical Methods in Natural Language Processing.
+
+\bibitem{malin2024fin}
+B. Malin, Tatiana Kalganova, and Nikoloas Boulgouris (2024). \textit{A review of faithfulness metrics for hallucination assessment in Large Language Models}. IEEE Journal on Selected Topics in Signal Processing.
+
+\bibitem{yuan2024o7d}
+Hongbang Yuan, Pengfei Cao, Zhuoran Jin, et al. (2024). \textit{Whispers that Shake Foundations: Analyzing and Mitigating False Premise Hallucinations in Large Language Models}. Conference on Empirical Methods in Natural Language Processing.
+
+\bibitem{pandit20257jx}
+Shrey Pandit, Jiawei Xu, Junyuan Hong, et al. (2025). \textit{MedHallu: A Comprehensive Benchmark for Detecting Medical Hallucinations in Large Language Models}. arXiv.org.
+
+\bibitem{bellinileite2023y38}
+Samuel C. Bellini-Leite (2023). \textit{Dual Process Theory for Large Language Models: An overview of using Psychology to address hallucination and reliability issues}. Adaptive Behavior.
+
+\bibitem{omar2025us3}
+M. Omar, V. Sorin, J. Collins, et al. (2025). \textit{Large Language Models Are Highly Vulnerable to Adversarial Hallucination Attacks in Clinical Decision Support: A Multi-Model Assurance Analysis}. medRxiv.
+
+\bibitem{lee2024i72}
+Yi-Lun Lee, Yi-Hsuan Tsai, and Wei-Chen Chiu (2024). \textit{Delve into Visual Contrastive Decoding for Hallucination Mitigation of Large Vision-Language Models}. arXiv.org.
+
+\bibitem{li2023irg}
+Junyi Li, Xiaoxue Cheng, Wayne Xin Zhao, et al. (2023). \textit{HELMA: A Large-Scale Hallucination Evaluation Benchmark for Large Language Models}. Unpublished manuscript.
+
+\bibitem{zhang2023pb6}
+Chen Zhang (2023). \textit{User-Controlled Knowledge Fusion in Large Language Models: Balancing Creativity and Hallucination}. arXiv.org.
+
+\bibitem{irulandi2023xlg}
+Muneeswaran Irulandi, Shreya Saxena, Siva Prasad, et al. (2023). \textit{Minimizing Factual Inconsistency and Hallucination in Large Language Models}. arXiv.org.
+
+\bibitem{li2024ncc}
+Derong Xu Xinhang Li, Ziheng Zhang, Zhenxi Lin, et al. (2024). \textit{Harnessing Large Language Models for Knowledge Graph Question Answering via Adaptive Multi-Aspect Retrieval-Augmentation}. arXiv.org.
+
+\bibitem{guo2024tlu}
+Hongyi Guo, Zhihan Liu, Yufeng Zhang, et al. (2024). \textit{Can Large Language Models Play Games? A Case Study of A Self-Play Approach}. arXiv.org.
+
+\bibitem{xie20247zk}
+Zikai Xie (2024). \textit{Order Matters in Hallucination: Reasoning Order as Benchmark and Reflexive Prompting for Large-Language-Models}. arXiv.org.
+
+\bibitem{amirizaniani2024493}
+Maryam Amirizaniani, Jihan Yao, Adrian Lavergne, et al. (2024). \textit{Developing a Framework for Auditing Large Language Models Using Human-in-the-Loop}. arXiv.org.
+
+\bibitem{yang2025n54}
+Tianyun Yang, Ziniu Li, Juan Cao, et al. (2025). \textit{Understanding and Mitigating Hallucination in Large Vision-Language Models via Modular Attribution and Intervention}. International Conference on Learning Representations.
+
+\bibitem{agarwal202418c}
+Vibhor Agarwal, Yulong Pei, Salwa Alamir, et al. (2024). \textit{CodeMirage: Hallucinations in Code Generated by Large Language Models}. arXiv.org.
+
+\bibitem{rrv2024gw0}
+Aswin Rrv, Nemika Tyagi, Md Nayem Uddin, et al. (2024). \textit{Chaos with Keywords: Exposing Large Language Models Sycophantic Hallucination to Misleading Keywords and Evaluating Defense Strategies}. Unpublished manuscript.
+
+\bibitem{li2024hl9}
+Mingchen Li, Zaifu Zhan, Han Yang, et al. (2024). \textit{Benchmarking Retrieval-Augmented Large Language Models in Biomedical NLP: Application, Robustness, and Self-Awareness}. arXiv.org.
+
+\bibitem{wang2024t4o}
+Shirui Wang, Bohan Xie, Ling Ding, et al. (2024). \textit{SeCor: Aligning Semantic and Collaborative Representations by Large Language Models for Next-Point-of-Interest Recommendations}. ACM Conference on Recommender Systems.
+
+\bibitem{hegselmann20249q4}
+S. Hegselmann, Zejiang Shen, Florian Gierse, et al. (2024). \textit{A Data-Centric Approach To Generate Faithful and High Quality Patient Summaries with Large Language Models}. ACM Conference on Health, Inference, and Learning.
+
+\bibitem{gao2024ncr}
+Jun Gao, Huan Zhao, Wei Wang, et al. (2024). \textit{EventRL: Enhancing Event Extraction with Outcome Supervision for Large Language Models}. arXiv.org.
+
+\bibitem{tsai2024klg}
+Yao-Hung Tsai, Walter Talbott, and Jian Zhang (2024). \textit{Efficient Non-Parametric Uncertainty Quantification for Black-Box Large Language Models and Decision Planning}. arXiv.org.
+
+\bibitem{chen2024qs5}
+Xinxi Chen, Li Wang, Wei Wu, et al. (2024). \textit{Honest AI: Fine-Tuning "Small" Language Models to Say "I Don't Know", and Reducing Hallucination in RAG}. arXiv.org.
+
+\bibitem{liu2025juo}
+MingShan Liu, Shi Bo, and Jialing Fang (2025). \textit{Enhancing Mathematical Reasoning in Large Language Models with Self-Consistency-Based Hallucination Detection}. arXiv.org.
+
+\bibitem{zhang2024htn}
+Taolin Zhang, Qizhou Chen, Dongyang Li, et al. (2024). \textit{DAFNet: Dynamic Auxiliary Fusion for Sequential Model Editing in Large Language Models}. Annual Meeting of the Association for Computational Linguistics.
+
+\bibitem{guo2024hgn}
+Yuhang Guo, and Zhiyu Wan (2024). \textit{Performance Evaluation of Multimodal Large Language Models (LLaVA and GPT-4-based ChatGPT) in Medical Image Classification Tasks}. IEEE International Conference on Healthcare Informatics.
+
+\bibitem{luo2024uh8}
+Weiqing Luo, Chonggang Song, Lingling Yi, et al. (2024). \textit{KELLMRec: Knowledge-Enhanced Large Language Models for Recommendation}. arXiv.org.
+
+\bibitem{hamid2024pwn}
+Oussama H. Hamid (2024). \textit{Beyond Probabilities: Unveiling the Delicate Dance of Large Language Models (LLMs) and AI-Hallucination}. Conference on Cognitive and Computational Aspects of Situation Management.
+
+\bibitem{zheng20240qd}
+Xinxin Zheng, Feihu Che, Jinyang Wu, et al. (2024). \textit{KS-LLM: Knowledge Selection of Large Language Models with Evidence Document for Question Answering}. arXiv.org.
+
+\bibitem{rawte2024bu6}
+Vipula Rawte, Aman Chadha, Amit P. Sheth, et al. (2024). \textit{Tutorial Proposal: Hallucination in Large Language Models}. International Conference on Language Resources and Evaluation.
+
+\bibitem{yin2024iau}
+Zhibo Yin (2024). \textit{A review of methods for alleviating hallucination issues in large language models}. Applied and Computational Engineering.
+
+\bibitem{tang2025mfi}
+Zilu Tang, Rajen Chatterjee, and Sarthak Garg (2025). \textit{Mitigating Hallucinated Translations in Large Language Models with Hallucination-focused Preference Optimization}. North American Chapter of the Association for Computational Linguistics.
+
+\bibitem{das2024jdt}
+Souvik Das, Lifeng Jin, Linfeng Song, et al. (2024). \textit{Entropy Guided Extrapolative Decoding to Improve Factuality in Large Language Models}. International Conference on Computational Linguistics.
+
+\bibitem{zhang2024h4a}
+Yuxiang Zhang, Jing Chen, Junjie Wang, et al. (2024). \textit{ToolBeHonest: A Multi-level Hallucination Diagnostic Benchmark for Tool-Augmented Large Language Models}. Conference on Empirical Methods in Natural Language Processing.
+
+\bibitem{xu2024t34}
+Derong Xu, Ziheng Zhang, Zhihong Zhu, et al. (2024). \textit{Mitigating Hallucinations of Large Language Models in Medical Information Extraction via Contrastive Decoding}. Conference on Empirical Methods in Natural Language Processing.
+
+\bibitem{zhang2025p1z}
+Hongjie Zhang, Hourui Deng, Jie Ou, et al. (2025). \textit{Mitigating spatial hallucination in large language models for path planning via prompt engineering}. Scientific Reports.
+
+\bibitem{ahmadi2024j88}
+Ali Ahmadi (2024). \textit{Unravelling the Mysteries of Hallucination in Large Language Models: Strategies for Precision in Artificial Intelligence Language Generation}. Asian Journal of Computer Science and Technology.
+
+\bibitem{abdelghafour2024efh}
+M. Abdelghafour, Mohammed Mabrouk, and Zaki Taha (2024). \textit{Hallucination Mitigation Techniques in Large Language Models}. International Journal of Intelligent Computing and Information Sciences.
+
+\bibitem{zhou20253zv}
+Xiaoling Zhou, Mingjie Zhang, Zhemg Lee, et al. (2025). \textit{HaDeMiF: Hallucination Detection and Mitigation in Large Language Models}. International Conference on Learning Representations.
+
+\bibitem{karbasi2025j7n}
+Amin Karbasi, Omar Montasser, John Sous, et al. (2025). \textit{(Im)possibility of Automated Hallucination Detection in Large Language Models}. arXiv.org.
+
+\bibitem{mubarak2024lx6}
+Hamdy Mubarak, Hend Suliman Al-Khalifa, and Khaloud Suliman Alkhalefah (2024). \textit{Halwasa: Quantify and Analyze Hallucinations in Large Language Models: Arabic as a Case Study}. International Conference on Language Resources and Evaluation.
+
+\bibitem{zhang2024sbu}
+Wenbo Zhang, Zihang Xu, and Hengrui Cai (2024). \textit{Recognizing Limits: Investigating Infeasibility in Large Language Models}. Unpublished manuscript.
+
+\bibitem{omar2025cc3}
+Mahmud Omar, Vera Sorin, Jeremy D. Collins, et al. (2025). \textit{Multi-model assurance analysis showing large language models are highly vulnerable to adversarial hallucination attacks during clinical decision support}. Communications Medicine.
+
+\bibitem{gao20242nu}
+Zhengjie Gao, Xuanzi Liu, Yuanshuai Lan, et al. (2024). \textit{A Brief Survey on Safety of Large Language Models}. Journal of computer & information technology.
+
+\bibitem{pester20242zt}
+Andreas Pester, Ahmed Tammaa, Christian Gütl, et al. (2024). \textit{Conversational Agents, Virtual Worlds, and Beyond: A Review of Large Language Models Enabling Immersive Learning}. IEEE Global Engineering Education Conference.
+
+\bibitem{wu202415r}
+Kangxi Wu, Liang Pang, Huawei Shen, et al. (2024). \textit{Enhancing Training Data Attribution for Large Language Models with Fitting Error Consideration}. Conference on Empirical Methods in Natural Language Processing.
+
+\bibitem{tu2024v40}
+Yahan Tu, Rui Hu, and Jitao Sang (2024). \textit{ODE: Open-Set Evaluation of Hallucinations in Multimodal Large Language Models}. Computer Vision and Pattern Recognition.
+
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,1263 @@
+\documentclass[12pt,a4paper]{article}
+    \usepackage[utf8]{inputenc}
+    \usepackage[T1]{fontenc}
+    \usepackage{amsmath,amsfonts,amssymb}
+    \usepackage{graphicx}
+    \usepackage[margin=2.5cm]{geometry}
+    \usepackage{setspace}
+    \usepackage{natbib}
+    \usepackage{url}
+    \usepackage{hyperref}
+    \usepackage{booktabs}
+    \usepackage{longtable}
+    \usepackage{array}
+    \usepackage{multirow}
+    \usepackage{wrapfig}
+    \usepackage{float}
+    \usepackage{colortbl}
+    \usepackage{pdflscape}
+    \usepackage{tabu}
+    \usepackage{threeparttable}
+    \usepackage{threeparttablex}
+    \usepackage[normalem]{ulem}
+    \usepackage{makecell}
+    \usepackage{xcolor}
+
+    % Set line spacing
+    \doublespacing
+
+    % Configure hyperref
+    \hypersetup{
+        colorlinks=true,
+        linkcolor=blue,
+        filecolor=magenta,      
+        urlcolor=cyan,
+        citecolor=red,
+    }
+
+    % Title and author information
+    \title{A Comprehensive Literature Review with Self-Reflection}
+    \author{Literature Review}
+    \date{\today}
+
+    \begin{document}
+
+    \maketitle
+
+    % Abstract (optional)
+    \begin{abstract}
+    This literature review provides a comprehensive analysis of recent research in the field. The review synthesizes findings from 285 research papers, identifying key themes, methodological approaches, and future research directions.
+    \end{abstract}
+
+    \newpage
+    \tableofcontents
+    \newpage
+
+    \label{sec:introduction_to_deep_meta-learning}
+
+\section{Introduction to Deep Meta-Learning}
+\label{sec:introduction\_to\_deep\_meta-learning}
+
+\subsection{Defining Deep Meta-Learning: Learning to Learn}
+\label{sec:1\_1\_defining\_deep\_meta-learning:\_learning\_to\_learn}
+
+Deep meta-learning represents a transformative paradigm designed to overcome fundamental limitations inherent in conventional deep learning, particularly its pronounced reliance on vast quantities of task-specific data and its struggles with robust generalization to novel, unseen tasks. At its core, meta-learning, frequently encapsulated by the phrase "learning to learn," is the sophisticated process of acquiring an inductive bias or an explicit algorithm that empowers a base model to rapidly assimilate new skills or adapt to novel tasks with minimal data \cite{hospedales2020m37, son2023lda}. This approach directly confronts scenarios where traditional deep learning models, after being trained on a fixed dataset, often exhibit poor performance when confronted with new data distributions or task specifications, highlighting a critical gap in their adaptive intelligence \cite{hospedales2020m37}.
+
+The operational framework of deep meta-learning is systematically structured into two distinct and sequential phases: meta-training and meta-testing. During the \textbf{meta-training phase}, the meta-learner is exposed to a diverse distribution of related tasks. The primary objective here is not to achieve optimal performance on any single task, but rather to learn a transferable skill or a generalizable strategy for efficient learning across these tasks. This learned strategy might manifest as an effective initialization for model parameters, an adaptive update rule, or a robust mechanism for feature extraction. Subsequently, in the \textbf{meta-testing phase}, these acquired adaptive capabilities are deployed for rapid adaptation to truly novel tasks, often with only a handful of labeled examples—a scenario commonly referred to as few-shot learning. The efficacy of meta-learning is critically assessed by how swiftly and effectively the meta-learner can adapt to these new, unseen tasks, thereby demonstrating its acquired "learning to learn" proficiency \cite{hospedales2020m37, son2023lda}.
+
+The "inductive bias" or "explicit algorithm" learned by the meta-learner is crucial for this rapid adaptation. In this context, an inductive bias refers to the set of assumptions or preferences that a learning algorithm uses to generalize from limited training data. For meta-learning, this bias is itself learned from experience across multiple tasks. It can take various forms: a set of initial parameters that are optimally poised for fine-tuning on new tasks, a learned optimization procedure that dictates how a base model's parameters should be updated, a sophisticated metric function for comparing data points in an embedding space, or even an architectural design that incorporates external memory mechanisms for efficient information storage and retrieval \cite{hospedales2020m37}. This concept builds upon earlier ideas in machine learning, where the goal was to automatically find good choices for "meta-parameters" (e.g., learning rates, initial weights) that govern a base learning system, as highlighted by the historical development of "meta-gradient" methods \cite{sutton2022jss}. The essence is to generalize the \textit{learning process itself}, rather than just the solution to a specific task.
+
+The "deep" aspect of deep meta-learning signifies the integration of these meta-learning principles with powerful deep neural network architectures. Deep learning provides the robust representation learning capabilities necessary to extract meaningful, high-level features from complex, high-dimensional data. This synergy allows meta-learners to operate effectively on raw inputs, such as images, text, or sensor data, enabling the "learning to learn" process to be applied to real-world, intricate problems. By leveraging deep neural networks, meta-learning can discover more sophisticated and flexible inductive biases, making the adaptive process more powerful and scalable than traditional meta-learning approaches \cite{hospedales2020m37}.
+
+To illustrate this framework, consider a canonical example: N-way, K-shot classification. In this setting, the meta-learner is trained to classify N novel classes, given only K examples per class. During meta-training, the system is presented with numerous distinct N-way, K-shot tasks, each drawn from a distribution of related classification problems (e.g., classifying different sets of N animal species with K images each). The meta-learner learns a strategy that allows it to quickly adapt to these varying tasks. Subsequently, during meta-testing, the system is confronted with a \textit{completely new} N-way, K-shot task involving N \textit{unseen} classes (e.g., classifying N entirely new animal species with K examples). Its success is measured by how effectively and rapidly it can classify instances from these novel classes, demonstrating its ability to generalize the \textit{learning process} rather than merely memorizing class-specific features.
+
+In conclusion, deep meta-learning fundamentally redefines how AI systems acquire knowledge, shifting from a narrow, task-specific learning paradigm to a more generalizable process of "learning to learn." This core principle, instantiated through the distinct meta-training and meta-testing phases, has proven instrumental in addressing the critical data efficiency and generalization challenges that often plague conventional deep learning. This paradigm is realized through diverse methodological families—optimization-based, metric-based, and model-based approaches—which will be systematically explored in the subsequent sections, alongside their applications and challenges.
+\subsection{Historical Context and Evolution of the Field}
+\label{sec:1\_2\_historical\_context\_\_and\_\_evolution\_of\_the\_field}
+
+The intellectual lineage of meta-learning, often encapsulated as "learning to learn," reflects a persistent ambition in artificial intelligence: to create systems capable of rapid adaptation and robust generalization, akin to human cognitive flexibility. This pursuit has unfolded through distinct intellectual phases, from early theoretical explorations to its contemporary prominence, profoundly shaped by the advent and integration of powerful deep neural network architectures \cite{hospedales2020m37, peng20209of}.
+
+The foundational concepts of meta-learning emerged well before the deep learning era, driven by the desire to automate and optimize the learning process itself. In the 1980s and 1990s, researchers explored ideas such as hyperparameter optimization and the notion of "learning optimizers." A significant conceptual precursor involved meta-gradient methods, pioneered by Schmidhuber and colleagues, which aimed to learn internal learning rates or even entire optimization algorithms through gradient descent on the learning process \cite{sutton2022jss}. These early efforts, though often constrained by computational limitations and the expressiveness of available models, established the crucial principle: that a system could acquire an inductive bias or an explicit algorithm to enhance its future learning efficiency. Concurrently, influences from cognitive science, such as the Baldwin effect, provided a biological analogy, suggesting how individual learning could shape the evolution of innate learning biases across generations \cite{fernando2018lt5}. This period laid the theoretical groundwork, emphasizing the potential for higher-order learning to improve base-level task acquisition, even if practical implementations were nascent.
+
+The mid-2010s marked a dramatic resurgence and acceleration of meta-learning research, primarily catalyzed by the transformative power of deep learning. Deep neural networks provided the scalable and expressive function approximators necessary to realize complex meta-learning concepts that were previously computationally intractable \cite{hospedales2020m37}. This period witnessed a "Cambrian explosion" of diverse meta-learning paradigms, each offering a distinct philosophical approach to the "learning to learn" challenge.
+
+One early intellectual shift focused on endowing neural networks with explicit memory, addressing the need for models to quickly store and retrieve task-specific information for one-shot learning. This led to the development of model-based approaches, exemplified by Memory-Augmented Neural Networks (MANN) \cite{Santoro2016}. The motivation here was to move beyond implicit parameter adaptation to architectures that could intrinsically adapt by processing and recalling relevant contextual data, a concept further explored in Section 4.2.
+
+Parallel to this, the metric-based meta-learning paradigm gained traction, driven by the challenge of few-shot classification where models must generalize from minimal examples. The core intellectual contribution was the realization that learning a robust, transferable similarity function within an embedding space could enable effective comparison and classification of novel instances. This philosophy was embodied by seminal works such as Matching Networks \cite{Vinyals2016}, Prototypical Networks \cite{Snell2017}, and Relation Networks \cite{sung2017nc5}. These approaches collectively demonstrated the power of learning discriminative feature spaces that facilitate rapid generalization by measuring relationships between examples, as further detailed in Section 4.1. The strength of these methods lay in their intuitive geometric interpretation and relative simplicity for specific tasks, but they often lacked the dynamic adaptability required for more complex, sequential learning scenarios.
+
+Perhaps the most impactful intellectual shift for the field's contemporary trajectory was the widespread adoption of gradient-based meta-learning. This paradigm directly built upon the early meta-gradient ideas, now leveraging the full differentiability of deep neural networks to optimize the \textit{process} of learning itself \cite{sutton2022jss}. The central insight was to reframe meta-learning as finding an optimal initialization or an efficient update rule that would enable a base model to rapidly adapt to new tasks with minimal gradient steps. Model-Agnostic Meta-Learning (MAML) \cite{Finn2017} was a pivotal contribution, demonstrating how to learn an initial set of parameters that are highly amenable to rapid fine-tuning across a distribution of tasks. MAML's model-agnostic nature and its broad applicability across various deep learning architectures made it a cornerstone, fundamentally changing how researchers approached meta-learning by framing it within a bilevel optimization framework \cite{franceschi2018u1q}. This success spurred further research into explicitly "learning the optimizer," with approaches like Meta-Learner LSTMs \cite{Ravi2017} and Meta-SGD \cite{Li2017} aiming to meta-learn more flexible and adaptive update rules (discussed in Section 3.2). Concurrently, theoretical understanding of these methods deepened, with work exploring generalization bounds for MAML, offering insights into \textit{why} these algorithms perform effectively in few-shot settings \cite{chen2021j5t}.
+
+Beyond these core paradigms, the field continued to diversify. The integration of meta-learning with deep reinforcement learning (Meta-RL) addressed the notorious sample inefficiency and generalization challenges in dynamic environments, enabling agents to rapidly acquire new skills \cite{wang20167px}. This extension, explored in Section 5.1, highlighted meta-learning's capacity to learn transferable behaviors. More recently, probabilistic meta-learning, exemplified by Conditional Neural Processes (CNP) \cite{Garnelo2018}, emerged to model distributions over functions and quantify uncertainty, offering robust decision-making capabilities crucial for real-world applications (further discussed in Sections 4.3 and 5.2). The expanding scope of "learning to learn" also saw meta-learning applied to fundamental components like loss functions \cite{raymond202441h}.
+
+In summary, the evolution of meta-learning has been a dynamic interplay of ambitious theoretical concepts and the enabling power of deep learning. From early, computationally limited attempts to optimize learning processes to the sophisticated, deep neural network-driven paradigms of today, the field has consistently pushed the boundaries of generalization and adaptation. This progression, marked by distinct intellectual shifts towards memory-augmented, metric-based, and especially gradient-based approaches, has transformed meta-learning into a powerful framework for tackling data scarcity, non-stationarity, and complex decision-making, thereby setting a robust stage for understanding its current trajectory and future potential.
+
+
+\label{sec:foundational_concepts_and_problem_settings}
+
+\section{Foundational Concepts and Problem Settings}
+\label{sec:foundational\_concepts\_\_and\_\_problem\_settings}
+
+\subsection{Few-Shot Learning: The Prototypical Challenge}
+\label{sec:2\_1\_few-shot\_learning:\_the\_prototypical\_challenge}
+
+Few-shot learning (FSL) represents a quintessential and pervasive challenge for deep learning, demanding that models generalize effectively to novel classes or tasks when presented with only a handful of labeled examples \cite{huisman2020b7w, hospedales2020m37}. This scenario directly confronts the data-hungry nature of conventional deep learning models, which typically require vast amounts of annotated data to achieve robust performance. The prevalence of FSL is not merely an academic concern but a critical reality in numerous real-world applications where data annotation is prohibitively expensive, new categories emerge frequently, or data privacy concerns limit large-scale collection. Illustrative examples span diverse domains, including the medical diagnosis of rare diseases where labeled instances are inherently scarce, identifying emerging cyber threats like zero-day malware with minimal prior examples \cite{li20246zp}, or enabling robotic systems to acquire complex new skills from a single visual demonstration \cite{finn20174c4}. The inherent scarcity of data in such contexts establishes FSL as a primary driver for the development of meta-learning research.
+
+Formally, a few-shot learning task is typically defined within an N-way K-shot classification paradigm \cite{son2023lda}. In this setup, a model is presented with a "support set" ($S$) containing $N$ novel classes, with $K$ labeled examples for each class. The goal is then to accurately classify instances in a "query set" ($Q$), which consists of unlabeled examples from these same $N$ novel classes. The meta-learning framework addresses this by employing an "episodic training" strategy. During the meta-training phase, the meta-learner is exposed to a large number of distinct FSL tasks, sampled from a distribution of related "base" tasks. Each meta-training episode simulates a few-shot scenario, allowing the model to learn how to rapidly adapt. In the subsequent meta-testing phase, the meta-learner is evaluated on truly novel tasks, drawn from a different set of classes unseen during meta-training, assessing its ability to quickly generalize with only the few examples provided in the support set of each new task \cite{son2023lda}.
+
+Meta-learning offers a powerful framework to overcome the fundamental data scarcity inherent in FSL by leveraging prior experience from a distribution of related tasks \cite{huisman2020b7w}. Instead of learning a single task from scratch, a meta-learner acquires an inductive bias or an explicit adaptation strategy that enables it to quickly form robust representations or adaptation rules for novel tasks. This "learning to learn" paradigm is crucial because traditional deep learning models, when faced with only a few examples, are highly susceptible to overfitting or simply failing to learn any meaningful features. Meta-learning mitigates this by training a model to become an efficient learner itself, rather than just a task-specific performer. These meta-learning strategies broadly fall into distinct categories, such as optimization-based, metric-based, and model-based approaches, which will be explored in detail in Sections 3 and 4.
+
+Despite the promise of meta-learning, FSL presents several persistent challenges that continue to drive research. One significant hurdle is the problem of generalization across diverse tasks, particularly when there are shifts in the underlying data distribution. For instance, cross-domain few-shot learning, where new tasks originate from domains unseen during meta-training, poses a formidable challenge to existing meta-learning methods, often leading to vulnerable generalization \cite{tian2023iyh}. Furthermore, the fundamental generalization capabilities of meta-learning algorithms themselves are under scrutiny, with studies highlighting issues of underfitting or overfitting depending on task complexity, revealing a gap between theoretical expectations and practical performance \cite{wang2024bhk}. Within metric-based FSL, which relies on learned embedding spaces, the "hubness problem" can arise, where certain class prototypes become the nearest neighbor for many test instances regardless of their true class, hindering classification accuracy \cite{fei20211x6}. Addressing these challenges necessitates stronger theoretical guarantees for generalization, moving beyond empirical observations to provide a deeper understanding of why and when meta-learning succeeds in data-scarce scenarios \cite{chen2021j5t}.
+
+The principles of few-shot learning extend beyond supervised classification, serving as a critical driver for meta-learning research in other domains where rapid adaptation from limited experience is vital. In reinforcement learning, for example, the challenge of learning new policies with minimal interactions—often termed few-shot reinforcement learning—has led to seminal works exploring how agents can implicitly learn an RL algorithm \cite{wang20167px} or acquire new skills from a single demonstration in one-shot visual imitation learning \cite{finn20174c4}. The practical impact of FSL is also evident in diverse real-world applications, such as robust and interpretable EMG-based hand gesture recognition \cite{tam2024a1h} and few-shot Android malware classification \cite{li20246zp}, where the combination of data scarcity and the imperative for rapid adaptation makes FSL a central problem.
+
+In conclusion, few-shot learning remains a cornerstone challenge that fundamentally shapes and propels innovation in meta-learning. It highlights the limitations of traditional deep learning in data-scarce environments and underscores the necessity for models that can "learn to learn." While meta-learning provides a powerful conceptual and algorithmic framework, ongoing research continues to address critical issues such as improving robustness to domain shifts, mitigating underfitting and overfitting across heterogeneous tasks, and developing more unified theoretical understandings to ensure reliable and efficient generalization in the face of limited data.
+\subsection{Meta-Reinforcement Learning: Adapting in Dynamic Environments}
+\label{sec:2\_2\_meta-reinforcement\_learning:\_adapting\_in\_dynamic\_environments}
+
+Meta-Reinforcement Learning (Meta-RL) represents a critical extension of meta-learning principles to the domain of reinforcement learning (RL), addressing fundamental limitations of traditional RL in dynamic and diverse environments. At its core, Meta-RL aims to enable an agent to "learn to learn" new behaviors, allowing it to rapidly adapt its policy to novel, unseen tasks within a family of related tasks \cite{beck2023x24}. This paradigm is crucial for developing intelligent agents that can operate effectively in complex, real-world scenarios characterized by evolving objectives, changing dynamics, and sparse rewards, where learning from scratch for each new task is prohibitively inefficient.
+
+The foundational problem setting for Meta-RL involves a distribution over Markov Decision Processes (MDPs), denoted as $p(\mathcal{M})$. Each task $\mathcal{T}\_i$ is an instance of an MDP $\mathcal{M}\_i = (\mathcal{S}, \mathcal{A}, \mathcal{P}\_i, \mathcal{R}\_i, \gamma)$, where $\mathcal{S}$ is the state space, $\mathcal{A}$ is the action space, $\mathcal{P}\_i$ is the task-specific transition function, $\mathcal{R}\_i$ is the task-specific reward function, and $\gamma$ is the discount factor. The objective of a meta-RL agent is to learn an adaptation procedure or a meta-policy that, after observing a small amount of interaction data (e.g., a few trajectories) from a \textit{new}, unseen task $\mathcal{M}\_{\text{new}} \sim p(\mathcal{M})$, can quickly infer the task's specifics and derive an effective policy for it \cite{beck2023x24}. This process typically involves a meta-training phase, where the agent learns its adaptive capabilities across a diverse set of tasks from $p(\mathcal{M})$, and a meta-testing phase, where these learned abilities are deployed for fast adaptation to truly novel tasks.
+
+Meta-RL directly confronts several notorious challenges in traditional RL. Firstly, \textbf{sample efficiency} is a primary concern. Standard deep RL algorithms often require millions of environmental interactions to learn a single task, making them impractical for real-world deployment where data collection is costly or time-consuming. By leveraging prior experience from a distribution of related tasks, Meta-RL aims to drastically reduce the amount of new data needed for effective learning on a novel task. Secondly, \textbf{generalization} is enhanced. Policies learned for one specific task often fail to generalize to even slightly different tasks. Meta-RL fosters the acquisition of transferable skills or meta-knowledge that allows agents to generalize their learning process, rather than just their policy, across a spectrum of tasks. This means the agent learns \textit{how} to learn, rather than just \textit{what} to do.
+
+The mechanisms through which meta-learning facilitates this rapid adaptation in RL are diverse, but they generally fall into categories that aim to either learn an efficient adaptation process or infer task-specific context. For instance, some approaches focus on learning an effective \textit{initialization} for a policy that can be quickly fine-tuned with a few gradient steps on a new task. Others aim to learn \textit{contextual representations} of tasks, where an encoder processes initial experience to infer latent variables that characterize the current task, which then guide the policy. A third category involves learning \textit{implicit learning algorithms} through recurrent architectures, where the network's internal state acts as a memory of past interactions, allowing it to adapt its behavior over time within a single episode \cite{finn2017vrt, wang20167px}. These high-level strategies enable agents to quickly infer task dynamics, reward functions, or optimal behaviors from minimal interaction, thereby accelerating learning and improving robustness.
+
+A critical aspect of Meta-RL is the challenge of \textbf{efficient exploration} in new, unknown tasks. When an agent encounters a novel MDP, it must explore to gather information about its dynamics and rewards before it can exploit optimal actions. Meta-RL approaches often incorporate mechanisms for Bayes-adaptive exploration, where the agent actively seeks to reduce its uncertainty about the current task's identity, leading to more structured and efficient data collection \cite{zintgraf2019zat, rakelly2019m09}. This is particularly vital in environments with sparse rewards, where random exploration is unlikely to yield meaningful learning signals. Furthermore, the problem of learning from static, \textbf{offline datasets} introduces additional complexities, such as "MDP ambiguity," where the available data may not be sufficient to distinguish between different underlying tasks, posing significant challenges for learning effective meta-exploration strategies \cite{dorfman2020mgv}.
+
+In summary, Meta-RL is a powerful paradigm for developing agents that are not only proficient at specific tasks but also possess the meta-skill to rapidly acquire new capabilities. By addressing the core challenges of sample efficiency, generalization, and efficient exploration within dynamic and uncertain environments, Meta-RL paves the way for more robust, autonomous, and adaptable AI systems capable of operating in complex real-world scenarios. The subsequent sections will delve into the specific methodologies that realize these adaptive capabilities, categorizing them by their underlying principles.
+\subsection{Core Paradigms: Optimization, Metric, and Model-Based Approaches}
+\label{sec:2\_3\_core\_paradigms:\_optimization,\_metric,\_\_and\_\_model-based\_approaches}
+
+Deep meta-learning methodologies are broadly categorized into three fundamental paradigms: optimization-based, metric-based, and model-based approaches \cite{hospedales2020m37}. Each paradigm offers a distinct conceptual framework and set of mechanisms to enable models to "learn to learn," addressing the challenge of rapid adaptation and generalization to novel tasks with limited data. This section provides a high-level overview of these core paradigms, highlighting their fundamental differences and inherent strengths, thereby setting the stage for their detailed exploration in subsequent sections.
+
+\textbf{Optimization-based meta-learning} focuses on learning effective initializations or update rules that enable a base model to quickly adapt to new tasks through a few gradient steps. The core idea is to train a meta-learner to produce parameters or an optimization strategy that is highly amenable to rapid fine-tuning on unseen tasks \cite{sutton2022jss}. This often involves a bi-level optimization process, where an inner loop performs task-specific adaptation, and an outer loop optimizes the meta-parameters (e.g., initial weights) across a distribution of tasks. The seminal Model-Agnostic Meta-Learning (MAML) \cite{Finn2017} exemplifies this by seeking an initial parameter set that can be quickly adapted to any new task using standard gradient descent. While MAML offers broad applicability due to its model-agnostic nature, it often entails computational challenges related to second-order gradients and can be sensitive to hyperparameter choices. Subsequent research has explored learning the optimizer itself, such as with Meta-Learner LSTMs \cite{Ravi2017} and Meta-SGD \cite{Li2017}, which learn explicit update rules or adaptive learning rates. More advanced techniques, like HyperMAML \cite{przewiezlikowski2022d4y}, replace gradient-based inner loops with learned hypernetworks to generate weight updates, offering more flexible and efficient adaptation. Theoretical analyses, such as those exploring generalization bounds \cite{chen2021j5t} or the surprising role of negative learning rates in meta-training \cite{bernacchia20211r0}, continue to refine our understanding of this paradigm's mechanics and limitations. Optimization-based methods are powerful for their generality and ability to adapt complex deep learning models, but their effectiveness can be constrained by computational cost and the stability of the meta-optimization process.
+
+\textbf{Metric-based meta-learning} operates on the principle of learning robust similarity functions within embedding spaces. The goal is to transform raw input data into a feature space where examples from the same class are close together, and examples from different classes are far apart, regardless of whether these classes were seen during meta-training. This allows for efficient comparison and classification of novel examples with limited support data, typically through nearest-neighbor-like mechanisms. These methods learn an embedding network that maps inputs into a feature space where distances directly correspond to semantic similarity. Early approaches like Matching Networks \cite{Vinyals2016} introduced attention mechanisms to dynamically weigh support examples, while Prototypical Networks \cite{Snell2017} simplified this by representing each class with a single centroid (prototype) in the embedding space. A significant conceptual leap was made by Relation Networks \cite{sung2017nc5}, which meta-learned a deep, non-linear 'relation function' to explicitly compute similarity scores between embedded query and support examples, moving beyond fixed distance metrics. The strength of metric-based approaches lies in their intuitive nature, interpretability (due to explicit comparisons), and efficiency for few-shot classification tasks. However, their applicability is often limited to tasks that can be effectively framed as similarity comparisons in a learned feature space, and their generalization capabilities can be sensitive to the quality and diversity of the learned embedding.
+
+\textbf{Model-based meta-learning} is distinguished by designing network architectures with intrinsic adaptation capabilities. Instead of learning an optimization process or a similarity function, these models are engineered to quickly integrate new task information directly into their internal state or memory, often without explicit gradient updates during adaptation. This paradigm seeks to build "fast weights" or memory mechanisms that can rapidly store and retrieve task-specific knowledge. Pioneering work in this area includes Memory-Augmented Neural Networks (MANN) \cite{Santoro2016}, which leverage external memory modules (inspired by Neural Turing Machines) to store and retrieve task-relevant information for one-shot learning. Architectures like A Simple Neural Attentive Meta-Learner (SNAIL) \cite{Mishra2018} further combine temporal convolutions and attention to process sequences of experience, enabling fast in-context learning. A distinct and powerful sub-area within model-based approaches is Neural Processes, beginning with Conditional Neural Processes (CNP) \cite{Garnelo2018}. These models learn to map context sets to distributions over functions, providing not only predictions but also crucial uncertainty estimates, which is vital for robust decision-making. Model-based methods excel at complex sequential decision-making tasks and scenarios requiring explicit memory or uncertainty quantification. Their primary challenge often lies in the increased architectural complexity and the difficulty of designing general-purpose adaptive mechanisms that perform well across highly diverse task distributions.
+
+In summary, these three paradigms offer distinct yet complementary strategies for tackling the 'learning to learn' challenge. Optimization-based methods provide broad applicability by learning how to adapt parameters, but can be computationally intensive and sensitive to meta-optimization dynamics. Metric-based approaches offer efficient few-shot classification by learning robust similarity measures, though their applicability is often constrained to comparison-based tasks. Model-based methods push towards more sophisticated in-context learning and probabilistic function approximation through architectural innovations, offering powerful adaptation but often at the cost of increased architectural complexity and dependence on specific designs. The ongoing research across these paradigms continues to explore the trade-offs between generalizability, computational efficiency, and the ability to provide meaningful uncertainty estimates across diverse and complex real-world tasks.
+
+
+\label{sec:optimization-based_meta-learning}
+
+\section{Optimization-Based Meta-Learning}
+\label{sec:optimization-based\_meta-learning}
+
+\subsection{Learning a Good Initialization: MAML and its Variants}
+\label{sec:3\_1\_learning\_a\_good\_initialization:\_maml\_\_and\_\_its\_variants}
+
+A fundamental challenge in few-shot learning is to enable models to rapidly adapt to new tasks with minimal labeled data. Optimization-based meta-learning addresses this by learning an effective initial set of model parameters that can be quickly fine-tuned for novel tasks.
+
+The seminal work in this area is Model-Agnostic Meta-Learning (MAML) \cite{Finn et al., 2017}, which proposes training a model's initial parameters such that a few gradient steps on a new task lead to significant performance improvement. MAML operates on a bi-level optimization structure: an inner loop performs task-specific adaptation by taking a few gradient steps on a support set, yielding adapted parameters. The outer loop then optimizes the initial parameters by evaluating the performance of these adapted parameters on a query set, using second-order gradients. This approach is inherently model-agnostic, meaning it can be applied to any model trained with gradient descent, making it broadly applicable across various deep learning architectures and tasks. While powerful for learning transferable knowledge, MAML's reliance on second-order derivatives can lead to substantial computational overhead and memory consumption, especially for large models, and it can be sensitive to hyperparameter choices.
+
+To mitigate the computational burden associated with MAML's higher-order gradients, Reptile \cite{Nichol2018} was introduced as a computationally more efficient first-order approximation. Reptile simplifies the meta-learning process by repeatedly training on a task for several gradient steps and then moving the meta-parameters (the initial parameters) towards the task-specific parameters obtained after adaptation. This update rule, $\theta \leftarrow \theta + \epsilon (\phi - \theta)$ where $\phi$ are the task-adapted parameters, effectively approximates the MAML objective without explicitly computing second-order derivatives. This simplification significantly reduces the computational cost and memory footprint, allowing for greater scalability while maintaining competitive performance in many few-shot learning scenarios.
+
+Further improving generalization and efficiency, particularly for complex models, is the Latent Embedding Optimization (LEO) framework \cite{Rusu et al., 2018}. LEO builds upon the optimization-based paradigm by learning a low-dimensional latent embedding for the model parameters. Instead of optimizing directly in the high-dimensional parameter space, LEO performs the inner-loop adaptation (task-specific fine-tuning) within this more compact and efficient latent space. The adapted latent parameters are then decoded back to the original parameter space for inference. This strategy enhances robustness and scalability by operating in a learned, more meaningful representation, which can lead to better generalization and faster adaptation compared to direct optimization in the full parameter space.
+
+The model-agnostic nature of MAML has enabled its application across diverse domains, demonstrating its practical utility. For instance, in few-shot Hyperspectral Image (HSI) classification, MAML, combined with regularized fine-tuning, has been successfully employed to overcome the challenge of limited labeled samples and facilitate effective cross-domain transfer learning \cite{li2023fhe}. This application showcases MAML's ability to learn robust initializations that enable accurate classification even when only a handful of labeled examples are available for new HSI datasets, achieving high overall accuracy.
+
+In conclusion, MAML and its variants represent a powerful paradigm within meta-learning, focusing on learning transferable initializations that enable rapid adaptation. While MAML laid the foundational groundwork with its bi-level optimization and model-agnosticism, its computational demands spurred the development of more efficient approximations like Reptile and advanced techniques like LEO, which optimize in learned latent spaces for improved generalization and efficiency. Despite these advancements, challenges persist in balancing computational cost, hyperparameter sensitivity, and ensuring robust generalization across highly diverse task distributions, pointing towards continued research in developing more robust and theoretically grounded optimization-based meta-learning algorithms.
+\subsection{Learning the Optimizer: Meta-Learner LSTMs and Meta-SGD}
+\label{sec:3\_2\_learning\_the\_optimizer:\_meta-learner\_lstms\_\_and\_\_meta-sgd}
+
+Transcending the paradigm of merely learning an effective initialization, a significant branch of meta-learning research focuses on explicitly learning the optimization process itself. This advanced approach frames meta-learning as the challenge of discovering an adaptive, data-driven optimization algorithm, offering greater flexibility and control over the learning process compared to relying on fixed, hand-designed optimizers. This subsection delves into two prominent methodologies within this domain: Meta-Learner LSTMs and Meta-SGD, which exemplify the quest to meta-learn the dynamics of parameter updates.
+
+One pioneering approach in this direction is the Meta-Learner LSTM, introduced by \cite{Ravi2017}. This method employs a recurrent neural network, specifically an LSTM, as the meta-learner to generate parameter updates for a base learner. The LSTM takes the base learner's gradients and previous internal states as input, and subsequently outputs the updates for each parameter, effectively learning a complex, stateful optimization algorithm. This allows the meta-learner to capture intricate dependencies and historical information during the inner-loop adaptation, moving beyond simple gradient descent to learn highly non-linear and context-dependent update rules. However, the inherent complexity of training such a meta-learner, which involves backpropagating through the unrolled optimization steps of the base learner, presents significant computational challenges and can lead to issues with training stability.
+
+Building upon the principles of gradient-based meta-learning, \cite{Li2017} proposed Meta-SGD, an approach that extends the meta-learning objective to encompass more components of the optimization process. Unlike methods that primarily focus on learning a good initialization, Meta-SGD meta-learns not only initial parameters but also per-parameter learning rates and update directions for the inner-loop adaptation. This means that for each parameter of the base learner, the meta-learner learns how to scale and direct its gradient update, effectively transforming the standard gradient descent rule into a more adaptive, learned optimizer. By learning these fine-grained components, Meta-SGD provides a powerful mechanism for the base learner to adapt rapidly and efficiently to new tasks with only a few gradient steps, offering a more flexible and data-driven adaptation strategy than fixed learning rates.
+
+Both Meta-Learner LSTMs and Meta-SGD represent a crucial shift in meta-learning, moving from static initializations to dynamic, learned optimization procedures. While \cite{Ravi2017}'s Meta-Learner LSTM offers a highly flexible, black-box approach to learning an optimizer through its recurrent structure, it comes with the overhead of training a complex sequential model to generate updates. In contrast, \cite{Li2017}'s Meta-SGD provides a more structured, yet equally adaptive, approach by directly learning the components of the gradient update rule, such as per-parameter learning rates and update directions. Both methods aim to imbue the base learner with the ability to "learn how to learn" by discovering an adaptive optimization algorithm from data, rather than relying on predefined heuristics.
+
+Despite their significant contributions to enabling more flexible and powerful adaptation, these sophisticated techniques introduce their own set of challenges. The increased complexity of the meta-learner and the meta-optimization objective can lead to higher computational demands and difficulties in ensuring stable and efficient training. Furthermore, the generalization capabilities of these learned optimizers to tasks significantly different from those seen during meta-training remain an active area of research. Future work will likely explore more efficient architectures for meta-optimizers, hybrid approaches that combine the strengths of explicit optimization learning with other meta-learning paradigms, and methods to improve the robustness and scalability of these adaptive learning algorithms to even broader and more diverse task distributions.
+\subsection{Differentiable Solvers and Hypernetworks for Parameter Adaptation}
+\label{sec:3\_3\_differentiable\_solvers\_\_and\_\_hypernetworks\_for\_parameter\_adaptation}
+
+The pursuit of highly flexible and rapid adaptation mechanisms in meta-learning has led to the exploration of advanced techniques that move beyond conventional gradient-based inner-loop optimization. This subsection delves into two prominent paradigms: leveraging differentiable closed-form solvers as base learners and employing hypernetworks to generate model parameters dynamically. These approaches enable meta-learners to optimize for rapid, interpretable adaptation tailored to specific problem structures, or to modulate entire network architectures based on task-specific information.
+
+One significant direction involves integrating classical machine learning algorithms as differentiable components within a meta-learning framework. \textcite{bertinetto2018ur2} pioneered this by proposing a meta-learning approach where the base learner is a differentiable closed-form solver, such as Ridge Regression. Their method meta-learns both a deep feature extractor and the hyperparameters of the base solver end-to-end, efficiently backpropagating through the solver's closed-form solution (e.g., using the Woodbury identity for speed) to enable rapid adaptation in few-shot classification tasks. This allows for data-dependent adaptation at test time, offering more flexibility than similarity-based methods while being computationally more efficient than gradient-based meta-learning for a few adaptation steps.
+
+Building upon the idea of meta-learning parameters for classical models, subsequent work has extended this to more complex scenarios. \textcite{wistuba2021wha} introduced Few-Shot Bayesian Optimization (FSBO) by meta-learning deep kernel Gaussian Processes (GPs) as surrogate models for hyperparameter optimization. Here, the deep kernel parameters are learned across a distribution of tasks, allowing the classical GP model to rapidly adapt its predictions to new tasks with very few evaluations. Further refining this, \textcite{chen2022z45} presented Adaptive Deep Kernel Fitting with Implicit Function Theorem (ADKF-IFT) for molecular property prediction. This framework uses bilevel optimization to meta-learn feature extractor parameters while adapting base kernel parameters per task, leveraging the Implicit Function Theorem for exact hypergradient computation, thereby achieving a robust balance between generalization and task-specific adaptation for deep kernel GPs. In a related vein, \textcite{lee2024snq} proposed Sequential Bayesian Meta-Continual Learning (SB-MCL), a biologically inspired framework that decouples deep representation learning from sequential knowledge integration. Here, neural networks are meta-learned to map complex data to a latent space suitable for simple statistical models, which then perform exact sequential Bayesian updates, effectively offloading continual learning to robust, forgetting-immune classical models.
+
+Complementing differentiable solvers, hypernetworks offer another powerful mechanism for flexible parameter adaptation. Instead of optimizing the parameters of a base learner, hypernetworks are neural networks that generate the weights or parameters of another 'main' network, conditioned on task-specific information. This provides a mechanism for dynamic architecture generation or flexible parameter modulation without explicit gradient-based inner loops. \textcite{przewiezlikowski2022d4y} exemplify this with HyperMAML, which replaces MAML's gradient-based inner-loop adaptation with a trainable hypernetwork. The hypernetwork directly outputs weight updates for the base model based on support set embeddings and labels, enabling more substantial and flexible weight modifications in a single step, thereby offering a computationally efficient alternative to classical MAML.
+
+Beyond these direct applications, the broader theme of learning flexible adaptation mechanisms also encompasses biologically inspired approaches. \textcite{lindsey202075a} explored Feedback and Local Plasticity (FLP), a meta-learning framework that learns biologically plausible local synaptic update rules and decoupled feedback weights for deep credit assignment. While not strictly a differentiable solver or hypernetwork, FLP meta-learns parameters (feedback weights, plasticity coefficients) that modulate the learning process itself, demonstrating how meta-learning can discover effective, local learning rules that excel in challenging scenarios like continual learning, often outperforming gradient-based meta-learners.
+
+In summary, differentiable solvers and hypernetworks represent significant advancements in meta-learning, offering powerful alternatives to traditional gradient-based adaptation. Differentiable solvers provide interpretable and efficient adaptation by optimizing classical models, while hypernetworks enable dynamic parameter generation for flexible architectural and functional modulation. Biologically inspired approaches further expand this landscape by learning the very rules of adaptation. Despite these strides, challenges remain in scaling complex differentiable solvers to arbitrary models, ensuring the interpretability of hypernetwork-generated parameters, and fully understanding the theoretical underpinnings of learned, non-gradient-based adaptation rules. Future research may explore hybrid models that combine these strengths, or delve deeper into the biological plausibility and robustness of such learned adaptation mechanisms.
+
+
+\label{sec:metric_and_model-based_meta-learning}
+
+\section{Metric and Model-Based Meta-Learning}
+\label{sec:metric\_\_and\_\_model-based\_meta-learning}
+
+\subsection{Learning Similarity Measures: Matching, Prototypical, and Relation Networks}
+\label{sec:4\_1\_learning\_similarity\_measures:\_matching,\_prototypical,\_\_and\_\_relation\_networks}
+
+A distinct family of meta-learning approaches addresses few-shot classification by focusing on learning robust similarity measures within a discriminative embedding space. These methods aim to classify novel instances by comparing them directly to a small set of labeled support examples, thereby enabling accurate generalization from minimal data.
+
+Pioneering this direction, Matching Networks \cite{Vinyals2016} introduced an end-to-end differentiable framework that learns to map a small labeled support set and an unlabeled query to a classification. This is achieved through an attention-based comparison function, where the network dynamically weighs the contribution of each support example to classify the new instance, effectively performing a non-parametric classification in a learned feature space. While innovative, the direct comparison to every support example can be computationally intensive as the support set size grows.
+
+Building upon this foundation, Prototypical Networks \cite{Snell2017} simplified the similarity learning paradigm by proposing that each class in a learned embedding space can be represented by a single "prototype." This prototype is typically computed as the mean of the embedded support examples for that class. Classification of a new query instance then involves assigning it to the class whose prototype is closest in the embedding space, often using Euclidean distance. This approach offers improved computational efficiency and enhanced interpretability compared to Matching Networks, as class representations are explicitly defined, and it demonstrated competitive performance in few-shot classification tasks.
+
+Further generalizing the concept of similarity, Relation Networks \cite{Sung2018} moved beyond fixed distance metrics or attention mechanisms by learning a non-linear "relation function" to explicitly compute similarity scores. This network takes the concatenated embeddings of a query example and a support example (or a class prototype) as input and outputs a scalar score indicating their similarity. By learning this relation function, the model gains greater flexibility in defining what constitutes "similarity," allowing for more complex and adaptive comparisons between embedded instances. This approach often leads to more robust similarity measures, especially when simple distance metrics might be insufficient.
+
+The core ideas of these metric-based approaches continue to be extended and applied to more complex few-shot scenarios. For instance, the principles of Prototypical Networks have been adapted to tackle challenging tasks like few-shot cross-domain object detection. The Instance-level Prototype learning Network (IPNet) \cite{zhang2024mf0} addresses data deficiency in target domains by fusing cropped instances from both source and target domains to learn representative prototypes for each class. These learned prototypes are then utilized to discriminate feature salience and facilitate domain alignment, demonstrating the adaptability of prototype-based methods beyond simple image classification to more intricate problems involving object localization and domain generalization.
+
+In summary, Matching, Prototypical, and Relation Networks collectively represent a powerful family of meta-learning techniques that excel in few-shot classification by learning discriminative feature spaces and robust similarity measures. Their effectiveness stems from their intuitive comparison mechanisms, allowing accurate generalization from minimal examples. However, their primary limitation often lies in their task-specificity, as they are predominantly designed for classification tasks and might struggle to generalize to problems requiring complex structural changes or where a simple distance metric or learned relation function is insufficient for capturing task-specific nuances beyond feature comparison. Future research may explore hybrid approaches that combine the strengths of metric learning with other meta-learning paradigms to enhance their applicability to a broader range of tasks.
+\subsection{Memory-Augmented Neural Networks for In-Context Learning}
+\label{sec:4\_2\_memory-augmented\_neural\_networks\_for\_in-context\_learning}
+
+Model-based meta-learning approaches offer a distinct paradigm for achieving rapid, in-context adaptation by designing network architectures that intrinsically facilitate fast information integration and knowledge transfer. Unlike gradient-based methods that learn to optimize parameters or metric-based approaches that learn similarity functions, this category focuses on equipping neural networks with explicit mechanisms for storing and retrieving task-specific information, enabling one-shot learning without explicit gradient updates.
+
+A pioneering work in this domain is the Memory-Augmented Neural Network (MANN) proposed by \cite{santoro2016323}. Inspired by Neural Turing Machines (NTMs), MANN augments a standard neural network with an external memory module, allowing the network to learn to store and retrieve task-relevant information through differentiable read and write operations. This architectural innovation enables the model to quickly adapt to new tasks by leveraging previously encountered experiences stored in its memory, effectively performing one-shot learning by recalling specific data points or features rather than re-optimizing its weights. The core contribution of MANN lies in demonstrating how an explicit memory component can mitigate catastrophic forgetting and facilitate rapid knowledge acquisition, allowing the network to learn an internal "algorithm" for fast information integration. However, the complexity of training such memory-augmented networks and the scalability of their memory access mechanisms can pose significant challenges, particularly for very large datasets or highly diverse tasks.
+
+Building upon the principles of in-context learning, the Simple Neural Attentive Meta-Learner (SNAIL) \cite{mishra2018simple} offers an alternative architectural approach that integrates temporal convolutions and attention mechanisms. SNAIL processes sequences of experience (support set and query examples) through a combination of causal convolutions, which efficiently aggregate information from past steps in the sequence, and a task-specific attention mechanism, which allows the network to selectively focus on the most relevant information for the current prediction. This design enables SNAIL to learn an internal meta-learning algorithm that can rapidly adapt to new tasks by attending to and integrating information from the context set, all within a single forward pass without requiring explicit gradient updates during adaptation. By leveraging standard deep learning components like convolutions and attention, SNAIL provides a more streamlined and potentially more scalable architecture for in-context learning compared to the explicit memory controllers of MANN, while still achieving powerful meta-learning capabilities across various tasks.
+
+In summary, memory-augmented and attention-based neural networks represent a powerful class of meta-learning models that achieve rapid, in-context adaptation through architectural design rather than explicit parameter optimization. While MANN \cite{santoro2016323} introduced the foundational concept of external memory for one-shot learning, SNAIL \cite{mishra2018simple} refined this idea by integrating temporal convolutions and attention for efficient sequential processing. These models excel at learning an intrinsic 'algorithm' for fast information integration, demonstrating how architectural innovation can intrinsically equip neural networks with powerful meta-learning capabilities. However, challenges remain in scaling these architectures to extremely complex tasks and ensuring efficient memory management or attention mechanisms without incurring prohibitive computational costs or architectural complexity. Future research may explore hybrid approaches that combine the strengths of these model-based methods with more efficient memory structures or integrate them with other meta-learning paradigms.
+\subsection{Neural Processes: Probabilistic Function Approximation}
+\label{sec:4\_3\_neural\_processes:\_probabilistic\_function\_approximation}
+
+Within the landscape of model-based meta-learning, Neural Processes (NPs) represent a distinct and powerful paradigm focused on probabilistic function approximation, drawing inspiration from the robustness of Gaussian Processes (GPs) while aiming for the scalability and flexibility of deep neural networks. Unlike traditional deep learning methods that yield point estimates, NPs learn to map context sets to distributions over functions, thereby providing not only predictions but also crucial quantification of predictive uncertainty. This capability is paramount for robust decision-making, active learning, and scenarios where confidence in predictions is as important as the predictions themselves, moving beyond deterministic outputs to a deeper understanding of the underlying data-generating process. NPs achieve this by amortizing inference over a distribution of tasks, learning a general mechanism to infer function properties from limited data.
+
+The foundational work in this area is the Conditional Neural Process (CNP) \cite{Garnelo2018}. CNPs introduced the concept of learning a distribution over functions by modeling conditional independence between target points given a context set. Specifically, a CNP employs a permutation-invariant encoder to aggregate information from observed context points (input-output pairs) into a global representation. This representation then parameterizes a simple, often factorized, Gaussian distribution over the target points. This allows the model to meta-learn in both regression and classification tasks while providing explicit uncertainty estimates, a significant advancement over prior deterministic meta-learning approaches. However, the strong conditional independence assumption in CNPs can lead to over-smoothed predictions, as it struggles to capture complex dependencies and multi-modalities inherent in intricate function structures.
+
+To address the limitations of CNPs regarding expressiveness and the inability to capture dependencies between target points, the original Neural Process (NP) was subsequently introduced \cite{Garnelo2018b}. This variant, sometimes referred to as Latent Neural Process, relaxes the strict conditional independence assumption by incorporating a global latent variable. The NP architecture includes two paths: a deterministic path similar to CNP, and a latent path where the encoder outputs parameters for a global latent distribution (e.g., a Gaussian). A latent variable is sampled from this distribution, which, along with the deterministic context representation, then informs the parameters of the predictive distribution. This latent variable acts as a global summary of the function's properties, enabling the model to capture richer function spaces and model dependencies between target points, thus mitigating the over-smoothing observed in standard CNPs.
+
+A further significant advancement in this lineage is the Attentive Neural Process (ANP) \cite{Kim2019}. ANPs integrate self-attention mechanisms into the Neural Process framework, allowing the model to selectively weigh the importance of different context points when forming its representation. By employing an attention mechanism, ANPs can focus on the most relevant information within the context set, leading to more accurate predictions and better-calibrated uncertainty estimates. This selective attention mechanism significantly enhances the model's performance and flexibility, effectively tackling the over-smoothing issue more comprehensively than its predecessors by capturing fine-grained dependencies and local variations in the function, particularly beneficial for tasks with heterogeneous data distributions.
+
+While CNP, NP, and ANP primarily focus on standard regression and classification, Generalized Conditional Neural Processes (GCNP) \cite{Requeima2019} extend the NP paradigm to handle structured data, such as graphs or meshes. GCNPs achieve this by integrating graph neural networks (GNNs) into the encoder architecture, allowing the model to leverage the underlying relational structure of the data when forming its context representation. This specialized extension demonstrates the versatility of the NP framework, adapting it to domains where explicit spatial or relational inductive biases are crucial. Another notable extension, Convolutional Conditional Neural Processes (ConvCNPs) \cite{Gordon2019}, further enhances NPs by incorporating convolutional layers, which introduce spatial inductive biases and enable desirable equivariance properties, proving effective for image-based tasks.
+
+The unique contribution of Neural Processes to probabilistic meta-learning lies in their ability to provide well-calibrated uncertainty estimates alongside predictions. This allows for more informed generalization, enabling applications such as active learning, where the model can query points where its uncertainty is high, or risk-aware decision-making, where the confidence in a prediction directly influences subsequent actions. Despite their strengths, NPs still face challenges. The permutation-invariant aggregation mechanism, while flexible, can act as an information bottleneck, potentially losing crucial structural information present in the context set. Furthermore, scaling NPs to very high-dimensional inputs or extremely large context sets can be computationally intensive. A persistent challenge across all probabilistic deep learning models, including NPs, is ensuring perfect calibration of uncertainty across diverse and potentially out-of-distribution tasks. As highlighted in recent critiques of other probabilistic deep learning approaches like Evidential Deep Learning \cite{shen2024hea}, the reliability and faithful quantification of epistemic uncertainty remain non-trivial, often requiring careful architectural design and training objectives to avoid overconfidence or underestimation. Future work will likely focus on improving their computational efficiency, enhancing their expressiveness for highly complex functions by addressing the aggregation bottleneck, developing more principled methods for choosing the latent variable dimensionality, and refining uncertainty calibration techniques to ensure robustness and trustworthiness in real-world applications.
+
+
+\label{sec:advanced_meta-learning_for_complex_scenarios}
+
+\section{Advanced Meta-Learning for Complex Scenarios}
+\label{sec:advanced\_meta-learning\_for\_complex\_scenarios}
+
+\subsection{Meta-Reinforcement Learning and Imitation Learning}
+\label{sec:5\_1\_meta-reinforcement\_learning\_\_and\_\_imitation\_learning}
+
+Meta-Reinforcement Learning (Meta-RL) and Meta-Imitation Learning (Meta-IL) represent a critical evolution in equipping agents with the ability to rapidly adapt to novel tasks and environments. These paradigms directly confront the notorious challenges of sample inefficiency and limited generalization inherent in traditional reinforcement learning (RL) and imitation learning (IL) by enabling agents to "learn to learn" across a distribution of related tasks \cite{beck2023x24}. By acquiring a transferable skill or an efficient adaptation mechanism, meta-learning allows agents to quickly infer optimal behaviors, adapt to new reward functions, or acquire policies from minimal demonstrations, thereby accelerating learning and improving robustness in complex sequential decision-making scenarios.
+
+The early trajectory of Meta-RL research explored implicit adaptation mechanisms, primarily leveraging Recurrent Neural Networks (RNNs). A seminal contribution by \cite{wang20167px} demonstrated that an LSTM, when trained across a diverse set of tasks with past actions, rewards, and observations as inputs, could implicitly learn an internal RL algorithm. This recurrent architecture effectively encoded task-specific information within its hidden state, allowing it to adapt its policy to new tasks without requiring explicit weight updates, a process termed "learning to reinforcement learn." While groundbreaking, this approach was initially demonstrated in simpler domains, raising questions about its scalability to complex, high-dimensional environments. Building on the concept of adaptive behaviors through architectural innovation, \cite{vecoven2018hc1} introduced Neuro-Modulated Networks (NMNs). These networks employed a neuromodulatory sub-network to dynamically tune the activation function parameters of a main policy network, offering a more scalable solution than simply increasing network depth or width. NMNs achieved faster and more stable adaptive behaviors compared to standard RNNs, though their performance could be sensitive to the choice of activation functions. Further pushing the boundaries of implicit algorithmic learning, \cite{xu2020txy} proposed FRODO, an algorithm that utilized meta-gradient descent to discover its own RL objective function online, parameterizing the update target with a neural network. This ambitious approach aimed to learn the very learning rule, but scaling such online objective learning to complex, real-world environments remains a significant practical challenge. These RNN-based methods, while powerful, often struggled with long-term credit assignment and the explicit representation of task uncertainty, paving the way for more explicit adaptation strategies \cite{finn2017vrt, sutton2022jss}.
+
+A parallel and highly influential direction in meta-learning, particularly for rapid and explicit adaptation, emerged with gradient-based methods. Model-Agnostic Meta-Learning (MAML) \cite{finn20174c4} proved instrumental in this regard, extending its bi-level optimization framework to both Meta-RL and Meta-IL. For Meta-RL, MAML learns an initialization that can be quickly fine-tuned with a few gradient steps on a new task, significantly improving sample efficiency compared to learning from scratch. In the realm of Meta-Imitation Learning (Meta-IL), \cite{finn20174c4} pioneered one-shot visual imitation learning, enabling robots to acquire new skills from a single visual demonstration. This was a significant advancement, as it allowed end-to-end learning of visuomotor policies directly from raw pixel inputs, adapting via a few gradient updates. This approach addressed the critical data efficiency bottleneck in robotics, where collecting numerous demonstrations per task is often infeasible. However, a key challenge in imitation learning is the domain shift between human demonstrations and robot embodiments. \cite{yu2018nm7} addressed this by leveraging meta-learning to build prior knowledge for cross-domain transfer, facilitating more robust one-shot imitation. While gradient-based methods like MAML offer strong generalization capabilities, they can be computationally intensive and susceptible to meta-overfitting, where the meta-learner performs well on meta-training tasks but struggles with truly novel task distributions \cite{chen2021j5t}. To mitigate this, \cite{tseng2020m83} proposed regularizing meta-learning via gradient dropout, a simple yet effective method to alleviate overfitting during the inner-loop adaptation, thereby enhancing generalization to new tasks. More recent work by \cite{wang2024bhk} further investigates the underfitting/overfitting challenges in meta-learning, proposing a "Task Relation Learner" (TRLearner) to calibrate optimization by leveraging task similarities, which could be highly relevant for improving the robustness of gradient-based Meta-RL and Meta-IL.
+
+To tackle increasingly complex and long-horizon tasks, meta-learning has also been integrated with hierarchical and skill-based approaches. These methods aim to decompose complex behaviors into reusable sub-skills, which can then be meta-learned and composed. \cite{yang2018p36} proposed a hierarchical deep reinforcement learning algorithm that simultaneously learned basic and compound skills, utilizing two levels of hierarchy with a meta critic overseeing basic skills. Building on this, \cite{xu2019brv} introduced Hierarchical Meta-Critic Networks for sample-efficient learning, providing transferable knowledge across tasks by sharing a global basic critic and a meta critic. This framework allowed for the distillation of meta-knowledge above the task level, enhancing adaptation. \cite{lan20196o7} further improved generalization by proposing Meta-RL with Task Embedding and Shared Policy, explicitly capturing shared information across tasks and meta-learning how to quickly abstract task-specific information. More recently, \cite{nam2022z75} devised a skill-based Meta-RL method that leverages prior experience extracted from offline datasets to learn reusable skills and meta-train a high-level policy. This enables efficient composition of learned skills into long-horizon behaviors, allowing for rapid adaptation to unseen target tasks with significantly fewer environment interactions.
+
+The versatility of Meta-RL extends to various real-world applications, demonstrating its capacity for rapid adaptation in dynamic and resource-constrained settings. For instance, \cite{wang2020tae} developed a fast adaptive task offloading method in edge computing based on Meta-RL, which can adapt quickly to new environments with minimal gradient updates and samples. In robotics, \cite{visca20217nt} presented a deep meta-learning framework for energy-aware path planning for unmanned ground vehicles, allowing adaptation to unknown terrains. Furthermore, \cite{ma20243e9} proposed a Graph Convolutional Network based Multi-Objective Meta-Deep Q-Learning (GM2DQL) method for eco-routing, demonstrating rapid adaptation to dynamic traffic conditions. Beyond efficiency, Meta-RL is also being extended to safety-critical domains. \cite{khattar2024sr6} introduced a novel "CMDP-within-online" framework for Meta-Safe Reinforcement Learning, providing the first provable guarantees for task-averaged regret and constraint violations. This work is crucial for deploying RL agents in applications where both rapid adaptation and strict adherence to safety constraints are paramount. The integration of language instructions also shows promise, with \cite{bing2022xo7} presenting a meta-RL algorithm that utilizes language to shape task interpretation in robotic manipulation, offering a more intuitive way to specify new tasks.
+
+In conclusion, the field of Meta-Reinforcement Learning and Imitation Learning has undergone a significant evolution, moving from early demonstrations of implicit algorithmic learning within recurrent networks to sophisticated frameworks that explicitly optimize for adaptability and leverage hierarchical structures. While substantial progress has been made in addressing sample inefficiency and generalization, future research will likely focus on improving robustness to out-of-distribution tasks in dynamic environments, bridging the sim-to-real gap more effectively, and scaling to even more diverse and open-ended task distributions. The integration of meta-learning with other advanced learning paradigms, particularly for safety and human-robot interaction, will be crucial for achieving truly autonomous and adaptable AI agents capable of operating effectively in complex, real-world scenarios.
+\subsection{Probabilistic Meta-Learning for Task Inference and Exploration}
+\label{sec:5\_2\_probabilistic\_meta-learning\_for\_task\_inference\_\_and\_\_exploration}
+
+A critical challenge in meta-reinforcement learning (meta-RL) is the efficient adaptation to novel tasks, particularly in environments characterized by inherent uncertainty. Advanced probabilistic meta-learning frameworks explicitly address this by modeling task uncertainty, enabling more efficient exploration and the development of Bayes-adaptive policies. These policies condition actions not just on the current state, but also on the agent's evolving belief about the underlying task, leading to more robust and uncertainty-aware adaptation.
+
+A foundational contribution in this area is VariBAD (Variational Bayes-Adaptive Deep RL) by \cite{zintgraf2019zat}. VariBAD meta-learns an approximate Bayes-adaptive policy by jointly training a Variational Auto-Encoder (VAE) for posterior inference over latent MDP embeddings and a policy conditioned on this belief. This approach allows the agent to perform principled online exploration by continuously updating its belief about the task as it interacts with the environment, demonstrating superior exploratory behavior compared to methods like posterior sampling in tasks such as Gridworld navigation \cite{zintgraf2019zat}. However, VariBAD's reliance on on-policy experience during meta-training limited its sample efficiency, a common bottleneck in deep RL.
+
+To address the sample inefficiency of on-policy meta-RL, \cite{rakelly2019m09} introduced PEARL (Probabilistic Embeddings for Actor-Critic RL). PEARL is an off-policy meta-RL algorithm that leverages probabilistic context variables to encode task-specific information, conditioning the policy on this latent variable. A key innovation is its permutation-invariant encoder for task inference, which processes past experience to estimate the posterior over context variables, enabling significantly improved meta-training sample efficiency (20-100X) and structured exploration through posterior sampling. By decoupling the data used for policy training from that for encoder training, PEARL effectively integrates probabilistic task inference with off-policy actor-critic methods, achieving higher asymptotic performance on continuous control benchmarks \cite{rakelly2019m09}.
+
+The utility of probabilistic context variables extends beyond standard meta-RL to related problems like Inverse Reinforcement Learning (IRL). \cite{yu2019o41} proposed PEMIRL (Probabilistic Embeddings for Meta-Inverse Reinforcement Learning), which adapts the probabilistic context variable paradigm to infer reward functions from few, unstructured, and heterogeneous demonstrations. PEMIRL integrates a deep latent variable model with maximum entropy IRL, utilizing mutual information regularization between the probabilistic context variable and trajectories to ensure the learned reward function effectively uses the inferred context. This enables few-shot reward inference for new tasks without requiring explicit task groupings or labels, a significant step towards more practical IRL applications \cite{yu2019o41}.
+
+Further pushing the boundaries of meta-learning under realistic constraints, \cite{dorfman2020mgv} tackled the critical problem of Offline Meta-Reinforcement Learning with BOReL (Bayesian Offline Reinforcement Learning). BOReL is an off-policy VariBAD variant designed to learn exploration strategies from static, pre-collected datasets, rather than requiring active online data collection. This work formalizes the concept of "MDP ambiguity," highlighting the inherent limitations of data identifiability when inferring task beliefs solely from offline data, and proposes strategies to mitigate it. BOReL demonstrates that effective meta-exploration can be learned from offline data, outperforming online baselines in some sparse reward tasks, which is crucial for applications where online interaction is costly or unsafe \cite{dorfman2020mgv}.
+
+The principles of Bayes-adaptive meta-learning continue to inspire advancements in specific applications and challenging environments. For instance, \cite{zintgraf2021hoc} extended deep interactive Bayesian RL via meta-learning, enabling agents to learn about and adapt to other agents' unknown strategies in multi-agent settings by meta-learning approximate belief inference and Bayes-optimal behavior. Similarly, \cite{bing2022om0} addressed meta-RL in non-stationary and dynamic environments by introducing a training strategy and task representation based on Gaussian mixture models, achieving zero-shot adaptation and competitive performance in changing conditions. More recently, \cite{wang2024d09} proposed CBAMRL (Contrastive Learning-Based Bayes-Adaptive Meta-Reinforcement Learning) for active pantograph control in high-speed railways, employing a Bayes-adaptive strategy for zero-shot adaptation and a contrastive learning-based contextual encoder to represent complex task distributions, demonstrating rapid adaptation to unknown perturbations.
+
+In conclusion, probabilistic meta-learning frameworks have significantly advanced the field by providing principled ways to model and leverage task uncertainty. From foundational methods like VariBAD to off-policy improvements in PEARL, extensions to Meta-IRL with PEMIRL, and the crucial offline learning capabilities of BOReL, these approaches enable more efficient exploration and robust adaptation in complex, partially observable environments. Despite these advancements, challenges remain in fully addressing MDP ambiguity in diverse offline datasets, scaling to extremely broad task distributions, and integrating these sophisticated probabilistic models with real-time, safety-critical applications while maintaining theoretical guarantees.
+\subsection{Meta-Learning for Continual and Lifelong Adaptation}
+\label{sec:5\_3\_meta-learning\_for\_continual\_\_and\_\_lifelong\_adaptation}
+
+Intelligent agents operating in real-world environments face the fundamental challenge of continual and lifelong learning: they must adapt to non-stationary dynamics, sequentially encountered new tasks, and streaming data without succumbing to catastrophic forgetting \cite{son2023lda}. This necessitates developing systems that can continuously learn and evolve over time, retaining previously acquired knowledge while rapidly integrating new information. Meta-learning offers a powerful paradigm to address these issues by enabling models to "learn to learn" robust, efficient, and lifelong adaptation mechanisms, thereby moving towards truly autonomous AI agents. This section critically examines how meta-learning approaches, often synergistically combined with other techniques, facilitate continuous learning, knowledge retention, and rapid integration of new information, focusing on the mechanisms that enable models to overcome the plasticity-stability dilemma inherent in lifelong adaptation.
+
+A primary challenge in continual learning is mitigating catastrophic forgetting, where acquiring new knowledge erodes previously learned skills. Meta-learning addresses this by learning how to adapt parameters or update rules in a way that preserves past knowledge while integrating new information. Architectural and biologically-inspired meta-learning approaches intrinsically manage the plasticity-stability dilemma through their design. For instance, Neuro-Modulated Networks (NMNs) \cite{vecoven2018hc1} demonstrated that a neuromodulatory network could dynamically tune activation functions, leading to faster and more stable adaptive behaviors than standard recurrent neural networks. Similarly, Feedback and Local Plasticity (FLP) \cite{lindsey202075a} introduced a meta-learning framework with decoupled feedback pathways and local synaptic plasticity rules, demonstrating superior performance in continual learning tasks and offering a universality proof for approximating any learning algorithm \cite{finn2017vrt}. These models highlight the potential of architectural innovations to build in mechanisms for knowledge retention. More recently, Sequential Bayesian Meta-Continual Learning (SB-MCL) \cite{lee2024snq} proposed a distinct framework that inherently prevents catastrophic forgetting by fixing neural network parameters during continual learning and offloading sequential updates to robust statistical models via meta-learned mappings. This approach decouples the expressive power of deep networks from the sequential update process, ensuring stability by leveraging the theoretical guarantees of Bayesian updates in exponential family distributions.
+
+Optimization-based meta-learning, particularly Model-Agnostic Meta-Learning (MAML) \cite{finn20174c4}, has been instrumental in enabling rapid adaptation to new tasks by optimizing for a good initialization (as discussed in Section 3.1). However, its direct application to continual learning faces challenges such as meta-overfitting and insufficient weight modification in few gradient steps. To address these, various extensions have been proposed. \cite{tseng2020m83} introduced gradient dropout regularization during the inner-loop optimization of gradient-based meta-learning to improve generalization to new tasks in a sequence. HyperMAML \cite{przewiezlikowski2022d4y} replaced the gradient-based inner loop with a hypernetwork, allowing for more flexible and significant weight updates in a single step, which is crucial for adapting to diverse new tasks in a continual setting without repeated gradient computations. Furthermore, \cite{wang2024bhk} introduced TRLearner, which uses task relation matrices and consistency regularization to mitigate underfitting and overfitting in MAML for continual adaptation. For class-incremental settings, iTAML \cite{rajasegaran2020llk} developed an incremental task-agnostic meta-learning approach with a novel meta-update rule designed to maintain equilibrium across encountered tasks and effectively combat catastrophic forgetting. A distinct approach to learning the optimization process for continual learning was proposed by \cite{vuorio2018gwb}, which meta-trains a neural network to predict parameter update steps that respect the importance of parameters to previous tasks, thereby directly learning to mitigate forgetting. These optimization-based methods collectively aim to learn \textit{how to update} parameters to balance new learning with old knowledge retention, offering algorithmic solutions that complement architectural designs for stability.
+
+Beyond explicit parameter adaptation, meta-learning facilitates adaptation to non-stationary environments and dynamic task changes by learning more abstract adaptive strategies. As introduced in Section 5.1, early work by \cite{wang20167px} demonstrated that recurrent neural networks could implicitly learn a reinforcement learning algorithm within their recurrent dynamics for rapid task adaptation. Building on the probabilistic meta-learning frameworks for task inference and exploration discussed in Section 5.2, these methods have been extended to address online adaptation and robust exploration in lifelong settings. VariBAD \cite{zintgraf2019zat} and PEARL \cite{rakelly2019m09} leverage probabilistic context variables and latent MDP embeddings to enable structured online exploration and improved sample efficiency, which are crucial for dynamic environments where task identity might be unknown or changing. BOReL \cite{dorfman2020mgv} tackled Offline Meta-Reinforcement Learning, learning exploration from static datasets and mitigating "MDP ambiguity," a critical challenge for lifelong learning from diverse, pre-recorded data sources. For non-stationary and dynamic environments, \cite{bing2022om0} proposed a training strategy using Gaussian mixture models for task representation, achieving competitive asymptotic performance and superior zero-shot adaptation. While Meta-Safe Reinforcement Learning \cite{khattar2024sr6} is discussed in detail in Section 6.4, its CMDP-within-online framework is particularly relevant here for providing provable guarantees for task-averaged regret and constraint violations in dynamic environments, which is essential for reliable lifelong operation in safety-critical contexts.
+
+Meta-learning has also been synergistically combined with other techniques to enhance continual adaptation, particularly in scenarios with realistic constraints. For instance, in lifelong language learning, \cite{holla20202od} effectively combated catastrophic forgetting by combining meta-learning with sparse experience replay. By using replayed examples as the query set in a first-order MAML framework, their approach directly optimizes the model to prevent forgetting, demonstrating state-of-the-art performance under realistic constraints like single passes over data and no task identifiers. This highlights the power of combining meta-learning's adaptive capabilities with memory management strategies. Furthermore, hierarchical meta-learning approaches \cite{yang2018p36, xu2019brv} have explored learning basic and compound skills or using meta-critic networks for sample-efficient learning and transferable knowledge, which are vital for accumulating complex behaviors over a lifetime. Skill-based meta-RL \cite{nam2022z75} further leveraged offline datasets to extract reusable skills, enabling efficient meta-learning on long-horizon, sparse-reward tasks.
+
+The practical utility of meta-learning for continual adaptation is evident across diverse real-world applications. \cite{li20208tg} proposed an online meta-learning algorithm for self-supervised visual odometry, enabling continuous adaptation to new environments as a vehicle navigates. MAGICVFM \cite{lupu20249p4} introduced a stable adaptive controller for ground vehicles that integrates visual foundation models and meta-learning for real-time terrain adaptation, backed by mathematical stability guarantees, showcasing robust performance in dynamic physical systems. Similarly, \cite{ma20243e9} applied GCN-based multi-objective meta-Deep Q-Learning for eco-routing, demonstrating one-shot adaptation to new driving conditions. For high-speed railways, \cite{wang2024d09} developed a contrastive learning-based Bayes-adaptive meta-RL (CBAMRL) for active pantograph control, achieving zero-shot adaptation in non-stationary environments. In the domain of class-incremental learning, a transformer-based approach by \cite{kumar2024he9} demonstrated that meta-learners can exhibit significant generalization to newly introduced classes even without explicit training for this task, highlighting their inherent adaptability for integrating new categories over time. These applications underscore meta-learning's capacity to provide robust, efficient, and often theoretically grounded adaptation in complex, dynamic real-world systems.
+
+Despite significant progress, challenges remain in scaling these approaches to truly open-ended, highly complex real-world scenarios. Key tensions exist between architectural solutions (e.g., NMNs, SB-MCL) that intrinsically manage plasticity and stability, and algorithmic solutions (e.g., iTAML, meta-optimizers for CL) that modify learning rules. While memory-based methods like sparse experience replay are effective, they are constrained by finite memory buffers, raising questions about their efficacy in truly open-ended lifelong scenarios where knowledge accumulation is unbounded. Future research must focus on developing more robust and generalizable meta-learning frameworks that can operate with minimal supervision, handle extreme non-stationarity, provide stronger theoretical guarantees for all aspects of lifelong adaptation, and efficiently integrate diverse knowledge sources. The development of robust evaluation benchmarks specifically for continual meta-learning will also be crucial to drive progress towards truly autonomous and adaptable AI agents.
+
+
+\label{sec:real-world_applications_and_robustness}
+
+\section{Real-World Applications and Robustness}
+\label{sec:real-world\_applications\_\_and\_\_robustness}
+
+\subsection{Domain-Specific Adaptation and Generalization}
+\label{sec:6\_1\_domain-specific\_adaptation\_\_and\_\_generalization}
+
+Meta-learning offers a compelling paradigm for addressing the inherent challenges of data scarcity, spatiotemporal heterogeneity, and the critical need for rapid, cost-effective deployment in diverse, unseen operational environments. By learning to learn, meta-learning enables models to quickly adapt and generalize to new tasks or domains with minimal new data, showcasing its practical efficacy across various scientific and engineering fields.
+
+A prominent application demonstrating meta-learning's utility in rapid adaptation is wireless localization. Traditional fingerprinting-based methods struggle with environment-specificity, demanding extensive data collection and retraining for each new physical setting. To overcome this, \cite{gao20223fn} and \cite{gao2022y3s} introduce MetaLoc, a pioneering framework that leverages Model-Agnostic Meta-Learning (MAML) to learn optimal "meta-parameters" – essentially a robust model initialization – from historical tasks. This allows a deep neural network to quickly adapt to new environments with minimal new data and computationally inexpensive updates, significantly enhancing scalability and cost-effectiveness. Building upon this, \cite{pu2024m1b} further refines neural network positioning by proposing a Bayesian meta-learning approach. This method enhances robustness by inferring the Bayesian posterior, effectively mitigating model uncertainty and preventing overfitting when adapting to new environments with very limited samples, thus improving the reliability of rapid adaptation in dynamic wireless settings.
+
+Beyond static environments, meta-learning proves invaluable in tackling complex spatiotemporal heterogeneity. In climate science, accurately estimating global carbon fluxes (e.g., Gross Primary Production) is hampered by sparse and unbalanced in-situ observations, particularly in crucial regions like the tropics. \cite{nathaniel2023ycu} introduces MetaFlux, which employs an MAML-adapted meta-learning ensemble to upscale these sparse spatiotemporal observations. This approach provides robust estimates even in data-poor regions and demonstrates enhanced robustness in predicting extreme flux events, significantly outperforming non-meta-learning baselines. Generalizing this concept, \cite{dong2024110} proposes HimNet, a Heterogeneity-Informed Meta-Parameter Learning scheme for spatiotemporal time series forecasting. HimNet implicitly characterizes spatiotemporal heterogeneity through learnable embeddings and dynamically generates context-specific parameters from compact meta-parameter pools, addressing the limitations of prior methods that rely on auxiliary features or suffer from high computational costs. This represents a significant advancement in leveraging heterogeneity to inform model adaptation. Similarly, \cite{pan2019pue} addresses urban traffic prediction, another domain characterized by complex spatio-temporal correlations, using a deep meta-learning model (ST-MetaNet) that collectively predicts traffic by capturing diverse spatial and temporal patterns.
+
+Meta-learning also provides critical solutions for few-shot learning scenarios where data is inherently scarce. For instance, few-shot short utterance speaker verification, crucial for applications like online payments, faces challenges due to the limited availability of voice samples. \cite{wang2023x5w} addresses this by employing a meta-learning approach, specifically Prototypical Networks enhanced with an ECAPA-TDNN feature extractor and an episodic training strategy that incorporates global classification. This enables the model to learn more discriminative speaker features and achieve identification with minimal voice samples, outperforming traditional methods. The utility extends to other specialized domains: \cite{wang2023srr} introduces Meta-Transfer Learning with Freezing Operation (MTLFO) for few-shot bearing fault diagnosis, which learns new knowledge rapidly from small samples while avoiding overfitting. In remote sensing, \cite{alajaji2020b6c} applies MAML for few-shot scene classification, demonstrating its ability to classify new, unseen classes from limited labeled samples. Furthermore, \cite{cheng2024mky} proposes a meta-transfer learning framework for general hyperspectral image super-resolution, tackling data scarcity and significant domain differences by accumulating diverse task experiences and gradually expanding the number of bands. Even in video processing, \cite{gupta2021fbg} presents Ada-VSR, an adaptive video super-resolution method that uses meta-transfer learning to quickly adapt to novel degradation conditions with only a few gradient updates, significantly reducing inference time.
+
+In conclusion, the literature clearly demonstrates meta-learning's profound impact on domain-specific adaptation and generalization. By enabling rapid learning from limited data and effectively handling complex heterogeneity, meta-learning addresses critical real-world challenges across wireless communication, climate science, security, manufacturing, and remote sensing. However, ongoing research continues to explore ways to balance the computational overhead of meta-learning with scalability, develop more universally robust meta-objectives, and reduce the reliance on diverse meta-training data to fully unlock its potential for truly adaptable and cost-effective AI systems.
+\subsection{Meta-Learning for Data Quality and Robustness}
+\label{sec:6\_2\_meta-learning\_for\_data\_quality\_\_and\_\_robustness}
+
+Real-world machine learning applications are frequently hampered by imperfect data, including noisy labels, imbalanced distributions, and varying data utility, all of which can severely degrade model performance and robustness. Meta-learning offers a powerful paradigm to address these challenges by enabling deep neural networks to "learn how to learn" from such imperfections, thereby enhancing data quality and improving model resilience.
+
+A significant area of focus is making deep neural networks inherently noise-tolerant. \cite{li2018soc} pioneered a meta-learning based noise-tolerant (MLNT) training algorithm that optimizes a meta-objective to prevent overfitting to label noise. This approach innovatively generates synthetic noisy labels through a "random neighbor label transfer" method and enforces consistency with a stable self-ensembling teacher model, effectively learning parameters that are robust against a wide spectrum of label corruption. Building on this, \cite{algan2020u0v} introduced Meta Soft Label Generation (MSLG), a meta-learning algorithm that jointly generates optimal soft labels and learns deep neural network parameters. MSLG adapts the meta-learning paradigm to estimate label distributions by evaluating gradient directions on both noisy training data and a small, noise-free meta-dataset, iteratively refining soft labels to minimize loss on clean samples. This provides a more nuanced approach to handling label uncertainty compared to direct label correction. Further specializing in specific domains, \cite{zhang2021p9j} proposed an adaptive label noise cleaning algorithm based on meta-supervision for deep face recognition. This method learns reliable cleaning knowledge from well-labeled noisy data and gradually transfers it to target data, incorporating a threshold adapter to manage transfer learning drift and achieve state-of-the-art performance on noisy face datasets. Extending beyond simple label noise, \cite{liu2022tgc} tackled diverse data biases in deep face recognition, such as ethnicity, head pose, and occlusion. They proposed a sample-level weighting approach, Multi-variation Cosine Margin (MvCoM), guided by a meta-learning set to predict these weights, thereby simultaneously handling multiple variation factors and enhancing robustness against complex data imbalances.
+
+Another critical aspect of data quality is data valuation, where meta-learning helps identify and leverage the most valuable data samples. \cite{yoon2019k84} addressed the computationally intensive nature of traditional data valuation methods (like Data Shapley) by proposing Data Valuation using Reinforcement Learning (DVRL). This meta-learning framework jointly optimizes a data value estimator (a neural network predicting sample selection probabilities) and a target task predictor model. Crucially, DVRL employs reinforcement learning to handle the non-differentiable process of data sampling, using the predictor's performance on a small validation set as a reward signal. This scalable and model-agnostic approach significantly outperforms prior methods in tasks like corrupted sample discovery, domain adaptation, and robust learning, demonstrating meta-learning's power in discerning data utility.
+
+Beyond explicit label correction and data valuation, meta-learning also contributes to broader aspects of model robustness against data imperfections. For instance, in few-shot learning scenarios, the "hubness problem"—where certain class prototypes become the nearest neighbor for many test instances regardless of their true class—can arise from data distribution characteristics. \cite{fei20211x6} demonstrated that many few-shot learning methods suffer from this and proposed using z-score feature normalization during meta-training to mitigate its negative effects, thereby boosting the robustness and performance of existing methods. Furthermore, addressing biases in training data for fair ranking systems, \cite{wang2024so2} introduced a Meta Curriculum-based Fair Ranking (MCFR) framework. This framework utilizes a meta-learner to generate weighted losses, focusing more on minority groups to alleviate data bias. By formulating this as a bilevel optimization problem and integrating a curriculum learning scheduler for sampling the meta-dataset, MCFR learns to adaptively re-weight samples, ensuring fairer ranking outcomes.
+
+In conclusion, meta-learning provides a versatile toolkit for enhancing data quality and model robustness in the face of real-world data imperfections. Techniques range from learning to correct or down-weight noisy labels, as seen in \cite{li2018soc} and \cite{algan2020u0v}, to sophisticated data valuation methods like DVRL \cite{yoon2019k84} that identify and prioritize valuable samples. Moreover, meta-learning contributes to mitigating broader data-induced issues such as hubness \cite{fei20211x6} and fairness biases \cite{wang2024so2}. A common limitation across many of these approaches, however, remains the reliance on a small, often clean, validation or meta-dataset to guide the meta-learning process, which may not always be available in extreme real-world scenarios. Future research could focus on developing meta-objectives that are less dependent on such clean auxiliary data, further improving the scalability and generalizability of meta-learning for data quality and robustness across an even wider range of tasks and data imperfections.
+\subsection{Meta-Learning with Large Pre-trained Models}
+\label{sec:6\_3\_meta-learning\_with\_large\_pre-trained\_models}
+
+The advent of large pre-trained models, including Vision-Language Models (VLMs) and Large Language Models (LLMs), has fundamentally reshaped the landscape of few-shot learning, instigating a crucial paradigm shift in meta-learning. This subsection explores how meta-learning strategies are now predominantly employed to efficiently adapt, steer, or minimally tune these massive foundational models for novel tasks with limited data, moving beyond the traditional goal of learning optimal initial model weights.
+
+Historically, meta-learning focused on learning generalizable initialization parameters or architectures that could quickly adapt to new tasks with a few gradient steps \cite{Finn\_MAML\_2017, Nichol\_Reptile\_2018}. Early surveys, such as \cite{huisman2020b7w}, noted an empirical correlation between larger network backbones and improved few-shot performance, implicitly hinting at the power of rich, pre-learned representations. This observation paved the way for integrating powerful pre-trained models into meta-learning frameworks. For instance, early work by \cite{holla20202od} demonstrated the efficacy of meta-learning with sparse experience replay for lifelong language learning, leveraging pre-trained BERT as a representation network to mitigate catastrophic forgetting. Similarly, \cite{li2023zn0} advanced few-shot text classification by proposing SEML, which enhances meta-learning with self-supervised information derived from unlabeled data, further enriching the feature representations learned by models like BERT. These initial integrations showcased meta-learning's ability to leverage pre-trained knowledge for specific adaptive challenges.
+
+The true transformation, however, lies in the shift from fine-tuning entire models to efficiently interacting with or minimally tuning \textit{frozen} foundational models. A seminal contribution in this area is "Learning to Prompt" (L2P) by \cite{Chen\_L2P\_2021}, which introduced a meta-learning approach where a meta-learner generates task-specific learnable prompts to guide a \textit{frozen} Vision-Language Model for few-shot adaptation. This technique significantly reduces the number of parameters requiring fine-tuning, thereby minimizing computational cost and data requirements. Building upon this, \cite{wang2024dai} addressed a critical limitation of prompt tuning: overfitting to base classes and poor generalization to novel classes. They proposed "Learning to Learn Better Visual Prompts," which integrates a meta-learning-informed episodic training strategy (akin to MAML's inner-outer loop optimization) into prompt tuning. This enables the model to learn more generalizable prompt vectors that effectively transfer knowledge to unseen categories, demonstrating meta-learning's power in optimizing the \textit{prompting strategy itself} for improved few-shot generalization. The practical impact of this paradigm is further exemplified by \cite{lupu20249p4}'s MAGICVFM, a stable adaptive controller for ground vehicles. This system integrates Visual Foundation Models (VFMs) and meta-learning to adapt only the last layer of a deep neural network based on VFM-derived visual features, showcasing efficient and robust adaptation of foundational models in safety-critical scenarios.
+
+For Large Language Models (LLMs), meta-learning plays a crucial role in addressing their inherent data and computational demands, particularly for domain-specific adaptation \cite{lee2021jou}. While in-context learning (ICL) is an emergent capability of large transformers, exhibiting properties analogous to meta-learning by adapting to tasks from demonstrations without explicit weight updates, explicit meta-learning strategies are actively employed to enhance or steer this emergent behavior. \cite{Wang\_Meta-Learning\_2022} provides a comprehensive survey, highlighting how meta-learning underpins strategies like prompt-based learning, parameter-efficient fine-tuning (PEFT), and in-context learning to adapt these massive models with minimal data and computational overhead. This underscores a paradigm shift towards learning \textit{how to interact with} or \textit{efficiently tune} these powerful, pre-trained models rather than learning their initial weights from scratch. Furthermore, meta-learning with transformer-based models is being applied to real-world challenges like class incremental learning, where \texttt{\cite{kumar2024he9}} proposes a transformer-based aggregation function within a meta-learner to classify newly introduced classes without retraining, showcasing how meta-learning enables continuous adaptation for these large NLP models.
+
+Beyond prompt tuning, meta-learning principles are being explored for other parameter-efficient fine-tuning (PEFT) techniques. For instance, meta-learning could be applied to optimize configurations for adapters (e.g., determining optimal LoRA ranks or placement) or to learn dynamic learning rate schedules for specific modules, further enhancing adaptation efficiency. The immense scale and complexity of foundational models also necessitate advancements in meta-optimization. \cite{ozkara2024nst} introduced Meta-Adaptive Optimizers (MADA), which meta-learn the most suitable optimizer dynamically during training. This approach is particularly beneficial for the complex optimization landscapes and high computational costs associated with fine-tuning large models, potentially leading to faster convergence or better generalization with fewer steps. Moreover, theoretical advancements, such as the analysis of optimal (even counter-intuitive negative) inner-loop learning rates in MAML for overparameterized models by \cite{bernacchia20211r0}, offer fundamental insights into the meta-optimization process. These insights are highly relevant for designing more robust and efficient meta-learning algorithms to adapt large pre-trained models, where overparameterization is the norm and optimal tuning strategies are critical for performance and computational efficiency.
+
+The practical deployment of large foundation models, especially in sensitive domains, also highlights the critical role of meta-learning in distributed and privacy-preserving adaptation. The immense scale of these models, coupled with privacy concerns in real-world user data, makes centralized fine-tuning impractical. Federated meta-learning emerges as a critical enabling technology for privacy-preserving personalization, allowing large models to adapt to diverse client data without centralizing raw information. Examples include federated meta-learning frameworks for EV charging demand forecasting \cite{you2024xuq} and driver distraction detection \cite{liu2024jz5}, which enable collaborative learning across multiple clients while preserving data privacy, highly pertinent for deploying large models in sensitive, real-world environments.
+
+In conclusion, meta-learning has undergone a significant evolution, transitioning from learning initial model parameters to developing sophisticated strategies for efficiently interacting with, steering, or minimally tuning large pre-trained models. This shift, driven by techniques like learning to generate optimal prompts and parameter-efficient fine-tuning, unlocks the immense potential of foundational models for rapid adaptation across a vast array of few-shot downstream applications. However, challenges remain in fully understanding the emergent properties of in-context learning, developing universally robust and parameter-efficient meta-learning strategies, scaling meta-training to encompass the full diversity of tasks that these increasingly capable foundational models can address, and advancing the theoretical understanding of meta-optimization in these overparameterized regimes.
+\subsection{Safety and Interpretability in Meta-Learning Systems}
+\label{sec:6\_4\_safety\_\_and\_\_interpretability\_in\_meta-learning\_systems}
+
+The deployment of highly adaptive meta-learning systems in real-world, often safety-critical, applications necessitates a rigorous focus on their safety and interpretability. While meta-learning excels at rapid adaptation to new tasks with limited data, ensuring that this adaptability does not compromise reliability, transparency, and trustworthiness is paramount. Recent advancements are beginning to address these crucial aspects, moving towards more responsible AI development.
+
+A significant step towards reliable autonomous systems is the development of meta-safe reinforcement learning (Meta-SRL), which provides provable guarantees for safety. \cite{khattar2024sr6} introduces a novel "CMDP-within-online" framework for Meta-SRL, offering the first provable guarantees for task-averaged regret and constraint violations in Constrained Markov Decision Processes (CMDPs). This framework is critical for enabling RL agents to adapt quickly to unseen tasks while strictly adhering to safety constraints, even in the presence of inexact policies and state visitation distributions. Complementing this, \cite{lupu20249p4} presents MAGICVFM, a stable adaptive controller for ground vehicles that integrates visual foundation models with meta-learning for real-time terrain adaptation. This system is backed by mathematical guarantees of exponential stability and robustness, directly contributing to the safe operation of autonomous systems in complex, dynamic environments. Similarly, \cite{oconnell2022twd} demonstrates Neural-Fly, a meta-learning approach that enables rapid online adaptation for agile UAV flight in strong winds, providing robustness and exponential stability guarantees crucial for safe aerial navigation.
+
+Beyond explicit safety guarantees, interpretability and reliable confidence estimates are vital for trust and accountability, particularly in human-machine interaction. \cite{tam2024a1h} addresses this by proposing a deep metric meta-learning framework for robust and interpretable EMG-based hand gesture recognition. Their method learns a semantically meaningful embedding space and derives a class proximity-based confidence estimator, offering more reliable and transparent confidence measures than traditional softmax outputs, which is crucial for safety-critical applications like prosthetic control. This approach tackles the poor generalization and overconfidence issues prevalent in conventional deep learning models. In a similar vein, \cite{chen2022z45} and \cite{wistuba2021wha} leverage meta-learning with deep kernel Gaussian Processes (GPs) to provide robust predictions with well-calibrated uncertainty estimates in few-shot settings, such as molecular property prediction and hyperparameter optimization. These calibrated uncertainties are essential for informed decision-making and building trust in high-stakes scientific and engineering domains. Further enhancing reliability, \cite{aqeel2025zql} introduces Confident Meta-learning (CoMet) for unsupervised anomaly detection, which integrates soft confident learning to assign lower weights to low-confidence samples and meta-learning to stabilize training. This approach improves robustness to noisy data and provides critical confidence signals for anomaly detection, a key safety function.
+
+The robustness of meta-learning systems to continuous data streams and evolving tasks also contributes to their overall safety and reliability. \cite{holla20202od} tackles catastrophic forgetting in lifelong language learning by combining meta-learning with sparse experience replay. By preventing models from losing previously acquired knowledge, this method ensures sustained performance and reliability in dynamic environments. Building on this, \cite{lee2024snq} proposes Sequential Bayesian Meta-Continual Learning (SB-MCL), a framework that inherently prevents catastrophic forgetting in neural networks by offloading sequential updates to robust statistical models, thereby ensuring long-term reliability and stability of learned knowledge.
+
+Despite these advancements, the efficacy of meta-learning in all safety-critical domains is not universally established. For instance, \cite{guarino2023zsq} conducted a comprehensive comparison of meta-learning, transfer learning, and contrastive learning for encrypted traffic classification, a security-critical task. Their findings indicated that meta-learning methods, at least with the evaluated techniques and protocols, performed worse than other representation learning paradigms. This highlights the imperative for careful evaluation and validation of meta-learning approaches in specific safety-critical contexts, as their benefits are not guaranteed across all application types.
+
+In conclusion, while meta-learning offers powerful tools for rapid adaptation, the integration of provable safety guarantees, interpretable confidence estimates, and robust continual learning mechanisms is crucial for its responsible deployment. Future research must continue to bridge the gap between adaptive effectiveness and the stringent requirements of safety, transparency, and trustworthiness, ensuring that these advanced AI systems can be reliably used in the most demanding real-world scenarios.
+
+
+\label{sec:challenges_and_future_directions}
+
+\section{Challenges and Future Directions}
+\label{sec:challenges\_\_and\_\_future\_directions}
+
+\subsection{Theoretical Gaps and Generalization Challenges}
+\label{sec:7\_1\_theoretical\_gaps\_\_and\_\_generalization\_challenges}
+
+Despite significant advancements, deep meta-learning continues to grapple with fundamental theoretical limitations and persistent generalization challenges, particularly when confronted with truly novel task distributions. A critical issue is meta-overfitting, where meta-learners excel on meta-training tasks but struggle to adapt effectively to unseen tasks that deviate significantly from the meta-training distribution, often exhibiting sensitivity to subtle shifts in task characteristics \cite{wang2024bhk, khoee2024ksk}.
+
+The challenge of meta-overfitting is a central concern. Traditional meta-learning, often relying on bi-level optimization, can lead to underfitting or overfitting depending on task complexity, hindering generalization \cite{wang2024bhk}. To address this, \textcite{wang2024bhk} proposed TRLearner, a plug-and-play method that introduces relation-aware consistency regularization based on extracted task relation matrices. This approach offers theoretical guarantees for improved generalization by ensuring consistent performance on similar tasks, moving beyond simple empirical observations. Similarly, in the context of Vision-Language Models, \textcite{wang2024dai} tackled the generalization challenge in prompt tuning, where models often overfit to base classes and perform poorly on novel ones. Their meta-learning-informed episodic training strategy effectively mitigates this overfitting, demonstrating improved generalization to new classes.
+
+A related problem is the meta-learner's tendency to "memorize" meta-training tasks rather than learning a truly adaptive mechanism. \textcite{yin2019cct} highlighted this by showing that meta-learners can sometimes solve all meta-training tasks zero-shot without actual adaptation, leading to poor performance on novel tasks. They proposed an information-theoretic meta-regularization objective to prioritize data-driven adaptation. The sensitivity to shifts in task distribution is particularly evident in cross-domain few-shot learning. \textcite{tian2023iyh} addressed this by proposing an adversarial meta-training framework that dynamically generates pseudo tasks to improve generalization to unseen domains, emphasizing the need for robust meta-knowledge. Surveys like \textcite{khoee2024ksk} further formalize the problem of Domain Generalization through meta-learning, underscoring that effective generalization to unseen domains necessitates sufficient diversity in meta-training tasks. Practical applications also highlight these limitations; for instance, \textcite{zhu2022d9a} and \textcite{zhu2020rb5} developed meta-learning solutions for No-Reference Image Quality Assessment to improve generalization to unseen distortion types, a common real-world challenge. However, meta-learning's efficacy is not universally guaranteed; \textcite{guarino2023zsq}'s empirical study on encrypted traffic classification found that meta-learning methods performed worse than transfer or contrastive learning, suggesting that in some domains, the learned meta-knowledge may not transfer as effectively. This is further supported by observations from the NeurIPS 2021 MetaDL challenge, where backbone fine-tuning often outperformed episodic meta-learning, indicating that simpler transfer learning might sometimes be more effective for generalization \cite{baz2022n78}.
+
+Beyond empirical observations, there is a pressing need for stronger theoretical guarantees for generalization across diverse tasks. While some works provide theoretical foundations, such as \textcite{finn2017vrt} demonstrating the universality of gradient-based meta-learning in approximating any learning algorithm, these do not always translate into robust generalization guarantees for complex real-world scenarios. More specific theoretical insights are emerging, such as \textcite{bernacchia20211r0}'s surprising finding that the optimal inner loop learning rate for MAML during meta-training can be negative. This theoretical analysis, derived from random matrix theory and the Neural Tangent Kernel framework, offers a deeper understanding of MAML's generalization behavior and challenges conventional assumptions about gradient-based optimization in meta-learning. In safety-critical applications, theoretical guarantees are paramount; \textcite{khattar2024sr6} introduced a CMDP-within-online framework for Meta-Safe Reinforcement Learning, providing the first provable guarantees for task-averaged regret and constraint violations. Similarly, \textcite{lupu20249p4} developed MAGICVFM for ground vehicle control, integrating visual foundation models and meta-learning with mathematical stability guarantees, showcasing a move towards theoretically robust adaptive systems.
+
+The computational complexity of meta-training and the challenges associated with scaling meta-learning algorithms to very large and highly heterogeneous task distributions remain crucial areas for foundational research. Early surveys, such as \textcite{huisman2020b7w}, already identified high computational costs as a significant open challenge. Optimization-based meta-learning, particularly methods like MAML, often involve backpropagating through multiple inner-loop gradient steps, leading to substantial memory and computational overhead. To mitigate this, \textcite{bertinetto2018ur2} proposed meta-learning with differentiable closed-form solvers (e.g., Ridge Regression), which allows for efficient adaptation and backpropagation by leveraging matrix identities. Building on this, \textcite{przewiezlikowski2022d4y} introduced HyperMAML, replacing MAML's gradient-based inner loop with a trainable hypernetwork to generate more substantial and efficient weight updates in a single step, thereby reducing computational complexity. The meta-learning of optimizers, as seen in \textcite{ozkara2024nst}'s MADA framework, also implicitly aims to improve the overall efficiency of the learning process itself. Furthermore, scaling meta-learning to very large and distributed task distributions, especially in privacy-sensitive domains, has led to the integration of federated learning. Approaches like \textcite{you2024xuq}'s FMGCN for EV charging demand forecasting, \textcite{liu2024jz5}'s AFM3D for driver distraction detection, and \textcite{qu2022mu6}'s ALL for parking occupancy prediction, combine federated learning with meta-learning to address data silos, heterogeneity, and computational efficiency in distributed, multi-client environments. These efforts highlight the ongoing struggle to make meta-learning practical and scalable for real-world, dynamic, and diverse task landscapes.
+
+In conclusion, while deep meta-learning has demonstrated impressive capabilities in few-shot learning and adaptation, significant theoretical and practical hurdles persist. The field continues to grapple with fundamental issues of meta-overfitting and sensitivity to task distribution shifts, necessitating more robust regularization and task-aware learning mechanisms. The demand for stronger theoretical guarantees for generalization, moving beyond empirical success to provable performance, remains a critical research direction. Simultaneously, addressing the inherent computational complexity and developing scalable meta-learning algorithms for increasingly large and heterogeneous task distributions are crucial for unlocking the full potential of learning-to-learn paradigms in real-world applications.
+\subsection{Ethical Considerations and Societal Impact}
+\label{sec:7\_2\_ethical\_considerations\_\_and\_\_societal\_impact}
+
+The rapid advancement of autonomous and adaptive meta-learning systems, while promising significant technological breakthroughs, simultaneously introduces profound ethical implications and necessitates careful consideration of their broader societal impact. As these systems learn "how to learn" and adapt to novel tasks with minimal human intervention, critical discussions surrounding potential issues such as bias amplification, the challenge of accountability, and the risk of misuse become increasingly urgent.
+
+A primary concern revolves around \textbf{bias amplification}. Meta-learning algorithms are designed to extract generalizable knowledge from a distribution of tasks \cite{hospedales2020m37, huisman2020b7w}. If the data used for meta-training, or the tasks themselves, contain existing societal biases, the meta-learner can inadvertently perpetuate or even exacerbate these biases when applied to new, unseen scenarios. For instance, in deep face recognition, where training data is often imbalanced across various demographic and environmental factors, meta-learning approaches must explicitly account for "diverse data biases" to prevent significant accuracy degradation for underrepresented groups \cite{liu2022tgc}. Similarly, in information retrieval, meta-learning frameworks are being developed to address "data bias" and promote "fair ranking" by guiding the meta-learner to mitigate skewness towards biased attributes \cite{wang2024so2}. Furthermore, methods that leverage self-supervised learning from unlabeled data \cite{li2023zn0} or learn from uncurated datasets \cite{aqeel2025zql} risk embedding and amplifying latent biases present in these larger, less scrutinized data pools if not carefully designed with fairness in mind. Even efforts to improve data quality through meta-learning, such as data valuation \cite{yoon2019k84} or learning from noisy labels \cite{li2018soc}, could inadvertently prioritize data points that reinforce existing biases if the underlying valuation or noise models are themselves biased.
+
+The inherent adaptability of meta-learning systems also poses significant challenges for \textbf{accountability}. When AI systems learn not just parameters, but the very rules or initializations that govern their adaptation \cite{Finn\_MAML\_2017, Nichol\_Reptile\_2018}, their decision-making processes can become opaque and emergent. This complexity makes it difficult to trace \textit{why} a system behaved in a particular way or adapted to a new situation in a specific manner. The intricate interplay of initialization layers and learned "meta-layers" for task-specific fine-tuning, as explored in efforts to rethink meta-learning's core mechanisms \cite{wang2024bhk}, adds layers of abstraction that complicate interpretability. Similarly, meta-adaptive optimizers that dynamically learn the most suitable optimization strategy during training \cite{ozkara2024nst} further obscure the causal chain of decisions. Recognizing these challenges, some research directly addresses accountability in safety-critical domains. For example, meta-safe reinforcement learning aims to provide "provable guarantees" for task-averaged regret and constraint violations in complex environments, a crucial step towards ensuring reliable behavior in autonomous systems \cite{khattar2024sr6}. In ground interaction control for vehicles, the integration of visual foundation models with meta-learning for real-time adaptation, while offering "mathematical stability guarantees," still presents interpretability challenges for understanding specific adaptations \cite{lupu20249p4}. Efforts to enhance "interpretability" and provide "robust confidence estimates" in human-machine interfaces, such as EMG-based hand gesture recognition, directly acknowledge the need for transparent decision-making in adaptive systems \cite{tam2024a1h}.
+
+Beyond these, the \textbf{potential for misuse} of highly adaptable meta-learning technologies is a critical concern. The ability of meta-learning to enable rapid learning from few examples \cite{sung2017nc5, li2023zn0, wang2024dai} is a double-edged sword. While beneficial for legitimate applications like few-shot malware classification \cite{li20246zp, wang2023kho} or medical diagnosis, this same capability could be exploited for malicious purposes, such as rapidly deploying surveillance systems for new targets, generating targeted disinformation, or developing more evasive adversarial agents. The power of domain generalization \cite{khoee2024ksk} and cross-domain transfer learning \cite{jang2019a48, chai2022kv5, liang2021juf, cheng2024mky} means models can be trained on one dataset and quickly adapted to another, potentially enabling malicious actors to bypass security measures or adapt to new adversarial environments more rapidly. Even privacy-preserving paradigms like federated meta-learning \cite{you2024xuq, liu2024jz5, qu2022mu6}, designed to keep data localized, could introduce new privacy risks if the meta-learning process itself is compromised or if the aggregated meta-knowledge inadvertently reveals sensitive information.
+
+In conclusion, while meta-learning promises to unlock unprecedented levels of AI adaptability and efficiency, its ethical implications demand proactive attention. The inherent risks of bias amplification, the complexities of ensuring accountability in highly adaptive systems, and the potential for misuse underscore the urgent need for responsible development, transparent deployment, and robust regulatory frameworks. Future research must not only focus on advancing algorithmic performance but also prioritize the integration of fairness-aware designs, enhanced interpretability, and provable safety guarantees into meta-learning architectures to ensure that these powerful advancements contribute positively to society while mitigating their inherent risks.
+\subsection{Emerging Trends and Hybrid Approaches}
+\label{sec:7\_3\_emerging\_trends\_\_and\_\_hybrid\_approaches}
+
+The trajectory of deep meta-learning is increasingly defined by a concerted effort to transcend isolated paradigms, fostering integrated, hybrid approaches that draw strength from diverse methodologies to develop more robust, efficient, and truly generalizable adaptive AI systems \cite{hospedales2020m37}. This subsection delineates promising future research directions, emphasizing the growing interest in combining different meta-learning methodologies, the continued exploration of biologically inspired mechanisms, and the expansion into novel, high-impact applications.
+
+A significant emerging trend involves the explicit hybridization of meta-learning paradigms, moving beyond single-paradigm solutions to leverage complementary strengths. For instance, the integration of probabilistic modeling with optimization-based or metric-based insights is enhancing task inference and efficient exploration. While foundational probabilistic meta-RL methods like VariBAD \cite{zintgraf2019zat} and PEARL \cite{rakelly2019m09} have been instrumental in learning Bayes-adaptive policies and improving sample efficiency (as discussed in Section 5.2), their future lies in deeper integration with other meta-learning types. This includes approaches that use optimization to refine probabilistic models or metric learning. For example, \cite{tseng2020m83} proposed Gradient Dropout, an optimization-based regularization technique for gradient-based meta-learning that mitigates overfitting by randomly dropping gradients during inner-loop adaptation, thereby improving generalization, particularly when combined with other meta-learning strategies. Furthermore, meta-learning is increasingly applied to refine metric learning itself, as demonstrated by \cite{chen2019oep}'s Deep Meta Metric Learning (DMML) for learning set-based distances, \cite{zheng20200ig}'s DML-ALA for adaptive learnable assessment, and \cite{jiang20220tg}'s MMSI for meta-mining strategies with semiglobal information. These works exemplify hybrid approaches where a meta-learner (often optimization-based) is employed to discover more robust and generalizable similarity measures, thereby enhancing the performance of metric-based systems. This synergistic combination aims to create systems that not only adapt quickly but also quantify uncertainty and make more informed decisions.
+
+Another prominent direction focuses on learning adaptive algorithms and architectures, often drawing inspiration from biological systems or employing meta-gradients to discover optimal learning processes. The concept of "learning to learn" extends to learning the very algorithms that govern adaptation, a powerful idea with roots in early work showing recurrent neural networks (RNNs) could implicitly learn reinforcement learning algorithms \cite{wang20167px}. This has evolved into the field of meta-gradients, where gradients are computed through the learning process itself to optimize meta-parameters \cite{sutton2022jss}. For instance, \cite{xu2020txy} proposed FRODO, an algorithm that uses meta-gradient descent to discover its own RL objective function online by parameterizing the update target with a neural network, moving beyond handcrafted objectives. Theoretically, gradient-based meta-learning, such as MAML, has been shown to possess universal approximation capabilities for learning algorithms, suggesting its potential to discover highly effective learning strategies \cite{finn2017vrt}. Biologically inspired mechanisms offer another avenue for adaptive architectures. Directly inspired by cellular neuromodulation, \cite{vecoven2018hc1} introduced Neuro-Modulated Networks (NMNs), where a neuromodulatory network dynamically tunes the activation function parameters of a main network, leading to faster and more stable adaptive behaviors. Similarly, \cite{fernando2018lt5} explored meta-learning by the Baldwin effect, demonstrating its capability to evolve few-shot supervised and reinforcement learning mechanisms by shaping hyperparameters and initial parameters without requiring backpropagation through meta-parameters. These approaches collectively aim to imbue AI systems with intrinsic, flexible adaptation capabilities, moving towards more autonomous and robust learning.
+
+These emerging trends are paving the way for novel applications in complex real-world domains, pushing the boundaries of what adaptive AI can achieve. In scientific discovery, meta-learning holds immense promise for accelerating research by enabling models to generalize from limited, heterogeneous data. For example, \cite{ruwurm2024806} introduced METEOR, a meta-learning methodology for Earth observation problems that adapts to diverse tasks and resolutions, using knowledge from global land cover information to perform well on new, unseen geospatial problems with few labels. This demonstrates meta-learning's capacity to extract generalizable insights from vast, varied datasets and apply them to specific, data-scarce scientific challenges. Another critical area is personalized medicine, where meta-learning's ability to adapt to individual patient data, handle data scarcity, and account for heterogeneity is invaluable for tasks like drug discovery, personalized diagnostics, and treatment optimization. While direct citations of meta-learning in personalized medicine are still emerging, the principles demonstrated in personalized robotics \cite{yu2018nm7} and adaptive control systems \cite{wang2020tae, ma20243e9, visca20217nt} strongly suggest its imminent impact. Furthermore, meta-learning is crucial for enhancing the adaptability of large pre-trained models in complex scenarios, such as class incremental learning in NLP \cite{kumar2024he9, lee2021jou}, where it enables models to efficiently learn new classes without catastrophic forgetting or extensive retraining. The ability to rapidly adapt to new environments and tasks, as seen in meta-RL for robotics and control, and for resource management, underscores its potential to tackle dynamic and non-stationary real-world challenges.
+
+In conclusion, the future of deep meta-learning is marked by a concerted effort to move beyond isolated paradigms towards integrated, hybrid approaches that draw strength from diverse methodologies. The increasing sophistication of probabilistic modeling, the ambition to learn the very algorithms and architectures of adaptation, and the expansion into complex real-world applications like scientific discovery and personalized medicine collectively underscore a vision for truly adaptive and generalizable AI. While significant progress has been made in enhancing robustness, efficiency, and generalization, challenges remain in scaling these hybrid systems to even greater complexity, ensuring stronger theoretical guarantees for learned objectives \cite{chen2021j5t}, and developing robust generalization mechanisms across vastly different task distributions. Addressing these frontiers will be crucial for the field's continued evolution towards more versatile and impactful adaptive AI systems.
+
+
+\label{sec:conclusion}
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+
+
+\newpage
+\section*{References}
+\addcontentsline{toc}{section}{References}
+
+\begin{thebibliography}{285}
+
+\bibitem{sung2017nc5}
+Flood Sung, Yongxin Yang, Li Zhang, et al. (2017). \textit{Learning to Compare: Relation Network for Few-Shot Learning}. 2018 IEEE/CVF Conference on Computer Vision and Pattern Recognition.
+
+\bibitem{hospedales2020m37}
+Timothy M. Hospedales, Antreas Antoniou, P. Micaelli, et al. (2020). \textit{Meta-Learning in Neural Networks: A Survey}. IEEE Transactions on Pattern Analysis and Machine Intelligence.
+
+\bibitem{santoro2016323}
+Adam Santoro, Sergey Bartunov, M. Botvinick, et al. (2016). \textit{Meta-Learning with Memory-Augmented Neural Networks}. International Conference on Machine Learning.
+
+\bibitem{sun2018iy7}
+Qianru Sun, Yaoyao Liu, Tat-Seng Chua, et al. (2018). \textit{Meta-Transfer Learning for Few-Shot Learning}. Computer Vision and Pattern Recognition.
+
+\bibitem{bertinetto2018ur2}
+Luca Bertinetto, João F. Henriques, Philip H. S. Torr, et al. (2018). \textit{Meta-learning with differentiable closed-form solvers}. International Conference on Learning Representations.
+
+\bibitem{rakelly2019m09}
+Kate Rakelly, Aurick Zhou, Deirdre Quillen, et al. (2019). \textit{Efficient Off-Policy Meta-Reinforcement Learning via Probabilistic Context Variables}. International Conference on Machine Learning.
+
+\bibitem{wang20167px}
+Jane X. Wang, Z. Kurth-Nelson, Hubert Soyer, et al. (2016). \textit{Learning to reinforcement learn}. Annual Meeting of the Cognitive Science Society.
+
+\bibitem{franceschi2018u1q}
+Luca Franceschi, P. Frasconi, Saverio Salzo, et al. (2018). \textit{Bilevel Programming for Hyperparameter Optimization and Meta-Learning}. International Conference on Machine Learning.
+
+\bibitem{pan2019pue}
+Zheyi Pan, Yuxuan Liang, Weifeng Wang, et al. (2019). \textit{Urban Traffic Prediction from Spatio-Temporal Data Using Deep Meta Learning}. Knowledge Discovery and Data Mining.
+
+\bibitem{lanctot2017m2v}
+Marc Lanctot, V. Zambaldi, A. Gruslys, et al. (2017). \textit{A Unified Game-Theoretic Approach to Multiagent Reinforcement Learning}. Neural Information Processing Systems.
+
+\bibitem{finn20174c4}
+Chelsea Finn, Tianhe Yu, Tianhao Zhang, et al. (2017). \textit{One-Shot Visual Imitation Learning via Meta-Learning}. Conference on Robot Learning.
+
+\bibitem{huisman2020b7w}
+M. Huisman, Jan N. van Rijn, and A. Plaat (2020). \textit{A survey of deep meta-learning}. Artificial Intelligence Review.
+
+\bibitem{oconnell2022twd}
+M. O'Connell, Guanya Shi, Xichen Shi, et al. (2022). \textit{Neural-Fly enables rapid learning for agile flight in strong winds}. Science Robotics.
+
+\bibitem{zhu2020rb5}
+Hancheng Zhu, Leida Li, Jinjian Wu, et al. (2020). \textit{MetaIQA: Deep Meta-Learning for No-Reference Image Quality Assessment}. Computer Vision and Pattern Recognition.
+
+\bibitem{herzen2021300}
+J. Herzen, Francesco Lässig, Samuele Giuliano Piazzetta, et al. (2021). \textit{Darts: User-Friendly Modern Machine Learning for Time Series}. Journal of machine learning research.
+
+\bibitem{wang2020tae}
+Jin Wang, Jia Hu, G. Min, et al. (2020). \textit{Fast Adaptive Task Offloading in Edge Computing Based on Meta Reinforcement Learning}. IEEE Transactions on Parallel and Distributed Systems.
+
+\bibitem{yu2018nm7}
+Tianhe Yu, Chelsea Finn, Annie Xie, et al. (2018). \textit{One-Shot Imitation from Observing Humans via Domain-Adaptive Meta-Learning}. Robotics: Science and Systems.
+
+\bibitem{zintgraf2019zat}
+Luisa M. Zintgraf, Kyriacos Shiarlis, Maximilian Igl, et al. (2019). \textit{VariBAD: A Very Good Method for Bayes-Adaptive Deep RL via Meta-Learning}. International Conference on Learning Representations.
+
+\bibitem{li2018soc}
+Junnan Li, Yongkang Wong, Qi Zhao, et al. (2018). \textit{Learning to Learn From Noisy Labeled Data}. Computer Vision and Pattern Recognition.
+
+\bibitem{guo2021zpk}
+Zhichun Guo, Chuxu Zhang, W. Yu, et al. (2021). \textit{Few-Shot Graph Learning for Molecular Property Prediction}. The Web Conference.
+
+\bibitem{li20219tk}
+Shuang Li, Kaixiong Gong, Chi Harold Liu, et al. (2021). \textit{MetaSAug: Meta Semantic Augmentation for Long-Tailed Visual Recognition}. Computer Vision and Pattern Recognition.
+
+\bibitem{tian2022znj}
+Yingjie Tian, Xiaoxi Zhao, and Wei-Hsin Huang (2022). \textit{Meta-learning approaches for learning-to-learn in deep learning: A survey}. Neurocomputing.
+
+\bibitem{oh2017x02}
+Junhyuk Oh, Satinder Singh, Honglak Lee, et al. (2017). \textit{Zero-Shot Task Generalization with Multi-Task Deep Reinforcement Learning}. International Conference on Machine Learning.
+
+\bibitem{papoudakis2019gyl}
+Georgios Papoudakis, Filippos Christianos, Arrasy Rahman, et al. (2019). \textit{Dealing with Non-Stationarity in Multi-Agent Deep Reinforcement Learning}. arXiv.org.
+
+\bibitem{yoon2019k84}
+Jinsung Yoon, Sercan Ö. Arik, and Tomas Pfister (2019). \textit{Data Valuation using Reinforcement Learning}. International Conference on Machine Learning.
+
+\bibitem{rajasegaran2020llk}
+Jathushan Rajasegaran, Salman Hameed Khan, Munawar Hayat, et al. (2020). \textit{iTAML: An Incremental Task-Agnostic Meta-learning Approach}. Computer Vision and Pattern Recognition.
+
+\bibitem{yin2019cct}
+Mingzhang Yin, G. Tucker, Mingyuan Zhou, et al. (2019). \textit{Meta-Learning without Memorization}. International Conference on Learning Representations.
+
+\bibitem{qiao2019p6r}
+Limeng Qiao, Yemin Shi, Jia Li, et al. (2019). \textit{Transductive Episodic-Wise Adaptive Metric for Few-Shot Learning}. IEEE International Conference on Computer Vision.
+
+\bibitem{gao2020h75}
+Kuiliang Gao, Bing Liu, Xuchu Yu, et al. (2020). \textit{Deep Relation Network for Hyperspectral Image Few-Shot Classification}. Remote Sensing.
+
+\bibitem{patacchiola2020kpq}
+Massimiliano Patacchiola, Jack Turner, Elliot J. Crowley, et al. (2020). \textit{Bayesian Meta-Learning for the Few-Shot Setting via Deep Kernels}. Neural Information Processing Systems.
+
+\bibitem{nagabandi2018esl}
+Anusha Nagabandi, Chelsea Finn, and S. Levine (2018). \textit{Deep Online Learning via Meta-Learning: Continual Adaptation for Model-Based RL}. International Conference on Learning Representations.
+
+\bibitem{finn2017vrt}
+Chelsea Finn, and S. Levine (2017). \textit{Meta-Learning and Universality: Deep Representations and Gradient Descent can Approximate any Learning Algorithm}. International Conference on Learning Representations.
+
+\bibitem{such2019xok}
+F. Such, Aditya Rawal, J. Lehman, et al. (2019). \textit{Generative Teaching Networks: Accelerating Neural Architecture Search by Learning to Generate Synthetic Training Data}. International Conference on Machine Learning.
+
+\bibitem{fei20211x6}
+Nanyi Fei, Yizhao Gao, Zhiwu Lu, et al. (2021). \textit{Z-Score Normalization, Hubness, and Few-Shot Learning}. IEEE International Conference on Computer Vision.
+
+\bibitem{wang2021ya6}
+Shaofei Wang, Marko Mihajlovic, Qianli Ma, et al. (2021). \textit{MetaAvatar: Learning Animatable Clothed Human Models from Few Depth Images}. Neural Information Processing Systems.
+
+\bibitem{jang2019a48}
+Yunhun Jang, Hankook Lee, Sung Ju Hwang, et al. (2019). \textit{Learning What and Where to Transfer}. International Conference on Machine Learning.
+
+\bibitem{zhu2022zp1}
+Taiyu Zhu, Kezhi Li, P. Herrero, et al. (2022). \textit{Personalized Blood Glucose Prediction for Type 1 Diabetes Using Evidential Deep Learning and Meta-Learning}. IEEE Transactions on Biomedical Engineering.
+
+\bibitem{gao20223fn}
+Jun Gao, Dongze Wu, Feng Yin, et al. (2022). \textit{MetaLoc: Learning to Learn Wireless Localization}. IEEE Journal on Selected Areas in Communications.
+
+\bibitem{bartler2021i8o}
+Alexander Bartler, Andreas Bühler, Felix Wiewel, et al. (2021). \textit{MT3: Meta Test-Time Training for Self-Supervised Test-Time Adaption}. International Conference on Artificial Intelligence and Statistics.
+
+\bibitem{memon2022j2y}
+M. Memon, Pardeep Kumar, and R. Iqbal (2022). \textit{Meta Deep Learn Leaf Disease Identification Model for Cotton Crop}. De Computis.
+
+\bibitem{yang2018p36}
+Zhaoyang Yang, K. Merrick, Lianwen Jin, et al. (2018). \textit{Hierarchical Deep Reinforcement Learning for Continuous Action Control}. IEEE Transactions on Neural Networks and Learning Systems.
+
+\bibitem{guo2020acf}
+Huifeng Guo, Bo Chen, Ruiming Tang, et al. (2020). \textit{An Embedding Learning Framework for Numerical Features in CTR Prediction}. Knowledge Discovery and Data Mining.
+
+\bibitem{dixit20218dd}
+Sonal Dixit, N. Verma, and A. K. Ghosh (2021). \textit{Intelligent Fault Diagnosis of Rotary Machines: Conditional Auxiliary Classifier GAN Coupled With Meta Learning Using Limited Data}. IEEE Transactions on Instrumentation and Measurement.
+
+\bibitem{zhou20200ls}
+Allan Zhou, Tom Knowles, and Chelsea Finn (2020). \textit{Meta-Learning Symmetries by Reparameterization}. International Conference on Learning Representations.
+
+\bibitem{rajasegaran2020glw}
+Jathushan Rajasegaran, Salman Hameed Khan, Munawar Hayat, et al. (2020). \textit{Self-supervised Knowledge Distillation for Few-shot Learning}. British Machine Vision Conference.
+
+\bibitem{wang2022va1}
+Yulei Wang, Xi Chen, Fengchao Wang, et al. (2022). \textit{Meta-Learning based Hyperspectral Target Detection using Siamese Network}. IEEE Transactions on Geoscience and Remote Sensing.
+
+\bibitem{dufumier2021ec1}
+Benoit Dufumier, P. Gori, J. Victor, et al. (2021). \textit{Contrastive Learning with Continuous Proxy Meta-Data for 3D MRI Classification}. International Conference on Medical Image Computing and Computer-Assisted Intervention.
+
+\bibitem{wistuba2021wha}
+Martin Wistuba, and Josif Grabocka (2021). \textit{Few-Shot Bayesian Optimization with Deep Kernel Surrogates}. International Conference on Learning Representations.
+
+\bibitem{ren2019nu0}
+Yuxiang Ren, Bo Liu, Chao Huang, et al. (2019). \textit{Heterogeneous Deep Graph Infomax}. arXiv.org.
+
+\bibitem{zhang2020p3y}
+Shen Zhang, Fei Ye, Bingnan Wang, et al. (2020). \textit{Few-Shot Bearing Fault Diagnosis Based on Model-Agnostic Meta-Learning}. IEEE transactions on industry applications.
+
+\bibitem{zhou20188lr}
+Fengwei Zhou, Bin Wu, and Zhenguo Li (2018). \textit{Deep Meta-Learning: Learning to Learn in the Concept Space}. arXiv.org.
+
+\bibitem{bing2022om0}
+Zhenshan Bing, David Lerch, Kai Huang, et al. (2022). \textit{Meta-Reinforcement Learning in Non-Stationary and Dynamic Environments}. IEEE Transactions on Pattern Analysis and Machine Intelligence.
+
+\bibitem{tian20200qx}
+Shan Tian, Songsong Mo, Liwei Wang, et al. (2020). \textit{Deep Reinforcement Learning-Based Approach to Tackle Topic-Aware Influence Maximization}. Data Science and Engineering.
+
+\bibitem{cai20215z1}
+Rizhao Cai, Zhi Li, Renjie Wan, et al. (2021). \textit{Learning Meta Pattern for Face Anti-Spoofing}. IEEE Transactions on Information Forensics and Security.
+
+\bibitem{wang2021i3l}
+Yaqing Wang, Fenglong Ma, Haoyu Wang, et al. (2021). \textit{Multimodal Emergent Fake News Detection via Meta Neural Process Networks}. Knowledge Discovery and Data Mining.
+
+\bibitem{nam2022z75}
+Taewook Nam, Shao-Hua Sun, Karl Pertsch, et al. (2022). \textit{Skill-based Meta-Reinforcement Learning}. International Conference on Learning Representations.
+
+\bibitem{zhu2022d9a}
+Hancheng Zhu, Leida Li, Jinjian Wu, et al. (2022). \textit{Generalizable No-Reference Image Quality Assessment via Deep Meta-Learning}. IEEE transactions on circuits and systems for video technology (Print).
+
+\bibitem{wang20204p9}
+Zhen Wang, Guosheng Hu, and Q. Hu (2020). \textit{Training Noise-Robust Deep Neural Networks via Meta-Learning}. Computer Vision and Pattern Recognition.
+
+\bibitem{xu2020txy}
+Zhongwen Xu, H. V. Hasselt, Matteo Hessel, et al. (2020). \textit{Meta-Gradient Reinforcement Learning with an Objective Discovered Online}. Neural Information Processing Systems.
+
+\bibitem{xue2022ram}
+Siqiao Xue, C. Qu, X. Shi, et al. (2022). \textit{A Meta Reinforcement Learning Approach for Predictive Autoscaling in the Cloud}. Knowledge Discovery and Data Mining.
+
+\bibitem{li20208tg}
+Shunkai Li, Xin Wang, Yingdian Cao, et al. (2020). \textit{Self-Supervised Deep Visual Odometry With Online Adaptation}. Computer Vision and Pattern Recognition.
+
+\bibitem{chai2022kv5}
+Yitian Chai, Hongyu Zhang, Beijun Shen, et al. (2022). \textit{Cross-Domain Deep Code Search with Meta Learning}. International Conference on Software Engineering.
+
+\bibitem{yi2021547}
+Hongsuk Yi, and Khac-Hoai Nam Bui (2021). \textit{An Automated Hyperparameter Search-Based Deep Learning Model for Highway Traffic Prediction}. IEEE transactions on intelligent transportation systems (Print).
+
+\bibitem{pang2018qqo}
+Kunkun Pang, Mingzhi Dong, Yang Wu, et al. (2018). \textit{Meta-Learning Transferable Active Learning Policies by Deep Reinforcement Learning}. arXiv.org.
+
+\bibitem{zhang2020s15}
+Haimiao Zhang, Baodong Liu, Hengyong Yu, et al. (2020). \textit{MetaInv-Net: Meta Inversion Network for Sparse View CT Image Reconstruction}. IEEE Transactions on Medical Imaging.
+
+\bibitem{zintgraf2021lv1}
+Luisa M. Zintgraf, Sebastian Schulze, Cong Lu, et al. (2021). \textit{VariBAD: Variational Bayes-Adaptive Deep RL via Meta-Learning}. Journal of machine learning research.
+
+\bibitem{ouyang2021c4t}
+W. Ouyang, Xiuwu Zhang, Shukui Ren, et al. (2021). \textit{Learning Graph Meta Embeddings for Cold-Start Ads in Click-Through Rate Prediction}. Annual International ACM SIGIR Conference on Research and Development in Information Retrieval.
+
+\bibitem{li2019gpj}
+Juncheng Li, X. Wang, Siliang Tang, et al. (2019). \textit{Unsupervised Reinforcement Learning of Transferable Meta-Skills for Embodied Navigation}. Computer Vision and Pattern Recognition.
+
+\bibitem{yu2019o41}
+Lantao Yu, Tianhe Yu, Chelsea Finn, et al. (2019). \textit{Meta-Inverse Reinforcement Learning with Probabilistic Context Variables}. Neural Information Processing Systems.
+
+\bibitem{chen2021j5t}
+Qi Chen, Changjian Shui, and M. Marchand (2021). \textit{Generalization Bounds For Meta-Learning: An Information-Theoretic Analysis}. Neural Information Processing Systems.
+
+\bibitem{zintgraf2021hoc}
+Luisa M. Zintgraf, Sam Devlin, K. Ciosek, et al. (2021). \textit{Deep Interactive Bayesian Reinforcement Learning via Meta-Learning}. Adaptive Agents and Multi-Agent Systems.
+
+\bibitem{xu20199h0}
+Hao Xu, Haibin Chang, and Dongxiao Zhang (2019). \textit{DL-PDE: Deep-learning based data-driven discovery of partial differential equations from discrete and noisy data}. Communications in Computational Physics.
+
+\bibitem{ding2021284}
+Kaize Ding, Jianling Wang, James Caverlee, et al. (2021). \textit{Meta Propagation Networks for Graph Few-shot Semi-supervised Learning}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{reed2017sxd}
+Scott E. Reed, Yutian Chen, T. Paine, et al. (2017). \textit{Few-shot Autoregressive Density Estimation: Towards Learning to Learn Distributions}. International Conference on Learning Representations.
+
+\bibitem{shao2021loj}
+Huikai Shao, Dexing Zhong, Xuefeng Du, et al. (2021). \textit{Few-Shot Learning for Palmprint Recognition via Meta-Siamese Network}. IEEE Transactions on Instrumentation and Measurement.
+
+\bibitem{jomaa20190ul}
+H. Jomaa, Josif Grabocka, and L. Schmidt-Thieme (2019). \textit{Dataset2Vec: learning dataset meta-features}. Data mining and knowledge discovery.
+
+\bibitem{woo2022f3e}
+Gerald Woo, Chenghao Liu, Doyen Sahoo, et al. (2022). \textit{Learning Deep Time-index Models for Time Series Forecasting}. International Conference on Machine Learning.
+
+\bibitem{park2020m5z}
+Seongho Park, S. Han, Ji-Won Baek, et al. (2020). \textit{Meta Variance Transfer: Learning to Augment from the Others}. International Conference on Machine Learning.
+
+\bibitem{chen2019oep}
+Guangyi Chen, Tianren Zhang, Jiwen Lu, et al. (2019). \textit{Deep Meta Metric Learning}. IEEE International Conference on Computer Vision.
+
+\bibitem{marra20192vv}
+G. Marra, Francesco Giannini, Michelangelo Diligenti, et al. (2019). \textit{Integrating Learning and Reasoning with Deep Logic Models}. ECML/PKDD.
+
+\bibitem{casebeer20225fs}
+Jonah Casebeer, Nicholas J. Bryan, and Paris Smaragdis (2022). \textit{Meta-AF: Meta-Learning for Adaptive Filters}. IEEE/ACM Transactions on Audio Speech and Language Processing.
+
+\bibitem{nobakht2022p86}
+Mehrnoosh Nobakht, R. Javidan, and A. Pourebrahimi (2022). \textit{DEMD-IoT: a deep ensemble model for IoT malware detection using CNNs and network traffic}. Evolutionary Systematics.
+
+\bibitem{vasconcelos2021fn3}
+C. Vasconcelos, H. Larochelle, Vincent Dumoulin, et al. (2021). \textit{Impact of Aliasing on Generalization in Deep Convolutional Networks}. IEEE International Conference on Computer Vision.
+
+\bibitem{libin2020x8v}
+Pieter J. K. Libin, Arno Moonens, T. Verstraeten, et al. (2020). \textit{Deep reinforcement learning for large-scale epidemic control}. ECML/PKDD.
+
+\bibitem{algan2020u0v}
+G. Algan, and I. Ulusoy (2020). \textit{Meta Soft Label Generation for Noisy Labels}. International Conference on Pattern Recognition.
+
+\bibitem{lan20196o7}
+Lin Lan, Zhenguo Li, X. Guan, et al. (2019). \textit{Meta Reinforcement Learning with Task Embedding and Shared Policy}. International Joint Conference on Artificial Intelligence.
+
+\bibitem{huang20214b2}
+Chao Huang, Zhangjie Cao, Yunbo Wang, et al. (2021). \textit{MetaSets: Meta-Learning on Point Sets for Generalizable Representations}. Computer Vision and Pattern Recognition.
+
+\bibitem{chen2022z45}
+Wenlin Chen, Austin Tripp, and José Miguel Hernández-Lobato (2022). \textit{Meta-learning Adaptive Deep Kernel Gaussian Processes for Molecular Property Prediction}. International Conference on Learning Representations.
+
+\bibitem{abdollahzadeh2021zfy}
+Milad Abdollahzadeh, Touba Malekzadeh, and Ngai-Man Cheung (2021). \textit{Revisit Multimodal Meta-Learning through the Lens of Multi-Task Learning}. Neural Information Processing Systems.
+
+\bibitem{chen2019xg0}
+Shangyu Chen, Wenya Wang, and Sinno Jialin Pan (2019). \textit{MetaQuant: Learning to Quantize by Learning to Penetrate Non-differentiable Quantization}. Neural Information Processing Systems.
+
+\bibitem{xu2018rdh}
+Tianbing Xu, Qiang Liu, Liang Zhao, et al. (2018). \textit{Learning to Explore with Meta-Policy Gradient}. International Conference on Machine Learning.
+
+\bibitem{shen2022kdk}
+Xiangyu Shen, Haifeng Zheng, Xinxin Feng, et al. (2022). \textit{ML-HGR-Net: A Meta-Learning Network for FMCW Radar Based Hand Gesture Recognition}. IEEE Sensors Journal.
+
+\bibitem{zhang2021hh1}
+Huayi Zhang, Lei Cao, Peter M. VanNostrand, et al. (2021). \textit{ELITE: Robust Deep Anomaly Detection with Meta Gradient}. Knowledge Discovery and Data Mining.
+
+\bibitem{lin2022i6k}
+Hong Lin, Rita Tse, Su-Kit Tang, et al. (2022). \textit{Few-shot learning approach with multi-scale feature fusion and attention for plant disease recognition}. Frontiers in Plant Science.
+
+\bibitem{tseng2020m83}
+Hung-Yu Tseng, Yi-Wen Chen, Yi-Hsuan Tsai, et al. (2020). \textit{Regularizing Meta-Learning via Gradient Dropout}. Asian Conference on Computer Vision.
+
+\bibitem{peng20209of}
+Huimin Peng (2020). \textit{A Comprehensive Overview and Survey of Recent Advances in Meta-Learning}. arXiv.org.
+
+\bibitem{fong20183q5}
+S. Fong, S. Deb, and Xin-She Yang (2018). \textit{How meta-heuristic algorithms contribute to deep learning in the hype of big data analytics}. Unpublished manuscript.
+
+\bibitem{liu2022tgc}
+Chang Liu, Xiang Yu, Yao-Hung Hubert Tsai, et al. (2022). \textit{Learning to Learn across Diverse Data Biases in Deep Face Recognition}. Computer Vision and Pattern Recognition.
+
+\bibitem{bing2022xo7}
+Zhenshan Bing, A. Koch, Xiangtong Yao, et al. (2022). \textit{Meta-Reinforcement Learning via Language Instructions}. IEEE International Conference on Robotics and Automation.
+
+\bibitem{nakasi2020w5x}
+Rose Nakasi, Ernest Mwebaze, A. Zawedde, et al. (2020). \textit{A new approach for microscopic diagnosis of malaria parasites in thick blood smears using pre-trained deep learning models}. SN Applied Sciences.
+
+\bibitem{przewiezlikowski2022d4y}
+Marcin Przewiezlikowski, P. Przybysz, J. Tabor, et al. (2022). \textit{HyperMAML: Few-Shot Adaptation of Deep Models with Hypernetworks}. Neurocomputing.
+
+\bibitem{xu2018rjq}
+Tianbing Xu, Qiang Liu, Liang Zhao, et al. (2018). \textit{Learning to Explore via Meta-Policy Gradient}. International Conference on Machine Learning.
+
+\bibitem{ding2019a79}
+Yue Ding, Xia Tian, Lirong Yin, et al. (2019). \textit{Multi-scale Relation Network for Few-Shot Learning Based on Meta-learning}. International Conference on Virtual Storytelling.
+
+\bibitem{dorfman2020gku}
+Ron Dorfman, and Aviv Tamar (2020). \textit{Offline Meta Learning of Exploration}. Unpublished manuscript.
+
+\bibitem{wang20210y3}
+Ze Wang, Zichen Miao, Xiantong Zhen, et al. (2021). \textit{Learning to Learn Dense Gaussian Processes for Few-Shot Learning}. Neural Information Processing Systems.
+
+\bibitem{millea2021bfu}
+Adrian Millea (2021). \textit{Deep Reinforcement Learning for Trading - A Critical Survey}. International Conference on Data Technologies and Applications.
+
+\bibitem{lindsey202075a}
+Jack W Lindsey, and Ashok Litwin-Kumar (2020). \textit{Learning to Learn with Feedback and Local Plasticity}. Neural Information Processing Systems.
+
+\bibitem{gao2022y3s}
+Jun Gao, Ceyao Zhang, Qinglei Kong, et al. (2022). \textit{MetaLoc: Learning to Learn Indoor RSS Fingerprinting Localization over Multiple Scenarios}. ICC 2022 - IEEE International Conference on Communications.
+
+\bibitem{ren2022fc5}
+Xinyue Ren, Weiwei Zhang, Ming-hui Wu, et al. (2022). \textit{Meta-YOLO: Meta-Learning for Few-Shot Traffic Sign Detection via Decoupling Dependencies}. Applied Sciences.
+
+\bibitem{wen2022sql}
+Xin-Cheng Wen, Cuiyun Gao, Jiaxin Ye, et al. (2022). \textit{Meta-Path Based Attentional Graph Learning Model for Vulnerability Detection}. IEEE Transactions on Software Engineering.
+
+\bibitem{vecoven2018hc1}
+Nicolas Vecoven, D. Ernst, Antoine Wehenkel, et al. (2018). \textit{Introducing neuromodulation in deep neural networks to learn adaptive behaviours}. PLoS ONE.
+
+\bibitem{liang2021juf}
+Xuejian Liang, Yehui Zhang, and Junping Zhang (2021). \textit{Attention Multisource Fusion-Based Deep Few-Shot Learning for Hyperspectral Image Classification}. IEEE Journal of Selected Topics in Applied Earth Observations and Remote Sensing.
+
+\bibitem{holla2020r6z}
+Nithin Holla, Pushkar Mishra, H. Yannakoudakis, et al. (2020). \textit{Learning to Learn to Disambiguate: Meta-Learning for Few-Shot Word Sense Disambiguation}. Findings.
+
+\bibitem{fernando2018lt5}
+Chrisantha Fernando, Jakub Sygnowski, Simon Osindero, et al. (2018). \textit{Meta-learning by the Baldwin effect}. Annual Conference on Genetic and Evolutionary Computation.
+
+\bibitem{jankowski20138zb}
+Norbert Jankowski, Wlodzislaw Duch, and Krzysztof Grabczewski (2013). \textit{Meta-Learning in Computational Intelligence}. Meta-Learning in Computational Intelligence.
+
+\bibitem{banayeeanzade2021zke}
+Mohammadamin Banayeeanzade, Rasoul Mirzaiezadeh, Hosein Hasani, et al. (2021). \textit{Generative vs. Discriminative: Rethinking The Meta-Continual Learning}. Neural Information Processing Systems.
+
+\bibitem{campedelli2021jja}
+G. Campedelli, Mihovil Bartulovic, and K. Carley (2021). \textit{Learning future terrorist targets through temporal meta-graphs}. Scientific Reports.
+
+\bibitem{jiang20220tg}
+Xiruo Jiang, Sheng Liu, Xili Dai, et al. (2022). \textit{Deep Metric Learning Based on Meta-Mining Strategy With Semiglobal Information}. IEEE Transactions on Neural Networks and Learning Systems.
+
+\bibitem{zheng2021olf}
+Wenbo Zheng, Lan Yan, Chao Gou, et al. (2021). \textit{Learning to learn by yourself: Unsupervised meta‐learning with self‐knowledge distillation for COVID‐19 diagnosis from pneumonia cases}. International Journal of Intelligent Systems.
+
+\bibitem{alandoli2021pqm}
+M. Al-Andoli, Shing Chiang Tan, W. Cheah, et al. (2021). \textit{A Review on Community Detection in Large Complex Networks from Conventional to Deep Learning Methods: A Call for the Use of Parallel Meta-Heuristic Algorithms}. IEEE Access.
+
+\bibitem{li2021tkg}
+Denghao Li, Pablo Ortega, Xia Wei, et al. (2021). \textit{Model-Agnostic Meta-Learning for EEG Motor Imagery Decoding in Brain-Computer-Interfacing}. International IEEE/EMBS Conference on Neural Engineering.
+
+\bibitem{daglarli2020nzw}
+Evren Daglarli (2020). \textit{Explainable Artificial Intelligence (xAI) Approaches and Deep Meta-Learning Models}. Advances and Applications in Deep Learning.
+
+\bibitem{phaphuangwittayakul2022api}
+Aniwat Phaphuangwittayakul, Fangli Ying, Yi Guo, et al. (2022). \textit{Few-shot image generation based on contrastive meta-learning generative adversarial network}. The Visual Computer.
+
+\bibitem{nie2021pcz}
+Jing Nie, Nianyi Wang, Jingbin Li, et al. (2021). \textit{Meta-learning prediction of physical and chemical properties of magnetized water and fertilizer based on LSTM}. Plant Methods.
+
+\bibitem{zheng20200ig}
+Wenzhao Zheng, Jiwen Lu, and Jie Zhou (2020). \textit{Deep Metric Learning via Adaptive Learnable Assessment}. Computer Vision and Pattern Recognition.
+
+\bibitem{chen2022ccz}
+Yixiong Chen, Chunhui Zhang, C. Ding, et al. (2022). \textit{Generating and Weighting Semantically Consistent Sample Pairs for Ultrasound Contrastive Learning}. IEEE Transactions on Medical Imaging.
+
+\bibitem{qu2022mu6}
+H. Qu, Sheng Liu, Jun Li, et al. (2022). \textit{Adaptation and Learning to Learn (ALL): An Integrated Approach for Small-Sample Parking Occupancy Prediction}. Mathematics.
+
+\bibitem{alajaji2020b6c}
+D. Alajaji, and H. Alhichri (2020). \textit{Few Shot Scene Classification in Remote Sensing using Meta-Agnostic Machine}. 2020 6th Conference on Data Science and Machine Learning Applications (CDMA).
+
+\bibitem{jiang2021uo6}
+Mengjuan Jiang, Fanzhang Li, and Li Liu (2021). \textit{Continual meta-learning algorithm}. Applied intelligence (Boston).
+
+\bibitem{rkhami2021c1c}
+Anouar Rkhami, Yassine Hadjadj-Aoul, and A. Outtagarts (2021). \textit{Learn to improve: A novel deep reinforcement learning approach for beyond 5G network slicing}. Consumer Communications and Networking Conference.
+
+\bibitem{holla20202od}
+Nithin Holla, Pushkar Mishra, H. Yannakoudakis, et al. (2020). \textit{Meta-Learning with Sparse Experience Replay for Lifelong Language Learning}. arXiv.org.
+
+\bibitem{bhathiya2020avm}
+H. S. Bhathiya, and Uthayasanker Thayasivam (2020). \textit{Meta Learning for Few-Shot Joint Intent Detection and Slot-Filling}. International Conference on Machine Learning Technologies.
+
+\bibitem{bernacchia20211r0}
+A. Bernacchia (2021). \textit{Meta-learning with negative learning rates}. International Conference on Learning Representations.
+
+\bibitem{kumar2017p0v}
+Saurabh Kumar, Pararth Shah, Dilek Z. Hakkani-Tür, et al. (2017). \textit{Federated Control with Hierarchical Multi-Agent Deep Reinforcement Learning}. arXiv.org.
+
+\bibitem{daglarli20216fl}
+Evren Daglarli (2021). \textit{Explainable Artificial Intelligence (xAI) Approaches and Deep Meta-Learning Models for Cyber-Physical Systems}. Advances in Systems Analysis, Software Engineering, and High Performance Computing.
+
+\bibitem{baz2022n78}
+Adrian El Baz, André Carvalho, Hong Chen, et al. (2022). \textit{Lessons learned from the NeurIPS 2021 MetaDL challenge: Backbone fine-tuning without episodic meta-learning dominates for few-shot learning image classification}. Neural Information Processing Systems.
+
+\bibitem{dorfman2020mgv}
+Ron Dorfman, and Aviv Tamar (2020). \textit{Offline Meta Reinforcement Learning}. arXiv.org.
+
+\bibitem{vuorio2018gwb}
+Risto Vuorio, D.-Y. Cho, Daejoong Kim, et al. (2018). \textit{Meta Continual Learning}. arXiv.org.
+
+\bibitem{ma2021kfz}
+Ying Ma, G. Zhong, Wen Liu, et al. (2021). \textit{ML-CGAN: Conditional Generative Adversarial Network with a Meta-learner Structure for High-Quality Image Generation with Few Training Data}. Cognitive Computation.
+
+\bibitem{tian2016j46}
+Zhonghuan Tian, and S. Fong (2016). \textit{Survey of Meta-Heuristic Algorithms for Deep Learning Training}. Unpublished manuscript.
+
+\bibitem{pinedaarango2021254}
+Sebastian Pineda-Arango, Felix Heinrich, Kiran Madhusudhanan, et al. (2021). \textit{Multimodal Meta-Learning for Time Series Regression}. AALTD@ECML/PKDD.
+
+\bibitem{foliadis20223y2}
+Anastasios Foliadis, M. H. C. García, R. Stirling-Gallacher, et al. (2022). \textit{Multi-Environment based Meta-Learning with CSI Fingerprints for Radio Based Positioning}. IEEE Wireless Communications and Networking Conference.
+
+\bibitem{sutton2022jss}
+R. Sutton (2022). \textit{A History of Meta-gradient: Gradient Methods for Meta-learning}. arXiv.org.
+
+\bibitem{huo2022rp4}
+Haomiao Huo, Jindan Xu, Gege Su, et al. (2022). \textit{Intelligent MIMO Detection Using Meta Learning}. IEEE Wireless Communications Letters.
+
+\bibitem{hurtado2021h2q}
+J. Hurtado, Hans Lobel, and Álvaro Soto (2021). \textit{Overcoming Catastrophic Forgetting Using Sparse Coding and Meta Learning}. IEEE Access.
+
+\bibitem{lee2021jou}
+Hung-yi Lee, Ngoc Thang Vu, and Shang-Wen Li (2021). \textit{Meta Learning and Its Applications to Natural Language Processing}. Annual Meeting of the Association for Computational Linguistics.
+
+\bibitem{peixoto20180pd}
+B. Peixoto, S. Avila, Zanoni Dias, et al. (2018). \textit{Breaking down violence: A deep-learning strategy to model and classify violence in videos}. ARES.
+
+\bibitem{yuan20205j8}
+Pengyu Yuan, Aryan Mobiny, J. Jahanipour, et al. (2020). \textit{Few Is Enough: Task-Augmented Active Meta-Learning for Brain Cell Classification}. International Conference on Medical Image Computing and Computer-Assisted Intervention.
+
+\bibitem{zhang2021yox}
+Zitian Zhang, Fuyou Li, Xiaoli Chu, et al. (2021). \textit{dmTP: A Deep Meta-Learning Based Framework for Mobile Traffic Prediction}. IEEE wireless communications.
+
+\bibitem{luo202123f}
+Yaoru Luo, Guole Liu, Yuanhao Guo, et al. (2021). \textit{Deep Neural Networks Learn Meta-Structures from Noisy Labels in Semantic Segmentation}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{chen2021yqh}
+Mengting Chen, Xinggang Wang, Heng Luo, et al. (2021). \textit{Learning to focus: cascaded feature matching network for few-shot image recognition}. Science China Information Sciences.
+
+\bibitem{behl2018rjm}
+Harkirat Singh Behl, M. Najafi, and Philip H. S. Torr (2018). \textit{Meta-Learning Deep Visual Words for Fast Video Object Segmentation}. IEEE/RJS International Conference on Intelligent RObots and Systems.
+
+\bibitem{xu2019brv}
+Zhixiong Xu, Lei Cao, and Xi-liang Chen (2019). \textit{Learning to Learn: Hierarchical Meta-Critic Networks}. IEEE Access.
+
+\bibitem{sultana202094g}
+N. Sultana, Jeffrey Chan, and A. K. Qin (2020). \textit{Learning to Optimise General TSP Instances}. arXiv.org.
+
+\bibitem{furfaro20197q6}
+R. Furfaro, T. Campbell, R. Linares, et al. (2019). \textit{Space Debris Identification and Characterization via Deep Meta-Learning}. Unpublished manuscript.
+
+\bibitem{gu2019tvc}
+Keren Gu, S. Greydanus, Luke Metz, et al. (2019). \textit{Meta-Learning Biologically Plausible Semi-Supervised Update Rules}. bioRxiv.
+
+\bibitem{zhang2021p9j}
+Yaobin Zhang, Weihong Deng, Yaoyao Zhong, et al. (2021). \textit{Adaptive Label Noise Cleaning with Meta-Supervision for Deep Face Recognition}. IEEE International Conference on Computer Vision.
+
+\bibitem{saadallah2021ihn}
+A. Saadallah, and K. Morik (2021). \textit{Online Ensemble Aggregation using Deep Reinforcement Learning for Time Series Forecasting}. International Conference on Data Science and Advanced Analytics.
+
+\bibitem{luedtke2020uub}
+Alexander Luedtke, M. Carone, N. Simon, et al. (2020). \textit{Learning to learn from data: Using deep adversarial learning to construct optimal statistical procedures}. Science Advances.
+
+\bibitem{nasrabadi201801h}
+Morteza Zakeri Nasrabadi, S. Parsa, and A. Kalaee (2018). \textit{Format-aware learn&fuzz: deep test data generation for efficient fuzzing}. Neural computing & applications (Print).
+
+\bibitem{puri20202sx}
+R. Puri, A. Zakhor, and Raul Puri (2020). \textit{Few Shot Learning For Point Cloud Data Using Model Agnostic Meta Learning}. International Conference on Information Photonics.
+
+\bibitem{beck2023x24}
+Jacob Beck, Risto Vuorio, E. Liu, et al. (2023). \textit{A Tutorial on Meta-Reinforcement Learning}. Found. Trends Mach. Learn..
+
+\bibitem{zhang2023t7k}
+Baoquan Zhang, and Demin Yu (2023). \textit{MetaDiff: Meta-Learning with Conditional Diffusion for Few-Shot Learning}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{khoee2024ksk}
+Arsham Gholamzadeh Khoee, Yinan Yu, and R. Feldt (2024). \textit{Domain Generalization through Meta-Learning: A Survey}. Artificial Intelligence Review.
+
+\bibitem{hao2023zfk}
+Xiaoyang Hao, Zhixi Feng, Shuyuan Yang, et al. (2023). \textit{Automatic Modulation Classification via Meta-Learning}. IEEE Internet of Things Journal.
+
+\bibitem{nathaniel2023ycu}
+Juan Nathaniel, Jiangong Liu, and P. Gentine (2023). \textit{MetaFlux: Meta-learning global carbon fluxes from sparse spatiotemporal observations}. Scientific Data.
+
+\bibitem{singh2023zo5}
+Kuljeet Singh, and Deepti Malhotra (2023). \textit{Meta-Health: Learning-to-Learn (Meta-learning) as a Next Generation of Deep Learning Exploring Healthcare Challenges and Solutions for Rare Disorders: A Systematic Analysis}. Archives of Computational Methods in Engineering.
+
+\bibitem{wang2023srr}
+Peiqi Wang, Jingde Li, Shubei Wang, et al. (2023). \textit{A new meta-transfer learning method with freezing operation for few-shot bearing fault diagnosis}. Measurement science and technology.
+
+\bibitem{liang2023zzh}
+Xiaoxia Liang, M. Zhang, Guojin Feng, et al. (2023). \textit{A Novel Deep Model with Meta-learning for Rolling Bearing Few-shot Fault Diagnosis}. Journal of Dynamics Monitoring and Diagnostics.
+
+\bibitem{tian2023iyh}
+Pinzhuo Tian, and Shaorong Xie (2023). \textit{An Adversarial Meta-Training Framework for Cross-Domain Few-Shot Learning}. IEEE transactions on multimedia.
+
+\bibitem{bian2024041}
+Wanyu Bian, Albert Jang, and Fang Liu (2024). \textit{Multi-task Magnetic Resonance Imaging Reconstruction using Meta-learning}. Magnetic Resonance Imaging.
+
+\bibitem{schwarz2022jfu}
+Jonathan Schwarz, and Y. Teh (2022). \textit{Meta-Learning Sparse Compression Networks}. Trans. Mach. Learn. Res..
+
+\bibitem{son2023lda}
+Jaehyeon Son, Soochan Lee, and Gunhee Kim (2023). \textit{When Meta-Learning Meets Online and Continual Learning: A Survey}. IEEE Transactions on Pattern Analysis and Machine Intelligence.
+
+\bibitem{wang2024d09}
+Hui Wang, Zhiwei Han, Xufan Wang, et al. (2024). \textit{Contrastive Learning-Based Bayes-Adaptive Meta-Reinforcement Learning for Active Pantograph Control in High-Speed Railways}. IEEE Transactions on Transportation Electrification.
+
+\bibitem{rao20232e3}
+Haocong Rao, Cyril Leung, and Chun Miao (2023). \textit{Hierarchical Skeleton Meta-Prototype Contrastive Learning with Hard Skeleton Mining for Unsupervised Person Re-Identification}. International Journal of Computer Vision.
+
+\bibitem{zhang2023jz8}
+Yiqiang Zhang, Jiaxing Che, Yijun Hu, et al. (2023). \textit{Real-Time Ocean Current Compensation for AUV Trajectory Tracking Control Using a Meta-Learning and Self-Adaptation Hybrid Approach}. Italian National Conference on Sensors.
+
+\bibitem{xiu2023ga8}
+Xi Xiu, Jialun Li, Yujie Long, et al. (2023). \textit{MRLCC: an adaptive cloud task scheduling method based on meta reinforcement learning}. Journal of Cloud Computing.
+
+\bibitem{cai2023ro7}
+Shaokang Cai, Dezhi Han, and Dun Li (2023). \textit{A Feedback Semi-Supervised Learning With Meta-Gradient for Intrusion Detection}. IEEE Systems Journal.
+
+\bibitem{lee20230j8}
+Suyoung Lee, Myungsik Cho, and Young-Jin Sung (2023). \textit{Parameterizing Non-Parametric Meta-Reinforcement Learning Tasks via Subtask Decomposition}. Neural Information Processing Systems.
+
+\bibitem{guarino2023zsq}
+Idio Guarino, Chao Wang, A. Finamore, et al. (2023). \textit{Many or Few Samples?: Comparing Transfer, Contrastive and Meta-Learning in Encrypted Traffic Classification}. Traffic Monitoring and Analysis.
+
+\bibitem{aqeel2025zql}
+Muhammad Aqeel, Shakiba Sharifi, Marco Cristani, et al. (2025). \textit{Towards Real Unsupervised Anomaly Detection Via Confident Meta-Learning}. arXiv.org.
+
+\bibitem{lee2024snq}
+Soochan Lee, Hyeonseong Jeon, Jaehyeon Son, et al. (2024). \textit{Learning to Continually Learn with the Bayesian Principle}. International Conference on Machine Learning.
+
+\bibitem{li2023asx}
+Zhongshen Li, Junru Jin, Wenjia He, et al. (2023). \textit{CoraL: interpretable contrastive meta-learning for the prediction of cancer-associated ncRNA-encoded small peptides}. Briefings Bioinform..
+
+\bibitem{schmidgall20238t4}
+Samuel Schmidgall, and Joe Hays (2023). \textit{Meta-SpikePropamine: learning to learn with synaptic plasticity in spiking neural networks}. Frontiers in Neuroscience.
+
+\bibitem{wang2023x5w}
+Weijie Wang, Hong Zhao, Yikun Yang, et al. (2023). \textit{Few-shot short utterance speaker verification using meta-learning}. PeerJ Computer Science.
+
+\bibitem{wang2023ryf}
+Caiyong Wang, Haiqing Li, Wen-bin Ma, et al. (2023). \textit{MetaScleraSeg: an effective meta-learning framework for generalized sclera segmentation}. Neural computing & applications (Print).
+
+\bibitem{li2023fhe}
+Wenmei Li, Qing Liu, Yu Zhang, et al. (2023). \textit{Few-Shot Hyperspectral Image Classification Using Meta Learning and Regularized Finetuning}. IEEE Transactions on Geoscience and Remote Sensing.
+
+\bibitem{yang20238th}
+Jin Yang, Liang Bao, Wenjing Liu, et al. (2023). \textit{On a Meta Learning-Based Scheduler for Deep Learning Clusters}. IEEE Transactions on Cloud Computing.
+
+\bibitem{raja2023hco}
+K. Raja, and S. Kannimuthu (2023). \textit{Deep learning-based feature selection and prediction system for autism spectrum disorder using a hybrid meta-heuristics approach}. Journal of Intelligent & Fuzzy Systems.
+
+\bibitem{fahim2023jsu}
+M. Fahim, Vishal Sharma, R. Hunter, et al. (2023). \textit{Healthy Aging: A Deep Meta-Class Sequence Model to Integrate Intelligence in Digital Twin}. IEEE Journal of Translational Engineering in Health and Medicine.
+
+\bibitem{hu2022y0i}
+Cong Hu, Haoji Xu, and Xiaojun Wu (2022). \textit{Substitute Meta-Learning for Black-Box Adversarial Attack}. IEEE Signal Processing Letters.
+
+\bibitem{wang2023kho}
+Zhiqiang Wang, Man Li, H. Ou, et al. (2023). \textit{A Few-Shot Malicious Encrypted Traffic Detection Approach Based on Model-Agnostic Meta-Learning}. Security and Communication Networks.
+
+\bibitem{li2023zn0}
+Hui Li, Guimin Huang, Yiqun Li, et al. (2023). \textit{SEML: Self-Supervised Information-Enhanced Meta-learning for Few-Shot Text Classification}. International Journal of Computational Intelligence Systems.
+
+\bibitem{chi20235vq}
+Sunyi Chi, B. Dong, Yiming Xu, et al. (2023). \textit{APAM: Adaptive Pre-Training and Adaptive Meta Learning in Language Model for Noisy Labels and Long-Tailed Learning}. International Conference on Machine Learning and Applications.
+
+\bibitem{manoharan2021r46}
+Praveen Manoharan, Malini Pooni Venkat, S. Nagarathinam, et al. (2021). \textit{Learn to chill: intelligent chiller scheduling using meta-learning and deep reinforcement learning}. International Conference on Systems for Energy-Efficient Built Environments.
+
+\bibitem{visca20217nt}
+Marco Visca, R. Powell, Yang Gao, et al. (2021). \textit{Deep Meta-Learning Energy-Aware Path Planner for Unmanned Ground Vehicles in Unknown Terrains}. IEEE Access.
+
+\bibitem{so2021y48}
+Chaehan So (2021). \textit{Exploring Meta Learning: Parameterizing the Learning-to-learn Process for Image Classification}. Digital Signal Processing and Signal Processing Education Workshop.
+
+\bibitem{yang2022oxf}
+Zhixiong Yang, Jingyuan Xia, T. Qiu, et al. (2022). \textit{A Meta-Learning based Gradient Descent Algorithm for MU-MIMO Beamforming}. International Conference on Wireless Communications and Signal Processing.
+
+\bibitem{gupta2021fbg}
+Akash Gupta, P. Jonnalagedda, B. Bhanu, et al. (2021). \textit{Ada-VSR: Adaptive Video Super-Resolution with Meta-Learning}. ACM Multimedia.
+
+\bibitem{zheng2021dx4}
+Wenbo Zheng, Lan Yan, Fei-Yue Wang, et al. (2021). \textit{Learning from the Web: Webly Supervised Meta-Learning for Masked Face Recognition}. 2021 IEEE/CVF Conference on Computer Vision and Pattern Recognition Workshops (CVPRW).
+
+\bibitem{zhang2021sbz}
+Peng Zhang, Chenbing Liu, Xingshuo Chang, et al. (2021). \textit{Metric-based Meta-Learning Model for Few-Shot PolSAR Image Terrain Classification}. Radar.
+
+\bibitem{wang2024jzu}
+Chien-Yao Wang, I-Hau Yeh, and Hongpeng Liao (2024). \textit{YOLOv9: Learning What You Want to Learn Using Programmable Gradient Information}. European Conference on Computer Vision.
+
+\bibitem{zhu20249wq}
+Fenghao Zhu, Xinquan Wang, Chongwen Huang, et al. (2024). \textit{Robust Beamforming for RIS-Aided Communications: Gradient-Based Manifold Meta Learning}. IEEE Transactions on Wireless Communications.
+
+\bibitem{yaghoubi2024j56}
+Elaheh Yaghoubi, Elnaz Yaghoubi, Ahmed Khamees, et al. (2024). \textit{A systematic review and meta-analysis of artificial neural network, machine learning, deep learning, and ensemble learning approaches in field of geotechnical engineering}. Neural computing & applications (Print).
+
+\bibitem{ren20242qj}
+Lei Ren, Tingyu Mo, and Xuejun Cheng (2024). \textit{Meta-learning Based Domain Generalization Framework for Fault Diagnosis With Gradient Aligning and Semantic Matching}. IEEE Transactions on Industrial Informatics.
+
+\bibitem{ik20248rp}
+Gültekin Işık, and Ishak Paçal (2024). \textit{Few-shot classification of ultrasound breast cancer images using meta-learning algorithms}. Neural computing & applications (Print).
+
+\bibitem{weilenmann2024ve2}
+C. Weilenmann, A. Ziogas, T. Zellweger, et al. (2024). \textit{Single neuromorphic memristor closely emulates multiple synaptic mechanisms for energy efficient neural networks}. Nature Communications.
+
+\bibitem{xia2024qx2}
+Jingyuan Xia, Zhixiong Yang, Shengxi Li, et al. (2024). \textit{Blind Super-Resolution via Meta-Learning and Markov Chain Monte Carlo Simulation}. IEEE Transactions on Pattern Analysis and Machine Intelligence.
+
+\bibitem{zhao2024f4b}
+Haoming Zhao, Liang Ou, Ziming Zhang, et al. (2024). \textit{The value of deep learning-based X-ray techniques in detecting and classifying K-L grades of knee osteoarthritis: a systematic review and meta-analysis}. European Radiology.
+
+\bibitem{li20242rv}
+Jiawen Li, Tao Zhou, and Haoyan Cui (2024). \textit{Brain-Inspired Deep Meta-Reinforcement Learning for Active Coordinated Fault-Tolerant Load Frequency Control of Multi-Area Grids}. IEEE Transactions on Automation Science and Engineering.
+
+\bibitem{dong2024110}
+Zheng Dong, Renhe Jiang, Haotian Gao, et al. (2024). \textit{Heterogeneity-Informed Meta-Parameter Learning for Spatiotemporal Time Series Forecasting}. Knowledge Discovery and Data Mining.
+
+\bibitem{liao2024o1z}
+Huaizhang Liao, Jingyuan Xia, Zhixiong Yang, et al. (2024). \textit{Meta-Learning Based Domain Prior With Application to Optical-ISAR Image Translation}. IEEE transactions on circuits and systems for video technology (Print).
+
+\bibitem{naskar202446a}
+Gourab Naskar, Sk Mohiuddin, Samir Malakar, et al. (2024). \textit{Deepfake detection using deep feature stacking and meta-learning}. Heliyon.
+
+\bibitem{zhang2024a5a}
+Ruiyi Zhang, Rushi Qiang, Sai Ashish Somayajula, et al. (2024). \textit{AutoLoRA: Automatically Tuning Matrix Ranks in Low-Rank Adaptation Based on Meta Learning}. North American Chapter of the Association for Computational Linguistics.
+
+\bibitem{sharma2024zlw}
+Nelson Sharma, Aswini Ghosh, R. Misra, et al. (2024). \textit{Deep Meta Q-Learning Based Multi-Task Offloading in Edge-Cloud Systems}. IEEE Transactions on Mobile Computing.
+
+\bibitem{ouyang2024xj0}
+Tiancheng Ouyang, Yingying Su, Chengchao Wang, et al. (2024). \textit{Combined Meta-Learning With CNN-LSTM Algorithms for State-of-Health Estimation of Lithium-Ion Battery}. IEEE transactions on power electronics.
+
+\bibitem{wang2025zze}
+Changdong Wang, Zhou Shu, Jingli Yang, et al. (2025). \textit{Learning to Imbalanced Open Set Generalize: A Meta-Learning Framework for Enhanced Mechanical Diagnosis}. IEEE Transactions on Cybernetics.
+
+\bibitem{chia2024ltk}
+Yu-Hsin Chia, Wei-Hao Liao, S. Vyas, et al. (2024). \textit{In Vivo Intelligent Fluorescence Endo‐Microscopy by Varifocal Meta‐Device and Deep Learning}. Advancement of science.
+
+\bibitem{li20246fg}
+Wenzhong Li, Xiang Li, Yeting Xu, et al. (2024). \textit{MetaABR: A Meta-Learning Approach on Adaptative Bitrate Selection for Video Streaming}. IEEE Transactions on Mobile Computing.
+
+\bibitem{yang2024rh9}
+Jing Yang, and Xiaomin Wang (2024). \textit{Meta-learning with deep flow kernel network for few shot cross-domain remaining useful life prediction}. Reliability Engineering & System Safety.
+
+\bibitem{gao20242uv}
+Yuan Gao, Wei Chen, Fajun Li, et al. (2024). \textit{Meta‐Attention Deep Learning for Smart Development of Metasurface Sensors}. Advancement of science.
+
+\bibitem{huang2024hlo}
+Hai-Hui Huang, Jun Shu, and Yong Liang (2024). \textit{MUMA: A Multi-Omics Meta-Learning Algorithm for Data Interpretation and Classification}. IEEE journal of biomedical and health informatics.
+
+\bibitem{liu2024hko}
+Shicheng Liu, and Minghui Zhu (2024). \textit{Meta Inverse Constrained Reinforcement Learning: Convergence Guarantee and Generalization Analysis}. International Conference on Learning Representations.
+
+\bibitem{li2024x2t}
+Jiawen Li, and Yuanyuan Cheng (2024). \textit{Deep Meta-Reinforcement Learning-Based Data-Driven Active Fault Tolerance Load Frequency Control for Islanded Microgrids Considering Internet of Things}. IEEE Internet of Things Journal.
+
+\bibitem{khattar2024sr6}
+Vanshaj Khattar, Yuhao Ding, Bilgehan Sel, et al. (2024). \textit{A CMDP-within-online framework for Meta-Safe Reinforcement Learning}. International Conference on Learning Representations.
+
+\bibitem{yen2024cxp}
+Tzu-Yun Yen, Chan-Shien Ho, Yueh-peng Chen, et al. (2024). \textit{Diagnostic Accuracy of Deep Learning for the Prediction of Osteoporosis Using Plain X-rays: A Systematic Review and Meta-Analysis}. Diagnostics.
+
+\bibitem{you2024xuq}
+Linlin You, Qiyang Chen, Haohao Qu, et al. (2024). \textit{FMGCN: Federated Meta Learning-Augmented Graph Convolutional Network for EV Charging Demand Forecasting}. IEEE Internet of Things Journal.
+
+\bibitem{hao2024dyp}
+Xiaoyang Hao, Zhixi Feng, Tongqing Peng, et al. (2024). \textit{Meta-Learning Guided Label Noise Distillation for Robust Signal Modulation Classification}. IEEE Internet of Things Journal.
+
+\bibitem{lang20246m8}
+Shujun Lang, Xu Liu, Mingliang Zhou, et al. (2024). \textit{A Full-Reference Image Quality Assessment Method via Deep Meta-Learning and Conformer}. IEEE transactions on broadcasting.
+
+\bibitem{xu2024ywn}
+Meng Xu, Yi Mei, Fangfang Zhang, et al. (2024). \textit{Niching Genetic Programming to Learn Actions for Deep Reinforcement Learning in Dynamic Flexible Scheduling}. IEEE Transactions on Evolutionary Computation.
+
+\bibitem{ding2024jjo}
+Yang Ding, Heng Zhang, and Ting Qiu (2024). \textit{Deep learning approach to predict autism spectrum disorder: a systematic review and meta-analysis}. BMC Psychiatry.
+
+\bibitem{wang2024dai}
+Fengxiang Wang, Wanrong Huang, Shaowu Yang, et al. (2024). \textit{Learning to Learn Better Visual Prompts}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{nussenbaum2024z82}
+Kate Nussenbaum, and Catherine A. Hartley (2024). \textit{Understanding the development of reward learning through the lens of meta-learning}. Nature Reviews Psychology.
+
+\bibitem{alsaleh2024vdv}
+Aqilah M. Alsaleh, Eid Albalawi, A. Algosaibi, et al. (2024). \textit{Few-Shot Learning for Medical Image Segmentation Using 3D U-Net and Model-Agnostic Meta-Learning (MAML)}. Diagnostics.
+
+\bibitem{ghassemi20241ek}
+Sina Ghassemi, Tianyi Zhang, Ward van Breda, et al. (2024). \textit{Unsupervised Multimodal Learning for Dependency-Free Personality Recognition}. IEEE Transactions on Affective Computing.
+
+\bibitem{li20254kd}
+Jiawen Li, and Tao Zhou (2025). \textit{Efficient Replay Deep Meta-Reinforcement Learning for Active Fault-Tolerant Control of Solid Oxide Fuel Cell Systems Considering Multivariable Coordination}. IEEE Transactions on Transportation Electrification.
+
+\bibitem{zhao202420b}
+Jianjin Zhao, Qi Li, Yueping Hong, et al. (2024). \textit{MetaRockETC: Adaptive Encrypted Traffic Classification in Complex Network Environments via Time Series Analysis and Meta-Learning}. IEEE Transactions on Network and Service Management.
+
+\bibitem{zhang2024xg0}
+Lei Zhang, Yuhang Zhou, Yi Yang, et al. (2024). \textit{Meta Invariance Defense Towards Generalizable Robustness to Unknown Adversarial Attacks}. IEEE Transactions on Pattern Analysis and Machine Intelligence.
+
+\bibitem{ruwurm2024806}
+Marc Rußwurm, Sherrie Wang, B. Kellenberger, et al. (2024). \textit{Meta-learning to address diverse Earth observation problems across resolutions}. Communications Earth &amp; Environment.
+
+\bibitem{jang2024pyi}
+Jungik Jang, Jisung Pyo, Young-il Yoon, et al. (2024). \textit{Meta-Transformer: A Meta-Learning Framework for Scalable Automatic Modulation Classification}. IEEE Access.
+
+\bibitem{su2024h1g}
+Hao Su, Qingtao Yao, Ling Xiang, et al. (2024). \textit{Semi-Supervised Temporal Meta-Learning Framework for Wind Turbine Bearing Fault Diagnosis Under Limited Annotation Data}. IEEE Transactions on Instrumentation and Measurement.
+
+\bibitem{li20246zp}
+Yao Li, Dawei Yuan, Tao Zhang, et al. (2024). \textit{Meta-Learning for Multi-Family Android Malware Classification}. ACM Transactions on Software Engineering and Methodology.
+
+\bibitem{lupu20249p4}
+E. Lupu, Fengze Xie, James A. Preiss, et al. (2024). \textit{MAGICVFM-Meta-Learning Adaptation for Ground Interaction Control With Visual Foundation Models}. IEEE Transactions on robotics.
+
+\bibitem{briscik2024cpd}
+Mitja Briscik, Gabriele Tazza, M. Dillies, et al. (2024). \textit{Supervised multiple kernel learning approaches for multi-omics data integration}. BioData Mining.
+
+\bibitem{sun2024kbv}
+Jingmin Sun, Zecheng Zhang, and Hayden Schaeffer (2024). \textit{LeMON: Learning to Learn Multi-Operator Networks}. arXiv.org.
+
+\bibitem{eghbali2024huh}
+Y. Eghbali, Shiva Kazemi Taskou, Mohammad Robat Mili, et al. (2024). \textit{Providing URLLC Service in Multi-STAR-RIS Assisted and Full-Duplex Cellular Wireless Systems: A Meta-Learning Approach}. IEEE Communications Letters.
+
+\bibitem{zhu2024ok7}
+Yihuan Zhu, Yunan Liu, Chunpeng Wang, et al. (2024). \textit{Intermediate Domain-Based Meta Learning Framework for Adaptive Object Detection}. IEEE transactions on circuits and systems for video technology (Print).
+
+\bibitem{long202400t}
+Jianyu Long, Rongxin Zhang, Yibin Chen, et al. (2024). \textit{A Customized Meta-Learning Framework for Diagnosing New Faults From Unseen Working Conditions With Few Labeled Data}. IEEE/ASME transactions on mechatronics.
+
+\bibitem{gu20252u3}
+Yan Gu, Zhaoze Liu, Shuhong Dai, et al. (2025). \textit{Deep Reinforcement Learning for Job Scheduling and Resource Management in Cloud Computing: An Algorithm-Level Review}. arXiv.org.
+
+\bibitem{zhang2024mf0}
+Lin Zhang, Bo Zhang, Botian Shi, et al. (2024). \textit{Few-Shot Cross-Domain Object Detection With Instance-Level Prototype-Based Meta-Learning}. IEEE transactions on circuits and systems for video technology (Print).
+
+\bibitem{liu2024jz5}
+Sheng Liu, Linlin You, Rui Zhu, et al. (2024). \textit{AFM3D: An Asynchronous Federated Meta-Learning Framework for Driver Distraction Detection}. IEEE transactions on intelligent transportation systems (Print).
+
+\bibitem{ozkara2024nst}
+Kaan Ozkara, Can Karakus, Parameswaran Raman, et al. (2024). \textit{MADA: Meta-Adaptive Optimizers through hyper-gradient Descent}. International Conference on Machine Learning.
+
+\bibitem{cui2024bov}
+Qi Cui, Weixuan Tang, Zhili Zhou, et al. (2024). \textit{Meta Security Metric Learning for Secure Deep Image Hiding}. IEEE Transactions on Dependable and Secure Computing.
+
+\bibitem{wang2024so2}
+Yuan Wang, Zhiqiang Tao, and Yi Fang (2024). \textit{A Unified Meta-Learning Framework for Fair Ranking With Curriculum Learning}. IEEE Transactions on Knowledge and Data Engineering.
+
+\bibitem{ma2024vk4}
+Han Ma, Baoyu Fan, B. Ng, et al. (2024). \textit{VL-Meta: Vision-Language Models for Multimodal Meta-Learning}. Mathematics.
+
+\bibitem{amorim20240xf}
+Lucas B V de Amorim, George D. C. Cavalcanti, and Rafael M. O. Cruz (2024). \textit{Meta-Scaler: A Meta-Learning Framework for the Selection of Scaling Techniques}. IEEE Transactions on Neural Networks and Learning Systems.
+
+\bibitem{shen2024hea}
+Maohao Shen, J. J. Ryu, Soumya Ghosh, et al. (2024). \textit{Are Uncertainty Quantification Capabilities of Evidential Deep Learning a Mirage?}. Neural Information Processing Systems.
+
+\bibitem{ferrini20249g0}
+Francesco Ferrini, Antonio Longa, Andrea Passerini, et al. (2024). \textit{A Self-Explainable Heterogeneous GNN for Relational Deep Learning}. Trans. Mach. Learn. Res..
+
+\bibitem{wang2024tpb}
+Chenxing Wang (2024). \textit{Towards Effective Fusion and Forecasting of Multimodal Spatio-temporal Data for Smart Mobility}. International Conference on Information and Knowledge Management.
+
+\bibitem{song2024epb}
+Wen-qi Song, Di Wu, Weiming Shen, et al. (2024). \textit{Early fault detection for rolling bearings: A meta‐learning approach}. IET Collaborative Intelligent Manufacturing.
+
+\bibitem{wang20245h1}
+Zih-Wei Wang, and Vincent W. S. Wong (2024). \textit{Bayesian Meta-Learning for Adaptive Traffic Prediction in Wireless Networks}. IEEE Transactions on Mobile Computing.
+
+\bibitem{tam2024a1h}
+S. Tam, S. T. P. Raghu, Étienne Buteau, et al. (2024). \textit{Towards Robust and Interpretable EMG-based Hand Gesture Recognition using Deep Metric Meta Learning}. arXiv.org.
+
+\bibitem{qiao2024l71}
+Ruihua Qiao, Tao Jiang, and Weiyong Yu (2024). \textit{Meta-Learning-Based Fronthaul Compression for Cloud Radio Access Networks}. IEEE Transactions on Wireless Communications.
+
+\bibitem{xing2024n9q}
+Yun Xing, Qing Guo, Xiaofeng Cao, et al. (2024). \textit{MetaRepair: Learning to Repair Deep Neural Networks from Repairing Experiences}. ACM Multimedia.
+
+\bibitem{cheng2024mky}
+Yingsong Cheng, Xinya Wang, Yong Ma, et al. (2024). \textit{General Hyperspectral Image Super-Resolution via Meta-Transfer Learning}. IEEE Transactions on Neural Networks and Learning Systems.
+
+\bibitem{xia20246dc}
+Pengcheng Xia, Yixiang Huang, Chengliang Liu, et al. (2024). \textit{Learn to Supervise: Deep Reinforcement Learning-Based Prototype Refinement for Few-Shot Motor Fault Diagnosis}. IEEE Transactions on Neural Networks and Learning Systems.
+
+\bibitem{yang20243gt}
+Fan Yang, Nor Azman Ismail, Y. Y. Pang, et al. (2024). \textit{A Systematic Literature Review of Deep Learning Approaches for Sketch-Based Image Retrieval: Datasets, Metrics, and Future Directions}. IEEE Access.
+
+\bibitem{zhang2024ycr}
+Lianwei Zhang, Dongjiang Niu, Beiyi Zhang, et al. (2024). \textit{Property-Guided Few-Shot Learning for Molecular Property Prediction With Dual-View Encoder and Relation Graph Learning Network}. IEEE journal of biomedical and health informatics.
+
+\bibitem{raymond202441h}
+Christian Raymond (2024). \textit{Meta-Learning Loss Functions for Deep Neural Networks}. arXiv.org.
+
+\bibitem{khalid2024pss}
+Mudassar Khalid, C. Pluempitiwiriyawej, S. Wangsiripitak, et al. (2024). \textit{The Applications of Deep Learning in ECG Classification for Disease Diagnosis: A Systematic Review and Meta-Data Analysis}. Engineering Journal.
+
+\bibitem{kumar2024he9}
+Sandeep Kumar, Amit Sharma, Vikrant Shokeen, et al. (2024). \textit{Meta-learning for real-world class incremental learning: a transformer-based approach}. Scientific Reports.
+
+\bibitem{kukanov20249bs}
+Ivan Kukanov, Janne Laakkonen, Tomi Kinnunen, et al. (2024). \textit{Meta-Learning Approaches For Improving Detection of Unseen Speech Deepfakes}. Spoken Language Technology Workshop.
+
+\bibitem{chen20245h8}
+Cheng Chen, Hao Fang, Yuxiao Yang, et al. (2024). \textit{Model-agnostic meta-learning for EEG-based inter-subject emotion recognition}. Journal of Neural Engineering.
+
+\bibitem{liu2024az5}
+Yonghao Liu, Mengyu Li, Ximing Li, et al. (2024). \textit{Meta-GPS++: Enhancing Graph Meta-Learning with Contrastive Learning and Self-Training}. ACM Transactions on Knowledge Discovery from Data.
+
+\bibitem{xu2024mf9}
+Zexing Xu, Linjun Zhang, Sitan Yang, et al. (2024). \textit{F-FOMAML: GNN-Enhanced Meta-Learning for Peak Period Demand Forecasting with Proxy Data}. arXiv.org.
+
+\bibitem{chen2024b4d}
+Weiye Chen, Yiqun Xie, Xiaowei Jia, et al. (2024). \textit{Referee-Meta-Learning for Fast Adaptation of Locational Fairness}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{wen2024xmk}
+Gang Wen, and Limin Li (2024). \textit{MMOSurv: meta-learning for few-shot survival analysis with multi-omics data}. Bioinformatics.
+
+\bibitem{liao2024jm9}
+Yang Liao, Jing Zhao, Jiyong Bian, et al. (2024). \textit{From mechanism to application: Decrypting light‐regulated denitrifying microbiome through geometric deep learning}. iMeta.
+
+\bibitem{meng2024nqq}
+Wei Meng, Hao Ju, Tongxu Ai, et al. (2024). \textit{Transferring Meta-Policy From Simulation to Reality via Progressive Neural Network}. IEEE Robotics and Automation Letters.
+
+\bibitem{wu2024v0z}
+Haotian Wu, Maojun Zhang, Yulin Shao, et al. (2024). \textit{MIMO Channel as a Neural Function: Implicit Neural Representations for Extreme CSI Compression in Massive MIMO Systems}. arXiv.org.
+
+\bibitem{farrell2024mpy}
+M. Farrell, Nicolas Le Guillarme, Liam Brierley, et al. (2024). \textit{The changing landscape of text mining: a review of approaches for ecology and evolution}. Proceedings B.
+
+\bibitem{ma20243e9}
+Xin Ma, Yuanchang Xie, and Chunxiao Chigan (2024). \textit{Graph Convolutional Network Based Multi-Objective Meta-Deep Q-Learning for Eco-Routing}. IEEE transactions on intelligent transportation systems (Print).
+
+\bibitem{gven2024a3n}
+Eray Güven, and G. Kurt (2024). \textit{Learning-to-Learn the Wave Angle Estimation}. IEEE Transactions on Communications.
+
+\bibitem{wang2024bhk}
+Jingyao Wang, Wenwen Qiang, Jiangmeng Li, et al. (2024). \textit{Rethinking Meta-Learning from a Learning Lens}. arXiv.org.
+
+\bibitem{pu2024m1b}
+Q. Pu, Youkun Chen, Mu Zhou, et al. (2024). \textit{Bayesian Meta-Learning: Toward Fast Adaptation in Neural Network Positioning Techniques}. IEEE Internet of Things Journal.
+
+\end{thebibliography}
+
+\end{document}
