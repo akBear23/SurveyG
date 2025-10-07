@@ -116,6 +116,8 @@ def filter_top_nodes(G, top_n=120, prestigious_venues=PRESTIGIOUS_VENUES):
     3. Venue in prestigious_venues list
     4. Node ID (as final tiebreaker)
     
+    Additionally keeps all nodes with 'layer' attribute equal to 1.
+    
     Args:
         G: Input NetworkX graph
         top_n: Number of nodes to keep (default: 120)
@@ -126,6 +128,9 @@ def filter_top_nodes(G, top_n=120, prestigious_venues=PRESTIGIOUS_VENUES):
     """
     if prestigious_venues is None:
         prestigious_venues = set()
+    
+    # Identify nodes with layer == 1 to keep regardless of ranking
+    protected_nodes = [node for node in G.nodes() if G.nodes[node].get('layer') == 1]
     
     # Create a list of tuples (node, degree, score, is_prestigious)
     node_data = []
@@ -148,11 +153,13 @@ def filter_top_nodes(G, top_n=120, prestigious_venues=PRESTIGIOUS_VENUES):
     # Get the top_n nodes
     top_nodes = [node_data[i][0] for i in range(min(top_n, len(node_data)))]
     
+    # Combine top nodes with protected nodes (layer == 1)
+    nodes_to_keep = set(top_nodes) | set(protected_nodes)
+    
     # Create a subgraph with only these nodes and edges between them
-    filtered_G = G.subgraph(top_nodes).copy()
+    filtered_G = G.subgraph(nodes_to_keep).copy()
     
     return filtered_G
-
 def save_graph(G, output_path):
     # Save graph as JSON
     G = filter_top_nodes(G)
@@ -184,9 +191,11 @@ def save_graph(G, output_path):
 
 def assign_layers(survey_papers, quantile=0.15):
     paper_scores = {}
-    
+    surveys = []
     for paper in survey_papers:
         paper_id = paper.get('id', None)
+        if 'survey' in paper.get('title').lower() or 'review' in paper.get('title').lower():
+            surveys.append(paper_id)
         if paper_id is None:
             continue  
             
@@ -203,19 +212,24 @@ def assign_layers(survey_papers, quantile=0.15):
     total_papers = len(foundation_scores)
     K = max(10, int(quantile * total_papers))  
     K = min(15, int(quantile * total_papers))
+    print('K: ', K)
+    print('total_papers: ', total_papers)
     # Get top K paper IDs
     foundation_ids = [pid for _, pid in foundation_scores[:K]]
     # Layer assignment
     layers = {}
+    count = 0
     for paper in survey_papers:
         year = paper.get('year', 2025)
         pid = paper.get('id', None)
-        if pid in foundation_ids:
+        if pid in foundation_ids and not pid in surveys:
             layers[pid] = 1
+            count += 1
         elif year >= 2024:
             layers[pid] = 3
         else:
             layers[pid] = 2
+    print('Number of foundation papers: ', count)
     return layers
 
 def main():

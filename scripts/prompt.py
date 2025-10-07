@@ -55,7 +55,7 @@ REMEMBER:
 CONTEXT: You have access to a previously synthesized understanding of this research area, along with new papers to integrate. Your goal is to update and refine the evolutionary analysis by incorporating these new contributions.
 
 **Previous Synthesis (if available):**
-[PREVIOUS_SYNTHESIS]
+[PREVIOUS_CONTEXT]
 
 **New Papers to Integrate (sorted chronologically):**
 [PAPER_INFO]

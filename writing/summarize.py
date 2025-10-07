@@ -1162,6 +1162,7 @@ class PaperSummarizerRAG:
             
             metadata['summary'] = summary
             metadata['keywords'] = keywords
+            
             # metadata['paper_type'] = paper_type
             return {
                 "success": True,

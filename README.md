@@ -34,7 +34,7 @@ python scripts/fetch_cited_by_batch.py "your research topic query"
 ```bash
 python scripts/pdf_downloader.py "your research topic query"
 ```
-# 5. Summarize all papers, get summary, paper type, is_new_direction for metadata 
+# 5. Summarize all papers, get summary, paper type for metadata 
 ```bash
 python writing/summarize.py "your research topic query"
 ```

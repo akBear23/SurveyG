@@ -78,17 +78,19 @@ def extract_citation_abstracts(json_data):
         for item in data:
             if isinstance(item, dict):
                 citation_key = item.get('citation_key')
-                abstract = item.get('metadata', {}).get('abstract')
-                
-                if citation_key and abstract:
+                abstract = item.get('metadata', {}).get('abstract', '')
+                if abstract == '':
+                    abstract = item.get('metadata', {}).get('title', '')
+                if citation_key:
                     result[citation_key] = abstract
                     
     # Nếu data là dict đơn lẻ
     elif isinstance(data, dict):
         citation_key = data.get('citation_key')
-        abstract = data.get('metadata', {}).get('abstract')
-        
-        if citation_key and abstract:
+        abstract = data.get('metadata', {}).get('abstract', '')
+        if abstract == '':
+            abstract = item.get('metadata', {}).get('title', '')
+        if citation_key:
             result[citation_key] = abstract
     
     return result
@@ -159,7 +161,14 @@ def parse_a_paper(paper_path: Path, bibname2abs: dict) -> dict:
     for sentence in sentences:
         if r"\cite{" in sentence:
             sources, claim = extract_cite_and_text(sentence)
-            abss = [bibname2abs[source] for source in sources]
+            # print(len(bibname2abs.keys()))
+            # abss = [bibname2abs[source] for source in sources]
+            abss = []
+            for source in sources:
+                try: 
+                    abss.extend(bibname2abs[source])
+                except:
+                    pass
             claim2source[claim] = abss
     return claim2source
 
@@ -176,12 +185,15 @@ if __name__ == "__main__":
         claim2source = parse_a_paper(mainbody_path, bibname2abs)
 
         claim_TF = {}
+        times = 0
         for claim, sources in claim2source.items():
             source_TF = []
             for source in sources:
+                times += 1
                 source_TF.append(nli(claim, source))
             claim_TF[claim] = source_TF
-        res_per_paper.append([claim2source, claim_TF, mainbody_path])
+        print(times)
+        # res_per_paper.append([claim2source, claim_TF, mainbody_path])
 
     # calculate recall and precision
     recall_l = []
