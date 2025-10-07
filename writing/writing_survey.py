@@ -912,8 +912,14 @@ class LiteratureReviewGenerator:
                     additional_papers = []
                 
                 print(f"         Improving subsection based on feedback...")
+                old_subsection_content = current_subsection_content
                 current_subsection_content = self.improve_subsection_with_additional_papers(
-                    subsection_title, current_subsection_content, subsection_focus, 
+                    subsection_title, old_subsection_content, subsection_focus, 
+                    additional_papers, full_outline_text, evaluation, pre_subsection_content
+                )
+                while current_subsection_content == '' or current_subsection_content == None:
+                    current_subsection_content = self.improve_subsection_with_additional_papers(
+                    subsection_title, old_subsection_content, subsection_focus, 
                     additional_papers, full_outline_text, evaluation, pre_subsection_content
                 )
                 with open(checkpoint_path, 'w', encoding='utf-8') as f:
@@ -925,11 +931,7 @@ class LiteratureReviewGenerator:
                 current_subsection_content = current_subsection_content.replace("\\section", "\\subsection")
             
             subsection_prefix = f"\\subsection"
-            if current_subsection_content.strip().startswith(subsection_prefix):
-                # Find the end of the subsection line and label to remove it
-                # This assumes the label immediately follows the subsection title
-                # and we want to remove both if they are at the very beginning.
-                
+            if current_subsection_content.strip().startswith(subsection_prefix):                
                 # A more robust way would be to parse it, but for simple string manipulation:
                 temp_content = current_subsection_content.strip()
                 
@@ -955,9 +957,6 @@ class LiteratureReviewGenerator:
             # Now, add the correct subsection line at the beginning
             full_section_latex_content += f"\\subsection{{{subsection_title}}}\n\\label{{sec:{subsection_number.replace('.', '_')}_{subsection_title.lower().replace(' ', '_').replace('and', '_and_')}}}\n\n"
             full_section_latex_content += current_subsection_content + '\n'
-
-            # full_section_latex_content += current_subsection_content + "\n\n"
-            # pre_subsection_content = current_subsection_content # Update for the next iteration
 
         return full_section_latex_content, all_subsections_content_for_section
     
