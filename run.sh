@@ -37,9 +37,9 @@ echo "Using directory name: $DIR_QUERY"
 # echo "Step 5: Generating summaries..."
 # python "$BASE_DIR/writing/summarize.py" "$ORIGINAL_QUERY"
 
-# # Step 7: Traverse graph for summaries
-# echo "Step 7: Traversing graph..."
-# python "$BASE_DIR/scripts/traversal.py" "$ORIGINAL_QUERY"
+# Step 7: Traverse graph for summaries
+echo "Step 7: Traversing graph..."
+python "$BASE_DIR/scripts/traversal.py" "$ORIGINAL_QUERY"
 
 # Step 8: Write survey paper
 echo "Step 8: Writing survey paper..."
