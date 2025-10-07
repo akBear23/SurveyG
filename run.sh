@@ -25,7 +25,7 @@ python "$BASE_DIR/scripts/survey_crawler.py" "$ORIGINAL_QUERY" "$KEYWORDS" "$NUM
 echo "Step 6: Creating survey graph..."
 python "$BASE_DIR/scripts/create_survey_graph.py" "$ORIGINAL_QUERY"
 
-# # Step 3: Fetch cited papers
+# # # Step 3: Fetch cited papers
 echo "Step 3: Fetching cited papers..."
 python "$BASE_DIR/scripts/fetch_cited_by_batch.py" "$ORIGINAL_QUERY"
 

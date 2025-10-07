@@ -87,9 +87,19 @@ class LiteratureReviewGenerator:
             G.add_edge(edge['source'], edge['target'], **edge)
         return G, id2node_info
     def parse_remove_think(self, summary):
-        summary = re.sub(r"1. <think>[\s\S]*?</think>", "", summary)
-        summary = re.sub(r"<think>[\s\S]*?</think>", "", summary)
-        return summary
+        # Remove text between think tags
+        if "1.  think" in summary: 
+            summary = re.sub(r"1. <think>[\s\S]*?</think>", "", summary)
+        else: 
+            summary = re.sub(r"<think>[\s\S]*?</think>", "", summary)
+        
+        last_subsection_pos = summary.rfind("\subsection")
+    
+        # If \subsection exists, keep everything from the last occurrence onward
+        if last_subsection_pos != -1:
+            summary = summary[last_subsection_pos:]
+            
+            return summary
     #region evaluate section quality
     def evaluate_section_quality(self, section_title: str, section_content: str, 
                             section_focus: str, outline: str, pre_section: str) -> Dict[str, any]:
@@ -808,6 +818,7 @@ class LiteratureReviewGenerator:
             
             print(f"      Writing Subsection {subsection_number}: {subsection_title}")
 
+            subsection_title = subsection_title.replace('"', "")
             checkpoint_path = os.path.join(
                 self.save_dir, 
                 f"subsection_{subsection_number.replace('.', '_')}_{subsection_title.replace(' ', '_').replace('/', '_').replace(':', '').lower()}_checkpoint.tex"
@@ -818,6 +829,48 @@ class LiteratureReviewGenerator:
                 print(f"        ⏭️  Loading subsection '{subsection_title}' from checkpoint.")
                 with open(checkpoint_path, 'r', encoding='utf-8') as f:
                     current_subsection_content = f.read()
+
+                if current_subsection_content != '' and current_subsection_content[0] != "\\" and current_subsection_content != None:
+                    current_subsection_content = self.parse_remove_think(current_subsection_content)
+                    with open(checkpoint_path, 'w', encoding='utf-8') as f:
+                        f.write(current_subsection_content)
+                
+                if current_subsection_content.strip().startswith("\\section"):
+                    current_subsection_content = current_subsection_content.replace("\\section", "\\subsection")
+                
+                subsection_prefix = f"\\subsection"
+                if current_subsection_content.strip().startswith(subsection_prefix):
+                    # Find the end of the subsection line and label to remove it
+                    # This assumes the label immediately follows the subsection title
+                    # and we want to remove both if they are at the very beginning.
+                    
+                    # A more robust way would be to parse it, but for simple string manipulation:
+                    temp_content = current_subsection_content.strip()
+                    
+                    # Find the first newline after the potential subsection line
+                    first_newline_idx = temp_content.find('\n')
+                    
+                    if first_newline_idx != -1:
+                        # Check if the text before this newline contains the label as well
+                        # This is a bit simplistic and might need refinement depending on exact latex structure
+                        if "\\label" in temp_content[:first_newline_idx]:
+                            # If the label is on the same line as subsection or immediately after
+                            # find the end of the label line
+                            second_newline_idx = temp_content.find('\n', first_newline_idx + 1)
+                            if second_newline_idx != -1:
+                                current_subsection_content = temp_content[second_newline_idx + 1:]
+                            else:
+                                current_subsection_content = "" # Only the subsection and label were present
+                        else: # Only the subsection line
+                            current_subsection_content = temp_content[first_newline_idx + 1:]
+                    else: # No newline, meaning only the subsection was in the content
+                        current_subsection_content = ""
+
+                # Now, add the correct subsection line at the beginning
+                full_section_latex_content += f"\\subsection{{{subsection_title}}}\n\\label{{sec:{subsection_number.replace('.', '_')}_{subsection_title.lower().replace(' ', '_').replace('and', '_and_')}}}\n\n"
+                full_section_latex_content += current_subsection_content + '\n'
+
+                continue
             else:
                 print(f"        ✍️  Writing initial content for subsection '{subsection_title}'...")
                 current_subsection_content = self.write_initial_subsection(
