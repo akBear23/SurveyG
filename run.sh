@@ -17,7 +17,7 @@ BASE_DIR="/media/aiserver/New Volume/HDD_linux/bear/SurveyG"
 echo "Starting survey generation for: '$ORIGINAL_QUERY'"
 echo "Using directory name: $DIR_QUERY"
 
-# Step 2: Crawl papers
+# # Step 2: Crawl papers
 echo "Step 2: Running crawler..."
 python "$BASE_DIR/scripts/survey_crawler.py" "$ORIGINAL_QUERY" "$KEYWORDS" "$NUM_PAPERS"
 
@@ -37,23 +37,23 @@ python "$BASE_DIR/scripts/pdf_downloader.py" "$ORIGINAL_QUERY"
 echo "Step 5: Generating summaries..."
 python "$BASE_DIR/writing/summarize.py" "$ORIGINAL_QUERY"
 
-# # Step 7: Traverse graph for summaries
-# echo "Step 7: Traversing graph..."
-# python "$BASE_DIR/scripts/traversal.py" "$ORIGINAL_QUERY"
+# Step 7: Traverse graph for summaries
+echo "Step 7: Traversing graph..."
+python "$BASE_DIR/scripts/traversal.py" "$ORIGINAL_QUERY"
 
-# # Step 8: Write survey paper
-# echo "Step 8: Writing survey paper..."
-# (
-#     python writing/writing_survey.py "$ORIGINAL_QUERY"
-# )
+# Step 8: Write survey paper
+echo "Step 8: Writing survey paper..."
+(
+    python writing/writing_survey.py "$ORIGINAL_QUERY"
+)
 
-# # Step 9: Compile LaTeX document
-# echo "Step 9: Compiling LaTeX..."
-# PAPER_DIR="$BASE_DIR/paper_data/$DIR_QUERY/literature_review_output"
-# mkdir -p "$PAPER_DIR"  # Ensure directory exists
-# (
-#     cd "$PAPER_DIR" && \
-#     pdflatex literature_review.tex
-# )
+# Step 9: Compile LaTeX document
+echo "Step 9: Compiling LaTeX..."
+PAPER_DIR="$BASE_DIR/paper_data/$DIR_QUERY/literature_review_output"
+mkdir -p "$PAPER_DIR"  # Ensure directory exists
+(
+    cd "$PAPER_DIR" && \
+    pdflatex literature_review.tex
+)
 
-# echo "Survey generation complete! Output located at: $PAPER_DIR/literature_review.pdf"
+echo "Survey generation complete! Output located at: $PAPER_DIR/literature_review.pdf"

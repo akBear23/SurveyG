@@ -57,7 +57,14 @@ class LiteratureReviewGenerator:
             try:
                 if info['summary'] != info['abstract'] and info['summary'] != '':
                     papers_text += f"[{info['citation_key']}] {info['title']} ({info['year']})\nSummary: {info['summary']}\n\n"
-            except: papers_text += f"[{info['citation_key']}] {info['title']} ({info['year']})\nSummary: {info['abstract']}\n\n"
+                else:
+                    papers_text += f"[{info['citation_key']}] {info['title']} ({info['year']})\nSummary: {info['abstract']}\n\n"
+
+            except:
+                try: 
+                    if info['summary'] != info['abstract'] and info['summary'] != '':
+                        papers_text += f"[{info['citation_key']}] {info['title']} ({info['published_date']})\nSummary: {info['summary']}\n\n"
+                except: papers_text += f"[{info['citation_key']}] {info['title']} ({info['published_date']})\nSummary: {info['abstract']}\n\n"
         return papers_text
     def load_graph(self, json_path, node_info_path):
         with open(json_path, 'r', encoding='utf-8') as f:
@@ -80,7 +87,7 @@ class LiteratureReviewGenerator:
             G.add_edge(edge['source'], edge['target'], **edge)
         return G, id2node_info
     def parse_remove_think(self, summary):
-        summary = re.sub(r"1.<think>[\s\S]*?</think>", "", summary)
+        summary = re.sub(r"1. <think>[\s\S]*?</think>", "", summary)
         summary = re.sub(r"<think>[\s\S]*?</think>", "", summary)
         return summary
     #region evaluate section quality
@@ -239,6 +246,7 @@ class LiteratureReviewGenerator:
                         result['citation_key'] =  self.id2node_info[node_id].get('citation_key')
                         result['title'] = self.id2node_info[node_id].get('title')
                         result['summary'] = self.id2node_info[node_id].get('summary')
+                        result['year'] = self.id2node_info[node_id].get('published_date')
                         all_results.append(result)
 
             except Exception as e:
@@ -260,7 +268,7 @@ class LiteratureReviewGenerator:
                                                         "WEAKNESSES": weaknesses,
                                                         "RETRIEVED_PAPERS": retrieved_papers_text
                                                     })
-        with open('tmp/writing_prompts.txt', "a") as f:
+        with open('writing_prompts.txt', "a") as f:
             f.write(f"FILTER RETRIEVED PAPER PROMPT:\n {prompt}")
 
         try:
@@ -485,7 +493,7 @@ class LiteratureReviewGenerator:
                 'DEVELOPMENT_DIRECTION': development_direction,
             }
         )
-        with open('tmp/writing_prompts.txt', "a") as f:
+        with open('writing_prompts.txt', "a") as f:
             f.write(f"INITAL SUBSECTION PROMPT:\n {subsection_prompt}")
 
         try:
@@ -515,7 +523,7 @@ class LiteratureReviewGenerator:
                 'SUBSECTION_CONTENT': subsection_content
             }
         )
-        with open('tmp/writing_prompts.txt', "a") as f:
+        with open('writing_prompts.txt', "a") as f:
             f.write(f"EVALUATE SUBSECTION PROMPT:\n {evaluation_prompt}")
 
         try:
@@ -593,18 +601,19 @@ class LiteratureReviewGenerator:
         Improve a subsection by incorporating additional papers and addressing feedback
         """
         # Prepare additional papers information
-        additional_info = ""
-        for i, paper in enumerate(additional_papers, 1):
-            metadata = paper.get('metadata', {})
-            additional_info += f"**Additional Paper {i}**:\n"
-            additional_info += f"Title: {metadata.get('title', 'N/A')}\n"
-            additional_info += f"Authors: {metadata.get('authors', 'N/A')}\n"
-            additional_info += f"Summary: {paper.get('full_summary', paper.get('abstract', 'N/A'))}\n"
-            additional_info += f"Relevance Score: {paper.get('similarity_score', 0):.3f}\n"
-            if paper.get('keyword', []) != []:
-                additional_info += f"Keywords: {', '.join(paper.get('keyword', []))}"
-            additional_info += f"Citation Key: {paper.get('citation_key', '')}\n\n"
-        
+        # additional_info = ""
+        # print(additional_papers)
+        # for i, paper in enumerate(additional_papers, 1):
+        #     metadata = paper.get('metadata', {})
+        #     additional_info += f"**Additional Paper {i}**:\n"
+        #     additional_info += f"Title: {metadata.get('title', 'N/A')}\n"
+        #     additional_info += f"Authors: {metadata.get('authors', 'N/A')}\n"
+        #     additional_info += f"Summary: {paper.get('full_summary', paper.get('abstract', 'N/A'))}\n"
+        #     additional_info += f"Relevance Score: {paper.get('similarity_score', 0):.3f}\n"
+        #     if paper.get('keyword', []) != []:
+        #         additional_info += f"Keywords: {', '.join(paper.get('keyword', []))}"
+        #     additional_info += f"Citation Key: {paper.get('citation_key', '')}\n\n"
+        additional_info = additional_papers
         improvement_prompt = self.prompt_helper.generate_prompt(
             self.prompt_helper.SUBSECTION_IMPROVE_PROMPT,
             paras={
@@ -618,11 +627,12 @@ class LiteratureReviewGenerator:
                 "CRITICAL_SCORE": {evaluation_feedback.get('individual_scores', {}).get('critical_analysis', 'N/A')},
                 "STRENGTH": {', '.join(evaluation_feedback.get('strengths', []))},
                 "WEAKNESS": {', '.join(evaluation_feedback.get('weaknesses', []))},
+                "REDUNDANCY": {', '.join(evaluation_feedback.get('redundancy_check', []))},
                 "IMPROVEMENT_NEEDED": {', '.join(evaluation_feedback.get('improvement_needed', []))},
                 "ADDITIONAL_INFO": additional_info
             }
         )
-        with open('tmp/writing_prompts.txt', "a") as f:
+        with open('writing_prompts.txt', "a") as f:
             f.write(f"SUBSECTION IMPROVEMENT PROMPT:\n {improvement_prompt}")
 
         try:
@@ -836,8 +846,8 @@ class LiteratureReviewGenerator:
                 suggested_queries = evaluation.get('suggested_queries', [])
                 weaknesses = evaluation.get('weaknesses')
                 if suggested_queries:
-                    print(f"         Retrieving additional papers for subsection: {', '.join(suggested_queries[:2])}")
-                    additional_papers = self.retrieve_additional_papers(subsection_title, subsection_focus, current_subsection_content, weaknesses, suggested_queries)
+                    print(f"         Retrieving additional papers for subsection: {', '.join(suggested_queries[:5])}")
+                    additional_papers = self.retrieve_additional_papers(subsection_title, subsection_focus, current_subsection_content, weaknesses, suggested_queries[:5])
                     print(f"         Found {len(additional_papers)} additional papers for subsection")
                 else:
                     additional_papers = []

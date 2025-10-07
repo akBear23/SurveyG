@@ -457,6 +457,7 @@ Improve the following literature review subsection based on evaluation feedback 
 - Critical Analysis: [CRITICAL_SCORE] (Target: 4.5+)
 - Strengths: [STRENGTH]
 - Weaknesses: [WEAKNESS]
+- Redundancy check: [REDUNDANCY]
 - Specific Improvements Needed: [IMPROVEMENT_NEEDED]
 
 **Additional Papers Retrieved**:
