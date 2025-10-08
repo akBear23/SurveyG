@@ -1,0 +1,1407 @@
+\documentclass[12pt,a4paper]{article}
+    \usepackage[utf8]{inputenc}
+    \usepackage[T1]{fontenc}
+    \usepackage{amsmath,amsfonts,amssymb}
+    \usepackage{graphicx}
+    \usepackage[margin=2.5cm]{geometry}
+    \usepackage{setspace}
+    \usepackage{natbib}
+    \usepackage{url}
+    \usepackage{hyperref}
+    \usepackage{booktabs}
+    \usepackage{longtable}
+    \usepackage{array}
+    \usepackage{multirow}
+    \usepackage{wrapfig}
+    \usepackage{float}
+    \usepackage{colortbl}
+    \usepackage{pdflscape}
+    \usepackage{tabu}
+    \usepackage{threeparttable}
+    \usepackage{threeparttablex}
+    \usepackage[normalem]{ulem}
+    \usepackage{makecell}
+    \usepackage{xcolor}
+
+    % Set line spacing
+    \doublespacing
+
+    % Configure hyperref
+    \hypersetup{
+        colorlinks=true,
+        linkcolor=blue,
+        filecolor=magenta,      
+        urlcolor=cyan,
+        citecolor=red,
+    }
+
+    % Title and author information
+    \title{A Comprehensive Literature Review with Self-Reflection}
+    \author{Literature Review}
+    \date{\today}
+
+    \begin{document}
+
+    \maketitle
+
+    % Abstract (optional)
+    \begin{abstract}
+    This literature review provides a comprehensive analysis of recent research in the field. The review synthesizes findings from 367 research papers, identifying key themes, methodological approaches, and future research directions.
+    \end{abstract}
+
+    \newpage
+    \tableofcontents
+    \newpage
+
+    \label{sec:introduction}
+
+\section{Introduction}
+\label{sec:introduction}
+
+\subsection{Background: The Rise of Vision Transformers}
+\label{sec:1\_1\_background:\_the\_rise\_of\_vision\_transformers}
+
+The advent of Vision Transformers (ViTs) marks a significant paradigm shift in the landscape of computer vision, emerging from the foundational Transformer model originally developed for natural language processing (NLP). Traditional Convolutional Neural Networks (CNNs), while effective in local feature extraction, struggled to capture global context due to their inherently local receptive fields and fixed architectures. These limitations prompted researchers to explore alternative architectures, leading to the introduction of ViTs, which leverage self-attention mechanisms to model long-range dependencies across images.
+
+The foundational work by Dosovitskiy et al. in \cite{ViT} introduced the Vision Transformer, demonstrating that images could be treated as sequences of patches, akin to words in NLP. This approach allowed for the direct application of Transformers to image classification tasks, revealing the potential of self-attention in capturing global context. However, this initial model was criticized for its high data requirements, necessitating extensive pre-training on large datasets to achieve competitive performance. Addressing this limitation, Touvron et al. proposed the Data-efficient Image Transformer (DeiT) \cite{DeiT}, which introduced a distillation strategy to reduce the data dependency, enabling effective training on smaller datasets.
+
+Subsequent innovations sought to enhance the efficiency and applicability of ViTs for various vision tasks. The Swin Transformer \cite{liu2021ljs} introduced a hierarchical design with shifted windows, which significantly improved computational efficiency by limiting self-attention to local windows while allowing for cross-window connections. This architectural change enabled the Swin Transformer to achieve linear complexity with respect to image size, making it suitable for dense prediction tasks such as segmentation and object detection. Similarly, the Pyramid Vision Transformer (PVT) \cite{li2022raj} proposed a multi-scale feature representation, addressing the need for varying resolutions in dense prediction tasks without convolutions, thus enhancing the versatility of ViTs.
+
+In parallel, research began to explore self-supervised learning strategies to further mitigate the data dependency of ViTs. The introduction of Masked Autoencoders (MAE) \cite{MAE} demonstrated that ViTs could effectively learn from unlabeled data by reconstructing masked patches, showcasing their ability to learn rich visual representations without extensive labeled datasets. This was complemented by the work of Caron et al. on DINO \cite{DINO}, which utilized self-distillation to enable ViTs to learn powerful features through an unsupervised approach, thus enhancing their applicability across various tasks.
+
+As the field progressed, there was a growing interest in hybrid architectures that combined the strengths of CNNs and ViTs. The CoaT \cite{CoaT} model introduced a co-scale convolutional and attentional approach, effectively integrating local feature extraction with global reasoning. This trend continued with the development of models like ConvNeXt \cite{ConvNeXt}, which re-evaluated CNNs by incorporating ViT-inspired design choices, illustrating the ongoing dialogue between these two architectural paradigms.
+
+Despite these advancements, challenges remain in balancing the expressive power of full self-attention mechanisms with the computational efficiency required for practical applications. The exploration of alternative designs, such as the PoolFormer \cite{PoolFormer}, which replaces self-attention with pooling operations, highlights the ongoing quest for efficient architectures that maintain high performance without the overhead of traditional attention mechanisms.
+
+In conclusion, the rise of Vision Transformers has not only redefined the capabilities of models in visual recognition tasks but has also sparked a rich dialogue on architectural efficiency, data efficiency, and the integration of self-supervised learning strategies. Future research directions may focus on further refining these architectures to enhance their scalability and applicability across diverse visual domains while addressing the unresolved tensions between model complexity and computational efficiency.
+
+``\texttt{
+\subsection{Objectives and Scope of the Review}
+\label{sec:1\_2\_objectives\_\_and\_\_scope\_of\_the\_review}
+
+The primary objective of this literature review is to synthesize existing research on Visual Transformers (ViTs), a novel architecture that has significantly transformed the landscape of computer vision. The review aims to highlight key themes, such as foundational architectures, training optimizations, and recent advancements in hybrid models, while also exploring practical applications across various domains, including image classification, object detection, and segmentation. By clarifying these objectives, this subsection sets expectations for the reader and underscores the importance of understanding the evolution and impact of Visual Transformers in contemporary computer vision.
+
+The journey of Visual Transformers began with the seminal work by Dosovitskiy et al. in 2020, which introduced the Vision Transformer (ViT) framework. This paper demonstrated the feasibility of applying the Transformer architecture to image patches, achieving competitive results on large datasets, albeit with a significant requirement for data, which limited its practical applicability \cite{zheng202325h}. In response, Touvron et al. proposed the Data-efficient Image Transformers (DeiT) in 2021, which introduced knowledge distillation from Convolutional Neural Networks (CNNs) to mitigate the data hunger of ViTs, making them more accessible for researchers with limited datasets \cite{hatamizadeh2024xr6}. This foundational work laid the groundwork for subsequent advancements in the field.
+
+Following the establishment of these foundational architectures, a wave of architectural innovations emerged, focusing on enhancing ViTs to address their limitations and broaden their applicability. For instance, Liu et al. introduced the Swin Transformer, which employs hierarchical feature maps and localized attention mechanisms to capture multi-scale information effectively \cite{hong2022ks6}. Similarly, the Pyramid Vision Transformer (PVT) presented a versatile backbone for dense prediction tasks without relying on convolutions, thus expanding the utility of ViTs in various vision tasks \cite{li2022a4u}. Other notable contributions, such as CoaT and CvT, explored hybrid architectures that integrated convolutional inductive biases, thereby combining the strengths of CNNs and Transformers \cite{deng2021man}. These innovations illustrate a trend toward creating more efficient and versatile models capable of handling diverse vision tasks.
+
+In parallel, advancements in self-supervised learning and large-scale training strategies have significantly impacted the performance of ViTs. The introduction of Masked Autoencoders (MAE) and DINO showcased the potential of self-supervised learning to extract meaningful visual representations without extensive labeled data \cite{song202479c}. These methods have enabled the training of larger models, such as SwinV2 and ViT-H, which push the boundaries of model capacity and input resolution, demonstrating that scaling can lead to state-of-the-art performance \cite{xia2022dnj}.
+
+Despite these advancements, several unresolved issues persist in the literature. The increasing architectural complexity raises questions about the optimal balance between pure Transformer designs and the integration of convolutional priors. Furthermore, while self-supervised methods have shown promise, the computational cost associated with training large models remains a significant barrier, particularly in resource-constrained environments \cite{wang202338i}. 
+
+In conclusion, this review aims to provide a comprehensive overview of the evolution of Visual Transformers, highlighting the critical advancements and ongoing challenges within the field. Future research directions may focus on optimizing the balance between model complexity and performance, as well as developing more efficient training strategies that reduce the reliance on large datasets.
+}``
+
+
+\label{sec:foundational_concepts}
+
+\section{Foundational Concepts}
+\label{sec:foundational\_concepts}
+
+\subsection{The Transformer Architecture}
+\label{sec:2\_1\_the\_transformer\_architecture}
+
+The Transformer architecture has revolutionized the field of machine learning, particularly in natural language processing and, more recently, in computer vision. At its core, the Transformer employs self-attention mechanisms that enable the model to weigh the importance of different parts of the input data, facilitating the capture of long-range dependencies crucial for understanding complex patterns in visual data.
+
+The foundational work by \cite{liu2021ljs} introduced the Vision Transformer (ViT), which applies a standard Transformer architecture to image patches. By treating images as sequences of tokens, ViT demonstrated the potential of self-attention for image classification tasks. However, this initial model faced significant limitations, particularly its high data requirements for effective training. To address this, \cite{touvron2021training} proposed the Data-efficient Image Transformer (DeiT), which introduced a distillation strategy to enhance training efficiency, allowing the model to achieve competitive performance even with smaller datasets.
+
+Building on the groundwork laid by these early models, subsequent research has focused on optimizing the architecture for better scalability and performance in dense prediction tasks. The Swin Transformer \cite{liu2021ljs} introduced a hierarchical design that utilizes shifted windows to limit self-attention computations to local contexts while enabling cross-window connections. This innovation not only reduced computational complexity but also improved the model's adaptability to various vision tasks, including object detection and segmentation. Similarly, the Pyramid Vision Transformer (PVT) \cite{wang2021pyramid} proposed a multi-scale feature representation approach, further enhancing the model's efficiency and suitability for dense prediction tasks.
+
+Recent advancements have also explored self-supervised learning strategies that leverage the Transformer architecture without extensive labeled datasets. The Masked Autoencoders (MAE) \cite{he2022masked} introduced a scalable pre-training method that masks a significant portion of image patches and trains the model to reconstruct the missing information, demonstrating impressive performance while reducing dependency on labeled data. In parallel, \cite{caron2021emerging} explored a self-distillation approach (DINO) that enables the model to learn powerful semantic features without explicit supervision, showcasing the versatility of Transformers in learning rich visual representations.
+
+Moreover, the integration of convolutional layers with attention mechanisms has emerged as a promising direction for enhancing the efficiency of Transformer models. The Co-scale Conv-Attentional Image Transformers (CoaT) \cite{dai2021coat} and Global Filter Networks (GFNet) \cite{zhang2022global} propose hybrid architectures that combine the strengths of convolutional networks and self-attention, addressing the computational demands of pure attention mechanisms while retaining the ability to model long-range dependencies.
+
+In summary, while significant advancements have been made in refining the Transformer architecture for visual tasks, challenges remain regarding computational efficiency, data efficiency, and the balance between global context and local feature extraction. Future research directions may focus on further optimizing attention mechanisms and exploring novel hybrid architectures that can leverage the strengths of both Transformers and convolutional networks.
+``\texttt{
+\subsection{Positional Encoding and Tokenization}
+\label{sec:2\_2\_positional\_encoding\_\_and\_\_tokenization}
+
+In the realm of Vision Transformers (ViTs), the processes of tokenization and positional encoding are pivotal for translating visual data into a format amenable to Transformer architectures. Unlike traditional convolutional neural networks (CNNs) that inherently capture spatial hierarchies through convolutional layers, ViTs necessitate a distinct approach to manage the spatial relationships inherent in images. This subsection delves into how images are segmented into patches, represented as sequences of tokens, and how positional encoding is employed to preserve spatial information, ultimately enabling the model to comprehend the arrangement of visual elements.
+
+The foundational work by Dosovitskiy et al. in \cite{zheng202325h} introduced the concept of treating images as sequences of flattened patches, akin to words in natural language processing. This innovative methodology allows for the direct application of Transformer architectures to image classification tasks, achieving competitive results when trained on large datasets. However, this approach also revealed a significant limitation: the lack of inductive biases that CNNs naturally possess, leading to high data requirements and challenges in dense prediction tasks.
+
+To address the data inefficiency highlighted in \cite{zheng202325h}, Touvron et al. in \cite{hatamizadeh2024xr6} proposed a data-efficient training strategy through knowledge distillation from a CNN teacher. This method not only improved the accessibility of ViTs but also underscored the importance of effective tokenization and positional encoding in leveraging the spatial context of images. The introduction of a teacher-student framework facilitated the transfer of knowledge, allowing the ViT to learn from the spatial hierarchies captured by CNNs, thereby enhancing its performance on tasks requiring an understanding of spatial relationships.
+
+Subsequent innovations, such as the Swin Transformer \cite{hong2022ks6}, further refined the tokenization process by introducing hierarchical feature maps and localized attention mechanisms. By employing shifted windows, the Swin Transformer captures multi-scale information, which is crucial for tasks like object detection and segmentation. This adaptation illustrates a significant evolution in how positional encoding is utilized, as it enables the model to better understand spatial dependencies across different scales, thereby addressing the limitations of earlier architectures.
+
+Moreover, the integration of convolutional inductive biases into ViTs has been explored in various works, including \cite{li2022a4u} and \cite{song202479c}, which highlight the necessity of combining local feature extraction capabilities with global reasoning. These hybrid approaches underscore the critical role of positional encoding in maintaining spatial coherence while allowing for the flexibility of attention mechanisms. The advancements in tokenization and positional encoding have thus become central to enhancing the discriminative power of ViTs, particularly in applications involving high-resolution images, such as remote sensing.
+
+Despite these advancements, challenges remain. The reliance on extensive pre-training data and the computational cost associated with training large models continue to pose barriers to the widespread adoption of ViTs in practical applications. Future research directions could focus on developing more efficient training methodologies that minimize data requirements while maximizing the model's ability to retain spatial information through innovative tokenization and positional encoding strategies.
+
+In conclusion, the evolution of positional encoding and tokenization in Vision Transformers reflects a critical adaptation of Transformer principles to visual data. As the field progresses, addressing the unresolved issues surrounding data efficiency and computational demands will be essential for unlocking the full potential of ViTs in diverse vision tasks.
+}``
+
+
+\label{sec:core_methods_and_early_breakthroughs}
+
+\section{Core Methods and Early Breakthroughs}
+\label{sec:core\_methods\_\_and\_\_early\_breakthroughs}
+
+\subsection{Foundational Architectures}
+\label{sec:3\_1\_foundational\_architectures}
+
+The advent of Vision Transformers (ViTs) has marked a significant shift in the landscape of computer vision, demonstrating the potential of Transformer architectures for visual tasks. This subsection reviews foundational architectures that have established the viability of Transformers in vision, focusing on the original Vision Transformer (ViT) and its adaptations, including the Data-efficient Image Transformer (DeiT) and Tokens-to-Token ViT (T2T-ViT). These works collectively address critical challenges such as data efficiency, computational complexity, and the need for hierarchical feature representation.
+
+The original Vision Transformer, introduced by Dosovitskiy et al. in 2020, presented a novel approach by treating images as sequences of patches, which are then processed by a standard Transformer architecture \cite{vit}. This method showcased the ability of Transformers to achieve competitive performance on image classification tasks when trained on large datasets, effectively demonstrating the potential of a pure Transformer approach in vision. However, the significant data requirements posed a practical limitation, as the model's performance heavily relied on extensive pre-training datasets.
+
+To mitigate the data hunger of ViT, Touvron et al. proposed the Data-efficient Image Transformer (DeiT) in 2021, introducing a training strategy based on knowledge distillation from a Convolutional Neural Network (CNN) teacher \cite{deit}. This approach allowed DeiT to achieve competitive results even with smaller datasets, significantly enhancing the accessibility of ViTs for researchers lacking large-scale data. By addressing the data efficiency issue, DeiT set a precedent for subsequent adaptations that sought to further optimize the training of Vision Transformers.
+
+Following this, the Tokens-to-Token ViT (T2T-ViT) was introduced by Yuan et al. in 2021, refining the tokenization process to better capture local image structures \cite{t2t-vit}. This model aimed to reduce the sequence length while preserving essential local information, effectively addressing one of the core limitations of the original ViT. By improving the initial tokenization, T2T-ViT enhanced the model's ability to represent hierarchical features, which is crucial for various vision tasks.
+
+In parallel, Cai et al. presented the Class-Aware Image Transformer (CaiT), which introduced innovations such as LayerScale and class-attention layers, enabling the training of deeper models \cite{cait}. This work further improved the stability and performance of ViTs, demonstrating that architectural enhancements could complement training optimizations to yield better results. The combination of these approaches illustrates a trend in the literature toward refining both the architecture and training methodologies of Vision Transformers to address their inherent limitations.
+
+Despite these advancements, a common critique across these foundational works is the computational complexity associated with the global attention mechanism employed in Transformers. While DeiT and T2T-ViT made strides in data efficiency, they did not fundamentally alter the computational demands of the attention mechanism. This ongoing challenge has prompted further exploration into architectural innovations aimed at enhancing efficiency and scalability, as seen in subsequent works that introduce hierarchical designs and localized attention mechanisms.
+
+In conclusion, the foundational architectures of Vision Transformers have laid the groundwork for a transformative approach to visual tasks, addressing significant challenges related to data efficiency and computational complexity. Future research directions may focus on further optimizing these architectures for practical deployment, exploring hybrid designs that integrate convolutional inductive biases, and leveraging self-supervised learning techniques to reduce reliance on large annotated datasets. The evolution from the original ViT to its adaptations highlights a vibrant research landscape that continues to push the boundaries of what is possible in computer vision.
+``\texttt{
+\subsection{Training Optimizations and Data Efficiency}
+\label{sec:3\_2\_training\_optimizations\_\_and\_\_data\_efficiency}
+
+The deployment of Vision Transformers (ViTs) has been significantly influenced by the need for training optimizations that enhance their performance while reducing reliance on large labeled datasets. This subsection explores key advancements such as knowledge distillation and self-supervised learning methods, which have emerged as vital strategies in making ViTs more accessible for a variety of applications.
+
+The foundational work by \cite{ViT} introduced the Vision Transformer architecture, demonstrating the potential of applying self-attention mechanisms to image patches. However, this approach revealed a critical limitation: a heavy dependence on vast amounts of labeled data for effective training. Addressing this challenge, \cite{DeiT} proposed a novel training method that incorporates knowledge distillation through attention, enabling ViTs to achieve competitive performance with significantly less training data. This method not only alleviates the data-hungry nature of ViTs but also enhances their generalization capabilities, making them more practical for real-world applications where labeled data may be scarce.
+
+Further advancements in the realm of data efficiency are exemplified by the work of \cite{DINO}, which explored self-supervised learning techniques. By leveraging the emerging properties of ViTs, this study demonstrated that these models could learn robust feature representations without the need for extensive labeled datasets. The introduction of self-supervised learning paradigms, particularly through the use of masked autoencoders, has shown promise in reducing the annotation burden while still enabling the model to capture essential visual features. This approach is particularly relevant in scenarios where data labeling is costly or impractical, thus broadening the applicability of ViTs across various domains.
+
+In addition to these training innovations, the architectural enhancements proposed in \cite{Swin} and \cite{PVT} have played a crucial role in improving the efficiency of ViTs. The Swin Transformer introduced a hierarchical design with shifted windows, allowing for multi-scale feature extraction while maintaining computational efficiency. This design not only addresses the fixed-resolution input limitation of earlier ViTs but also enhances their performance in dense prediction tasks. Similarly, the Pyramid Vision Transformer (PVT) proposed a pyramid structure that effectively generates multi-scale features without convolutions, further optimizing the training process and making ViTs more versatile.
+
+Moreover, the integration of convolutional structures into the ViT framework, as seen in \cite{LeViT}, has demonstrated that combining the strengths of both CNNs and Transformers can lead to significant improvements in inference speed and overall performance. By incorporating convolution-like features into the Transformer architecture, this work effectively bridges the gap between traditional CNNs and modern Transformers, showcasing a hybrid approach that capitalizes on the strengths of both paradigms.
+
+Despite these advancements, challenges remain in the quest for optimal data efficiency and training effectiveness. While knowledge distillation and self-supervised learning have made strides in reducing the reliance on labeled datasets, the inherent complexity and computational demands of ViTs continue to pose barriers to widespread adoption. Future research directions may focus on further refining these training methodologies, exploring novel architectures that balance the need for data efficiency with the computational overhead associated with Transformer models.
+
+In conclusion, the evolution of training optimizations and data efficiency strategies for Vision Transformers highlights a critical intersection between architectural innovation and practical applicability. As the field progresses, continued exploration of self-supervised learning, efficient training paradigms, and hybrid architectures will be essential in addressing existing limitations and expanding the utility of ViTs across diverse applications.
+}``
+
+
+\label{sec:architectural_innovations_and_advanced_methods}
+
+\section{Architectural Innovations and Advanced Methods}
+\label{sec:architectural\_innovations\_\_and\_\_advanced\_methods}
+
+\subsection{Hierarchical and Multi-Scale Architectures}
+\label{sec:4\_1\_hierarchical\_\_and\_\_multi-scale\_architectures}
+
+The emergence of Vision Transformers (ViTs) has revolutionized computer vision, yet their application in dense prediction tasks has been hindered by challenges in computational efficiency and the ability to capture multi-scale features. Traditional ViTs often struggle with high computational costs and inadequate feature representation at varying scales, making them less suitable for tasks that require dense predictions, such as segmentation. This subsection reviews two significant advancements in hierarchical and multi-scale architectures: the Swin Transformer and the Pyramid Vision Transformer (PVT), highlighting their contributions to overcoming the limitations of conventional ViTs.
+
+The Swin Transformer introduces a hierarchical structure combined with a novel shifted window attention mechanism, which effectively reduces the computational complexity to linear scale with respect to the input size. This architecture allows for the extraction of multi-scale features by progressively merging patches, facilitating the capture of both local and global context in images. The shifted window approach enables the model to maintain high-resolution representations while significantly lowering the computational burden, making it a versatile backbone for various vision tasks, including object detection and segmentation \cite{swin}. The Swin Transformer's ability to adaptively learn from different scales addresses the limitations of traditional ViTs, which often rely on fixed-size patches that may overlook critical contextual information.
+
+Building on the need for efficient multi-scale feature extraction, the Pyramid Vision Transformer (PVT) presents a pyramid-like structure that generates multi-scale features without the use of convolutions. PVT employs a series of down-sampling layers that progressively reduce the spatial dimensions while increasing the feature depth, allowing the model to capture rich contextual information at multiple scales \cite{PVT}. This architecture is particularly adept at replacing convolutional neural networks (CNNs) in dense prediction tasks, as it retains the ability to model long-range dependencies while being computationally efficient. The PVT's design addresses the challenge of integrating multi-scale information, which is crucial for tasks such as semantic segmentation, where understanding both fine details and broader context is essential.
+
+Further advancements in hierarchical architectures are evident in works that leverage the strengths of both CNNs and ViTs. For instance, the Swin Unet3D model exemplifies this hybrid approach by integrating 3D convolutional blocks with Swin Transformer blocks in a parallel architecture, allowing for simultaneous learning of global and local features in 3D medical images \cite{cai2023hji}. This model effectively mitigates the limitations of pure CNNs, which struggle with long-range dependencies, and pure ViTs, which may not capture local details effectively. The parallel integration of these two architectures enhances performance in challenging tasks like brain tumor segmentation, demonstrating the potential of hybrid models in addressing the limitations of traditional architectures.
+
+Despite these advancements, unresolved issues remain in the pursuit of optimal performance and efficiency in Vision Transformers. Future research directions may focus on refining the balance between model complexity and accuracy, particularly in resource-constrained environments. Additionally, exploring novel training paradigms and quantization techniques could further enhance the practicality of hierarchical and multi-scale architectures in real-world applications. The ongoing evolution of Vision Transformers reflects a dynamic interplay between architectural innovation and the demands of diverse vision tasks, paving the way for more robust and efficient models in the future.
+``\texttt{
+\subsection{Attention Mechanisms and Efficiency Improvements}
+\label{sec:4\_2\_attention\_mechanisms\_\_and\_\_efficiency\_improvements}
+
+The advent of Vision Transformers (ViTs) has revolutionized image processing tasks, primarily through their innovative attention mechanisms. However, the computational overhead associated with these models has raised concerns regarding their efficiency, particularly in real-world applications. This subsection delves into recent advancements in attention mechanisms and efficiency improvements within ViTs, focusing on local-global attention strategies and alternative token mixers, including pooling-based approaches.
+
+The foundational work by \cite{ViT} introduced the Vision Transformer architecture, demonstrating its capability to outperform conventional convolutional neural networks (CNNs) in image classification. Nevertheless, the model's reliance on extensive datasets and high computational costs posed significant barriers to its practical deployment. Addressing these limitations, \cite{DeiT} proposed a data-efficient training strategy that incorporated knowledge distillation, enabling ViTs to achieve competitive performance on smaller datasets. This work marked a critical step in enhancing the accessibility and usability of ViTs in various applications.
+
+Further refinements were made by \cite{CaiT}, who introduced architectural modifications such as Class-Attention and LayerScale, which improved the stability of deeper ViTs. These enhancements allowed for better gradient flow and reduced the risk of overfitting, thereby making the training process more efficient. Additionally, \cite{T2T-ViT} innovated the tokenization process by progressively structuring local tokens, which facilitated the learning of local features and enabled training from scratch on ImageNet. This approach not only improved local feature extraction but also contributed to reducing the computational burden associated with the initial tokenization phase.
+
+In parallel, the development of hierarchical and multi-scale vision backbones has further optimized ViTs for diverse vision tasks. The Swin Transformer \cite{Swin} introduced a hierarchical architecture with shifted windows, significantly reducing computational costs while achieving state-of-the-art results across various dense prediction tasks. This local-global attention mechanism allowed the model to capture both fine-grained details and broader contextual information, effectively addressing the limitations of earlier ViT models. Similarly, the Pyramid Vision Transformer (PVT) \cite{PVT} utilized a hierarchical structure to generate multi-scale feature maps, demonstrating the versatility of Transformers in dense prediction scenarios without relying on convolutions.
+
+The exploration of hybrid models has also contributed to improving the efficiency of ViTs. For instance, \cite{CoaT} proposed a co-scale architecture that combined convolutions with attention mechanisms, effectively merging the strengths of CNNs and Transformers. This integration allowed for improved local feature extraction while maintaining the global reasoning capabilities of Transformers. Concurrently, self-supervised learning approaches, such as those introduced in \cite{MAE} and \cite{DINO}, have sought to mitigate the reliance on large labeled datasets by leveraging unsupervised pre-training techniques. The Masked Autoencoder (MAE) framework, for example, demonstrated significant scalability and efficiency in training ViTs, while DINO explored knowledge distillation for self-supervised learning, revealing emergent properties that enhance ViT performance.
+
+Despite these advancements, challenges remain in balancing the efficiency of attention mechanisms with the need for robust feature representation. The integration of attention mechanisms into existing CNN frameworks, as seen in the hybrid model ST-YOLOA \cite{zhao2023rle}, exemplifies ongoing efforts to optimize ViTs for specific applications, such as SAR ship detection. This model combines the global context modeling of the Swin Transformer with the efficiency of YOLO, showcasing the potential for hybrid architectures to address domain-specific challenges while improving accuracy and speed.
+
+In conclusion, while significant strides have been made in enhancing the efficiency of Vision Transformers through innovative attention mechanisms and hybrid approaches, further exploration is needed to fully realize their potential in practical applications. Future research should continue to focus on optimizing the balance between computational efficiency and model performance, particularly in complex real-world scenarios where both speed and accuracy are paramount.
+}``
+
+
+\label{sec:applications_of_vision_transformers}
+
+\section{Applications of Vision Transformers}
+\label{sec:applications\_of\_vision\_transformers}
+
+\subsection{Image Classification and Object Detection}
+\label{sec:5\_1\_image\_classification\_\_and\_\_object\_detection}
+
+The advent of Vision Transformers (ViTs) has significantly transformed image classification and object detection tasks, showcasing competitive performance against traditional Convolutional Neural Networks (CNNs). ViTs leverage self-attention mechanisms to capture long-range dependencies and global context, which are crucial for understanding complex visual data. This subsection reviews the evolution of ViT applications in these foundational computer vision tasks, highlighting key methodologies and advancements.
+
+The foundational work by Dosovitskiy et al. introduced the Vision Transformer (ViT), demonstrating that a pure transformer architecture can achieve state-of-the-art results on image classification tasks when trained on large datasets \cite{ViT}. Following this, the Data-efficient Image Transformer (DeiT) improved the data efficiency of ViTs through knowledge distillation, allowing smaller datasets to yield competitive results \cite{DeiT}. This work addressed the initial limitation of ViTs, which required vast amounts of labeled data for effective training, thereby making them more accessible for practical applications.
+
+In the realm of self-supervised learning, several studies have further enhanced ViTs' capabilities. For instance, the Masked Autoencoders (MAE) approach introduced a scalable pre-training method that allowed ViTs to learn from unlabelled data, significantly reducing their dependency on large labeled datasets \cite{MAE}. Similarly, BEiT leveraged a BERT-like pre-training strategy for images, demonstrating that ViTs could effectively learn representations without extensive labeled data \cite{BEiT}. These advancements collectively address the data-hungry nature of ViTs, enabling them to be applied in various domains, including medical imaging and agricultural pest identification.
+
+The integration of ViTs into object detection frameworks has also seen significant progress. The Swin Transformer introduced a hierarchical design that allows for efficient multi-scale feature extraction, making it particularly effective for dense prediction tasks such as segmentation and detection \cite{Swin}. This hierarchical approach not only improved computational efficiency but also enhanced the model's ability to capture both local and global features, which are essential for accurate object detection. Following this, the Pyramid Vision Transformer (PVT) further optimized dense prediction without convolutions, demonstrating that ViTs could serve as versatile backbones for various vision tasks \cite{PVT}.
+
+Moreover, the introduction of hybrid architectures has led to innovative solutions that combine the strengths of CNNs and ViTs. For example, MobileViT integrates convolutional layers with transformer blocks, achieving a lightweight model suitable for mobile applications while maintaining high performance \cite{MobileViT}. This hybrid approach addresses the limitations of traditional ViTs, which are often computationally intensive and less suited for resource-constrained environments.
+
+Despite these advancements, challenges remain in the application of ViTs for image classification and object detection. The computational cost associated with self-attention mechanisms, particularly in high-resolution inputs, continues to be a significant barrier \cite{DINO}. Additionally, while hybrid models like MobileViT show promise, they often reintroduce inductive biases similar to CNNs, potentially sacrificing some of the unique advantages of pure transformer architectures.
+
+In conclusion, the evolution of Vision Transformers has significantly impacted image classification and object detection, with ongoing research focused on enhancing their efficiency and applicability across various domains. Future directions may involve further exploration of hybrid architectures that balance the strengths of CNNs and transformers, as well as continued advancements in self-supervised learning techniques to reduce data dependency. The integration of ViTs into real-world applications, particularly in fields like medical imaging and agriculture, presents a promising avenue for future research and development.
+``\texttt{
+\subsection{Medical Imaging and Specialized Applications}
+\label{sec:5\_2\_medical\_imaging\_\_and\_\_specialized\_applications}
+
+The application of Vision Transformers (ViTs) in medical imaging has garnered significant attention due to their ability to capture complex patterns and contextual information within medical data. This subsection explores the use of ViTs in specialized tasks such as tumor segmentation, disease classification, and the analysis of medical scans, highlighting their advantages over traditional convolutional neural networks (CNNs).
+
+Foundational works such as \cite{ViT} introduced the concept of applying transformers to image patches, demonstrating that a pure transformer could achieve competitive performance in image classification. However, this initial approach was limited by its requirement for large datasets. To address this, \cite{DeiT} proposed a data-efficient training strategy that incorporated knowledge distillation, allowing ViTs to perform well even with smaller datasets. This foundational work set the stage for subsequent innovations in the field.
+
+Architectural advancements further enhanced the applicability of ViTs in medical imaging. For instance, \cite{Swin} introduced the Swin Transformer, which employs a hierarchical structure with shifted windows, enabling local attention and efficient computation. This architecture proved particularly effective for dense prediction tasks, such as tumor segmentation in medical scans. Similarly, \cite{PVT} presented the Pyramid Vision Transformer, which generates multi-scale feature maps essential for tasks like object detection and segmentation, addressing the limitations of the original ViT in handling high-resolution images.
+
+The integration of self-supervised learning (SSL) techniques has also played a crucial role in the advancement of ViTs for medical applications. The work by \cite{MAE} introduced a masked autoencoder approach, allowing ViTs to learn robust representations from unlabeled data. This method is particularly valuable in medical imaging, where annotated datasets are often scarce. Furthermore, \cite{DINO} demonstrated that ViTs could learn meaningful features through self-distillation, further reducing the dependency on labeled data.
+
+Recent studies have begun to explore the practical applications of ViTs in medical imaging. For example, \cite{fan2022m88} proposed the SUNet model, which utilizes the Swin Transformer for image denoising, achieving state-of-the-art performance in high-level vision tasks. Similarly, \cite{xing2022kqr} developed the RSTCANet, a Swin Transformer-based network for image demosaicing, which outperformed existing methods with a smaller parameter count. These advancements illustrate the potential of ViTs to surpass traditional CNNs in various medical imaging tasks.
+
+Despite these advancements, challenges remain. The computational complexity of ViTs, particularly in high-resolution image processing, continues to be a concern. Additionally, while self-supervised learning has reduced the reliance on labeled datasets, the effectiveness of these methods can vary across different medical imaging tasks. Future research should focus on enhancing the generalizability of ViTs across diverse medical datasets and exploring hybrid architectures that combine the strengths of CNNs and transformers to further improve diagnostic accuracy.
+
+In conclusion, the application of Vision Transformers in medical imaging represents a promising frontier, with significant advancements in architecture and training strategies. As the field continues to evolve, addressing the remaining challenges will be crucial for realizing the full potential of ViTs in revolutionizing medical diagnostics and treatment planning.
+}``
+
+
+\label{sec:future_directions_and_challenges}
+
+\section{Future Directions and Challenges}
+\label{sec:future\_directions\_\_and\_\_challenges}
+
+\subsection{Emerging Trends in Multi-Modal Learning}
+\label{sec:6\_1\_emerging\_trends\_in\_multi-modal\_learning}
+
+Recent advancements in multi-modal learning have highlighted the potential of integrating Vision Transformers (ViTs) with various data modalities, such as text and audio, to enhance performance in diverse artificial intelligence applications. This subsection explores the emerging trends in this area, focusing on how the strengths of ViTs in visual understanding can be leveraged alongside contextual information from other modalities.
+
+The foundational work by \cite{Dosovitskiy2020} demonstrated that applying a standard Transformer architecture directly to image patches could yield state-of-the-art results in image classification, albeit with a significant requirement for large datasets. Subsequent efforts, such as \cite{Touvron2021}, introduced the Data-efficient Image Transformer (DeiT), which mitigated the data dependency of ViTs through a novel distillation token, enabling effective training on smaller datasets. This work laid the groundwork for exploring multi-modal learning, as it established a more accessible framework for utilizing ViTs in various contexts.
+
+Building on these foundational advancements, the introduction of hierarchical architectures, such as the Swin Transformer \cite{Liu2021}, marked a significant progression. The Swin Transformer employs a shifted window mechanism, allowing for linear computational complexity and multi-scale feature representation, which are crucial for tasks that require a nuanced understanding of visual data. This hierarchical approach has been pivotal in addressing the limitations of ViTs in dense prediction tasks, thus facilitating their integration with other modalities. For instance, the Cross-modal Swin Transformer \cite{li20233lv} demonstrated the efficacy of incorporating cross-modal attention mechanisms for semantic segmentation tasks in medical imaging, effectively combining information from PET and CT scans to improve tumor delineation.
+
+Moreover, the exploration of hybrid architectures has further enriched the multi-modal learning landscape. The work by \cite{CoaT} and \cite{CvT} illustrates how integrating convolutional layers with attention mechanisms can enhance the efficiency of ViTs, making them more suitable for real-time applications. These hybrid models not only leverage the strengths of both CNNs and Transformers but also pave the way for more robust multi-modal frameworks. For example, the lightweight Vision Transformer with Cross Feature Attention \cite{zhao2022koc} effectively combines local and global representations, demonstrating how hybrid models can outperform traditional architectures across various tasks.
+
+Despite these advancements, challenges remain in optimizing the integration of multi-modal data. The reliance on complex architectures can lead to increased computational costs, as seen in the hierarchical models that often introduce significant architectural complexities. The work by \cite{ryali202339q} emphasizes the need for simpler designs that maintain performance while reducing computational overhead, advocating for a more streamlined approach in future multi-modal learning frameworks.
+
+In conclusion, the integration of Vision Transformers with other modalities presents a promising avenue for advancing artificial intelligence applications. However, ongoing research must address the balance between architectural complexity and computational efficiency, as well as the effective extraction of complementary information from diverse data sources. Future directions may include the development of more generalized frameworks that can seamlessly adapt to various multi-modal tasks while maintaining high performance and efficiency.
+``\texttt{
+\subsection{Challenges and Ethical Considerations}
+\label{sec:6\_2\_challenges\_\_and\_\_ethical\_considerations}
+
+The deployment of Vision Transformers (ViTs) in real-world applications is accompanied by significant challenges and ethical considerations that must be addressed to ensure responsible and equitable usage. This subsection explores the environmental impact of training large models, the necessity for efficient resource utilization, and the potential biases inherent in training data.
+
+One of the primary challenges associated with Vision Transformers is their substantial environmental footprint, particularly during the training phase. The foundational work by Dosovitskiy et al. in \cite{ViT} established the effectiveness of ViTs but also highlighted the extensive computational resources required for training on large datasets. This raises concerns regarding the carbon emissions associated with such resource-intensive processes. Subsequent studies, such as \cite{DeiT}, have attempted to mitigate these issues by introducing data-efficient training strategies, yet the reliance on large-scale pre-trained models persists, contributing to the environmental burden.
+
+Moreover, the need for efficient resource utilization is underscored by the work of Borhani et al. \cite{borhani2022w8x}, which focuses on developing lightweight ViT architectures for real-time plant disease classification. While this approach addresses the computational demands of traditional ViTs, it also raises questions about the trade-offs between model complexity and performance. The lightweight designs, while beneficial for practical applications in resource-constrained environments, may sacrifice some generalizability and robustness, as seen in their evaluation on datasets with simplified backgrounds. This limitation suggests a need for further research to enhance the adaptability of lightweight models to complex, real-world scenarios.
+
+In addition to environmental and resource-related challenges, the potential biases in training data pose significant ethical concerns. The reliance on datasets like Plant Village, which may not accurately represent diverse agricultural conditions, can lead to biased model predictions that adversely affect certain communities. As highlighted in the analysis of Borhani et al. \cite{borhani2022w8x}, the simplifications in dataset backgrounds may not reflect the complexities of actual field conditions, thereby limiting the applicability of their models. This raises critical questions about fairness and equity in AI applications, particularly in domains like agriculture where the stakes are high.
+
+Furthermore, the work of Tabbakh et al. \cite{tabbakh2023ao7} emphasizes the importance of feature extraction in plant disease classification but also reflects the ongoing challenge of ensuring that models trained on specific datasets can generalize effectively to new, unseen data. The potential for overfitting to particular datasets can exacerbate biases and limit the broader applicability of these models. 
+
+In conclusion, while the advancements in Vision Transformers present exciting opportunities for various applications, they also bring forth significant challenges and ethical considerations that must be addressed. The environmental impact of training large models, the need for efficient resource utilization, and the potential biases in training data are critical issues that require ongoing research and dialogue. Future work should focus on developing more sustainable training practices, enhancing the generalizability of lightweight models, and ensuring that datasets used for training are representative of the diverse conditions in which these models will be deployed. By fostering a critical dialogue around these challenges, the AI community can work towards ensuring that Vision Transformers contribute positively to society without exacerbating existing inequalities.
+}``
+
+
+\label{sec:conclusion}
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+
+
+\newpage
+\section*{References}
+\addcontentsline{toc}{section}{References}
+
+\begin{thebibliography}{367}
+
+\bibitem{liu2021ljs}
+Ze Liu, Yutong Lin, Yue Cao, et al. (2021). \textit{Swin Transformer: Hierarchical Vision Transformer using Shifted Windows}. IEEE International Conference on Computer Vision.
+
+\bibitem{liang2021v6x}
+Jingyun Liang, Jie Cao, Guolei Sun, et al. (2021). \textit{SwinIR: Image Restoration Using Swin Transformer}. 2021 IEEE/CVF International Conference on Computer Vision Workshops (ICCVW).
+
+\bibitem{han2020yk0}
+Kai Han, Yunhe Wang, Hanting Chen, et al. (2020). \textit{A Survey on Vision Transformer}. IEEE Transactions on Pattern Analysis and Machine Intelligence.
+
+\bibitem{chen2021r2y}
+Chun-Fu Chen, Quanfu Fan, and Rameswar Panda (2021). \textit{CrossViT: Cross-Attention Multi-Scale Vision Transformer for Image Classification}. IEEE International Conference on Computer Vision.
+
+\bibitem{mehta20216ad}
+Sachin Mehta, and Mohammad Rastegari (2021). \textit{MobileViT: Light-weight, General-purpose, and Mobile-friendly Vision Transformer}. International Conference on Learning Representations.
+
+\bibitem{li2022raj}
+Yanghao Li, Hanzi Mao, Ross B. Girshick, et al. (2022). \textit{Exploring Plain Vision Transformer Backbones for Object Detection}. European Conference on Computer Vision.
+
+\bibitem{chen2022woa}
+Shoufa Chen, Chongjian Ge, Zhan Tong, et al. (2022). \textit{AdaptFormer: Adapting Vision Transformers for Scalable Visual Recognition}. Neural Information Processing Systems.
+
+\bibitem{xia2022qga}
+Zhuofan Xia, Xuran Pan, S. Song, et al. (2022). \textit{Vision Transformer with Deformable Attention}. Computer Vision and Pattern Recognition.
+
+\bibitem{zhou202105h}
+Daquan Zhou, Bingyi Kang, Xiaojie Jin, et al. (2021). \textit{DeepViT: Towards Deeper Vision Transformer}. arXiv.org.
+
+\bibitem{liu2021jpu}
+Nian Liu, Ni Zhang, Kaiyuan Wan, et al. (2021). \textit{Visual Saliency Transformer}. IEEE International Conference on Computer Vision.
+
+\bibitem{lee2021us0}
+Seung Hoon Lee, Seunghyun Lee, and B. Song (2021). \textit{Vision Transformer for Small-Size Datasets}. arXiv.org.
+
+\bibitem{zhang2021fje}
+Bo Zhang, Shuyang Gu, Bo Zhang, et al. (2021). \textit{StyleSwin: Transformer-based GAN for High-resolution Image Generation}. Computer Vision and Pattern Recognition.
+
+\bibitem{jiang2022zcn}
+Yun Jiang, Yuan Zhang, Xinyi Lin, et al. (2022). \textit{SwinBTS: A Method for 3D Multimodal Brain Tumor Segmentation Using Swin Transformer}. Brain Science.
+
+\bibitem{islam2022iss}
+Md. Nazmul Islam, Madina Hasan, Md. Kabir Hossain, et al. (2022). \textit{Vision transformer and explainable transfer learning models for auto detection of kidney cyst, stone and tumor from CT-radiography}. Scientific Reports.
+
+\bibitem{li2022a4u}
+Jiashi Li, Xin Xia, W. Li, et al. (2022). \textit{Next-ViT: Next Generation Vision Transformer for Efficient Deployment in Realistic Industrial Scenarios}. arXiv.org.
+
+\bibitem{yao202245i}
+Ting Yao, Yingwei Pan, Yehao Li, et al. (2022). \textit{Wave-ViT: Unifying Wavelet and Transformers for Visual Representation Learning}. European Conference on Computer Vision.
+
+\bibitem{borhani2022w8x}
+Y. Borhani, Javad Khoramdel, and E. Najafi (2022). \textit{A deep learning based approach for automated plant disease classification using vision transformer}. Scientific Reports.
+
+\bibitem{mao2021zr1}
+Xiaofeng Mao, Gege Qi, Yuefeng Chen, et al. (2021). \textit{Towards Robust Vision Transformer}. Computer Vision and Pattern Recognition.
+
+\bibitem{chen202174h}
+Junyu Chen, Yufan He, E. Frey, et al. (2021). \textit{ViT-V-Net: Vision Transformer for Unsupervised Volumetric Medical Image Registration}. arXiv.org.
+
+\bibitem{jie20220pc}
+Shibo Jie, and Zhi-Hong Deng (2022). \textit{Convolutional Bypasses Are Better Vision Transformer Adapters}. European Conference on Artificial Intelligence.
+
+\bibitem{fan2022m88}
+Chi-Mao Fan, Tsung-Jung Liu, and Kuan-Hsien Liu (2022). \textit{SUNet: Swin Transformer UNet for Image Denoising}. International Symposium on Circuits and Systems.
+
+\bibitem{lin20216a3}
+Hezheng Lin, Xingyi Cheng, Xiangyu Wu, et al. (2021). \textit{CAT: Cross Attention in Vision Transformer}. IEEE International Conference on Multimedia and Expo.
+
+\bibitem{lin2021utw}
+Yang Lin, Tianyu Zhang, Peiqin Sun, et al. (2021). \textit{FQ-ViT: Post-Training Quantization for Fully Quantized Vision Transformer}. International Joint Conference on Artificial Intelligence.
+
+\bibitem{li2022mco}
+Zhikai Li, and Qingyi Gu (2022). \textit{I-ViT: Integer-only Quantization for Efficient Vision Transformer Inference}. IEEE International Conference on Computer Vision.
+
+\bibitem{li2022tl7}
+Yanjing Li, Sheng Xu, Baochang Zhang, et al. (2022). \textit{Q-ViT: Accurate and Fully Quantized Low-bit Vision Transformer}. Neural Information Processing Systems.
+
+\bibitem{yang2021myb}
+Jinyu Yang, Jingjing Liu, N. Xu, et al. (2021). \textit{TVT: Transferable Vision Transformer for Unsupervised Domain Adaptation}. IEEE Workshop/Winter Conference on Applications of Computer Vision.
+
+\bibitem{yu2022iy0}
+Shixing Yu, Tianlong Chen, Jiayi Shen, et al. (2022). \textit{Unified Visual Transformer Compression}. International Conference on Learning Representations.
+
+\bibitem{zhuang2022qn7}
+Wanyi Zhuang, Qi Chu, Zhentao Tan, et al. (2022). \textit{UIA-ViT: Unsupervised Inconsistency-Aware Method based on Vision Transformer for Face Forgery Detection}. European Conference on Computer Vision.
+
+\bibitem{deng2021man}
+Peifang Deng, Kejie Xu, and Hong Huang (2021). \textit{When CNNs Meet Vision Transformer: A Joint Framework for Remote Sensing Scene Classification}. IEEE Geoscience and Remote Sensing Letters.
+
+\bibitem{wang2021oct}
+Jun Wang, Xiaohan Yu, and Yongsheng Gao (2021). \textit{Feature Fusion Vision Transformer for Fine-Grained Visual Categorization}. British Machine Vision Conference.
+
+\bibitem{wang2022ti0}
+Teng Wang, Lei Gong, Chao Wang, et al. (2022). \textit{ViA: A Novel Vision-Transformer Accelerator Based on FPGA}. IEEE Transactions on Computer-Aided Design of Integrated Circuits and Systems.
+
+\bibitem{li2022ow4}
+Xiang Li, Wenhai Wang, Lingfeng Yang, et al. (2022). \textit{Uniform Masking: Enabling MAE Pre-training for Pyramid-based Vision Transformers with Locality}. arXiv.org.
+
+\bibitem{wang2022da0}
+Guangting Wang, Yucheng Zhao, Chuanxin Tang, et al. (2022). \textit{When Shift Operation Meets Vision Transformer: An Extremely Simple Alternative to Attention Mechanism}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{deng2022bil}
+Jiajun Deng, Zhengyuan Yang, Daqing Liu, et al. (2022). \textit{TransVG++: End-to-End Visual Grounding With Language Conditioned Vision Transformer}. IEEE Transactions on Pattern Analysis and Machine Intelligence.
+
+\bibitem{yang20228mm}
+Shusheng Yang, Xinggang Wang, Yu Li, et al. (2022). \textit{Temporally Efficient Vision Transformer for Video Instance Segmentation}. Computer Vision and Pattern Recognition.
+
+\bibitem{gheflati202131i}
+Behnaz Gheflati, and H. Rivaz (2021). \textit{Vision Transformer for Classification of Breast Ultrasound Images}. arXiv.org.
+
+\bibitem{tang2022e2i}
+Xinyu Tang, Zengbing Xu, and Zhigang Wang (2022). \textit{A Novel Fault Diagnosis Method of Rolling Bearing Based on Integrated Vision Transformer Model}. Italian National Conference on Sensors.
+
+\bibitem{yu202236t}
+Xiaohan Yu, Jun Wang, Yang Zhao, et al. (2022). \textit{Mix-ViT: Mixing attentive vision transformer for ultra-fine-grained visual categorization}. Pattern Recognition.
+
+\bibitem{li2021ra5}
+Hanting Li, Ming-Fa Sui, Feng Zhao, et al. (2021). \textit{MViT: Mask Vision Transformer for Facial Expression Recognition in the wild}. arXiv.org.
+
+\bibitem{meng2022t3x}
+Xiaoliang Meng, Yuechi Yang, Libo Wang, et al. (2022). \textit{Class-Guided Swin Transformer for Semantic Segmentation of Remote Sensing Imagery}. IEEE Geoscience and Remote Sensing Letters.
+
+\bibitem{li20223n5}
+Z. Li, Mengshu Sun, Alec Lu, et al. (2022). \textit{Auto-ViT-Acc: An FPGA-Aware Automatic Acceleration Framework for Vision Transformer with Mixed-Scheme Quantization}. International Conference on Field-Programmable Logic and Applications.
+
+\bibitem{bazi2022tlu}
+Y. Bazi, Mohamad Mahmoud Al Rahhal, M. L. Mekhalfi, et al. (2022). \textit{Bi-Modal Transformer-Based Approach for Visual Question Answering in Remote Sensing Imagery}. IEEE Transactions on Geoscience and Remote Sensing.
+
+\bibitem{zheng2022gg5}
+Hao Zheng, Guohui Wang, and Xuchen Li (2022). \textit{Swin-MLP: a strawberry appearance quality identification method by Swin Transformer and multi-layer perceptron}. Journal of Food Measurement & Characterization.
+
+\bibitem{gao2021uzl}
+Xiaohong W. Gao, Y. Qian, and Alice Gao (2021). \textit{COVID-VIT: Classification of COVID-19 from CT chest images based on vision transformer models}. arXiv.org.
+
+\bibitem{zheng202218g}
+Zangwei Zheng, Xiangyu Yue, Kai Wang, et al. (2022). \textit{Prompt Vision Transformer for Domain Generalization}. arXiv.org.
+
+\bibitem{bi20225lu}
+Chunguang Bi, Nan Hu, Yiqiang Zou, et al. (2022). \textit{Development of Deep Learning Methodology for Maize Seed Variety Recognition Based on Improved Swin Transformer}. Agronomy.
+
+\bibitem{chen2022vac}
+Yihan Chen, Xingyu Gu, Zhen Liu, et al. (2022). \textit{A Fast Inference Vision Transformer for Automatic Pavement Image Classification and Its Visual Interpretation Method}. Remote Sensing.
+
+\bibitem{song2022603}
+Zhuoran Song, Yihong Xu, Zhezhi He, et al. (2022). \textit{CP-ViT: Cascade Vision Transformer Pruning via Progressive Sparsity Prediction}. arXiv.org.
+
+\bibitem{li2022rl9}
+Tao Li, Zheng Zhang, Lishen Pei, et al. (2022). \textit{HashFormer: Vision Transformer Based Deep Hashing for Image Retrieval}. IEEE Signal Processing Letters.
+
+\bibitem{wensel2022lva}
+James Wensel, Hayat Ullah, and Arslan Munir (2022). \textit{ViT-ReT: Vision and Recurrent Transformer Neural Networks for Human Activity Recognition in Videos}. IEEE Access.
+
+\bibitem{wang2021sav}
+Wenxiao Wang, Lu-yuan Yao, Long Chen, et al. (2021). \textit{CrossFormer: A Versatile Vision Transformer Based on Cross-scale Attention}. arXiv.org.
+
+\bibitem{naseem2022c95}
+Usman Naseem, Matloob Khushi, and Jinman Kim (2022). \textit{Vision-Language Transformer for Interpretable Pathology Visual Question Answering}. IEEE journal of biomedical and health informatics.
+
+\bibitem{wu20210gs}
+Yanan Wu, Shouliang Qi, Yu Sun, et al. (2021). \textit{A vision transformer for emphysema classification using CT images}. Physics in Medicine and Biology.
+
+\bibitem{lyu2022vd9}
+Yanjun Lyu, Xiao-Wen Yu, Dajiang Zhu, et al. (2022). \textit{Classification of Alzheimer's Disease via Vision Transformer: Classification of Alzheimer's Disease via Vision Transformer}. Petra.
+
+\bibitem{krishnan2021086}
+Koushik Sivarama Krishnan, and Karthik Sivarama Krishnan (2021). \textit{Vision Transformer based COVID-19 Detection using Chest X-rays}. 2021 6th International Conference on Signal Processing, Computing and Control (ISPCC).
+
+\bibitem{yang20210bg}
+Huanrui Yang, Hongxu Yin, Maying Shen, et al. (2021). \textit{Global Vision Transformer Pruning with Hessian-Aware Saliency}. Computer Vision and Pattern Recognition.
+
+\bibitem{li20229zn}
+Zhexin Li, Tong Yang, Peisong Wang, et al. (2022). \textit{Q-ViT: Fully Differentiable Quantization for Vision Transformer}. arXiv.org.
+
+\bibitem{wang2022n7h}
+Hongmiao Wang, Cheng Xing, Junjun Yin, et al. (2022). \textit{Land Cover Classification for Polarimetric SAR Images Based on Vision Transformer}. Remote Sensing.
+
+\bibitem{chen202199v}
+Minghao Chen, Kan Wu, Bolin Ni, et al. (2021). \textit{Searching the Search Space of Vision Transformer}. Neural Information Processing Systems.
+
+\bibitem{panboonyuen20218r7}
+Teerapong Panboonyuen, Kulsawasd Jitkajornwanich, S. Lawawirojwong, et al. (2021). \textit{Transformer-Based Decoder Designs for Semantic Segmentation on Remotely Sensed Images}. Remote Sensing.
+
+\bibitem{liang2022xlx}
+Junjie Liang, Cihui Yang, Jingting Zhong, et al. (2022). \textit{BTSwin-Unet: 3D U-shaped Symmetrical Swin Transformer-based Network for Brain Tumor Segmentation with Self-supervised Pre-training}. Neural Processing Letters.
+
+\bibitem{zhou2021rtn}
+Hong-Yu Zhou, Chi-Ken Lu, Sibei Yang, et al. (2021). \textit{ConvNets vs. Transformers: Whose Visual Representations are More Transferable?}. 2021 IEEE/CVF International Conference on Computer Vision Workshops (ICCVW).
+
+\bibitem{dubey2021ra5}
+S. Dubey, S. Singh, and Wei Chu (2021). \textit{Vision Transformer Hashing for Image Retrieval}. IEEE International Conference on Multimedia and Expo.
+
+\bibitem{ayas2022md0}
+Selen Ayas, and Esra Tunc-Gormus (2022). \textit{SpectralSWIN: a spectral-swin transformer network for hyperspectral image classification}. International Journal of Remote Sensing.
+
+\bibitem{tian2022shu}
+Jialin Tian, Xing Xu, Fumin Shen, et al. (2022). \textit{TVT: Three-Way Vision Transformer through Multi-Modal Hypersphere Learning for Zero-Shot Sketch-Based Image Retrieval}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{liu2022249}
+Xingyu Liu, Yuehua Wu, Wenkai Liang, et al. (2022). \textit{High Resolution SAR Image Classification Using Global-Local Network Structure Based on Vision Transformer and CNN}. IEEE Geoscience and Remote Sensing Letters.
+
+\bibitem{zhang2021mcp}
+Yuan Zhang, Jian Cao, Ling Zhang, et al. (2021). \textit{A free lunch from ViT: adaptive attention multi-scale fusion Transformer for fine-grained visual recognition}. IEEE International Conference on Acoustics, Speech, and Signal Processing.
+
+\bibitem{han2021vis}
+Qi Han, Zejia Fan, Qi Dai, et al. (2021). \textit{Demystifying Local Vision Transformer: Sparse Connectivity, Weight Sharing, and Dynamic Weight}. arXiv.org.
+
+\bibitem{kim2022m6u}
+Sangwon Kim, J. Nam, and ByoungChul Ko (2022). \textit{Facial Expression Recognition Based on Squeeze Vision Transformer}. Italian National Conference on Sensors.
+
+\bibitem{zhou2022nln}
+Xiaoli Zhou, Chaowei Tang, Pan Huang, et al. (2022). \textit{ASI-DBNet: An Adaptive Sparse Interactive ResNet-Vision Transformer Dual-Branch Network for the Grading of Brain Cancer Histopathological Images}. Interdisciplinary Sciences Computational Life Sciences.
+
+\bibitem{hu202242d}
+Zhongxu Hu, Yiran Zhang, Yang Xing, et al. (2022). \textit{Toward Human-Centered Automated Driving: A Novel Spatiotemporal Vision Transformer-Enabled Head Tracker}. IEEE Vehicular Technology Magazine.
+
+\bibitem{you2022bor}
+Haoran You, Yunyang Xiong, Xiaoliang Dai, et al. (2022). \textit{Castling-ViT: Compressing Self-Attention via Switching Towards Linear-Angular Attention at Vision Transformer Inference}. Computer Vision and Pattern Recognition.
+
+\bibitem{ren2022ifo}
+Pengzhen Ren, Changlin Li, Guangrun Wang, et al. (2022). \textit{Beyond Fixation: Dynamic Window Visual Transformer}. Computer Vision and Pattern Recognition.
+
+\bibitem{wang20215ra}
+Jinhai Wang, Zongyin Zhang, Lufeng Luo, et al. (2021). \textit{SwinGD: A Robust Grape Bunch Detection Model Based on Swin Transformer in Complex Vineyard Environment}. Horticulturae.
+
+\bibitem{xiao202229y}
+Xiao Xiao, Wenliang Guo, Rui Chen, et al. (2022). \textit{A Swin Transformer-Based Encoding Booster Integrated in U-Shaped Network for Building Extraction}. Remote Sensing.
+
+\bibitem{jamil20223a4}
+Sonain Jamil, Muhammad Sohail Abbas, and Anisha Roy (2022). \textit{Distinguishing Malicious Drones Using Vision Transformer}. Applied Informatics.
+
+\bibitem{bai2022f1v}
+Long Bai, Liangyu Wang, Tong Chen, et al. (2022). \textit{Transformer-Based Disease Identification for Small-Scale Imbalanced Capsule Endoscopy Dataset}. Electronics.
+
+\bibitem{li2022th8}
+Kuoyang Li, Min Zhang, Maiping Xu, et al. (2022). \textit{Ship Detection in SAR Images Based on Feature Enhancement Swin Transformer and Adjacent Feature Fusion}. Remote Sensing.
+
+\bibitem{almalik20223wr}
+Faris Almalik, Mohammad Yaqub, and Karthik Nandakumar (2022). \textit{Self-Ensembling Vision Transformer (SEViT) for Robust Medical Image Classification}. International Conference on Medical Image Computing and Computer-Assisted Intervention.
+
+\bibitem{sha2022ae0}
+Z. Sha, and Jianfeng Li (2022). \textit{MITformer: A Multiinstance Vision Transformer for Remote Sensing Scene Classification}. IEEE Geoscience and Remote Sensing Letters.
+
+\bibitem{zhang2022msa}
+Xiaosong Zhang, Yunjie Tian, Wei Huang, et al. (2022). \textit{HiViT: Hierarchical Vision Transformer Meets Masked Image Modeling}. arXiv.org.
+
+\bibitem{htten2022lui}
+Nils Hütten, R. Meyes, and Tobias Meisen (2022). \textit{Vision Transformer in Industrial Visual Inspection}. Applied Sciences.
+
+\bibitem{hatamizadeh2022y9x}
+Ali Hatamizadeh, Ziyue Xu, Dong Yang, et al. (2022). \textit{UNetFormer: A Unified Vision Transformer Model and Pre-Training Framework for 3D Medical Image Segmentation}. arXiv.org.
+
+\bibitem{montazerin2022dgi}
+Mansooreh Montazerin, Soheil Zabihi, E. Rahimian, et al. (2022). \textit{ViT-HGR: Vision Transformer-based Hand Gesture Recognition from High Density Surface EMG Signals}. Annual International Conference of the IEEE Engineering in Medicine and Biology Society.
+
+\bibitem{kojima2022k5c}
+Takeshi Kojima, Yutaka Matsuo, and Yusuke Iwasawa (2022). \textit{Robustifying Vision Transformer without Retraining from Scratch by Test-Time Class-Conditional Feature Alignment}. International Joint Conference on Artificial Intelligence.
+
+\bibitem{kang2022pv3}
+Minhee Kang, Wooseop Lee, Keeyeon Hwang, et al. (2022). \textit{Vision Transformer for Detecting Critical Situations And Extracting Functional Scenario for Automated Vehicle Safety Assessment}. Social Science Research Network.
+
+\bibitem{tian2022qb5}
+Geng Tian, Ziwei Wang, Chang Wang, et al. (2022). \textit{A deep ensemble learning-based automated detection of COVID-19 using lung CT images and Vision Transformer and ConvNeXt}. Frontiers in Microbiology.
+
+\bibitem{peng2022snr}
+Lihong Peng, Chang Wang, Geng Tian, et al. (2022). \textit{Analysis of CT scan images for COVID-19 pneumonia based on a deep ensemble framework with DenseNet, Swin transformer, and RegNet}. Frontiers in Microbiology.
+
+\bibitem{ho20228q6}
+Chi M. K. Ho, K. Yow, Zhongwen Zhu, et al. (2022). \textit{Network Intrusion Detection via Flow-to-Image Conversion and Vision Transformer Classification}. IEEE Access.
+
+\bibitem{xia2022dnj}
+Xin Xia, Jiashi Li, Jie Wu, et al. (2022). \textit{TRT-ViT: TensorRT-oriented Vision Transformer}. arXiv.org.
+
+\bibitem{wang202232c}
+Zhenmin Wang, Haoyu Chen, Q. Zhong, et al. (2022). \textit{Recognition of penetration state in GTAW based on vision transformer using weld pool image}. The International Journal of Advanced Manufacturing Technology.
+
+\bibitem{mogan202229d}
+Jashila Nair Mogan, C. Lee, K. Lim, et al. (2022). \textit{Gait-ViT: Gait Recognition with Vision Transformer}. Italian National Conference on Sensors.
+
+\bibitem{yang20221ce}
+Yuguang Yang, Hong‐Mei Fu, Shang Gao, et al. (2022). \textit{Intrusion detection: A model based on the improved vision transformer}. Transactions on Emerging Telecommunications Technologies.
+
+\bibitem{li2022ip7}
+Nannan Li, Yaran Chen, Weifan Li, et al. (2022). \textit{BViT: Broad Attention-Based Vision Transformer}. IEEE Transactions on Neural Networks and Learning Systems.
+
+\bibitem{yu20220np}
+Tan Yu, Gangming Zhao, Ping Li, et al. (2022). \textit{BOAT: Bilateral Local Attention Vision Transformer}. British Machine Vision Conference.
+
+\bibitem{li20229fn}
+Jiacheng Li, Menglin Wang, and Xiaojin Gong (2022). \textit{Transformer Based Multi-Grained Features for Unsupervised Person Re-Identification}. 2023 IEEE/CVF Winter Conference on Applications of Computer Vision Workshops (WACVW).
+
+\bibitem{huang2022iwe}
+Jiahao Huang, Xiaodan Xing, Zhifan Gao, et al. (2022). \textit{Swin Deformable Attention U-Net Transformer (SDAUT) for Explainable Fast MRI}. International Conference on Medical Image Computing and Computer-Assisted Intervention.
+
+\bibitem{qu2022be0}
+Mengxue Qu, Yu Wu, Wu Liu, et al. (2022). \textit{SiRi: A Simple Selective Retraining Mechanism for Transformer-based Visual Grounding}. European Conference on Computer Vision.
+
+\bibitem{zeng2022ce2}
+Wenyuan Zeng, Meng Li, Wenjie Xiong, et al. (2022). \textit{MPCViT: Searching for Accurate and Efficient MPC-Friendly Vision Transformer with Heterogeneous Attention}. IEEE International Conference on Computer Vision.
+
+\bibitem{lin20225ad}
+Ji Lin, Haifeng Lin, and Fang Wang (2022). \textit{STPM_SAHI: A Small-Target Forest Fire Detection Model Based on Swin Transformer and Slicing Aided Hyper Inference}. Forests.
+
+\bibitem{reghunath2022z8g}
+L. Reghunath, and R. Rajan (2022). \textit{Transformer-based ensemble method for multiple predominant instruments recognition in polyphonic music}. EURASIP Journal on Audio, Speech, and Music Processing.
+
+\bibitem{kundu2022z97}
+Dipanjali Kundu, Umme Raihan Siddiqi, and Md. Mahbubur Rahman (2022). \textit{Vision Transformer based Deep Learning Model for Monkeypox Detection}. 2022 25th International Conference on Computer and Information Technology (ICCIT).
+
+\bibitem{sun2022cti}
+Fan Sun, Wujie Zhou, Lv Ye, et al. (2022). \textit{Hierarchical Decoding Network Based on Swin Transformer for Detecting Salient Objects in RGB-T Images}. IEEE Signal Processing Letters.
+
+\bibitem{li2022gef}
+Yupeng Li, Huimin Lu, Yifan Wang, et al. (2022). \textit{ViT-Cap: A Novel Vision Transformer-Based Capsule Network Model for Finger Vein Recognition}. Applied Sciences.
+
+\bibitem{guo20228rt}
+Bangwei Guo, Xingyu Li, Miao Yang, et al. (2022). \textit{Predicting microsatellite instability and key biomarkers in colorectal cancer from H&E‐stained images: achieving state‐of‐the‐art predictive performance with fewer data using Swin Transformer}. The Journal of Pathology: Clinical Research.
+
+\bibitem{li202240n}
+Ao Li, Yaqin Zhao, and Zhaoxiang Zheng (2022). \textit{Novel Recursive BiFPN Combining with Swin Transformer for Wildland Fire Smoke Detection}. Forests.
+
+\bibitem{jiang2022jlc}
+Xiaoben Jiang, Yu Zhu, Gan Cai, et al. (2022). \textit{MXT: A New Variant of Pyramid Vision Transformer for Multi-label Chest X-ray Image Classification}. Cognitive Computation.
+
+\bibitem{lin2021oan}
+Yang Lin, Tianyu Zhang, Peiqin Sun, et al. (2021). \textit{FQ-ViT: Fully Quantized Vision Transformer without Retraining}. arXiv.org.
+
+\bibitem{wang2022dl1}
+Jing Wang, Haotian Fa, X. Hou, et al. (2022). \textit{MSTRIQ: No Reference Image Quality Assessment Based on Swin Transformer with Multi-Stage Fusion}. 2022 IEEE/CVF Conference on Computer Vision and Pattern Recognition Workshops (CVPRW).
+
+\bibitem{li2022wab}
+Han Li, Sufang Li, Jiguo Yu, et al. (2022). \textit{Plant disease and insect pest identification based on vision transformer}. Other Conferences.
+
+\bibitem{park2022eln}
+Sangjoon Park, and Jong-Chul Ye (2022). \textit{Multi-Task Distributed Learning Using Vision Transformer With Random Patch Permutation}. IEEE Transactions on Medical Imaging.
+
+\bibitem{shen2022d6i}
+Yifan Shen, Li Liu, Zhihao Tang, et al. (2022). \textit{Explainable Survival Analysis with Convolution-Involved Vision Transformer}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{wang20224wo}
+Aili Wang, Shuang Xing, Yan Zhao, et al. (2022). \textit{A Hyperspectral Image Classification Method Based on Adaptive Spectral Spatial Kernel Combined with Improved Vision Transformer}. Remote Sensing.
+
+\bibitem{tao2022gdr}
+Tianxin Tao, Daniele Reda, and M. V. D. Panne (2022). \textit{Evaluating Vision Transformer Methods for Deep Reinforcement Learning from Pixels}. arXiv.org.
+
+\bibitem{wu2021nmg}
+Shupei Wu, Youqiang Sun, and He Huang (2021). \textit{Multi-granularity Feature Extraction Based on Vision Transformer for Tomato Leaf Disease Recognition}. 2021 3rd International Academic Exchange Conference on Science and Technology Innovation (IAECST).
+
+\bibitem{liu2022c56}
+Jinwei Liu, Yan Li, Guitao Cao, et al. (2022). \textit{Feature Pyramid Vision Transformer for MedMNIST Classification Decathlon}. IEEE International Joint Conference on Neural Network.
+
+\bibitem{wang2022pb8}
+Yangtao Wang, Yanzhao Xie, Lisheng Fan, et al. (2022). \textit{STMG: Swin transformer for multi-label image recognition with graph convolution network}. Neural computing & applications (Print).
+
+\bibitem{xiong2022ec2}
+Zinan Xiong, Chenxi Wang, Ying Li, et al. (2022). \textit{Swin-Pose: Swin Transformer Based Human Pose Estimation}. Conference on Multimedia Information Processing and Retrieval.
+
+\bibitem{sun2022pom}
+Ruinan Sun, and Yu Pang (2022). \textit{Efficient Lung Cancer Image Classification and Segmentation Algorithm Based on Improved Swin Transformer}. arXiv.org.
+
+\bibitem{qi2022yq9}
+Zheng Qi, AprilPyone Maungmaung, Yuma Kinoshita, et al. (2022). \textit{Privacy-Preserving Image Classification Using Vision Transformer}. European Signal Processing Conference.
+
+\bibitem{ma2022vf3}
+Xiaojian Ma, Weili Nie, Zhiding Yu, et al. (2022). \textit{RelViT: Concept-guided Vision Transformer for Visual Relational Reasoning}. International Conference on Learning Representations.
+
+\bibitem{wang2022tok}
+Ziyang Wang, Will Zhao, Zixuan Ni, et al. (2022). \textit{Adversarial Vision Transformer for Medical Image Semantic Segmentation with Limited Annotations}. British Machine Vision Conference.
+
+\bibitem{wang2022pee}
+Kai Wang, Fei Yang, and Joost van de Weijer (2022). \textit{Attention Distillation: self-supervised vision transformer students need more guidance}. British Machine Vision Conference.
+
+\bibitem{jannat20228u6}
+Fatema-E- Jannat, and A. Willis (2022). \textit{Improving Classification of Remotely Sensed Images with the Swin Transformer}. SoutheastCon.
+
+\bibitem{chen2022r27}
+Yuzhong Chen, Zhe Xiao, Lin Zhao, et al. (2022). \textit{Mask-guided Vision Transformer (MG-ViT) for Few-Shot Learning}. arXiv.org.
+
+\bibitem{wang2021p2r}
+Haoran Wang, Yanju Ji, Kaiwen Song, et al. (2021). \textit{ViT-P: Classification of Genitourinary Syndrome of Menopause From OCT Images Based on Vision Transformer Models}. IEEE Transactions on Instrumentation and Measurement.
+
+\bibitem{sajid2021xb6}
+Usman Sajid, Xiangyu Chen, Hasan Sajid, et al. (2021). \textit{Audio-Visual Transformer Based Crowd Counting}. 2021 IEEE/CVF International Conference on Computer Vision Workshops (ICCVW).
+
+\bibitem{xing2022kqr}
+W. Xing, and K. Egiazarian (2022). \textit{Residual Swin Transformer Channel Attention Network for Image Demosaicing}. European Workshop on Visual Information Processing.
+
+\bibitem{garaiman2022xwd}
+A. Garaiman, F. Nooralahzadeh, C. Mihai, et al. (2022). \textit{Vision transformer assisting rheumatologists in screening for capillaroscopy changes in systemic sclerosis: an artificial intelligence model}. Rheumatology.
+
+\bibitem{wang2022wyu}
+Ziyang Wang, Nanqing Dong, and I. Voiculescu (2022). \textit{Computationally-Efficient Vision Transformer for Medical Image Semantic Segmentation Via Dual Pseudo-Label Supervision}. International Conference on Information Photonics.
+
+\bibitem{hou2022ver}
+Zejiang Hou, and S. Kung (2022). \textit{Multi-Dimensional Vision Transformer Compression via Dependency Guided Gaussian Process Search}. 2022 IEEE/CVF Conference on Computer Vision and Pattern Recognition Workshops (CVPRW).
+
+\bibitem{agilandeeswari202273m}
+L. Agilandeeswari, and S. D. Meena (2022). \textit{SWIN transformer based contrastive self-supervised learning for animal detection and classification}. Multimedia tools and applications.
+
+\bibitem{qin2022cfg}
+Haonan Qin, Weiying Xie, Yunsong Li, et al. (2022). \textit{HTD-VIT: Spectral-Spatial Joint Hyperspectral Target Detection with Vision Transformer}. IEEE International Geoscience and Remote Sensing Symposium.
+
+\bibitem{wang2022ohd}
+Boyuan Wang (2022). \textit{Automatic Mushroom Species Classification Model for Foodborne Disease Prevention Based on Vision Transformer}. Journal of Food Quality.
+
+\bibitem{yu2022o30}
+Hyunwoo Yu, J. Shim, Jaeho Kwak, et al. (2022). \textit{Vision Transformer-Based Retina Vessel Segmentation with Deep Adaptive Gamma Correction}. IEEE International Conference on Acoustics, Speech, and Signal Processing.
+
+\bibitem{boukabouya2022ffi}
+Rayene Amina Boukabouya, A. Moussaoui, and Mohamed Berrimi (2022). \textit{Vision Transformer Based Models for Plant Disease Detection and Diagnosis}. International Symposium on Information and Automation.
+
+\bibitem{wang2022d7p}
+Nan Wang, Xiangjun Meng, Xiangchao Meng, et al. (2022). \textit{Convolution-Embedded Vision Transformer With Elastic Positional Encoding for Pansharpening}. IEEE Transactions on Geoscience and Remote Sensing.
+
+\bibitem{song20215tk}
+Jeonggeun Song (2021). \textit{UFO-ViT: High Performance Linear Vision Transformer without Softmax}. arXiv.org.
+
+\bibitem{xie2021th0}
+Jiangtao Xie, Rui Zeng, Qilong Wang, et al. (2021). \textit{So-ViT: Mind Visual Tokens for Vision Transformer}. arXiv.org.
+
+\bibitem{sun2022bm5}
+Yu-shan Sun, Hao Zheng, Guo-cheng Zhang, et al. (2022). \textit{DP-ViT: A Dual-Path Vision Transformer for Real-Time Sonar Target Detection}. Remote Sensing.
+
+\bibitem{jing2022nkb}
+Yanhao Jing, and Feng Wang (2022). \textit{TP-VIT: A Two-Pathway Vision Transformer for Video Action Recognition}. IEEE International Conference on Acoustics, Speech, and Signal Processing.
+
+\bibitem{li2022spu}
+Rui Li, Weihua Li, Yi Yang, et al. (2022). \textit{Swinv2-Imagen: Hierarchical Vision Transformer Diffusion Models for Text-to-Image Generation}. Neural computing & applications (Print).
+
+\bibitem{song2022y4v}
+Hwanjun Song, Deqing Sun, Sanghyuk Chun, et al. (2022). \textit{An Extendable, Efficient and Effective Transformer-based Object Detector}. arXiv.org.
+
+\bibitem{shukla2022jxz}
+Neha Shukla, Anand Pandey, A. P. Shukla, et al. (2022). \textit{ECG-ViT: A Transformer-Based ECG Classifier for Energy-Constraint Wearable Devices}. J. Sensors.
+
+\bibitem{tran2022bvd}
+Nguyen H. Tran, Ta Duc Huy, S. T. Duong, et al. (2022). \textit{Improving Local Features with Relevant Spatial Information by Vision Transformer for Crowd Counting}. British Machine Vision Conference.
+
+\bibitem{hong2022ks6}
+Weixiang Hong, Jiangwei Lao, Wang Ren, et al. (2022). \textit{Training Object Detectors from Scratch: An Empirical Study in the Era of Vision Transformer}. Computer Vision and Pattern Recognition.
+
+\bibitem{panboonyuen2021b4h}
+Teerapong Panboonyuen, Sittinun Thongbai, W. Wongweeranimit, et al. (2021). \textit{Object Detection of Road Assets Using Transformer-Based YOLOX with Feature Pyramid Decoder on Thai Highway Panorama}. Inf..
+
+\bibitem{zhao2022wi7}
+Hong Zhao, Zhiwen Chen, Lan Guo, et al. (2022). \textit{Video captioning based on vision transformer and reinforcement learning}. PeerJ Computer Science.
+
+\bibitem{wang2022h3u}
+Yuchen Wang, L. Qing, Zhengyong Wang, et al. (2022). \textit{Multi-Level Transformer-Based Social Relation Recognition}. Italian National Conference on Sensors.
+
+\bibitem{liu2021yw0}
+Hao Liu, Xinghua Jiang, Xin Li, et al. (2021). \textit{NomMer: Nominate Synergistic Context in Vision Transformer for Visual Recognition}. Computer Vision and Pattern Recognition.
+
+\bibitem{gul202290q}
+A. Gul, Ozdemir Cetin, Christoph Reich, et al. (2022). \textit{Histopathological image classification based on self-supervised vision transformer and weak labels}. Medical Imaging.
+
+\bibitem{zhao2022koc}
+Youpeng Zhao, Huadong Tang, Yingying Jiang, et al. (2022). \textit{Lightweight Vision Transformer with Cross Feature Attention}. arXiv.org.
+
+\bibitem{yang2022qwh}
+Yali Yang, Yuanping Xu, Chaolong Zhang, et al. (2022). \textit{Hierarchical Vision Transformer with Channel Attention for RGB-D Image Segmentation}. International Symposium on Signal Processing Systems.
+
+\bibitem{alquraishi2022j3v}
+M. S. Al-Quraishi, I. Elamvazuthi, T. Tang, et al. (2022). \textit{Decoding the User’s Movements Preparation From EEG Signals Using Vision Transformer Architecture}. IEEE Access.
+
+\bibitem{jin2021qdw}
+Weiqiang Jin, Hang Yu, and Xiangfeng Luo (2021). \textit{CvT-ASSD: Convolutional vision-Transformer Based Attentive Single Shot MultiBox Detector}. IEEE International Conference on Tools with Artificial Intelligence.
+
+\bibitem{lee2022rf1}
+K. Lee, Bhavin Jawade, D. Mohan, et al. (2022). \textit{Attribute De-biased Vision Transformer (AD-ViT) for Long-Term Person Re-identification}. Advanced Video and Signal Based Surveillance.
+
+\bibitem{shi2022evc}
+Yongtao Shi, Xiaodong Zhao, Fan Zhang, et al. (2022). \textit{Non-Intrusive Load Monitoring Based on Swin-Transformer with Adaptive Scaling Recurrence Plot}. Energies.
+
+\bibitem{zhang20223g5}
+Huaqi Zhang, Huang Chen, Jin Qin, et al. (2022). \textit{MC-ViT: Multi-path cross-scale vision transformer for thymoma histopathology whole slide image typing}. Frontiers in Oncology.
+
+\bibitem{zim202282d}
+Abid Hasan Zim, Aeyan Ashraf, Aquib Iqbal, et al. (2022). \textit{A Vision Transformer-Based Approach to Bearing Fault Classification via Vibration Signals}. Asia-Pacific Signal and Information Processing Association Annual Summit and Conference.
+
+\bibitem{bao202239k}
+Shuai Bao, Jiping Liu, Liang Wang, et al. (2022). \textit{Landslide Susceptibility Mapping by Fusing Convolutional Neural Networks and Vision Transformer}. Italian National Conference on Sensors.
+
+\bibitem{sun2022nny}
+Mengshu Sun, Z. Li, Alec Lu, et al. (2022). \textit{FPGA-aware automatic acceleration framework for vision transformer with mixed-scheme quantization: late breaking results}. Design Automation Conference.
+
+\bibitem{munyer2022pfs}
+Travis J. E. Munyer, D. Brinkman, Xin Zhong, et al. (2022). \textit{Foreign Object Debris Detection for Airport Pavement Images Based on Self-Supervised Localization and Vision Transformer}. 2022 International Conference on Computational Science and Computational Intelligence (CSCI).
+
+\bibitem{fan2022wve}
+Hong-wei Fan, Ningge Ma, Xu-hui Zhang, et al. (2022). \textit{New intelligent fault diagnosis approach of rolling bearing based on improved vibration gray texture image and vision transformer}. Proceedings of the Institution of Mechanical Engineers, Part C: Journal of Mechanical Engineering Science.
+
+\bibitem{wang2022gq4}
+Yi Wang, Zhiwen Fan, Tianlong Chen, et al. (2022). \textit{Can We Solve 3D Vision Tasks Starting from A 2D Vision Transformer?}. arXiv.org.
+
+\bibitem{ali2022dux}
+Luqman Ali, Hamad Al Jassmi, Wasif Khan, et al. (2022). \textit{Crack45K: Integration of Vision Transformer with Tubularity Flow Field (TuFF) and Sliding-Window Approach for Crack-Segmentation in Pavement Structures}. Buildings.
+
+\bibitem{chougui2022mpo}
+Abdeldjalil Chougui, Achraf Moussaoui, and A. Moussaoui (2022). \textit{Plant-Leaf Diseases Classification using CNN, CBAM and Vision Transformer}. International Symposium on Information and Automation.
+
+\bibitem{zhuang2021hqu}
+Li Zhuang (2021). \textit{Deep-Learning-Based Diagnosis of Cassava Leaf Diseases Using Vision Transformer}. Artificial Intelligence and Cloud Computing Conference.
+
+\bibitem{chen2021d1q}
+Xiaoyue Chen, Sei-ichiro Kamata, and Weilian Zhou (2021). \textit{Hyperspectral Image Classification Based on Multi-stage Vision Transformer with Stacked Samples}. IEEE Region 10 Conference.
+
+\bibitem{hatamizadeh2024xr6}
+Ali Hatamizadeh, and Jan Kautz (2024). \textit{MambaVision: A Hybrid Mamba-Transformer Vision Backbone}. Computer Vision and Pattern Recognition.
+
+\bibitem{ryali202339q}
+Chaitanya K. Ryali, Yuan-Ting Hu, Daniel Bolya, et al. (2023). \textit{Hiera: A Hierarchical Vision Transformer without the Bells-and-Whistles}. International Conference on Machine Learning.
+
+\bibitem{yao2023sax}
+Jing Yao, Bing Zhang, Chenyu Li, et al. (2023). \textit{Extended Vision Transformer (ExViT) for Land Use and Land Cover Classification: A Multimodal Deep Learning Framework}. IEEE Transactions on Geoscience and Remote Sensing.
+
+\bibitem{li2023287}
+Xiangtai Li, Henghui Ding, Wenwei Zhang, et al. (2023). \textit{Transformer-Based Visual Segmentation: A Survey}. IEEE Transactions on Pattern Analysis and Machine Intelligence.
+
+\bibitem{zhao2024671}
+Zhuoyi Zhao, Xiang Xu, Shutao Li, et al. (2024). \textit{Hyperspectral Image Classification Using Groupwise Separable Convolutional Vision Transformer Network}. IEEE Transactions on Geoscience and Remote Sensing.
+
+\bibitem{dehghani2023u7e}
+Mostafa Dehghani, Basil Mustafa, J. Djolonga, et al. (2023). \textit{Patch n' Pack: NaViT, a Vision Transformer for any Aspect Ratio and Resolution}. Neural Information Processing Systems.
+
+\bibitem{duan2024q7h}
+Yuchen Duan, Weiyun Wang, Zhe Chen, et al. (2024). \textit{Vision-RWKV: Efficient and Scalable Visual Perception with RWKV-Like Architectures}. International Conference on Learning Representations.
+
+\bibitem{barman2024q21}
+Utpal Barman, Parismita Sarma, Mirzanur Rahman, et al. (2024). \textit{ViT-SmartAgri: Vision Transformer and Smartphone-Based Plant Disease Detection for Smart Agriculture}. Agronomy.
+
+\bibitem{jamil20230ll}
+Sonain Jamil, and Anisha Roy (2023). \textit{An efficient and robust Phonocardiography (PCG)-based Valvular Heart Diseases (VHD) detection framework using Vision Transformer (ViT)}. Comput. Biol. Medicine.
+
+\bibitem{paal2024eg1}
+Ishak Paçal, Melek Alaftekin, and F. Zengul (2024). \textit{Enhancing Skin Cancer Diagnosis Using Swin Transformer with Hybrid Shifted Window-Based Multi-head Self-attention and SwiGLU-Based MLP}. Journal of imaging informatics in medicine.
+
+\bibitem{zhang2023k43}
+Xiaosong Zhang, Yunjie Tian, Lingxi Xie, et al. (2023). \textit{HiViT: A Simpler and More Efficient Design of Hierarchical Vision Transformer}. International Conference on Learning Representations.
+
+\bibitem{himel2024u0i}
+Galib Muhammad Shahriar Himel, Md. Masudul Islam, Kh Abdullah Al-Aff, et al. (2024). \textit{Skin Cancer Segmentation and Classification Using Vision Transformer for Automatic Analysis in Dermatoscopy-Based Noninvasive Digital System}. International Journal of Biomedical Imaging.
+
+\bibitem{xu20235cu}
+Qin Xu, Jiahui Wang, Bo Jiang, et al. (2023). \textit{Fine-Grained Visual Classification via Internal Ensemble Learning Transformer}. IEEE transactions on multimedia.
+
+\bibitem{chi202331y}
+Kaichen Chi, Yuan Yuan, and Qi Wang (2023). \textit{Trinity-Net: Gradient-Guided Swin Transformer-Based Remote Sensing Image Dehazing and Beyond}. IEEE Transactions on Geoscience and Remote Sensing.
+
+\bibitem{patro202303d}
+Badri N. Patro, Vinay P. Namboodiri, and Vijay Srinivas Agneeswaran (2023). \textit{SpectFormer: Frequency and Attention is what you need in a Vision Transformer}. IEEE Workshop/Winter Conference on Applications of Computer Vision.
+
+\bibitem{pan2023hry}
+Xuran Pan, Tianzhu Ye, Zhuofan Xia, et al. (2023). \textit{Slide-Transformer: Hierarchical Vision Transformer with Local Self-Attention}. Computer Vision and Pattern Recognition.
+
+\bibitem{wang2024mrk}
+Ziyang Wang, and Chao Ma (2024). \textit{Weak-Mamba-UNet: Visual Mamba Makes CNN and ViT Work Better for Scribble-based Medical Image Segmentation}. arXiv.org.
+
+\bibitem{tabbakh2023ao7}
+A. Tabbakh, and Soubhagya Sankar Barpanda (2023). \textit{A Deep Features Extraction Model Based on the Transfer Learning Model and Vision Transformer “TLMViT” for Plant Disease Classification}. IEEE Access.
+
+\bibitem{dutta2023aet}
+Pramit Dutta, Khaleda Akhter Sathi, Md.Azad Hossain, et al. (2023). \textit{Conv-ViT: A Convolution and Vision Transformer-Based Hybrid Feature Extraction Method for Retinal Disease Detection}. Journal of Imaging.
+
+\bibitem{qiu2024eh4}
+Yuhang Qiu, Honghui Chen, Xingbo Dong, et al. (2024). \textit{IFViT: Interpretable Fixed-Length Representation for Fingerprint Matching via Vision Transformer}. IEEE Transactions on Information Forensics and Security.
+
+\bibitem{li2023nnd}
+Guoqiang Li, Yuchao Wang, Qing Zhao, et al. (2023). \textit{PMVT: a lightweight vision transformer for plant disease identification on mobile devices}. Frontiers in Plant Science.
+
+\bibitem{zhao20243f3}
+Hu Zhao, Keyan Ren, Tianyi Yue, et al. (2024). \textit{TransFG: A Cross-View Geo-Localization of Satellite and UAVs Imagery Pipeline Using Transformer-Based Feature Aggregation and Gradient Guidance}. IEEE Transactions on Geoscience and Remote Sensing.
+
+\bibitem{song2024fx9}
+Huaxiang Song, Yuxuan Yuan, Zhiwei Ouyang, et al. (2024). \textit{Quantitative regularization in robust vision transformer for remote sensing image classification}. Photogrammetric Record.
+
+\bibitem{cai2023hji}
+Yimin Cai, Yuqing Long, Zhenggong Han, et al. (2023). \textit{Swin Unet3D: a three-dimensional medical image segmentation network combining vision transformer and convolution}. BMC Medical Informatics and Decision Making.
+
+\bibitem{akinpelu2024d4m}
+S. Akinpelu, Serestina Viriri, and A. Adegun (2024). \textit{An enhanced speech emotion recognition using vision transformer}. Scientific Reports.
+
+\bibitem{hayat2024e4f}
+Mansoor Hayat, Nouman Ahmad, Anam Nasir, et al. (2024). \textit{Hybrid Deep Learning EfficientNetV2 and Vision Transformer (EffNetV2-ViT) Model for Breast Cancer Histopathological Image Classification}. IEEE Access.
+
+\bibitem{li2024g3z}
+Yongxin Li, Mengyuan Liu, You Wu, et al. (2024). \textit{Learning Adaptive and View-Invariant Vision Transformer for Real-Time UAV Tracking}. International Conference on Machine Learning.
+
+\bibitem{arshed2023zen}
+Muhammad Asad Arshed, Shahzad Mumtaz, Muhammad Ibrahim, et al. (2023). \textit{Multi-Class Skin Cancer Classification Using Vision Transformer Networks and Convolutional Neural Network-Based Pre-Trained Models}. Inf..
+
+\bibitem{qin20242eu}
+S. Qin, Taiyue Qi, Tang Deng, et al. (2024). \textit{Image segmentation using Vision Transformer for tunnel defect assessment}. Comput. Aided Civ. Infrastructure Eng..
+
+\bibitem{lee2023iwc}
+C. Lee, K. Lim, Yu Xuan Song, et al. (2023). \textit{Plant-CNN-ViT: Plant Classification with Ensemble of Convolutional Neural Networks and Vision Transformer}. Plants.
+
+\bibitem{tagnamas20246ug}
+Jaouad Tagnamas, Hiba Ramadan, Ali Yahyaouy, et al. (2024). \textit{Multi-task approach based on combined CNN-transformer for efficient segmentation and classification of breast tumors in ultrasound images}. Visual Computing for Industry, Biomedicine, and Art.
+
+\bibitem{li2023jft}
+Shuiwang Li, Yangxiang Yang, Dan Zeng, et al. (2023). \textit{Adaptive and Background-Aware Vision Transformer for Real-Time UAV Tracking}. IEEE International Conference on Computer Vision.
+
+\bibitem{song2024c99}
+Bofan Song, D. Kc, Rubin Yuchan Yang, et al. (2024). \textit{Classification of Mobile-Based Oral Cancer Images Using the Vision Transformer and the Swin Transformer}. Cancers.
+
+\bibitem{aksoy20240c0}
+Serra Aksoy, P. Demircioğlu, and I. Bogrekci (2024). \textit{Enhancing Melanoma Diagnosis with Advanced Deep Learning Models Focusing on Vision Transformer, Swin Transformer, and ConvNeXt}. Dermatopathology.
+
+\bibitem{leem2024j4t}
+Saebom Leem, and Hyunseok Seo (2024). \textit{Attention Guided CAM: Visual Explanations of Vision Transformer Guided by Self-Attention}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{chen2024asi}
+Shiming Chen, W. Hou, Salman H. Khan, et al. (2024). \textit{Progressive Semantic-Guided Vision Transformer for Zero-Shot Learning}. Computer Vision and Pattern Recognition.
+
+\bibitem{lin202343q}
+Fudong Lin, Summer Crawford, Kaleb Guillot, et al. (2023). \textit{MMST-ViT: Climate Change-aware Crop Yield Prediction via Multi-Modal Spatial-Temporal Vision Transformer}. IEEE International Conference on Computer Vision.
+
+\bibitem{ghahremani202491m}
+Morteza Ghahremani, Mohammad Khateri, Bailiang Jian, et al. (2024). \textit{H-ViT: A Hierarchical Vision Transformer for Deformable Image Registration}. Computer Vision and Pattern Recognition.
+
+\bibitem{wang20249qa}
+Haiyang Wang, Hao Tang, Li Jiang, et al. (2024). \textit{GiT: Towards Generalist Vision Transformer through Universal Language Interface}. European Conference on Computer Vision.
+
+\bibitem{shahin2024g0q}
+Mohammad Shahin, F. F. Chen, Mazdak Maghanaki, et al. (2024). \textit{Improving the Concrete Crack Detection Process via a Hybrid Visual Transformer Algorithm}. Italian National Conference on Sensors.
+
+\bibitem{zhu2023dpi}
+Liang Zhu, Yingyue Li, Jiemin Fang, et al. (2023). \textit{WeakTr: Exploring Plain Vision Transformer for Weakly-supervised Semantic Segmentation}. arXiv.org.
+
+\bibitem{yu2023l1g}
+Zitong Yu, Rizhao Cai, Yawen Cui, et al. (2023). \textit{Rethinking Vision Transformer and Masked Autoencoder in Multimodal Face Anti-Spoofing}. International Journal of Computer Vision.
+
+\bibitem{ko2024eax}
+Jinsol Ko, Soyeon Park, and H. G. Woo (2024). \textit{Optimization of vision transformer-based detection of lung diseases from chest X-ray images}. BMC Medical Informatics Decis. Mak..
+
+\bibitem{yang2024w08}
+Qiying Yang, and Rongzuo Guo (2024). \textit{An Unsupervised Method for Industrial Image Anomaly Detection with Vision Transformer-Based Autoencoder}. Italian National Conference on Sensors.
+
+\bibitem{nazih20238nf}
+Waleed Nazih, Ahmad O. Aseeri, Osama Youssef Atallah, et al. (2023). \textit{Vision Transformer Model for Predicting the Severity of Diabetic Retinopathy in Fundus Photography-Based Retina Images}. IEEE Access.
+
+\bibitem{xia2023bp7}
+Zhuofan Xia, Xuran Pan, Shiji Song, et al. (2023). \textit{DAT++: Spatially Dynamic Vision Transformer with Deformable Attention}. arXiv.org.
+
+\bibitem{nag2023cfn}
+Shashank Nag, G. Datta, Souvik Kundu, et al. (2023). \textit{ViTA: A Vision Transformer Inference Accelerator for Edge Applications}. International Symposium on Circuits and Systems.
+
+\bibitem{gezici20246lf}
+Abdul Haluk Batur Gezici, and Emre Sefer (2024). \textit{Deep Transformer-Based Asset Price and Direction Prediction}. IEEE Access.
+
+\bibitem{ghazouani202342t}
+Fethi Ghazouani, Pierre Vera, and Su Ruan (2023). \textit{Efficient brain tumor segmentation using Swin transformer and enhanced local self-attention}. International Journal of Computer Assisted Radiology and Surgery.
+
+\bibitem{wang202338i}
+Guanqun Wang, He Chen, Liang Chen, et al. (2023). \textit{P2FEViT: Plug-and-Play CNN Feature Embedded Hybrid Vision Transformer for Remote Sensing Image Classification}. Remote Sensing.
+
+\bibitem{guo2024tr7}
+Yu Guo, Zhi Zhang, and Yuzhen Huang (2024). \textit{Dual Class Token Vision Transformer for Direction of Arrival Estimation in Low SNR}. IEEE Signal Processing Letters.
+
+\bibitem{wang2023ski}
+Wei Wang, Xin Yang, and Jinhui Tang (2023). \textit{Vision Transformer With Hybrid Shifted Windows for Gastrointestinal Endoscopy Image Classification}. IEEE transactions on circuits and systems for video technology (Print).
+
+\bibitem{zheng202325h}
+Fujian Zheng, Shuai Lin, Wei Zhou, et al. (2023). \textit{A Lightweight Dual-Branch Swin Transformer for Remote Sensing Scene Classification}. Remote Sensing.
+
+\bibitem{mogan2023ywz}
+Jashila Nair Mogan, C. Lee, K. Lim, et al. (2023). \textit{Gait-CNN-ViT: Multi-Model Gait Recognition with Convolutional Neural Networks and Vision Transformer}. Italian National Conference on Sensors.
+
+\bibitem{ebert202377v}
+Nikolas Ebert, D. Stricker, and Oliver Wasenmüller (2023). \textit{PLG-ViT: Vision Transformer with Parallel Local and Global Self-Attention}. Italian National Conference on Sensors.
+
+\bibitem{wang20245bq}
+Yong Wang, Cheng Lu, Hailun Lian, et al. (2024). \textit{Speech Swin-Transformer: Exploring a Hierarchical Transformer with Shifted Windows for Speech Emotion Recognition}. IEEE International Conference on Acoustics, Speech, and Signal Processing.
+
+\bibitem{cao20241ng}
+Jie Cao, Tingting Xu, Yu-he Deng, et al. (2024). \textit{Galaxy morphology classification based on Convolutional vision Transformer (CvT)}. Astronomy &amp; Astrophysics.
+
+\bibitem{yang2024in8}
+Yaoming Yang, Zhili Cai, Shuxia Qiu, et al. (2024). \textit{Vision transformer with masked autoencoders for referable diabetic retinopathy classification based on large-size retina image}. PLoS ONE.
+
+\bibitem{hussain2025qoe}
+Tahir Hussain, Hayaru Shouno, Abid Hussain, et al. (2025). \textit{EFFResNet-ViT: A Fusion-Based Convolutional and Vision Transformer Model for Explainable Medical Image Classification}. IEEE Access.
+
+\bibitem{shim2023z7g}
+D. Shim, and H. J. Kim (2023). \textit{SwinDepth: Unsupervised Depth Estimation using Monocular Sequences via Swin Transformer and Densely Cascaded Network}. IEEE International Conference on Robotics and Automation.
+
+\bibitem{alam2024t09}
+Taukir Alam, Wei-Cheng Yeh, Fang Rong Hsu, et al. (2024). \textit{An Integrated Approach using YOLOv8 and ResNet, SeResNet & Vision Transformer (ViT) Algorithms based on ROI Fracture Prediction in X-ray Images of the Elbow.}. Current medical imaging.
+
+\bibitem{yang2024tti}
+Ruiping Yang, Liu Kun, Shaohua Xu, et al. (2024). \textit{ViT-UperNet: a hybrid vision transformer with unified-perceptual-parsing network for medical image segmentation}. Complex &amp; Intelligent Systems.
+
+\bibitem{wang20245hx}
+Dong Wang, Jian Lian, and Wanzhen Jiao (2024). \textit{Multi-label classification of retinal disease via a novel vision transformer model}. Frontiers in Neuroscience.
+
+\bibitem{song202479c}
+Huaxiang Song, Hanjun Xia, Wenhui Wang, et al. (2024). \textit{QAGA-Net: enhanced vision transformer-based object detection for remote sensing images}. International Journal of Intelligent Computing and Cybernetics.
+
+\bibitem{li2023lvd}
+Xiaoye Li, and Bin-Bin Zhang (2023). \textit{FV-ViT: Vision Transformer for Finger Vein Recognition}. IEEE Access.
+
+\bibitem{ma2023vhi}
+Xiaochen Ma, Bo Du, Xianggen Liu, et al. (2023). \textit{IML-ViT: Image Manipulation Localization by Vision Transformer}. arXiv.org.
+
+\bibitem{han202416k}
+Huiyan Han, H. Zeng, Liqun Kuang, et al. (2024). \textit{A human activity recognition method based on Vision Transformer}. Scientific Reports.
+
+\bibitem{katar202352u}
+Oğuzhan Katar, and Ozal Yildirim (2023). \textit{An Explainable Vision Transformer Model Based White Blood Cells Classification and Localization}. Diagnostics.
+
+\bibitem{hemalatha2024a14}
+S. Hemalatha, and Jayachandiran Jai Jaganath Babu (2024). \textit{A Multitask Learning-Based Vision Transformer for Plant Disease Localization and Classification}. International Journal of Computational Intelligence Systems.
+
+\bibitem{ma2024uan}
+Chiyu Ma, Jon Donnelly, Wenjun Liu, et al. (2024). \textit{Interpretable Image Classification with Adaptive Prototype-based Vision Transformers}. Neural Information Processing Systems.
+
+\bibitem{lai20238ck}
+D. K. Lai, Zi-Han Yu, Tommy Yau-Nam Leung, et al. (2023). \textit{Vision Transformers (ViT) for Blanket-Penetrating Sleep Posture Recognition Using a Triple Ultra-Wideband (UWB) Radar System}. Italian National Conference on Sensors.
+
+\bibitem{wang2024luv}
+Zhikan Wang, Zhongyao Cheng, Jiajie Xiong, et al. (2024). \textit{A Timely Survey on Vision Transformer for Deepfake Detection}. arXiv.org.
+
+\bibitem{ling2023x36}
+Zhixin Ling, Zhen Xing, Xiangdong Zhou, et al. (2023). \textit{PanoSwin: a Pano-style Swin Transformer for Panorama Understanding}. Computer Vision and Pattern Recognition.
+
+\bibitem{wang2023bfo}
+Zhifeng Wang, Jialong Yao, Chunyan Zeng, et al. (2023). \textit{Students' Classroom Behavior Detection System Incorporating Deformable DETR with Swin Transformer and Light-Weight Feature Pyramid Network}. Syst..
+
+\bibitem{yin2023029}
+Miao Yin, Burak Uzkent, Yilin Shen, et al. (2023). \textit{GOHSP: A Unified Framework of Graph and Optimization-based Heterogeneous Structured Pruning for Vision Transformer}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{mishra2024fbz}
+Swapneel Mishra, Saumya Seth, Shrishti Jain, et al. (2024). \textit{Image Caption Generation using Vision Transformer and GPT Architecture}. 2024 2nd International Conference on Advancement in Computation & Computer Technologies (InCACCT).
+
+\bibitem{heidari2024d9k}
+Moein Heidari, Reza Azad, Sina Ghorbani Kolahi, et al. (2024). \textit{Enhancing Efficiency in Vision Transformer Networks: Design Techniques and Insights}. arXiv.org.
+
+\bibitem{yu2023fqo}
+Sheng Yu, Dihua Zhai, and Yuanqing Xia (2023). \textit{A Novel Robotic Pushing and Grasping Method Based on Vision Transformer and Convolution}. IEEE Transactions on Neural Networks and Learning Systems.
+
+\bibitem{zhao2023pau}
+Qihao Zhao, Yangyu Huang, Wei Hu, et al. (2023). \textit{MixPro: Data Augmentation with MaskMix and Progressive Attention Labeling for Vision Transformer}. International Conference on Learning Representations.
+
+\bibitem{pan20249k5}
+C. Pan, Junran Peng, and Zhaoxiang Zhang (2024). \textit{Depth-Guided Vision Transformer With Normalizing Flows for Monocular 3D Object Detection}. IEEE/CAA Journal of Automatica Sinica.
+
+\bibitem{huan202345b}
+Sha Huan, Zhaoyue Wang, Xiaoqiang Wang, et al. (2023). \textit{A lightweight hybrid vision transformer network for radar-based human activity recognition}. Scientific Reports.
+
+\bibitem{belal2023x1u}
+Mohamad Mulham Belal, and Dr. Divya Meena Sundaram (2023). \textit{Global-Local Attention-Based Butterfly Vision Transformer for Visualization-Based Malware Classification}. IEEE Access.
+
+\bibitem{li20238ti}
+Yanjing Li, Sheng Xu, Mingbao Lin, et al. (2023). \textit{Bi-ViT: Pushing the Limit of Vision Transformer Quantization}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{huo2023e5h}
+Yingzi Huo, Kai Jin, Jiahong Cai, et al. (2023). \textit{Vision Transformer (ViT)-based Applications in Image Classification}. 2023 IEEE 9th Intl Conference on Big Data Security on Cloud (BigDataSecurity), IEEE Intl Conference on High Performance and Smart Computing, (HPSC) and IEEE Intl Conference on Intelligent Data and Security (IDS).
+
+\bibitem{kim2023cvz}
+Jiseob Kim, Kyuhong Shim, Junhan Kim, et al. (2023). \textit{Vision Transformer-Based Feature Extraction for Generalized Zero-Shot Learning}. IEEE International Conference on Acoustics, Speech, and Signal Processing.
+
+\bibitem{fan2023whi}
+Chunyu Fan, Q. Su, Zhifeng Xiao, et al. (2023). \textit{ViT-FRD: A Vision Transformer Model for Cardiac MRI Image Segmentation Based on Feature Recombination Distillation}. IEEE Access.
+
+\bibitem{zhao2023rle}
+Kai Zhao, Ruitao Lu, Siyu Wang, et al. (2023). \textit{ST-YOLOA: a Swin-transformer-based YOLO model with an attention mechanism for SAR ship detection under complex background}. Frontiers in Neurorobotics.
+
+\bibitem{xie20234ve}
+Tao Xie, Kun Dai, Zhiqiang Jiang, et al. (2023). \textit{ViT-MVT: A Unified Vision Transformer Network for Multiple Vision Tasks}. IEEE Transactions on Neural Networks and Learning Systems.
+
+\bibitem{li20233lv}
+Gary Y. Li, Junyu Chen, Se-In Jang, et al. (2023). \textit{SwinCross: Cross-modal Swin Transformer for Head-and-Neck Tumor Segmentation in PET/CT Images}. Medical Physics (Lancaster).
+
+\bibitem{ma2023qek}
+Xiaochen Ma, Bo Du, Zhuohang Jiang, et al. (2023). \textit{IML-ViT: Benchmarking Image Manipulation Localization by Vision Transformer}. Unpublished manuscript.
+
+\bibitem{tanimola20246cv}
+Oluwatosin Tanimola, Olamilekan Shobayo, O. Popoola, et al. (2024). \textit{Breast Cancer Classification Using Fine-Tuned SWIN Transformer Model on Mammographic Images}. Analytics.
+
+\bibitem{chen2023xxw}
+Tiansheng Chen, and L. Mo (2023). \textit{Swin-Fusion: Swin-Transformer with Feature Fusion for Human Action Recognition}. Neural Processing Letters.
+
+\bibitem{ranjan20243bn}
+Navin Ranjan, and Andreas E. Savakis (2024). \textit{LRP-QViT: Mixed-Precision Vision Transformer Quantization via Layer-wise Relevance Propagation}. arXiv.org.
+
+\bibitem{fu20232q3}
+Xiangqu Fu, Qirui Ren, Hao Wu, et al. (2023). \textit{P3 ViT: A CIM-Based High-Utilization Architecture With Dynamic Pruning and Two-Way Ping-Pong Macro for Vision Transformer}. IEEE Transactions on Circuits and Systems Part 1: Regular Papers.
+
+\bibitem{shi20235zy}
+Chaojun Shi, Shiwei Zhao, Kecheng Zhang, et al. (2023). \textit{Face-based age estimation using improved Swin Transformer with attention-based convolution}. Frontiers in Neuroscience.
+
+\bibitem{deressa2023lrl}
+Deressa Wodajo Deressa, Hannes Mareen, Peter Lambert, et al. (2023). \textit{GenConViT: Deepfake Video Detection Using Generative Convolutional Vision Transformer}. Applied Sciences.
+
+\bibitem{aburass2023qpf}
+Sanad Aburass, and O. Dorgham (2023). \textit{Performance Evaluation of Swin Vision Transformer Model using Gradient Accumulation Optimization Technique}. arXiv.org.
+
+\bibitem{hassija2025wq3}
+Vikas Hassija, Balamurugan Palanisamy, Arpita Chatterjee, et al. (2025). \textit{Transformers for Vision: A Survey on Innovative Methods for Computer Vision}. IEEE Access.
+
+\bibitem{huang20238er}
+Yihang Huang, and Wan Li (2023). \textit{Resizer Swin Transformer-Based Classification Using sMRI for Alzheimer’s Disease}. Applied Sciences.
+
+\bibitem{liu20230kl}
+Jianwei Liu, Shirui Lyu, Denis Hadjivelichkov, et al. (2023). \textit{ViT-A*: Legged Robot Path Planning using Vision Transformer A*}. IEEE-RAS International Conference on Humanoid Robots.
+
+\bibitem{he20238sy}
+Ru He, Xiaomin Wang, Huazhen Chen, et al. (2023). \textit{VHR-BirdPose: Vision Transformer-Based HRNet for Bird Pose Estimation with Attention Mechanism}. Electronics.
+
+\bibitem{guo2023dpo}
+Yangyang Guo, Wenhao Hong, Jiaxin Wu, et al. (2023). \textit{Vision-Based Cow Tracking and Feeding Monitoring for Autonomous Livestock Farming: The YOLOv5s-CA+DeepSORT-Vision Transformer}. IEEE robotics & automation magazine.
+
+\bibitem{wang2023j6b}
+Yun Wang, Shuai Shi, and Jie Chen (2023). \textit{Efficient Blind Hyperspectral Unmixing with Non-Local Spatial Information Based on Swin Transformer}. IEEE International Geoscience and Remote Sensing Symposium.
+
+\bibitem{gopal20237ol}
+Goutam Yelluru Gopal, and Maria A. Amer (2023). \textit{Mobile Vision Transformer-based Visual Object Tracking}. British Machine Vision Conference.
+
+\bibitem{liu2023awp}
+Zhiyang Liu, Pengyu Yin, and Zhenhua Ren (2023). \textit{An Efficient FPGA-Based Accelerator for Swin Transformer}. arXiv.org.
+
+\bibitem{fu20228zq}
+Zujun Fu (2022). \textit{Vision Transformer: Vit and its Derivatives}. arXiv.org.
+
+\bibitem{sahoo20223yl}
+P. Sahoo, S. Saha, S. Mondal, et al. (2022). \textit{Vision Transformer Based COVID-19 Detection Using Chest CT-scan images}. 2022 IEEE-EMBS International Conference on Biomedical and Health Informatics (BHI).
+
+\bibitem{ganz20249zr}
+Roy Ganz, Yair Kittenplon, Aviad Aberdam, et al. (2024). \textit{Question Aware Vision Transformer for Multimodal Reasoning}. Computer Vision and Pattern Recognition.
+
+\bibitem{paal2024no4}
+Ishak Paçal, and Ismail Kunduracioglu (2024). \textit{Data-Efficient Vision Transformer Models for Robust Classification of Sugarcane}. Journal of Soft Computing and Decision Analytics.
+
+\bibitem{hassan20243qi}
+Nada M. Hassan, Safwat Hamad, and Khaled Mahar (2024). \textit{YOLO-based CAD framework with ViT transformer for breast mass detection and classification in CESM and FFDM images}. Neural computing & applications (Print).
+
+\bibitem{k2024wyx}
+Abinaya K, and S. B (2024). \textit{A Deep Learning-Based Approach for Cervical Cancer Classification Using 3D CNN and Vision Transformer.}. Journal of imaging informatics in medicine.
+
+\bibitem{nguyen2024id9}
+Xuan-Bac Nguyen, Hoang-Quan Nguyen, Samuel Yen-Chi Chen, et al. (2024). \textit{QClusformer: A Quantum Transformer-based Framework for Unsupervised Visual Clustering}. International Conference on Quantum Computing and Engineering.
+
+\bibitem{almohimeed2024jq1}
+Abdulaziz Almohimeed, Mohamed Shehata, Nora El-Rashidy, et al. (2024). \textit{ViT-PSO-SVM: Cervical Cancer Predication Based on Integrating Vision Transformer with Particle Swarm Optimization and Support Vector Machine}. Bioengineering.
+
+\bibitem{hao202488z}
+Chao Hao, Zitong Yu, Xin Liu, et al. (2024). \textit{A Simple Yet Effective Network Based on Vision Transformer for Camouflaged Object and Salient Object Detection}. IEEE Transactions on Image Processing.
+
+\bibitem{yao20244li}
+Haiming Yao, Wei Luo, Jianan Lou, et al. (2024). \textit{Scalable Industrial Visual Anomaly Detection With Partial Semantics Aggregation Vision Transformer}. IEEE Transactions on Instrumentation and Measurement.
+
+\bibitem{dong20245zz}
+Peiyan Dong, Jinming Zhuang, Zhuoping Yang, et al. (2024). \textit{EQ-ViT: Algorithm-Hardware Co-Design for End-to-End Acceleration of Real-Time Vision Transformer Inference on Versal ACAP Architecture}. IEEE Transactions on Computer-Aided Design of Integrated Circuits and Systems.
+
+\bibitem{zhang2024jha}
+Haoyu Zhang, Raghavendra Ramachandra, Kiran B. Raja, et al. (2024). \textit{Generalized Single-Image-Based Morphing Attack Detection Using Deep Representations from Vision Transformer}. 2024 IEEE/CVF Conference on Computer Vision and Pattern Recognition Workshops (CVPRW).
+
+\bibitem{boukhari2024gbb}
+D. E. Boukhari (2024). \textit{Facial Beauty Prediction Based on Vision Transformer}. International Journal of Electrical and Electronic Engineering &amp; Telecommunications.
+
+\bibitem{song2025idg}
+Huaxiang Song, Junping Xie, Yunyang Wang, et al. (2025). \textit{Optimized Data Distribution Learning for Enhancing Vision Transformer‐Based Object Detection in Remote Sensing Images}. Photogrammetric Record.
+
+\bibitem{zhou2024tps}
+Heng Zhou, Jingmin Yang, Shanghui Deng, et al. (2024). \textit{VTIL: A multi-layer indoor location algorithm for RSSI images based on vision transformer}. Engineering Research Express.
+
+\bibitem{abbaoui20244wy}
+Wafae Abbaoui, Sara Retal, Soumia Ziti, et al. (2024). \textit{Automated Ischemic Stroke Classification from MRI Scans: Using a Vision Transformer Approach}. Journal of Clinical Medicine.
+
+\bibitem{yang2024nyx}
+Xiangyang Yang, Dan Zeng, Xucheng Wang, et al. (2024). \textit{Adaptively Bypassing Vision Transformer Blocks for Efficient Visual Tracking}. Pattern Recognition.
+
+\bibitem{yang20241kf}
+Zhiding Yang, and Weimin Huang (2024). \textit{SWHFormer: A Vision Transformer for Significant Wave Height Estimation From Nautical Radar Images}. IEEE Transactions on Geoscience and Remote Sensing.
+
+\bibitem{hu202434n}
+Youbing Hu, Yun Cheng, Anqi Lu, et al. (2024). \textit{LF-ViT: Reducing Spatial Redundancy in Vision Transformer for Efficient Image Recognition}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{yang20244dq}
+Bin Yang, Binghan Zhang, Yilong Han, et al. (2024). \textit{Vision transformer-based visual language understanding of the construction process}. Alexandria Engineering Journal.
+
+\bibitem{keresh20249rl}
+Arman Keresh, and Pakizar Shamoi (2024). \textit{Liveness Detection in Computer Vision: Transformer-Based Self-Supervised Learning for Face Anti-Spoofing}. IEEE Access.
+
+\bibitem{hu20247km}
+Yuxin Hu, Han Zhou, Ning Cao, et al. (2024). \textit{Synthetic CT generation based on CBCT using improved vision transformer CycleGAN}. Scientific Reports.
+
+\bibitem{alsulami2024ffb}
+Abdulkream A Alsulami, Aishah Albarakati, A. A. Al-Ghamdi, et al. (2024). \textit{Identification of Anomalies in Lung and Colon Cancer Using Computer Vision-Based Swin Transformer with Ensemble Model on Histopathological Images}. Bioengineering.
+
+\bibitem{yang2024wxl}
+Lu Yang, Songtao Guo, Defang Liu, et al. (2024). \textit{ConViTML: A Convolutional Vision Transformer-Based Meta-Learning Framework for Real-Time Edge Network Traffic Classification}. IEEE Transactions on Network and Service Management.
+
+\bibitem{p2024nbn}
+Venkatasaichandrakanth P, and I. M (2024). \textit{GNViT- An enhanced image-based groundnut pest classification using Vision Transformer (ViT) model}. PLoS ONE.
+
+\bibitem{wu2024tsm}
+Xinhao Wu, Sirui Xu, Ming-Yu Gao, et al. (2024). \textit{A new ECT image reconstruction algorithm based on Vision transformer (ViT)}. Flow Measurement and Instrumentation.
+
+\bibitem{dong2024bm2}
+Qiwei Dong, Xiaoru Xie, and Zhongfeng Wang (2024). \textit{SWAT: An Efficient Swin Transformer Accelerator Based on FPGA}. Asia and South Pacific Design Automation Conference.
+
+\bibitem{swapno2025y2b}
+S. M. M. Swapno, S. N. Nobel, Md Babul Islam, et al. (2025). \textit{ViT-SENet-Tom: machine learning-based novel hybrid squeeze-excitation network and vision transformer framework for tomato fruits classification}. Neural computing & applications (Print).
+
+\bibitem{yoo2024u1f}
+Dayeon Yoo, Jeesu Kim, and Jinwoo Yoo (2024). \textit{FSwin Transformer: Feature-Space Window Attention Vision Transformer for Image Classification}. IEEE Access.
+
+\bibitem{he2024m6j}
+Kan He, Wei Zhang, Xuejun Zong, et al. (2024). \textit{Network Intrusion Detection Based on Feature Image and Deformable Vision Transformer Classification}. IEEE Access.
+
+\bibitem{zhang202489a}
+Zichen Zhang, Jing Li, C. Cai, et al. (2024). \textit{Bearing Fault Diagnosis Based on Image Information Fusion and Vision Transformer Transfer Learning Model}. Applied Sciences.
+
+\bibitem{zhang2024pd6}
+Yueqi Zhang, Lichen Feng, Hongwei Shan, et al. (2024). \textit{A 109-GOPs/W FPGA-Based Vision Transformer Accelerator With Weight-Loop Dataflow Featuring Data Reusing and Resource Saving}. IEEE transactions on circuits and systems for video technology (Print).
+
+\bibitem{dong20242ow}
+Xinlong Dong, Peicheng Shi, Yueyue Tang, et al. (2024). \textit{Vehicle Classification Algorithm Based on Improved Vision Transformer}. World Electric Vehicle Journal.
+
+\bibitem{kayacan2024yy7}
+Yavuz Emre Kayacan, and I. Erer (2024). \textit{A Vision-Transformer-Based Approach to Clutter Removal in GPR: DC-ViT}. IEEE Geoscience and Remote Sensing Letters.
+
+\bibitem{liu20248jh}
+Jintao Liu, Alfredo Tolón Becerra, José Fernando Bienvenido-Barcena, et al. (2024). \textit{CFFI-Vit: Enhanced Vision Transformer for the Accurate Classification of Fish Feeding Intensity in Aquaculture}. Journal of Marine Science and Engineering.
+
+\bibitem{shi2024r44}
+Huihong Shi, Xin Cheng, Wendong Mao, et al. (2024). \textit{P2-ViT: Power-of-Two Post-Training Quantization and Acceleration for Fully Quantized Vision Transformer}. IEEE Transactions on Very Large Scale Integration (VLSI) Systems.
+
+\bibitem{xin2024ljt}
+Xinyue Xin, Ming Li, Yan Wu, et al. (2024). \textit{PolSAR-MPIformer: A Vision Transformer Based on Mixed Patch Interaction for Dual-Frequency PolSAR Image Adaptive Fusion Classification}. IEEE Journal of Selected Topics in Applied Earth Observations and Remote Sensing.
+
+\bibitem{zhou2024qty}
+Jian Zhou, Guochuan Zhao, and Yonglong Li (2024). \textit{Vison Transformer-Based Automatic Crack Detection on Dam Surface}. Water.
+
+\bibitem{monjezi2024tdt}
+Ehsan Monjezi, G. Akbarizadeh, and Karim Ansari-Asl (2024). \textit{RI-ViT: A Multi-Scale Hybrid Method Based on Vision Transformer for Breast Cancer Detection in Histopathological Images}. IEEE Access.
+
+\bibitem{baek2025h8e}
+Eu-tteum Baek (2025). \textit{Attention Score-Based Multi-Vision Transformer Technique for Plant Disease Classification}. Italian National Conference on Sensors.
+
+\bibitem{payne2024u8l}
+David L. Payne, Xuan Xu, Farshid Faraji, et al. (2024). \textit{Automated Detection of Cervical Spinal Stenosis and Cord Compression via Vision Transformer and Rules-Based Classification}. American Journal of Neuroradiology.
+
+\bibitem{qi2024rzy}
+Nan Qi, Yan Piao, Hao Zhang, et al. (2024). \textit{Seizure prediction based on improved vision transformer model for EEG channel optimization}. Computer Methods in Biomechanics and Biomedical Engineering.
+
+\bibitem{mercier2024063}
+J. Mercier, O. Ertz, and E. Bocher (2024). \textit{Quantifying Dwell Time With Location-based Augmented Reality: Dynamic AOI Analysis on Mobile Eye Tracking Data With Vision Transformer}. Journal of Eye Movement Research.
+
+\bibitem{sikkandar2024p0d}
+Mohamed Yacin Sikkandar, S. Sundaram, Ahmad Alassaf, et al. (2024). \textit{Utilizing adaptive deformable convolution and position embedding for colon polyp segmentation with a visual transformer}. Scientific Reports.
+
+\bibitem{hou2024e4y}
+Mingyang Hou, Zhiyong Huang, Zhi Yu, et al. (2024). \textit{CSwT-SR: Conv-Swin Transformer for Blind Remote Sensing Image Super-Resolution With Amplitude-Phase Learning and Structural Detail Alternating Learning}. IEEE Transactions on Geoscience and Remote Sensing.
+
+\bibitem{nfor2025o20}
+Kintoh Allen Nfor, Tagne Poupi Theodore Armand, Kenesbaeva Periyzat Ismaylovna, et al. (2025). \textit{An Explainable CNN and Vision Transformer-Based Approach for Real-Time Food Recognition}. Nutrients.
+
+\bibitem{xiang2024tww}
+Changcheng Xiang, Duofen Yin, Fei Song, et al. (2024). \textit{A Fast and Robust Safety Helmet Network Based on a Mutilscale Swin Transformer}. Buildings.
+
+\bibitem{tian20242kr}
+Yuan Tian, Jingxuan Zhu, Huang Yao, et al. (2024). \textit{Facial Expression Recognition Based on Vision Transformer with Hybrid Local Attention}. Applied Sciences.
+
+\bibitem{zhou2024r66}
+Nan Zhou, Mingming Xu, Biaoqun Shen, et al. (2024). \textit{ViT-UNet: A Vision Transformer Based UNet Model for Coastal Wetland Classification Based on High Spatial Resolution Imagery}. IEEE Journal of Selected Topics in Applied Earth Observations and Remote Sensing.
+
+\bibitem{taye20244db}
+Gizatie Desalegn Taye, Zewdie Habtie Sisay, Genet Worku Gebeyhu, et al. (2024). \textit{Thoracic computed tomography (CT) image-based identification and severity classification of COVID-19 cases using vision transformer (ViT)}. Discover Applied Sciences.
+
+\bibitem{alohali2024xwz}
+Manal Abdullah Alohali, Nora El-Rashidy, Saad Alaklabi, et al. (2024). \textit{Swin-GA-RF: genetic algorithm-based Swin Transformer and random forest for enhancing cervical cancer classification}. Frontiers in Oncology.
+
+\bibitem{gao20246ks}
+Zhenchang Gao, Shanshan Chen, Jinxian Huang, et al. (2024). \textit{Real-time quantitative detection of hydrocolloid adulteration in meat based on Swin Transformer and smartphone.}. Journal of Food Science.
+
+\bibitem{du2024s3t}
+Yufeng Du, Rongyun Zhang, Peicheng Shi, et al. (2024). \textit{ST-LaneNet: Lane Line Detection Method Based on Swin Transformer and LaneNet}. Chinese Journal of Mechanical Engineering.
+
+\bibitem{tiwari2024jm9}
+R. Tiwari, Himani Maheshwari, Vinay Gautam, et al. (2024). \textit{CurrencyNet: A Vision Transformer-Based Approach for Indian Currency Note Classification with Optimizer Exploration}. 2024 2nd International Conference on Intelligent Data Communication Technologies and Internet of Things (IDCIoT).
+
+\bibitem{du20248pd}
+Chunlai Du, Yanhui Guo, and Yuhang Zhang (2024). \textit{A Deep Learning-Based Intrusion Detection Model Integrating Convolutional Neural Network and Vision Transformer for Network Traffic Attack in the Internet of Things}. Electronics.
+
+\bibitem{chaurasia2024tri}
+A. Chaurasia, H. C. Harris, P. W. Toohey, et al. (2024). \textit{A generalised vision transformer-based self-supervised model for diagnosing and grading prostate cancer using histological images}. medRxiv.
+
+\bibitem{karagz2024ukp}
+Meryem Altin Karagöz, Özkan U. Nalbantoglu, and Geoffrey C. Fox (2024). \textit{Residual Vision Transformer (ResViT) Based Self-Supervised Learning Model for Brain Tumor Classification}. arXiv.org.
+
+\bibitem{lee2025r01}
+Hyojin Lee, You Rim Choi, Hyun Kyung Lee, et al. (2025). \textit{Explainable vision transformer for automatic visual sleep staging on multimodal PSG signals}. npj Digit. Medicine.
+
+\bibitem{dmen2024cb9}
+Sezer Dümen, Esra Kavalcı Yılmaz, Kemal Adem, et al. (2024). \textit{Performance of vision transformer and swin transformer models for lemon quality classification in fruit juice factories}. European Food Research and Technology.
+
+\bibitem{ferdous2024f89}
+Gazi Jannatul Ferdous, Khaleda Akhter Sathi, Md. Azad Hossain, et al. (2024). \textit{SPT-Swin: A Shifted Patch Tokenization Swin Transformer for Image Classification}. IEEE Access.
+
+\bibitem{akan2024izq}
+Sara Akan, Songül Varli, and Mohammad Alfrad Nobel Bhuiyan (2024). \textit{An enhanced Swin Transformer for soccer player reidentification}. Scientific Reports.
+
+\bibitem{nahak20242mv}
+Pradeep Nahak, D. K. Pratihar, and A. K. Deb (2024). \textit{Tomato maturity stage prediction based on vision transformer and deep convolution neural networks}. International Journal of Hybrid Intelligent Systems.
+
+\bibitem{han2024f96}
+Yufei Han, Haoyuan Chen, Linwei Yao, et al. (2024). \textit{MAT-VIT:A Vision Transformer with MAE-Based Self-Supervised Auxiliary Task for Medical Image Classification}. International Conference on Computer Supported Cooperative Work in Design.
+
+\bibitem{zhao2024p8o}
+Xiaoping Zhao, Jingjing Xu, Zhichen Lin, et al. (2024). \textit{BiCFormer: Swin Transformer based model for classification of benign and malignant pulmonary nodules}. Measurement science and technology.
+
+\bibitem{li2024qva}
+Tao Li, and Yi Zhang (2024). \textit{A Contour-Aware Monocular Depth Estimation Network Using Swin Transformer and Cascaded Multiscale Fusion}. IEEE Sensors Journal.
+
+\bibitem{wang2024ueo}
+Yancheng Wang, and Yingzhen Yang (2024). \textit{Efficient Visual Transformer by Learnable Token Merging}. IEEE Transactions on Pattern Analysis and Machine Intelligence.
+
+\bibitem{qi2024f5d}
+Haochen Qi, Xiangwei Kong, Zhibo Jin, et al. (2024). \textit{A Vision-Transformer-Based Convex Variational Network for Bridge Pavement Defect Segmentation}. IEEE transactions on intelligent transportation systems (Print).
+
+\bibitem{zhu2024l2i}
+Shaojun Zhu, Guotao Chen, Hongguang Chen, et al. (2024). \textit{Squeeze-and-excitation-attention-based mobile vision transformer for grading recognition of bladder prolapse in pelvic MRI images.}. Medical Physics (Lancaster).
+
+\bibitem{roy2024r9y}
+Barsha Roy, Md. Farukuzzaman Faruk, Md Nazmul Islam, et al. (2024). \textit{A Cutting-Edge Ensemble of Vision Transformer and ResNet101v2 Based Transfer Learning for the Precise Classification of Leukemia Sub-types from Peripheral Blood Smear Images}. International Conference on Electrical Engineering and Information Communication Technology.
+
+\bibitem{wang2024w4u}
+Chunbao Wang, Xiangyu Wang, Zeyu Gao, et al. (2024). \textit{Multiple serous cavity effusion screening based on smear images using vision transformer}. Scientific Reports.
+
+\bibitem{pan202424q}
+Guangliang Pan, Qihui Wu, Bo Zhou, et al. (2024). \textit{Spectrum Prediction With Deep 3D Pyramid Vision Transformer Learning}. IEEE Transactions on Wireless Communications.
+
+\bibitem{du2024lml}
+Haiying Du, Jie Shen, Jing Wang, et al. (2024). \textit{Vision transformer-based electronic nose for enhanced mixed gases classification}. Measurement science and technology.
+
+\bibitem{luo202432g}
+Kevin Luo, and Ie-bin Lian (2024). \textit{Building a Vision Transformer-Based Damage Severity Classifier with Ground-Level Imagery of Homes Affected by California Wildfires}. Fire.
+
+\bibitem{elnabi2025psy}
+Samy Abd El-Nabi, Ahmed F. Ibrahim, El-Sayed M. El-Rabaie, et al. (2025). \textit{Driver Drowsiness Detection Using Swin Transformer and Diffusion Models for Robust Image Denoising}. IEEE Access.
+
+\bibitem{ergn2025r6s}
+Ebru Ergün (2025). \textit{High precision banana variety identification using vision transformer based feature extraction and support vector machine}. Scientific Reports.
+
+\bibitem{mohsin2025gup}
+Muhammad Ahmed Mohsin, Muhammad Jazib, Zeeshan Alam, et al. (2025). \textit{Vision Transformer Based Semantic Communications for Next Generation Wireless Networks}. 2025 IEEE International Conference on Communications Workshops (ICC Workshops).
+
+\bibitem{marcos2024oo2}
+Luella Marcos, Paul S. Babyn, and J. Alirezaie (2024). \textit{Pure Vision Transformer (CT-ViT) with Noise2Neighbors Interpolation for Low-Dose CT Image Denoising.}. Journal of imaging informatics in medicine.
+
+\bibitem{peng2024kal}
+Xianhui Peng, Chenchen Xu, Peng Zhang, et al. (2024). \textit{Computer vision classification detection of chicken parts based on optimized Swin-Transformer}. CyTA - Journal of Food.
+
+\bibitem{urrea20245k4}
+Claudio Urrea, and Maximiliano Vélez (2024). \textit{Enhancing Autonomous Visual Perception in Challenging Environments: Bilateral Models with Vision Transformer and Multilayer Perceptron for Traversable Area Detection}. Technologies.
+
+\bibitem{zhang2024b7v}
+Jinnian Zhang, Weijie Chen, Tanmayee Joshi, et al. (2024). \textit{BAE-ViT: An Efficient Multimodal Vision Transformer for Bone Age Estimation}. Tomography.
+
+\bibitem{saleem20249yl}
+Hira Saleem, Flora Salim, and Cormac Purcell (2024). \textit{STC-ViT: Spatio Temporal Continuous Vision Transformer for Weather Forecasting}. Unpublished manuscript.
+
+\bibitem{zhou2024toe}
+Yang Zhou, Cai Yang, Ping Wang, et al. (2024). \textit{ViT-FuseNet: Multimodal Fusion of Vision Transformer for Vehicle-Infrastructure Cooperative Perception}. IEEE Access.
+
+\bibitem{lijin2024mhk}
+P. Lijin, M. Ullah, Anuja Vats, et al. (2024). \textit{PolySegNet: improving polyp segmentation through swin transformer and vision transformer fusion.}. Biomedical Engineering Letters.
+
+\bibitem{huang2024htf}
+Lan Huang, Jiong Ma, Hui Yang, et al. (2024). \textit{Research and implementation of multi-disease diagnosis on chest X-ray based on vision transformer}. Quantitative Imaging in Medicine and Surgery.
+
+\bibitem{chen2024cha}
+Chuanyu Chen, Yi Luo, Qiuyang Hou, et al. (2024). \textit{A vision transformer-based deep transfer learning nomogram for predicting lymph node metastasis in lung adenocarcinoma.}. Medical Physics (Lancaster).
+
+\bibitem{shahin2024o1c}
+Mohammed Shahin, and Mohamed Deriche (2024). \textit{A Novel Framework based on a Hybrid Vision Transformer and Deep Neural Network for Deepfake Detection}. International Multi-Conference on Systems, Signals & Devices.
+
+\bibitem{xu2024wux}
+Yang Xu, and Zuqiang Meng (2024). \textit{Interpretable vision transformer based on prototype parts for COVID-19 detection}. IET Image Processing.
+
+\bibitem{park2024d7y}
+Joohyuk Park, Yong-Nam Oh, Yongjune Kim, et al. (2024). \textit{Vision Transformer-Based Semantic Communications With Importance-Aware Quantization}. IEEE Internet of Things Journal.
+
+\bibitem{elharrouss20252ng}
+O. Elharrouss, Y. Akbari, Noor Almaadeed, et al. (2025). \textit{PDC-ViT : Source Camera Identification using Pixel Difference Convolution and Vision Transformer}. Neural computing & applications (Print).
+
+\bibitem{du2024i6n}
+Yongqiang Du, Haoran Liu, Shengjie He, et al. (2024). \textit{InViT: GAN Inversion-Based Vision Transformer for Blind Image Inpainting}. IEEE Access.
+
+\bibitem{guo2024o8u}
+Qianyu Guo, Ziqing Yu, Jiaming Fu, et al. (2024). \textit{Force-EvT: A Closer Look at Robotic Gripper Force Measurement with Event-Based Vision Transformer}. 2024 6th International Conference on Reconfigurable Mechanisms and Robots (ReMAR).
+
+\bibitem{zhang2024g0m}
+Kunpeng Zhang, Mengyan Lyu, Xinxin Guo, et al. (2024). \textit{Temporal Shift Module-Based Vision Transformer Network for Action Recognition}. IEEE Access.
+
+\bibitem{xu2025tku}
+Lu Xu, Rui Shi, and Yijia Zhang (2025). \textit{A Radio Frequency Sensor-Based UAV Detection and Identification System Using Improved Vision Transformer-Based Model}. IEEE Sensors Journal.
+
+\bibitem{li2024m4t}
+Yang Li, Doudou Zhang, and Jianli Xiao (2024). \textit{A New Method for Vehicle Logo Recognition Based on Swin Transformer}. arXiv.org.
+
+\end{thebibliography}
+
+\end{document}
