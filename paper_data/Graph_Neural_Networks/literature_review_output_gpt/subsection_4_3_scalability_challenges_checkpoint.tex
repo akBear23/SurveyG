@@ -1,0 +1,20 @@
+\subsection*{Scalability Challenges}
+
+Graph Neural Networks (GNNs) have emerged as a powerful tool for learning from graph-structured data, yet they face significant scalability challenges when applied to large-scale graphs. As the size of the graph increases, traditional GNN architectures struggle with computational and memory limitations, particularly due to the exponential growth of the receptive field and the need for efficient information propagation.
+
+A pioneering work by Ying et al. (2018) introduced PinSage, which tackled the scalability issue of Graph Convolutional Networks (GCNs) in web-scale recommender systems through innovations such as on-the-fly convolutions and importance pooling \cite{ying20189jc}. This approach allowed GNNs to efficiently handle billions of nodes and edges by dynamically sampling neighborhoods, thereby reducing the memory footprint associated with full graph Laplacians. However, while PinSage demonstrated significant improvements, it still relied on a centralized architecture, which could limit scalability in distributed environments.
+
+Fan et al. (2019) further advanced the scalability of GNNs by proposing GraphRec, a framework that integrates dual graphs for social recommendation tasks. This model utilized attention mechanisms to manage heterogeneous social relations and opinions, addressing the complexity of real-world data \cite{fan2019k6u}. Although GraphRec improved user-item interaction modeling, it highlighted the need for GNNs to adapt to varying graph structures and user behaviors, which can be computationally intensive.
+
+Hu et al. (2019) introduced strategies for pre-training GNNs to mitigate data scarcity and negative transfer, enhancing their robustness for downstream tasks \cite{hu2019r47}. This work emphasized the importance of efficient data utilization in large-scale settings, yet it did not directly address the inherent scalability limitations of GNN architectures themselves.
+
+Klicpera et al. (2018) proposed the Predict then Propagate (PPNP) model, which decouples prediction from propagation using Personalized PageRank, allowing for deeper propagation without increasing model complexity \cite{klicpera20186xu}. This innovation provided a pathway to extend the receptive field of GNNs while maintaining computational efficiency, yet it still faced challenges in scaling to extremely large graphs due to the underlying message-passing framework.
+
+The introduction of higher-order GNNs, as seen in the work of Morris et al. (2018), aimed to enhance the expressive power of GNNs by capturing complex structures through k-tuples \cite{morris20185sd}. However, this approach often resulted in increased computational costs, making it less feasible for large-scale applications.
+
+Recent advancements, such as the Substructure Aware Graph Neural Networks (SAGNN) proposed by Zeng et al. (2023), leverage subgraph extraction methods to enhance the expressiveness of GNNs while maintaining efficiency \cite{zeng20237gv}. By dynamically extracting relevant subgraphs, SAGNNs can effectively model complex relationships without incurring the full computational burden of traditional GNNs.
+
+Despite these innovations, unresolved issues remain regarding the trade-off between expressiveness and scalability. The challenge of efficiently propagating information in deep GNNs continues to be a critical area of research. Future directions may involve exploring hybrid architectures that combine the strengths of both spectral and spatial approaches, as well as developing more sophisticated sampling techniques that can adaptively manage the computational load associated with large-scale graphs.
+
+In conclusion, while significant strides have been made in addressing the scalability challenges of GNNs, the need for more efficient architectures and methods remains paramount. The ongoing exploration of hybrid models, advanced sampling techniques, and adaptive learning strategies will be crucial in enabling GNNs to meet the demands of modern data environments.
+```
