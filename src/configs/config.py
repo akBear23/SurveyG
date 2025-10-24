@@ -13,9 +13,10 @@ from pathlib import Path
 # OpenAI Configuration
 REMOTE_URL = "https://api.openai.com/v1/chat/completions"
 # TOKEN = "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"
-TOKEN="tmp"
+TOKEN="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"
+# TOKEN = "tmp"
 DEFAULT_CHATAGENT_MODEL = "gpt-4o-mini"
-ADVANCED_CHATAGENT_MODEL = "gpt-4o"
+# ADVANCED_CHATAGENT_MODEL = "gpt-4o"
 
 # Gemini Configuration
 load_dotenv(Path(".env"))
@@ -25,7 +26,7 @@ DEFAULT_GEMINI_MODEL = "gemini-2.5-flash"
 ADVANCED_GEMINI_MODEL = "gemini-2.5-pro"
 
 # LLM Provider Selection ("openai" or "gemini")
-LLM_PROVIDER = "gemini"
+LLM_PROVIDER = "openai"
 
 # Model mapping between providers
 MODEL_MAPPING = {

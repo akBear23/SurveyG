@@ -268,10 +268,11 @@ class LiteratureReviewGenerator:
                         result['summary'] = self.id2node_info[node_id].get('summary')
                         result['year'] = self.id2node_info[node_id].get('published_date')
                         all_results.append(result)
-
             except Exception as e:
                 print(f"Error retrieving papers for query '{query}': {e}")
                 continue
+        print(f'Collected {len(all_results)} additional papers - reduce to 15 there are too many')
+        all_results = all_results[:15]
         all_results = self.filter_additional_papers_with_llm_check(subsection_title, subsection_focus, current_content, weaknesses, all_results)
         return all_results
     #endregion

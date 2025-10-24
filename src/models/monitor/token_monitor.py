@@ -26,6 +26,7 @@ class TokenMonitor(Base):
             self.pricing = self._load_pricing_config()
 
         self.record_file: Path = OUTPUT_DIR / task_id / "metrics" / "token_monitor.json"
+        print("record_file: ", self.record_file)
         self.record_file.parent.mkdir(parents=True, exist_ok=True)
 
         self.record: Dict[str, Dict[str, list]] = {}

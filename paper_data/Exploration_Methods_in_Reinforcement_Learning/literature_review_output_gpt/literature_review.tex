@@ -1,0 +1,1034 @@
+\documentclass[12pt,a4paper]{article}
+    \usepackage[utf8]{inputenc}
+    \usepackage[T1]{fontenc}
+    \usepackage{amsmath,amsfonts,amssymb}
+    \usepackage{graphicx}
+    \usepackage[margin=2.5cm]{geometry}
+    \usepackage{setspace}
+    \usepackage{natbib}
+    \usepackage{url}
+    \usepackage{hyperref}
+    \usepackage{booktabs}
+    \usepackage{longtable}
+    \usepackage{array}
+    \usepackage{multirow}
+    \usepackage{wrapfig}
+    \usepackage{float}
+    \usepackage{colortbl}
+    \usepackage{pdflscape}
+    \usepackage{tabu}
+    \usepackage{threeparttable}
+    \usepackage{threeparttablex}
+    \usepackage[normalem]{ulem}
+    \usepackage{makecell}
+    \usepackage{xcolor}
+
+    % Set line spacing
+    \doublespacing
+
+    % Configure hyperref
+    \hypersetup{
+        colorlinks=true,
+        linkcolor=blue,
+        filecolor=magenta,      
+        urlcolor=cyan,
+        citecolor=red,
+    }
+
+    % Title and author information
+    \title{A Comprehensive Literature Review with Self-Reflection}
+    \author{Literature Review}
+    \date{\today}
+
+    \begin{document}
+
+    \maketitle
+
+    % Abstract (optional)
+    \begin{abstract}
+    This literature review provides a comprehensive analysis of recent research in the field. The review synthesizes findings from 240 research papers, identifying key themes, methodological approaches, and future research directions.
+    \end{abstract}
+
+    \newpage
+    \tableofcontents
+    \newpage
+
+    \label{sec:introduction}
+
+\section{Introduction}
+\label{sec:introduction}
+
+\subsection{Importance of Exploration in RL}
+\label{sec:1\_1\_importance\_of\_exploration\_in\_rl}
+
+Exploration plays a critical role in Reinforcement Learning (RL), as it enables agents to discover new strategies and optimize their performance in uncertain environments. The exploration-exploitation dilemma is a central challenge in RL, where agents must balance the need to explore new actions and states against the need to exploit known rewarding actions. Insufficient exploration can lead to suboptimal policy learning and hinder an agent's ability to generalize across tasks, underscoring the necessity for effective exploration strategies.
+
+A foundational approach to exploration in RL is presented by Sutton et al. in their seminal work on Dyna-Q, which integrates learning, planning, and reacting based on expectation models \cite{sutton1990integrated}. This model-based approach allows agents to use learned models of the environment to simulate experiences, thus enhancing exploration efficiency. However, the reliance on accurate models can limit scalability in high-dimensional spaces, as highlighted by Kearns and Singh, who introduced the E3 algorithm, providing theoretical guarantees for efficient exploration in finite Markov Decision Processes (MDPs) \cite{kearns2002near}. Their work emphasizes the principle of "optimism in the face of uncertainty," where agents assume unknown states yield maximal rewards to encourage exploration.
+
+Building on these model-based foundations, Strehl et al. proposed R-Max, which simplifies exploration strategies while maintaining theoretical efficiency guarantees \cite{strehl2009reinforcement}. While these early explorations laid the groundwork for efficient exploration in tabular settings, they often struggle in continuous or high-dimensional state spaces, where learning a complete model is intractable. This limitation has driven research towards intrinsic motivation and novelty-based exploration strategies.
+
+Intrinsic motivation approaches, such as those proposed by Schmidhuber, emphasize the use of internal rewards to drive exploration \cite{schmidhuber1991reinforcement}. This concept was further refined by Thrun, who introduced count-based exploration bonuses to encourage agents to visit less-explored states \cite{thrun1992efficient}. Recent advancements, such as Bellemare et al.'s work on pseudo-counts, extend these ideas to high-dimensional environments, demonstrating effective exploration in deep RL settings \cite{bellemare2016unifying}. Pathak et al. and Burda et al. introduced curiosity-driven exploration methods, where agents are incentivized to explore based on prediction errors in learned models, addressing challenges like the "noisy TV" problem \cite{pathak2017curiosity, burda2018exploration}. These intrinsic methods have shown promise in fostering exploration without the need for explicit external rewards, although they still face issues related to noisy signals and the potential for uninteresting exploration.
+
+More recent contributions have focused on adaptive exploration strategies in dynamic environments. Ding et al. introduced Dual-Adaptive $\epsilon$-greedy exploration, specifically designed for Incremental Reinforcement Learning, where state and action spaces continuously expand \cite{ding2023whs}. This approach combines a meta-policy that dynamically adjusts exploration probability based on state uncertainty with an explorer that prioritizes less-tried actions. This dual-adaptive mechanism effectively addresses the exploration inefficiencies observed in traditional methods, particularly in environments that evolve over time.
+
+Despite significant advancements, challenges remain in achieving efficient exploration across diverse and complex environments. Issues such as the balance between intrinsic and extrinsic rewards, the scalability of exploration strategies, and the need for robust generalization in unseen states continue to be areas of active research. Future directions may involve integrating insights from both model-based and intrinsic motivation approaches to develop more sophisticated exploration strategies that can adapt to varying levels of uncertainty and complexity in real-world applications.
+
+In conclusion, exploration is a fundamental aspect of Reinforcement Learning that has evolved through various methodologies, from model-based approaches to intrinsic motivation strategies. While significant progress has been made, ongoing challenges highlight the need for innovative solutions that can effectively navigate the exploration-exploitation trade-off in increasingly complex environments.
+``\texttt{
+\subsection{Overview of Exploration Methods}
+\label{sec:1\_2\_overview\_of\_exploration\_methods}
+
+In the realm of Reinforcement Learning (RL), exploration methods are critical for enabling agents to effectively learn optimal policies in complex environments. This subsection provides a high-level overview of the various exploration methods developed in the field, categorizing them into foundational approaches such as model-based and count-based exploration, as well as advanced techniques like intrinsic motivation and adaptive exploration strategies. The evolution of these methods illustrates their adaptation to the challenges posed by high-dimensional and complex environments.
+
+The early work in model-based exploration laid the groundwork for efficient learning by integrating environmental models with planning. For instance, Sutton's Dyna-Q \cite{sutton1990} introduced a framework where agents could learn from both real and simulated experiences, significantly enhancing the learning process. This was further advanced by Singh's hierarchical reinforcement learning \cite{singh1995}, which addressed the challenge of large state spaces by employing abstract models, allowing for a more scalable approach to learning. However, these foundational methods often struggled with the accuracy of learned models, which can limit their effectiveness in dynamic environments.
+
+As the field progressed, a new cluster of exploration methods emerged, characterized by a focus on theoretical guarantees and sample efficiency. Kearns et al. \cite{kearns1999} pioneered the concept of PAC-RL, demonstrating that near-optimal policies could be learned in polynomial time. Building on this, Kakade's R-max algorithm \cite{kakade2003} simplified the exploration process by assuming that unknown states are maximally rewarding, providing strong theoretical guarantees for sample efficiency. Strehl et al. \cite{strehl2009} further refined these ideas with UCRL2, addressing the exploration of environments with sparse rewards. While these methods offered robust theoretical frameworks, they often faced challenges in scalability and computational demands when applied to larger or continuous state spaces.
+
+In response to the limitations of both model-based and theoretically grounded methods, intrinsic motivation and novelty-driven exploration techniques gained prominence. Early works by Schmidhuber \cite{schmidhuber1991} and Thrun \cite{thrun1992} laid the foundation for using internal reward signals to guide exploration, particularly in sparse reward environments. Recent advancements, such as Bellemare et al.'s unification of count-based exploration and intrinsic motivation \cite{bellemare2016}, and Pathak et al.'s curiosity-driven exploration \cite{pathak2017}, have effectively scaled these ideas to deep reinforcement learning contexts. These approaches leverage prediction errors and information gain to drive exploration, although they often encounter the "noisy TV problem," where agents may focus on uninformative states.
+
+The exploration landscape has further evolved with the introduction of adaptive strategies that leverage prior knowledge and task structure. Gupta et al. \cite{gupta2018} explored how prior tasks can inform exploration strategies in new situations, introducing a gradient-based fast adaptation algorithm that enhances exploration effectiveness. This notion of leveraging past experiences is echoed in Zhang et al.'s empowerment-driven exploration \cite{zhang2020xq9}, which models exploration as a separate learning problem, thereby improving efficiency in sparse-reward tasks.
+
+Despite the advancements in exploration methods, several unresolved issues persist. A key challenge remains in balancing theoretical guarantees with practical scalability, particularly in high-dimensional environments. Future directions in exploration research may focus on developing hybrid methods that combine the strengths of theoretical frameworks with the empirical performance of intrinsic motivation techniques, ultimately bridging the gap between theoretical soundness and practical applicability in complex RL domains.
+
+In conclusion, the exploration methods in reinforcement learning have evolved significantly, transitioning from foundational model-based approaches to more sophisticated intrinsic motivation techniques. The ongoing research is likely to address the current limitations and enhance the robustness and efficiency of exploration strategies in increasingly complex environments.
+}``
+
+
+\label{sec:foundational_concepts}
+
+\section{Foundational Concepts}
+\label{sec:foundational\_concepts}
+
+\subsection{Model-Based Exploration}
+\label{sec:2\_1\_model-based\_exploration}
+
+Model-based exploration methods in reinforcement learning (RL) leverage learned models of the environment to enhance learning efficiency. These approaches have gained prominence due to their ability to generate simulated experiences that guide exploration, thereby improving sample efficiency and accelerating the learning process.
+
+One of the foundational works in this area is Sutton's Dyna-Q, introduced in 1990, which integrates planning with reinforcement learning. Dyna-Q utilizes a learned model of the environment to simulate experiences, allowing agents to update their value functions based on both real and simulated interactions \cite{sutton1990}. This architecture not only improves learning speed but also provides a framework for exploring state-action spaces more effectively.
+
+Building upon this foundation, Kearns et al. (2002) introduced the E3 algorithm, which provides strong theoretical guarantees for efficient exploration in finite Markov Decision Processes (MDPs) \cite{kearns2002}. E3 employs a strategy of optimism in the face of uncertainty, where the algorithm assumes that unvisited states yield high rewards, thus incentivizing exploration of less-visited states. This principle is further developed in the R-Max algorithm by Strehl et al. (2009), which simplifies the exploration strategy while maintaining strong theoretical bounds on learning time \cite{strehl2009}. Both E3 and R-Max demonstrate the importance of optimism in guiding exploration, yet they share a common limitation: their reliance on finite state and action spaces, which poses significant challenges in high-dimensional or continuous environments.
+
+To address these limitations, more recent works have explored intrinsic motivation and novelty-based exploration strategies. For instance, Pathak et al. (2017) proposed curiosity-driven exploration through self-supervised prediction, where agents receive intrinsic rewards for exploring novel states \cite{pathak2017}. This approach allows for effective exploration in environments with sparse external rewards, demonstrating the potential of intrinsic motivation to enhance exploration in complex settings. Similarly, Burda et al. (2018) introduced Random Network Distillation (RND), a method that encourages exploration by measuring prediction error in learned feature spaces, effectively tackling the challenges posed by high-dimensional environments \cite{burda2018}.
+
+While these intrinsic motivation strategies provide practical solutions for exploration, they are not without their challenges. Earlier methods, such as those proposed by Thrun (1992) and Schmidhuber (1991), faced issues like the "noisy TV" problem, where agents may explore uninteresting phenomena due to unpredictable intrinsic rewards \cite{thrun1992, schmidhuber1991}. Recent advancements have sought to refine these approaches, balancing exploration and exploitation more effectively while ensuring that intrinsic rewards are aligned with meaningful exploration.
+
+In conclusion, the evolution of model-based exploration methods in reinforcement learning has transitioned from foundational theoretical frameworks to practical, scalable solutions for complex environments. While significant progress has been made, unresolved issues remain, particularly concerning the scalability of model-based approaches in high-dimensional spaces and the design of intrinsic reward mechanisms that avoid pathological exploration behaviors. Future directions in this field may involve integrating model-based strategies with advanced intrinsic motivation techniques to enhance exploration efficiency in increasingly complex environments.
+\subsection{Count-Based Exploration}
+\label{sec:2\_2\_count-based\_exploration}
+
+Count-based exploration methods have emerged as a pivotal strategy in addressing the exploration-exploitation dilemma in reinforcement learning (RL), particularly in environments characterized by sparse rewards. These methods incentivize agents to explore less-visited states by providing exploration bonuses based on visitation counts, thereby encouraging a more thorough exploration of the state space. The foundational work of Thrun \cite{thrun1992efficient} laid the groundwork for exploration bonuses, proposing that agents should receive additional rewards for visiting states that have been infrequently explored. This concept has since evolved into more sophisticated techniques, notably the pseudo-counts introduced by Bellemare et al. \cite{bellemare2016unifying}, which adapt the count-based approach for high-dimensional state spaces.
+
+The early exploration bonuses proposed by Thrun were primarily effective in simpler environments with discrete state spaces. However, as RL applications expanded into more complex domains, the limitations of traditional count-based methods became apparent. For instance, in high-dimensional spaces, most states are rarely visited, leading to a situation where the count-based rewards become ineffective. To address this, Bellemare et al. \cite{bellemare2016unifying} introduced the concept of pseudo-counts, which utilize a learned density model to estimate the novelty of states, effectively allowing count-based exploration to scale to high-dimensional environments. This advancement significantly improved the performance of RL agents in challenging tasks, such as those found in the Atari suite, where exploration is crucial for learning optimal policies.
+
+Further developments in count-based exploration have focused on integrating these methods with deep reinforcement learning frameworks. For example, Tang et al. \cite{tang20166wr} demonstrated that a generalized count-based approach could achieve near state-of-the-art performance in high-dimensional continuous control tasks. Their method involved mapping states to hash codes, which allowed for efficient counting and subsequent reward computation based on visitation frequencies. This approach highlighted the importance of effective hashing strategies in maintaining the performance of count-based exploration in complex environments.
+
+Despite these advancements, challenges remain in the scalability of count-based methods. The work of Martin et al. \cite{martin2017bgt} introduced a generalized state visit-count algorithm that leverages feature representations to estimate uncertainty in high-dimensional spaces. Their \(\phi\)-pseudocount method allows agents to generalize from limited experience, yet it still faces difficulties in environments with rapidly changing dynamics or when the feature representation fails to capture the underlying structure of the state space.
+
+Moreover, the integration of intrinsic motivation into count-based exploration has been explored in various studies. Houthooft et al. \cite{houthooft2016yee} proposed the Variational Information Maximizing Exploration (VIME) framework, which maximizes information gain about the environment dynamics, thereby enhancing the exploration capabilities of agents. This approach complements traditional count-based methods by focusing on the informative aspects of exploration, yet it also introduces complexities related to the balance between intrinsic and extrinsic rewards.
+
+In conclusion, while count-based exploration methods have significantly advanced the field of reinforcement learning by providing effective strategies for navigating the exploration-exploitation trade-off, several unresolved issues persist. The scalability of these methods to high-dimensional and dynamic environments remains a critical challenge, as does the integration of intrinsic motivation strategies without compromising the efficiency of exploration. Future research should focus on developing hybrid approaches that combine the strengths of count-based methods with advanced intrinsic motivation techniques, potentially leading to more robust and adaptable RL agents capable of thriving in complex real-world scenarios.
+```
+
+
+\label{sec:core_methods}
+
+\section{Core Methods}
+\label{sec:core\_methods}
+
+\subsection{Intrinsic Motivation Techniques}
+\label{sec:3\_1\_intrinsic\_motivation\_techniques}
+
+Intrinsic motivation techniques play a pivotal role in reinforcement learning (RL) by generating internal reward signals that drive agents to explore their environments, particularly in scenarios where external rewards are sparse or deceptive. This subsection explores foundational concepts and advancements in intrinsic motivation, highlighting their effectiveness in facilitating exploration.
+
+One of the earliest contributions to intrinsic motivation was made by Schmidhuber, who introduced the concept of curiosity in reinforcement learning \cite{Schmidhuber1991}. His work posited that agents should be rewarded for exploring states where their predictions are uncertain, thereby encouraging them to seek novel experiences. This foundational idea laid the groundwork for subsequent research, which aimed to formalize and enhance curiosity-driven exploration.
+
+Building on Schmidhuber's work, Thrun \cite{Thrun1992} proposed a count-based exploration strategy that incentivized agents to visit less-explored states by providing bonuses based on visit counts. This approach effectively addressed the challenge of sparse rewards, but it was limited by its reliance on discrete state representations and did not scale well to high-dimensional environments.
+
+Recent advancements have sought to overcome these limitations by leveraging prediction errors as intrinsic reward signals. Pathak et al. introduced the Intrinsic Curiosity Module (ICM) \cite{Pathak2017}, which rewards agents based on the prediction error of a learned model of the environment. This method demonstrated significant improvements in exploration efficiency, particularly in complex environments where external rewards are infrequent. However, the ICM's performance can be affected by the quality of the learned model, which may not generalize well across diverse states.
+
+Further refining the concept of prediction-based intrinsic motivation, Burda et al. presented Random Network Distillation (RND) \cite{Burda2018}. RND utilizes a randomly initialized neural network to generate intrinsic rewards based on the novelty of the states encountered. This approach effectively mitigates the "noisy TV" problem, where agents can become distracted by spurious novelty in their environments. By focusing on the prediction error in learned feature spaces, RND offers a robust mechanism for guiding exploration in high-dimensional settings.
+
+In addition to these techniques, VIME (Variational Information Maximizing Exploration) \cite{Houthooft2016} introduced a Bayesian framework for intrinsic motivation that maximizes information gain about the environment. This method provides a more principled approach to curiosity-driven exploration, although it may still struggle with the noisy TV problem, as agents can be led to explore non-informative states.
+
+Despite the progress made in intrinsic motivation techniques, several unresolved challenges remain. For instance, while methods like ICM and RND have demonstrated effectiveness in high-dimensional environments, they often lack strong theoretical guarantees compared to traditional exploration strategies based on optimism \cite{Kearns1999}. Additionally, the potential for "noisy TV" distractions continues to pose a challenge, as agents may focus on exploring states that do not yield meaningful information.
+
+In conclusion, intrinsic motivation techniques have significantly advanced the field of exploration in reinforcement learning, providing agents with internal reward signals that facilitate exploration in complex environments. Future research should aim to bridge the gap between empirical performance and theoretical guarantees, as well as develop more robust intrinsic motivation frameworks that can effectively guide exploration while minimizing distractions from irrelevant states.
+
+``\texttt{
+\subsection{Adaptive Exploration Strategies}
+\label{sec:3\_2\_adaptive\_exploration\_strategies}
+
+Adaptive exploration strategies in reinforcement learning (RL) address the challenge of dynamically adjusting exploration behavior based on the context and past experiences. These strategies are crucial for improving sample efficiency and adaptability in complex environments, particularly as state and action spaces expand. This subsection reviews key methodologies, including meta-learning and hierarchical reinforcement learning, that facilitate effective exploration.
+
+One notable approach is presented in \cite{ding2023whs}, which introduces Dual-Adaptive $\epsilon$-greedy Exploration (DAE) within the framework of Incremental Reinforcement Learning (Incremental RL). DAE combines a Meta Policy (Ψ) that adaptively adjusts the exploration probability $\epsilon$ based on the state-specific convergence of exploration, and an Explorer (Φ) that prioritizes actions that have been least tried. This dual mechanism allows agents to efficiently navigate continuously expanding state and action spaces, addressing the inefficiencies of traditional fixed exploration methods. The study highlights the importance of adapting exploration strategies to the evolving nature of real-world environments, where agents must learn to explore new transitions without incurring excessive retraining costs.
+
+Building on the need for adaptive exploration, \cite{mavrin2019iqm} explores distributional reinforcement learning as a means to facilitate efficient exploration. By modeling the distribution of value functions, this work introduces an exploration bonus derived from the upper quantiles of the learned distribution. This method enhances exploration by balancing the agent's intrinsic uncertainties, thereby improving performance in complex environments. However, it still relies on traditional exploration methods that may not fully capitalize on the adaptive capabilities introduced in DAE.
+
+In the context of multi-agent systems, \cite{yang2021ngm} surveys exploration strategies that emphasize uncertainty-oriented and intrinsic motivation-oriented approaches. This survey reveals a critical gap in existing methodologies: while many strategies focus on individual agents, they often neglect the dynamics of cooperation and competition in multi-agent settings. The findings suggest that integrating adaptive exploration strategies, such as those proposed in DAE, could enhance exploration efficiency in multi-agent scenarios by enabling agents to better coordinate their exploration efforts.
+
+Further advancements in adaptive exploration are seen in \cite{hong20182pr}, which proposes a diversity-driven exploration strategy that enhances exploratory behavior by incorporating a distance measure in the loss function. This method effectively prevents agents from getting trapped in local optima, complementing the adaptive strategies of DAE by ensuring a more comprehensive exploration of the state space. However, while diversity-driven methods improve exploration, they may still struggle with the computational overhead associated with tracking diverse actions in expansive environments.
+
+Despite these advancements, challenges remain in the integration of adaptive exploration strategies across various RL paradigms. For instance, \cite{xu2023t6r} highlights the issue of inactivity in visual reinforcement learning agents, suggesting that exploration strategies must also account for the agents' activity levels to maximize their learning potential. This insight underscores the need for future research to develop adaptive exploration frameworks that not only adjust exploration probabilities but also actively promote agent engagement in the learning process.
+
+In conclusion, while significant strides have been made in developing adaptive exploration strategies, unresolved issues persist regarding their integration and effectiveness in diverse and dynamic environments. Future research should focus on unifying different adaptive methodologies, exploring their synergies, and addressing the computational challenges that arise in real-world applications. The evolution of adaptive exploration strategies will be pivotal in advancing the capabilities of RL agents in increasingly complex and changing environments.
+}``
+
+
+\label{sec:advanced_topics}
+
+\section{Advanced Topics}
+\label{sec:advanced\_topics}
+
+\subsection{Population-Based Exploration Methods}
+\label{sec:4\_1\_population-based\_exploration\_methods}
+
+Population-based exploration methods in reinforcement learning (RL) leverage multiple agents to enhance exploration efficiency, addressing the challenges posed by complex environments. These methods allow for diverse exploration strategies, which can lead to improved performance and a better balance between exploration and exploitation. One notable example is Zhu's Two-Stage Evolutionary Reinforcement Learning, which exemplifies how maintaining a population of agents can facilitate a more robust exploration framework.
+
+In the context of population-based methods, Conti et al. (2017) introduced a novel approach that integrates novelty-seeking behaviors within evolution strategies (ES) to enhance exploration in deep RL tasks. Their work demonstrates that by employing populations of agents that prioritize novelty, the algorithm can effectively avoid local optima and achieve superior performance on tasks with sparse rewards \cite{conti2017cr2}. This highlights the potential of collaborative exploration strategies, where agents can share information about their experiences, leading to a more comprehensive understanding of the environment.
+
+Further building on this concept, Yang et al. (2021) conducted a comprehensive survey of exploration methods in both single-agent and multi-agent RL settings. They identified key challenges associated with exploration, particularly in environments characterized by sparse rewards and nonstationary dynamics \cite{yang2021ngm}. Their analysis underscores the importance of coordination among multiple agents to facilitate efficient exploration, suggesting that collaborative learning can significantly enhance the exploration-exploitation balance. This perspective aligns with the findings of Conti et al., emphasizing the role of diverse exploration strategies in overcoming the limitations of traditional methods.
+
+Ding et al. (2023) introduced the Dual-Adaptive $\epsilon$-greedy Exploration (DAE) framework, specifically designed for Incremental Reinforcement Learning (Incremental RL) \cite{ding2023whs}. This framework integrates a Meta Policy and an Explorer to dynamically adjust exploration strategies based on the agent's experiences. By allowing agents to adapt their exploration strategies according to the evolving state and action spaces, DAE addresses the inefficiencies of conventional exploration methods. This work not only formalizes the challenge of Incremental RL but also provides a practical solution for maintaining performance in dynamic environments, further illustrating the advantages of population-based exploration.
+
+However, challenges remain in coordinating multiple agents effectively. For instance, while collaborative exploration can yield diverse strategies, it can also introduce complexities in managing the interactions between agents, particularly in environments with high-dimensional state spaces. The work of Hu et al. (2020) on Voronoi-based multi-robot exploration demonstrates a hierarchical control architecture that minimizes redundant exploration among agents, thereby improving efficiency \cite{hu2020qwm}. This indicates that while population-based methods can enhance exploration, careful consideration of agent coordination is crucial to avoid inefficiencies.
+
+In conclusion, population-based exploration methods represent a promising direction for enhancing exploration efficiency in reinforcement learning. The integration of multiple agents allows for diverse strategies and improved performance, as evidenced by the works of Conti et al., Yang et al., and Ding et al. Nevertheless, the challenges of coordinating these agents and managing their interactions in complex environments remain significant. Future research should focus on developing more sophisticated coordination mechanisms and exploring the scalability of these methods in increasingly dynamic settings.
+``\texttt{
+\subsection{Meta-Learning for Exploration}
+\label{sec:4\_2\_meta-learning\_for\_exploration}
+
+In reinforcement learning (RL), effective exploration strategies are crucial for agents to adapt and perform well across diverse tasks and environments. Meta-learning, or learning to learn, has emerged as a promising approach to enhance exploration by enabling agents to adapt their exploration strategies based on the specific demands of each environment. This subsection reviews recent advancements in meta-learning frameworks, particularly focusing on their application in exploration strategies, such as those employed in Agent57, which dynamically selects exploration policies.
+
+One significant contribution to this field is the work by Ding et al. (2023), which introduces Dual-Adaptive $\epsilon$-greedy Exploration (DAE) within the context of Incremental Reinforcement Learning (Incremental RL) \cite{ding2023whs}. This framework addresses the challenge of expanding state and action spaces in dynamic environments, where traditional exploration methods, like fixed $\epsilon$-greedy strategies, fall short. DAE combines a Meta Policy (Ψ) that adaptively adjusts the exploration probability based on the state-specific convergence of the value function, and an Explorer (Φ) that prioritizes actions that have been least tried. This dual-adaptive mechanism allows the agent to efficiently explore new states and actions while preserving previously learned behaviors, significantly reducing training overhead compared to conventional methods.
+
+Building on the notion of adaptive exploration, Lee et al. (2021) propose PEBBLE, which enhances feedback efficiency in interactive RL by relabeling experiences and incorporating unsupervised pre-training \cite{lee2021qzk}. While DAE focuses on exploration in expanding environments, PEBBLE addresses the challenge of efficiently integrating human feedback into the learning process. By leveraging past experiences and optimizing the reward model through active querying of human preferences, PEBBLE demonstrates improved sample efficiency, particularly in complex tasks. This work highlights the potential for meta-learning to facilitate exploration not only through adaptive strategies but also by optimizing the learning process based on external feedback.
+
+In a different approach, Mavrin et al. (2019) explore distributional reinforcement learning to enhance exploration through uncertainty modeling \cite{mavrin2019iqm}. Their method incorporates intrinsic exploration bonuses derived from the upper quantiles of the learned value distribution, effectively guiding the agent towards states with higher uncertainty. This approach aligns with the principles of meta-learning by allowing the agent to adapt its exploration strategy based on the distribution of learned values, thereby improving performance in challenging environments. However, while Mavrin et al. provide a robust framework for uncertainty-driven exploration, it lacks the adaptability to rapidly changing environments that DAE offers.
+
+The integration of intrinsic motivation into exploration strategies has also been a focal point in the literature. For instance, Houthooft et al. (2016) introduce Variational Information Maximizing Exploration (VIME), which encourages exploration by maximizing information gain about the agent's belief of the environment dynamics \cite{houthooft2016yee}. VIME's approach to exploration is particularly relevant in sparse reward settings, where traditional exploration methods struggle. By utilizing meta-learning principles to adaptively modify the reward structure based on information gain, VIME complements the adaptive exploration strategies proposed by DAE and PEBBLE.
+
+Despite these advancements, several challenges remain in the integration of meta-learning with exploration strategies. The reliance on fixed assumptions regarding the stability of learned transitions, as highlighted in Ding et al. (2023), poses limitations in environments that are inherently non-stationary. Future research should focus on developing more robust meta-learning frameworks that can dynamically adapt to both expanding state spaces and evolving environmental dynamics. Additionally, the interplay between intrinsic motivation and adaptive exploration strategies warrants further exploration to enhance the efficiency and effectiveness of RL agents in diverse and complex tasks.
+
+In conclusion, the exploration landscape in reinforcement learning is rapidly evolving, with meta-learning providing innovative solutions to traditional challenges. The reviewed works demonstrate a clear progression towards more adaptive and efficient exploration strategies, yet unresolved issues related to dynamic environments and the integration of human feedback remain. Addressing these challenges will be crucial for advancing the applicability of RL in real-world scenarios.
+}``
+
+
+\label{sec:applications_and_real-world_impact}
+
+\section{Applications and Real-World Impact}
+\label{sec:applications\_\_and\_\_real-world\_impact}
+
+\subsection{Robotics and Autonomous Systems}
+\label{sec:5\_1\_robotics\_\_and\_\_autonomous\_systems}
+
+Effective exploration is a critical aspect of robotics and autonomous systems, particularly in dynamic and uncertain environments where agents must adapt to new tasks and conditions. This subsection reviews recent advancements in exploration methodologies, emphasizing intrinsic motivation techniques such as curiosity-driven exploration, which enable robots to autonomously discover novel tasks. We will explore various approaches, highlight successful case studies, and discuss the challenges faced in real-world applications.
+
+One of the pioneering works in this area is the introduction of curiosity-driven exploration techniques, which encourage agents to seek out novel states. For instance, \cite{houthooft2016yee} proposed Variational Information Maximizing Exploration (VIME), which utilizes Bayesian neural networks to maximize information gain about the environment's dynamics. This approach effectively addresses the exploration challenges in high-dimensional continuous spaces, demonstrating significant performance improvements over heuristic methods. However, while VIME offers a robust framework for exploration, it does not provide strong theoretical guarantees, which limits its applicability in more complex environments.
+
+Building on the foundation of intrinsic motivation, \cite{burda2018exploration} introduced Exploration by Random Network Distillation, which leverages prediction errors from a randomly initialized neural network to generate intrinsic rewards. This method effectively mitigates the "noisy TV" problem, where agents are distracted by spurious novelty. The empirical results showed that this approach could significantly enhance exploration efficiency, yet it still faces challenges in defining meaningful novelty, which can lead to inefficient exploration in certain scenarios.
+
+Further advancements were made by \cite{ding2023whs}, who tackled the problem of Incremental Reinforcement Learning (Incremental RL) with the Dual-Adaptive $\epsilon$-greedy Exploration (DAE) method. This innovative approach combines a Meta Policy that adaptively adjusts exploration probabilities based on state uncertainty and an Explorer that prioritizes less-tried actions. DAE addresses the limitations of traditional exploration methods in expanding environments, where state and action spaces continually grow. By formalizing Incremental RL, this work not only enhances exploration efficiency but also preserves previously learned knowledge, making it particularly relevant for real-world applications where environments are not static.
+
+In the context of multi-agent systems, \cite{hu2020qwm} presented a cooperative exploration strategy using deep reinforcement learning for autonomous robots in unknown environments. This approach minimizes duplicated exploration areas by employing dynamic Voronoi partitions, showcasing how collaborative strategies can enhance exploration efficiency. However, the challenge remains in scaling these methods to more complex environments with numerous agents, which can introduce additional coordination difficulties.
+
+Despite these advancements, several challenges persist in the deployment of exploration methods in real-world robotic applications. For example, while intrinsic motivation techniques have shown promise in simulated environments, their effectiveness can diminish in real-world scenarios due to the unpredictability of dynamic environments and the computational overhead associated with retraining agents. Moreover, the reliance on specific assumptions, such as the stability of existing transitions during environmental expansion, can limit the robustness of these methods.
+
+In conclusion, while significant progress has been made in the field of exploration methods for robotics and autonomous systems, unresolved issues remain, particularly regarding the scalability and adaptability of these techniques in real-world applications. Future research directions may focus on developing more generalized frameworks that can effectively balance exploration and exploitation while adapting to the complexities of dynamic environments. The integration of lifelong learning principles and more sophisticated intrinsic motivation strategies could pave the way for more resilient and efficient robotic systems capable of thriving in uncertain settings.
+``\texttt{
+\subsection{Game Playing and Simulation Environments}
+\label{sec:5\_2\_game\_playing\_\_and\_\_simulation\_environments}
+
+The exploration methods in game playing and simulation environments pose a significant challenge for reinforcement learning (RL) agents, particularly in scenarios characterized by sparse rewards and complex state-action spaces. As agents navigate these environments, the need for effective exploration strategies becomes paramount to ensure they can discover rewarding states and actions efficiently. Recent advancements in exploration techniques, including population-based methods and meta-learning, have led to notable improvements in agent performance across various competitive games.
+
+A seminal contribution to the exploration landscape is the work by \cite{ding2023whs}, which introduces the concept of Incremental Reinforcement Learning (Incremental RL) alongside the Dual-Adaptive $\epsilon$-greedy Exploration (DAE) method. This framework addresses the challenge of expanding state and action spaces, a common issue in dynamic environments. DAE employs a Meta Policy to adaptively determine exploration probabilities based on the convergence of state value estimates, while an Explorer component prioritizes actions that have been least tried. This dual mechanism significantly enhances exploration efficiency, allowing agents to adapt to new states and actions without incurring the high computational costs associated with retraining from scratch.
+
+Building on the foundations of exploration in RL, \cite{conti2017cr2} explores the integration of novelty-seeking strategies within Evolution Strategies (ES). By leveraging populations of agents that engage in directed exploration through novelty search and quality diversity algorithms, this approach demonstrates improved performance on sparse reward tasks. The synergy between DAE's adaptive exploration and the novelty-driven exploration in ES highlights a critical advancement in addressing local optima and enhancing exploration in complex environments.
+
+Further expanding on exploration methodologies, \cite{houthooft2016yee} introduces Variational Information Maximizing Exploration (VIME), which utilizes Bayesian neural networks to maximize information gain about the environment. VIME effectively modifies the reward structure of the MDP to encourage exploration in high-dimensional spaces, demonstrating superior performance compared to traditional heuristics. This work complements the findings of \cite{ding2023whs} by providing a principled approach to exploration that addresses the inherent uncertainties in dynamic environments.
+
+In the context of multi-agent systems, \cite{yang2021ngm} surveys various exploration strategies, emphasizing the challenges of sample inefficiency and the need for effective exploration in both single-agent and multi-agent settings. The paper categorizes existing methods into uncertainty-oriented and intrinsic motivation-oriented exploration, highlighting the importance of balancing exploration and exploitation in complex environments. This comprehensive analysis underscores the necessity for adaptive exploration strategies that can generalize across different scenarios, a theme echoed in the incremental learning framework proposed by \cite{ding2023whs}.
+
+Despite these advancements, challenges remain in effectively balancing exploration strategies with the demands of real-time learning in dynamic environments. For instance, while \cite{mavrin2019iqm} proposes a distributional RL approach that utilizes upper quantiles for exploration bonuses, it still faces limitations in environments with non-stationary dynamics. The need for exploration methods that can adapt to continual shifts in state and action spaces is a critical area for future research.
+
+In conclusion, the exploration methods developed in recent literature reflect a significant evolution from traditional approaches, focusing on adaptive strategies that enhance agent performance in complex game environments. However, unresolved issues, such as the integration of exploration strategies in non-stationary environments and the balance between exploration and exploitation, present opportunities for further investigation. Future directions may include the development of more robust frameworks that combine the strengths of various exploration techniques, ultimately paving the way for more capable and adaptable RL agents in real-world applications.
+}``
+
+
+\label{sec:future_directions_and_challenges}
+
+\section{Future Directions and Challenges}
+\label{sec:future\_directions\_\_and\_\_challenges}
+
+\subsection{Emerging Trends in Exploration}
+\label{sec:6\_1\_emerging\_trends\_in\_exploration}
+
+Recent advancements in exploration methodologies within Reinforcement Learning (RL) have significantly shifted the landscape of how agents interact with dynamic environments. This subsection explores the integration of exploration strategies with meta-learning, hierarchical reinforcement learning, and multi-agent systems, highlighting how these trends are poised to enhance agent performance across diverse settings.
+
+A notable trend is the emergence of adaptive exploration techniques designed for dynamic and expanding environments. The work by Ding et al. \cite{ding2023whs} introduces Dual-Adaptive $\epsilon$-greedy Exploration (DAE), a method that synergistically combines a Meta Policy and an Explorer to dynamically adjust exploration strategies based on the evolving state and action spaces. This approach addresses the limitations of traditional exploration methods, which often assume static environments and can lead to inefficiencies in rapidly changing contexts. The DAE framework not only formalizes the challenge of Incremental Reinforcement Learning but also provides a robust mechanism for adapting to new states and actions without incurring the high computational costs typically associated with retraining.
+
+In parallel, the exploration landscape has been enriched by model-based planning and abstraction techniques. Early foundational works, such as Sutton's Dyna-Q \cite{Sutton1990}, laid the groundwork for integrating model learning with planning, enabling agents to leverage both real and simulated experiences. Singh's hierarchical reinforcement learning \cite{Singh1995} further advanced this area by addressing the complexities of large state spaces through abstraction, thereby enhancing learning efficiency. However, these methods often grapple with the challenge of model accuracy, which can significantly impact performance in complex environments.
+
+Theoretically grounded exploration methods, characterized by optimism in the face of uncertainty, have also gained traction. Kearns et al. \cite{Kearns1999} and Kakade et al. \cite{Kakade2003} pioneered approaches that ensure near-optimal policies can be learned efficiently. These methods, while robust in finite state spaces, face scalability issues in high-dimensional environments, prompting further exploration into intrinsic motivation and novelty-driven strategies. Recent contributions, such as those by Burda et al. \cite{Burda2018}, have introduced curiosity-driven exploration techniques that encourage agents to seek novel states, effectively addressing the challenges posed by sparse rewards and large state spaces.
+
+Multi-agent systems have emerged as a vital area of research, particularly in cooperative exploration scenarios. The work by Yang et al. \cite{yang2021ngm} provides a comprehensive survey of exploration methods tailored for both single-agent and multi-agent settings, identifying key challenges such as sample inefficiency and the need for effective coordination among agents. Recent advancements, such as the Multi-Agent Active Neural SLAM (MAANS) framework \cite{yu20213c1}, leverage RL to enhance cooperative visual exploration, showcasing the potential of multi-agent systems to tackle complex exploration tasks more effectively than traditional methods.
+
+Despite these advancements, several unresolved issues persist in the exploration domain. The integration of intrinsic motivation with theoretical guarantees remains a challenge, as seen in the tension between empirical performance and theoretical soundness across various methods. Additionally, the adaptability of exploration strategies in the context of lifelong learning and non-stationary environments requires further investigation. Future research directions may focus on bridging the gap between theoretical exploration guarantees and practical scalability, as well as developing more sophisticated algorithms that can efficiently handle the complexities of evolving environments.
+
+In conclusion, the exploration methodologies in RL are rapidly evolving, driven by the need for adaptive, efficient, and robust strategies that can thrive in dynamic settings. The integration of meta-learning, hierarchical approaches, and multi-agent systems represents a promising trajectory for future research, aiming to enhance the performance and applicability of RL agents in real-world scenarios.
+
+``\texttt{
+\subsection{Ethical Considerations and Responsible AI Development}
+\label{sec:6\_2\_ethical\_considerations\_\_and\_\_responsible\_ai\_development}
+
+The deployment of autonomous agents in real-world scenarios presents a myriad of ethical considerations, particularly concerning exploration methods in Reinforcement Learning (RL). As these agents are increasingly tasked with making decisions that can significantly impact human lives, ensuring their safety, accountability, and fairness becomes paramount. This subsection reviews recent literature that addresses these ethical dimensions, focusing on the exploration strategies employed in RL and their implications for responsible AI development.
+
+A foundational work in this domain is the exploration strategy proposed by \cite{ding2023whs}, which introduces Dual-Adaptive $\epsilon$-greedy Exploration (DAE) within the framework of Incremental Reinforcement Learning (Incremental RL). This approach addresses the challenge of expanding state and action spaces, which is critical in real-world applications where environments are dynamic. DAE's design emphasizes the need for agents to adaptively determine when and what to explore, thereby mitigating risks associated with over-exploration of known states and under-exploration of new, potentially unsafe actions. By formalizing Incremental RL, this work sets a precedent for future research on ethical exploration strategies that prioritize safety and efficiency.
+
+Following this, \cite{oh2022cei} explores the concept of risk-aware exploration within Distributional RL. Their proposed risk scheduling approach enhances exploration by incorporating risk levels into decision-making processes, allowing agents to navigate environments with varying degrees of uncertainty. This is particularly relevant in applications such as autonomous driving, where the consequences of exploration can lead to catastrophic outcomes. By integrating risk assessment into exploration strategies, this work highlights the importance of accounting for potential negative impacts when designing RL systems.
+
+Moreover, \cite{yang2021ngm} provides a comprehensive survey of exploration methods in both single-agent and multi-agent settings, emphasizing the challenges of sample inefficiency and the need for effective exploration strategies. The authors categorize existing approaches into uncertainty-oriented and intrinsic motivation-oriented methods, underscoring the ethical implications of each. For instance, while intrinsic motivation methods can drive agents to explore novel states, they may inadvertently lead to biased behavior if not carefully managed. This raises concerns about fairness and accountability in RL systems, particularly in high-stakes environments.
+
+In addressing the limitations of prior works, \cite{mavrin2019iqm} proposes a distributional RL framework that utilizes uncertainty to guide exploration. This method not only improves exploration efficiency but also enhances the agent's ability to generalize across different environments. By focusing on uncertainty, the authors provide a pathway for developing RL agents that can make informed decisions while minimizing the risks associated with exploration, thus promoting responsible AI development.
+
+Despite these advancements, several unresolved issues remain. The challenge of balancing exploration and exploitation in dynamic environments continues to pose ethical dilemmas, particularly regarding safety and accountability. Furthermore, the potential for bias in exploration strategies necessitates ongoing research to develop frameworks that ensure fairness in decision-making processes. Future work should focus on integrating ethical considerations into the design of exploration methods, fostering transparency and trust in AI systems. This will be essential for the responsible deployment of autonomous agents in real-world applications, where the stakes are often high and the consequences of failure can be severe.
+
+In conclusion, as the field of Reinforcement Learning evolves, it is crucial to prioritize ethical considerations in the development of exploration strategies. The literature reviewed in this subsection highlights significant strides toward addressing these concerns, yet it also reveals the need for further research to ensure that RL agents operate safely, fairly, and transparently in complex environments.
+}``
+
+
+\label{sec:conclusion}
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+
+
+\newpage
+\section*{References}
+\addcontentsline{toc}{section}{References}
+
+\begin{thebibliography}{240}
+
+\bibitem{nair2017crs}
+Ashvin Nair, Bob McGrew, Marcin Andrychowicz, et al. (2017). \textit{Overcoming Exploration in Reinforcement Learning with Demonstrations}. IEEE International Conference on Robotics and Automation.
+
+\bibitem{tang20166wr}
+Haoran Tang, Rein Houthooft, Davis Foote, et al. (2016). \textit{#Exploration: A Study of Count-Based Exploration for Deep Reinforcement Learning}. Neural Information Processing Systems.
+
+\bibitem{lee2021qzk}
+Kimin Lee, Laura M. Smith, and P. Abbeel (2021). \textit{PEBBLE: Feedback-Efficient Interactive Reinforcement Learning via Relabeling Experience and Unsupervised Pre-training}. International Conference on Machine Learning.
+
+\bibitem{hu2020qwm}
+Junyan Hu, Hanlin Niu, J. Carrasco, et al. (2020). \textit{Voronoi-Based Multi-Robot Autonomous Exploration in Unknown Environments via Deep Reinforcement Learning}. IEEE Transactions on Vehicular Technology.
+
+\bibitem{stadie20158af}
+Bradly C. Stadie, S. Levine, and P. Abbeel (2015). \textit{Incentivizing Exploration In Reinforcement Learning With Deep Predictive Models}. arXiv.org.
+
+\bibitem{gupta2018rge}
+Abhishek Gupta, Russell Mendonca, Yuxuan Liu, et al. (2018). \textit{Meta-Reinforcement Learning of Structured Exploration Strategies}. Neural Information Processing Systems.
+
+\bibitem{thananjeyan2020d20}
+Brijen Thananjeyan, A. Balakrishna, Suraj Nair, et al. (2020). \textit{Recovery RL: Safe Reinforcement Learning With Learned Recovery Zones}. IEEE Robotics and Automation Letters.
+
+\bibitem{wu2021r67}
+Yue Wu, Shuangfei Zhai, Nitish Srivastava, et al. (2021). \textit{Uncertainty Weighted Actor-Critic for Offline Reinforcement Learning}. International Conference on Machine Learning.
+
+\bibitem{conti2017cr2}
+Edoardo Conti, Vashisht Madhavan, F. Such, et al. (2017). \textit{Improving Exploration in Evolution Strategies for Deep Reinforcement Learning via a Population of Novelty-Seeking Agents}. Neural Information Processing Systems.
+
+\bibitem{seo2022cjf}
+Younggyo Seo, Kimin Lee, Stephen James, et al. (2022). \textit{Reinforcement Learning with Action-Free Pre-Training from Videos}. International Conference on Machine Learning.
+
+\bibitem{uchendu20221h1}
+Ikechukwu Uchendu, Ted Xiao, Yao Lu, et al. (2022). \textit{Jump-Start Reinforcement Learning}. International Conference on Machine Learning.
+
+\bibitem{li2020r8r}
+Haoran Li, Qichao Zhang, and Dongbin Zhao (2020). \textit{Deep Reinforcement Learning-Based Automatic Exploration for Navigation in Unknown Environment}. IEEE Transactions on Neural Networks and Learning Systems.
+
+\bibitem{yang2021ngm}
+Tianpei Yang, Hongyao Tang, Chenjia Bai, et al. (2021). \textit{Exploration in Deep Reinforcement Learning: From Single-Agent to Multiagent Domain}. IEEE Transactions on Neural Networks and Learning Systems.
+
+\bibitem{lee2019hnz}
+Kimin Lee, Kibok Lee, Jinwoo Shin, et al. (2019). \textit{Network Randomization: A Simple Technique for Generalization in Deep Reinforcement Learning}. International Conference on Learning Representations.
+
+\bibitem{zhang2020o5t}
+Junyu Zhang, Alec Koppel, A. S. Bedi, et al. (2020). \textit{Variational Policy Gradient Method for Reinforcement Learning with General Utilities}. Neural Information Processing Systems.
+
+\bibitem{chang20221gc}
+Jingru Chang, Dong Yu, Y. Hu, et al. (2022). \textit{Deep Reinforcement Learning for Dynamic Flexible Job Shop Scheduling with Random Job Arrival}. Processes.
+
+\bibitem{yang2021psl}
+Tianpei Yang, Hongyao Tang, Chenjia Bai, et al. (2021). \textit{Exploration in Deep Reinforcement Learning: A Comprehensive Survey}. arXiv.org.
+
+\bibitem{li2022ktf}
+Jinning Li, Chen Tang, M. Tomizuka, et al. (2022). \textit{Hierarchical Planning Through Goal-Conditioned Offline Reinforcement Learning}. IEEE Robotics and Automation Letters.
+
+\bibitem{liang20226ix}
+Xi-Xi Liang, Katherine Shu, Kimin Lee, et al. (2022). \textit{Reward Uncertainty for Exploration in Preference-based Reinforcement Learning}. International Conference on Learning Representations.
+
+\bibitem{hong20182pr}
+Zhang-Wei Hong, Tzu-Yun Shann, Shih-Yang Su, et al. (2018). \textit{Diversity-Driven Exploration Strategy for Deep Reinforcement Learning}. Neural Information Processing Systems.
+
+\bibitem{hansen2022jm2}
+Nicklas Hansen, Yixin Lin, H. Su, et al. (2022). \textit{MoDem: Accelerating Visual Model-Based Reinforcement Learning with Demonstrations}. International Conference on Learning Representations.
+
+\bibitem{pong2021i4o}
+Vitchyr H. Pong, Ashvin Nair, Laura M. Smith, et al. (2021). \textit{Offline Meta-Reinforcement Learning with Online Self-Supervision}. International Conference on Machine Learning.
+
+\bibitem{jia2021kxs}
+Danyang Jia, Hao Guo, Z. Song, et al. (2021). \textit{Local and global stimuli in reinforcement learning}. New Journal of Physics.
+
+\bibitem{zhang2022dgg}
+Yuxiang Zhang, Xiaoling Liang, Dongyu Li, et al. (2022). \textit{Barrier Lyapunov Function-Based Safe Reinforcement Learning for Autonomous Vehicles With Optimized Backstepping}. IEEE Transactions on Neural Networks and Learning Systems.
+
+\bibitem{dorfman20216nq}
+Ron Dorfman, Idan Shenfeld, and Aviv Tamar (2021). \textit{Offline Meta Reinforcement Learning - Identifiability Challenges and Effective Data Collection Strategies}. Neural Information Processing Systems.
+
+\bibitem{tai2016bp8}
+L. Tai, and Ming Liu (2016). \textit{A robot exploration strategy based on Q-learning network}. International Conference on Real-time Computing and Robotics.
+
+\bibitem{martin2017bgt}
+Jarryd Martin, S. N. Sasikumar, Tom Everitt, et al. (2017). \textit{Count-Based Exploration in Feature Space for Reinforcement Learning}. International Joint Conference on Artificial Intelligence.
+
+\bibitem{rckin2021yud}
+Julius Rückin, Liren Jin, and Marija Popovic (2021). \textit{Adaptive Informative Path Planning Using Deep Reinforcement Learning for UAV-based Active Sensing}. IEEE International Conference on Robotics and Automation.
+
+\bibitem{zhelo2018wi8}
+Oleksii Zhelo, Jingwei Zhang, L. Tai, et al. (2018). \textit{Curiosity-driven Exploration for Mapless Navigation with Deep Reinforcement Learning}. arXiv.org.
+
+\bibitem{zhang2020bse}
+Qilei Zhang, Jinying Lin, Q. Sha, et al. (2020). \textit{Deep Interactive Reinforcement Learning for Path Following of Autonomous Underwater Vehicle}. IEEE Access.
+
+\bibitem{mavrin2019iqm}
+B. Mavrin, Shangtong Zhang, Hengshuai Yao, et al. (2019). \textit{Distributional Reinforcement Learning for Efficient Exploration}. International Conference on Machine Learning.
+
+\bibitem{li2021w3q}
+Gen Li, Laixi Shi, Yuxin Chen, et al. (2021). \textit{Breaking the Sample Complexity Barrier to Regret-Optimal Model-Free Reinforcement Learning}. Neural Information Processing Systems.
+
+\bibitem{schumacher2022x3f}
+Pierre Schumacher, D. Haeufle, Dieter Büchler, et al. (2022). \textit{DEP-RL: Embodied Exploration for Reinforcement Learning in Overactuated and Musculoskeletal Systems}. International Conference on Learning Representations.
+
+\bibitem{aubret2022inh}
+A. Aubret, L. Matignon, and S. Hassas (2022). \textit{An Information-Theoretic Perspective on Intrinsic Motivation in Reinforcement Learning: A Survey}. Entropy.
+
+\bibitem{yuan2020epo}
+Xiaolei Yuan, Yiqun Pan, Jianrong Yang, et al. (2020). \textit{Study on the application of reinforcement learning in the operation optimization of HVAC system}. Building Simulation.
+
+\bibitem{rezaeifar20211eu}
+Shideh Rezaeifar, Robert Dadashi, Nino Vieillard, et al. (2021). \textit{Offline Reinforcement Learning as Anti-Exploration}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{talaat2022ywa}
+Fatma M. Talaat (2022). \textit{Effective deep Q-networks (EDQN) strategy for resource allocation based on optimized reinforcement learning algorithm}. Multimedia tools and applications.
+
+\bibitem{xin2022qcl}
+Xin Xin, Tiago Pimentel, Alexandros Karatzoglou, et al. (2022). \textit{Rethinking Reinforcement Learning for Recommendation: A Prompt Perspective}. Annual International ACM SIGIR Conference on Research and Development in Information Retrieval.
+
+\bibitem{dang2022kwh}
+Fengying Dang, Dong Chen, J. Chen, et al. (2022). \textit{Event-Triggered Model Predictive Control With Deep Reinforcement Learning for Autonomous Driving}. IEEE Transactions on Intelligent Vehicles.
+
+\bibitem{raffin2020o1a}
+A. Raffin, Jens Kober, and F. Stulp (2020). \textit{Smooth Exploration for Robotic Reinforcement Learning}. Conference on Robot Learning.
+
+\bibitem{liu2018jde}
+Xuhan Liu, K. Ye, H. V. van Vlijmen, et al. (2018). \textit{An exploration strategy improves the diversity of de novo ligands using deep reinforcement learning: a case for the adenosine A2A receptor}. Journal of Cheminformatics.
+
+\bibitem{sun2022ul9}
+Qiyu Sun, Jinbao Fang, Weixing Zheng, et al. (2022). \textit{Aggressive Quadrotor Flight Using Curiosity-Driven Reinforcement Learning}. IEEE transactions on industrial electronics (1982. Print).
+
+\bibitem{nikolov20184g9}
+Nikolay Nikolov, Johannes Kirschner, Felix Berkenkamp, et al. (2018). \textit{Information-Directed Exploration for Deep Reinforcement Learning}. International Conference on Learning Representations.
+
+\bibitem{qiao20220gx}
+Dan Qiao, Ming Yin, Ming Min, et al. (2022). \textit{Sample-Efficient Reinforcement Learning with loglog(T) Switching Cost}. International Conference on Machine Learning.
+
+\bibitem{yu20222xi}
+Haonan Yu, Wei Xu, and Haichao Zhang (2022). \textit{Towards Safe Reinforcement Learning with a Safety Editor Policy}. Neural Information Processing Systems.
+
+\bibitem{lambert202277x}
+Nathan Lambert, Markus Wulfmeier, William F. Whitney, et al. (2022). \textit{The Challenges of Exploration for Offline Reinforcement Learning}. arXiv.org.
+
+\bibitem{woczyk20220mn}
+Maciej Wołczyk, Michal Zajkac, Razvan Pascanu, et al. (2022). \textit{Disentangling Transfer in Continual Reinforcement Learning}. Neural Information Processing Systems.
+
+\bibitem{qu2022uym}
+Qingyu Qu, Kexin Liu, Wei Wang, et al. (2022). \textit{Spacecraft Proximity Maneuvering and Rendezvous With Collision Avoidance Based on Reinforcement Learning}. IEEE Transactions on Aerospace and Electronic Systems.
+
+\bibitem{sun2020zjg}
+H. Sun, and Ling Ma (2020). \textit{Generative Design by Using Exploration Approaches of Reinforcement Learning in Density-Based Structural Topology Optimization}. Designs.
+
+\bibitem{tao202294e}
+Yuechuan Tao, Jing Qiu, Shuying Lai, et al. (2022). \textit{A Human-Machine Reinforcement Learning Method for Cooperative Energy Management}. IEEE Transactions on Industrial Informatics.
+
+\bibitem{houthooft2016yee}
+Rein Houthooft, Xi Chen, Yan Duan, et al. (2016). \textit{Curiosity-driven Exploration in Deep Reinforcement Learning via Bayesian Neural Networks}. arXiv.org.
+
+\bibitem{shi20215fg}
+Tianyu Shi, Dong Chen, Kaian Chen, et al. (2021). \textit{Offline Reinforcement Learning for Autonomous Driving with Safety and Exploration Enhancement}. arXiv.org.
+
+\bibitem{li2021l92}
+Zhiwei Li, Yu Lu, Xi Li, et al. (2021). \textit{UAV Networks Against Multiple Maneuvering Smart Jamming With Knowledge-Based Reinforcement Learning}. IEEE Internet of Things Journal.
+
+\bibitem{liu20220g4}
+Jiabin Liu, Chengliang Chai, Yuyu Luo, et al. (2022). \textit{Feature Augmentation with Reinforcement Learning}. IEEE International Conference on Data Engineering.
+
+\bibitem{hu20195n2}
+Hangkai Hu, Shiji Song, and C. L. Phillip Chen (2019). \textit{Plume Tracing via Model-Free Reinforcement Learning Method}. IEEE Transactions on Neural Networks and Learning Systems.
+
+\bibitem{wang2022boj}
+Yutong Wang, Ke Xue, and Chaojun Qian (2022). \textit{Evolutionary Diversity Optimization with Clustering-based Selection for Reinforcement Learning}. International Conference on Learning Representations.
+
+\bibitem{yu20213c1}
+Chao Yu, Xinyi Yang, Jiaxuan Gao, et al. (2021). \textit{Learning Efficient Multi-Agent Cooperative Visual Exploration}. European Conference on Computer Vision.
+
+\bibitem{zheng2022816}
+Changdong Zheng, Fangfang Xie, Tingwei Ji, et al. (2022). \textit{Data-efficient deep reinforcement learning with expert demonstration for active flow control}. The Physics of Fluids.
+
+\bibitem{yang2022mx5}
+Zhengyu Yang, Kan Ren, Xufang Luo, et al. (2022). \textit{Towards Applicable Reinforcement Learning: Improving the Generalization and Sample Efficiency with Policy Ensemble}. International Joint Conference on Artificial Intelligence.
+
+\bibitem{yang2022fou}
+Yijun Yang, J. Jiang, Tianyi Zhou, et al. (2022). \textit{Pareto Policy Pool for Model-based Offline Reinforcement Learning}. International Conference on Learning Representations.
+
+\bibitem{liu2022uiv}
+Yuqi Liu, Po Gao, Change Zheng, et al. (2022). \textit{A Deep Reinforcement Learning Strategy Combining Expert Experience Guidance for a Fruit-Picking Manipulator}. Electronics.
+
+\bibitem{hou2021c2r}
+Zhongni Hou, Xiaolong Jin, Zixuan Li, et al. (2021). \textit{Rule-Aware Reinforcement Learning for Knowledge Graph Reasoning}. Findings.
+
+\bibitem{lale2020xqs}
+Sahin Lale, K. Azizzadenesheli, B. Hassibi, et al. (2020). \textit{Reinforcement Learning with Fast Stabilization in Linear Dynamical Systems}. International Conference on Artificial Intelligence and Statistics.
+
+\bibitem{otto2022qef}
+Fabian Otto, Onur Çelik, Hongyi Zhou, et al. (2022). \textit{Deep Black-Box Reinforcement Learning with Movement Primitives}. Conference on Robot Learning.
+
+\bibitem{lakhani2021217}
+Ayub I. Lakhani, Myisha A. Chowdhury, and Qiugang Lu (2021). \textit{Stability-Preserving Automatic Tuning of PID Control with Reinforcement Learning}. Complex Engineering Systems.
+
+\bibitem{huang2020wll}
+Yixin Huang, Shufan Wu, Z. Mu, et al. (2020). \textit{A Multi-agent Reinforcement Learning Method for Swarm Robots in Space Collaborative Exploration}. 2020 6th International Conference on Control, Automation and Robotics (ICCAR).
+
+\bibitem{yuan2022hto}
+Wang Yuan, Z. Xiwen, Zhou Rong, et al. (2022). \textit{Research on UCAV Maneuvering Decision Method Based on Heuristic Reinforcement Learning}. Computational Intelligence and Neuroscience.
+
+\bibitem{muzahid2022fyb}
+Abu Jafar Md. Muzahid, Syafiq Fauzi Bin Kamarulzaman, Md. Arafatur Rahman, et al. (2022). \textit{Deep Reinforcement Learning-Based Driving Strategy for Avoidance of Chain Collisions and Its Safety Efficiency Analysis in Autonomous Vehicles}. IEEE Access.
+
+\bibitem{zhang20229rg}
+Chi Zhang, S. Kuppannagari, and V. Prasanna (2022). \textit{Safe Building HVAC Control via Batch Reinforcement Learning}. IEEE Transactions on Sustainable Computing.
+
+\bibitem{sierragarca2020g35}
+J. E. Sierra-García, and Matilde Santos (2020). \textit{Exploring Reward Strategies for Wind Turbine Pitch Control by Reinforcement Learning}. Applied Sciences.
+
+\bibitem{han20199g2}
+Wei Han, Fang Guo, and Xi-chao Su (2019). \textit{A Reinforcement Learning Method for a Hybrid Flow-Shop Scheduling Problem}. Algorithms.
+
+\bibitem{wabersich2018t86}
+K. P. Wabersich, and M. Zeilinger (2018). \textit{Safe exploration of nonlinear dynamical systems: A predictive safety filter for reinforcement learning}. arXiv.org.
+
+\bibitem{bourel2020tnm}
+Hippolyte Bourel, Odalric-Ambrym Maillard, and M. S. Talebi (2020). \textit{Tightening Exploration in Upper Confidence Reinforcement Learning}. International Conference on Machine Learning.
+
+\bibitem{cheng20224w2}
+Yikun Cheng, Pan Zhao, and N. Hovakimyan (2022). \textit{Safe and Efficient Reinforcement Learning using Disturbance-Observer-Based Control Barrier Functions}. Conference on Learning for Dynamics & Control.
+
+\bibitem{ceusters2022drp}
+Glenn Ceusters, L. R. Camargo, R. Franke, et al. (2022). \textit{Safe reinforcement learning for multi-energy management systems with known constraint functions}. Energy and AI.
+
+\bibitem{stanton20183fs}
+C. Stanton, and J. Clune (2018). \textit{Deep Curiosity Search: Intra-Life Exploration Improves Performance on Challenging Deep Reinforcement Learning Problems}. arXiv.org.
+
+\bibitem{cideron2020kdj}
+Geoffrey Cideron, Thomas Pierrot, Nicolas Perrin, et al. (2020). \textit{QD-RL: Efficient Mixing of Quality and Diversity in Reinforcement Learning}. arXiv.org.
+
+\bibitem{liu2022nhx}
+Xiangyu Liu, and Ying Tan (2022). \textit{Feudal Latent Space Exploration for Coordinated Multi-Agent Reinforcement Learning}. IEEE Transactions on Neural Networks and Learning Systems.
+
+\bibitem{cho2022o2c}
+Daesol Cho, Jigang Kim, and H. J. Kim (2022). \textit{Unsupervised Reinforcement Learning for Transferable Manipulation Skill Discovery}. IEEE Robotics and Automation Letters.
+
+\bibitem{zhang2020xq9}
+Jin Zhang, Jianhao Wang, Hao Hu, et al. (2020). \textit{MetaCURE: Meta Reinforcement Learning with Empowerment-Driven Exploration}. International Conference on Machine Learning.
+
+\bibitem{song2021elb}
+Yuda Song, and Wen Sun (2021). \textit{PC-MLP: Model-based Reinforcement Learning with Policy Cover Guided Exploration}. International Conference on Machine Learning.
+
+\bibitem{wang20229ce}
+Xiucheng Wang, Longfei Ma, Hao Li, et al. (2022). \textit{Digital Twin-Assisted Efficient Reinforcement Learning for Edge Task Scheduling}. IEEE Vehicular Technology Conference.
+
+\bibitem{lin2022vqo}
+Sen Lin, Jialin Wan, Tengyu Xu, et al. (2022). \textit{Model-Based Offline Meta-Reinforcement Learning with Regularization}. International Conference on Learning Representations.
+
+\bibitem{zhang2022egf}
+Ziqian Zhang, Yulei Liu, Shengcheng Yu, et al. (2022). \textit{UniRLTest: universal platform-independent testing with reinforcement learning via image understanding}. International Symposium on Software Testing and Analysis.
+
+\bibitem{zhou2022fny}
+Tong Zhou, Letian Wang, Ruobing Chen, et al. (2022). \textit{Accelerating Reinforcement Learning for Autonomous Driving Using Task-Agnostic and Ego-Centric Motion Skills}. IEEE/RJS International Conference on Intelligent RObots and Systems.
+
+\bibitem{yu2022bo5}
+Dongjie Yu, Wenjun Zou, Yujie Yang, et al. (2022). \textit{Safe Model-Based Reinforcement Learning With an Uncertainty-Aware Reachability Certificate}. IEEE Transactions on Automation Science and Engineering.
+
+\bibitem{xie2015vwy}
+Christopher Xie, S. Patil, T. Moldovan, et al. (2015). \textit{Model-based reinforcement learning with parametrized physical models and optimism-driven exploration}. IEEE International Conference on Robotics and Automation.
+
+\bibitem{zhang2019yjm}
+Yu Zhang, Peixiang Cai, Changyong Pan, et al. (2019). \textit{Multi-Agent Deep Reinforcement Learning-Based Cooperative Spectrum Sensing With Upper Confidence Bound Exploration}. IEEE Access.
+
+\bibitem{wu2021mht}
+Zhenning Wu, Yiming Deng, Jinhai Liu, et al. (2021). \textit{A Reinforcement Learning-Based Reconstruction Method for Complex Defect Profiles in MFL Inspection}. IEEE Transactions on Instrumentation and Measurement.
+
+\bibitem{fu20220cl}
+Haotian Fu, Shangqun Yu, Michael S. Littman, et al. (2022). \textit{Model-based Lifelong Reinforcement Learning with Bayesian Exploration}. Neural Information Processing Systems.
+
+\bibitem{mndezmolina2022ec5}
+Arquímides Méndez-Molina, E. Morales, and L. Sucar (2022). \textit{Causal Discovery and Reinforcement Learning: A Synergistic Integration}. European Workshop on Probabilistic Graphical Models.
+
+\bibitem{steinparz20220nl}
+C. Steinparz, Thomas Schmied, Fabian Paischer, et al. (2022). \textit{Reactive Exploration to Cope with Non-Stationarity in Lifelong Reinforcement Learning}. CoLLAs.
+
+\bibitem{rahman2022p7b}
+Md Masudur Rahman, and Yexiang Xue (2022). \textit{Robust Policy Optimization in Deep Reinforcement Learning}. arXiv.org.
+
+\bibitem{xu2022cgd}
+Jingyi Xu, Zirui Li, Li Gao, et al. (2022). \textit{A Comparative Study of Deep Reinforcement Learning-based Transferable Energy Management Strategies for Hybrid Electric Vehicles}. 2022 IEEE Intelligent Vehicles Symposium (IV).
+
+\bibitem{lee2020k9k}
+Kyunghyun Lee, Byeong-uk Lee, Ukcheol Shin, et al. (2020). \textit{An Efficient Asynchronous Method for Integrating Evolutionary and Gradient-based Policy Search}. Neural Information Processing Systems.
+
+\bibitem{li2022ec4}
+Ziniu Li, Yingru Li, Yushun Zhang, et al. (2022). \textit{HyperDQN: A Randomized Exploration Method for Deep Reinforcement Learning}. International Conference on Learning Representations.
+
+\bibitem{wang2022t55}
+Zhihai Wang, Taoxing Pan, Qi Zhou, et al. (2022). \textit{Efficient Exploration in Resource-Restricted Reinforcement Learning}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{whitney2021xlu}
+William F. Whitney, Michael Bloesch, Jost Tobias Springenberg, et al. (2021). \textit{Decoupled Exploration and Exploitation Policies for Sample-Efficient Reinforcement Learning}. Unpublished manuscript.
+
+\bibitem{suri20226rr}
+Karush Suri (2022). \textit{Off-Policy Evolutionary Reinforcement Learning with Maximum Mutations}. Adaptive Agents and Multi-Agent Systems.
+
+\bibitem{xin2020y4j}
+Bo Xin, Haixu Yu, You Qin, et al. (2020). \textit{Exploration Entropy for Reinforcement Learning}. Unpublished manuscript.
+
+\bibitem{matheron2020zmh}
+Guillaume Matheron, Nicolas Perrin, and Olivier Sigaud (2020). \textit{PBCS : Efficient Exploration and Exploitation Using a Synergy between Reinforcement Learning and Motion Planning}. International Conference on Artificial Neural Networks.
+
+\bibitem{yang2022j0z}
+Yiqin Yang, Haotian Hu, Wenzhe Li, et al. (2022). \textit{Flow to Control: Offline Reinforcement Learning with Lossless Primitive Discovery}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{wu2022sot}
+Zheng Wu, Yichen Xie, Wenzhao Lian, et al. (2022). \textit{Zero-Shot Policy Transfer with Disentangled Task Representation of Meta-Reinforcement Learning}. IEEE International Conference on Robotics and Automation.
+
+\bibitem{kessler202295l}
+Samuel Kessler, Piotr Milo's, Jack Parker-Holder, et al. (2022). \textit{The Surprising Effectiveness of Latent World Models for Continual Reinforcement Learning}. arXiv.org.
+
+\bibitem{raffin2020ka2}
+A. Raffin, and F. Stulp (2020). \textit{Generalized State-Dependent Exploration for Deep Reinforcement Learning in Robotics}. arXiv.org.
+
+\bibitem{yang20206wi}
+Kai-En Yang, Chia-Yu Tsai, Hung-Hao Shen, et al. (2020). \textit{Trust-Region Method with Deep Reinforcement Learning in Analog Design Space Exploration}. Design Automation Conference.
+
+\bibitem{liu20228r4}
+Jiayi Liu, Gang Wang, Xiangke Guo, et al. (2022). \textit{Deep Reinforcement Learning Task Assignment Based on Domain Knowledge}. IEEE Access.
+
+\bibitem{kamalova2022jpm}
+A. Kamalova, Suk-Gyu Lee, and Soon-H. Kwon (2022). \textit{Occupancy Reward-Driven Exploration with Deep Reinforcement Learning for Mobile Robot System}. Applied Sciences.
+
+\bibitem{zhang2022p0b}
+Haichao Zhang, Wei Xu, and Haonan Yu (2022). \textit{Generative Planning for Temporally Coordinated Exploration in Reinforcement Learning}. International Conference on Learning Representations.
+
+\bibitem{li20227ss}
+Wenli Li, Yousong Zhang, Xiaohui Shi, et al. (2022). \textit{A Decision-Making Strategy for Car Following Based on Naturalist Driving Data via Deep Reinforcement Learning}. Italian National Conference on Sensors.
+
+\bibitem{huang2022or8}
+Lanxiao Huang, Tyler Cody, Christopher Redino, et al. (2022). \textit{Exposing Surveillance Detection Routes via Reinforcement Learning, Attack Graphs, and Cyber Terrain}. International Conference on Machine Learning and Applications.
+
+\bibitem{modi2019fs3}
+Aditya Modi, and Ambuj Tewari (2019). \textit{No-regret Exploration in Contextual Reinforcement Learning}. Conference on Uncertainty in Artificial Intelligence.
+
+\bibitem{shi20215ek}
+Jiahe Shi, Yali Li, and Shengjin Wang (2021). \textit{Partial Off-policy Learning: Balance Accuracy and Diversity for Human-Oriented Image Captioning}. IEEE International Conference on Computer Vision.
+
+\bibitem{zhang2021qq6}
+Hengzhe Zhang, and Aimin Zhou (2021). \textit{RL-GEP: Symbolic Regression via Gene Expression Programming and Reinforcement Learning}. IEEE International Joint Conference on Neural Network.
+
+\bibitem{yang2020dxb}
+Dujia Yang, Xiaowei Qin, Xiaodong Xu, et al. (2020). \textit{Sample Efficient Reinforcement Learning Method via High Efficient Episodic Memory}. IEEE Access.
+
+\bibitem{bing2019py7}
+Zhenshan Bing, Christian Lemke, Zhuangyi Jiang, et al. (2019). \textit{Energy-Efficient Slithering Gait Exploration for a Snake-like Robot based on Reinforcement Learning}. International Joint Conference on Artificial Intelligence.
+
+\bibitem{zhang20192ef}
+Songan Zhang, H. Peng, S. Nageshrao, et al. (2019). \textit{Discretionary Lane Change Decision Making using Reinforcement Learning with Model-Based Exploration}. International Conference on Machine Learning and Applications.
+
+\bibitem{hu2020yhq}
+Chunyang Hu, and Meng Xu (2020). \textit{Adaptive Exploration Strategy With Multi-Attribute Decision-Making for Reinforcement Learning}. IEEE Access.
+
+\bibitem{kumar20216sy}
+K. N. Kumar, Irfan Essa, and Sehoon Ha (2021). \textit{Graph-based Cluttered Scene Generation and Interactive Exploration using Deep Reinforcement Learning}. IEEE International Conference on Robotics and Automation.
+
+\bibitem{asiain2018wxr}
+Erick Asiain, J. Clempner, and A. Poznyak (2018). \textit{Controller exploitation-exploration reinforcement learning architecture for computing near-optimal policies}. Soft Computing - A Fusion of Foundations, Methodologies and Applications.
+
+\bibitem{li2019tj1}
+Boyao Li, Tao Lu, Jiayi Li, et al. (2019). \textit{Curiosity-Driven Exploration for Off-Policy Reinforcement Learning Methods*}. IEEE International Conference on Robotics and Biomimetics.
+
+\bibitem{sun2020c1p}
+Hao Sun, Ziping Xu, Yuhang Song, et al. (2020). \textit{Zeroth-Order Supervised Policy Improvement}. arXiv.org.
+
+\bibitem{su2020k2m}
+Yixuan Su, Deng Cai, Yan Wang, et al. (2020). \textit{Stylistic Dialogue Generation via Information-Guided Reinforcement Learning Strategy}. arXiv.org.
+
+\bibitem{liu2020o0c}
+Hui Liu, Zhen Zhang, and Dongqing Wang (2020). \textit{WRFMR: A Multi-Agent Reinforcement Learning Method for Cooperative Tasks}. IEEE Access.
+
+\bibitem{ball20235zm}
+Philip J. Ball, Laura M. Smith, Ilya Kostrikov, et al. (2023). \textit{Efficient Online Reinforcement Learning with Offline Data}. International Conference on Machine Learning.
+
+\bibitem{meng2025l1q}
+Qing-ran Meng, Sheharyar Hussain, Fengzhang Luo, et al. (2025). \textit{An Online Reinforcement Learning-Based Energy Management Strategy for Microgrids With Centralized Control}. IEEE transactions on industry applications.
+
+\bibitem{dou2024kjg}
+Shihan Dou, Yan Liu, Haoxiang Jia, et al. (2024). \textit{StepCoder: Improve Code Generation with Reinforcement Learning from Compiler Feedback}. arXiv.org.
+
+\bibitem{lee202337c}
+Jonathan Lee, Annie Xie, Aldo Pacchiano, et al. (2023). \textit{Supervised Pretraining Can Learn In-Context Reinforcement Learning}. Neural Information Processing Systems.
+
+\bibitem{ma2024r2p}
+D. Ma, Xi Chen, Weihao Ma, et al. (2024). \textit{Neural Network Model-Based Reinforcement Learning Control for AUV 3-D Path Following}. IEEE Transactions on Intelligent Vehicles.
+
+\bibitem{matthews20241yx}
+Michael Matthews, Michael Beukman, Benjamin Ellis, et al. (2024). \textit{Craftax: A Lightning-Fast Benchmark for Open-Ended Reinforcement Learning}. International Conference on Machine Learning.
+
+\bibitem{xi2024e2i}
+Meng Xi, Huiao Dai, Jingyi He, et al. (2024). \textit{A Lightweight Reinforcement-Learning-Based Real-Time Path-Planning Method for Unmanned Aerial Vehicles}. IEEE Internet of Things Journal.
+
+\bibitem{zhang20242te}
+Jing Zhang, Jian-Lin Ren, Yani Cui, et al. (2024). \textit{Multi-USV Task Planning Method Based on Improved Deep Reinforcement Learning}. IEEE Internet of Things Journal.
+
+\bibitem{xi2024tj9}
+Zhiheng Xi, Wenxiang Chen, Boyang Hong, et al. (2024). \textit{Training Large Language Models for Reasoning through Reverse Curriculum Reinforcement Learning}. International Conference on Machine Learning.
+
+\bibitem{cheng2024vjq}
+Nan Cheng, Xiucheng Wang, Zan Li, et al. (2024). \textit{Toward Enhanced Reinforcement Learning-Based Resource Management via Digital Twin: Opportunities, Applications, and Challenges}. IEEE Network.
+
+\bibitem{sun20238u5}
+Yihao Sun, Jiajin Zhang, Chengxing Jia, et al. (2023). \textit{Model-Bellman Inconsistency for Model-based Offline Reinforcement Learning}. International Conference on Machine Learning.
+
+\bibitem{xu2023t6r}
+Guowei Xu, Ruijie Zheng, Yongyuan Liang, et al. (2023). \textit{DrM: Mastering Visual Reinforcement Learning through Dormant Ratio Minimization}. International Conference on Learning Representations.
+
+\bibitem{zhang2025wku}
+Yi-Fan Zhang, Xingyu Lu, Xiao Hu, et al. (2025). \textit{R1-Reward: Training Multimodal Reward Model Through Stable Reinforcement Learning}. arXiv.org.
+
+\bibitem{lu2025j7f}
+Guanxing Lu, Wenkai Guo, Chubin Zhang, et al. (2025). \textit{VLA-RL: Towards Masterful and General Robotic Manipulation with Scalable Reinforcement Learning}. arXiv.org.
+
+\bibitem{jiang2023qmw}
+Yiding Jiang, J. Z. Kolter, and R. Raileanu (2023). \textit{On the Importance of Exploration for Generalization in Reinforcement Learning}. Neural Information Processing Systems.
+
+\bibitem{zhang20244ty}
+Ruoqing Zhang, Ziwei Luo, Jens Sjölund, et al. (2024). \textit{Entropy-regularized Diffusion Policy with Q-Ensembles for Offline Reinforcement Learning}. Neural Information Processing Systems.
+
+\bibitem{gu2024fu3}
+Shangding Gu, Bilgehan Sel, Yuhao Ding, et al. (2024). \textit{Balance Reward and Safety Optimization for Safe Reinforcement Learning: A Perspective of Gradient Manipulation}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{ma2024b33}
+Runyu Ma, Jelle Luijkx, Zlatan Ajanović, et al. (2024). \textit{ExploRLLM: Guiding Exploration in Reinforcement Learning with Large Language Models}. IEEE International Conference on Robotics and Automation.
+
+\bibitem{yan2024p3y}
+Xue Yan, Yan Song, Xidong Feng, et al. (2024). \textit{Efficient Reinforcement Learning with Large Language Model Priors}. arXiv.org.
+
+\bibitem{chen2023ymk}
+Yinda Chen, Wei Huang, Shenglong Zhou, et al. (2023). \textit{Self-Supervised Neuron Segmentation with Multi-Agent Reinforcement Learning}. International Joint Conference on Artificial Intelligence.
+
+\bibitem{li2024drs}
+Kuo Li, Xinze Jin, Qing-Shan Jia, et al. (2024). \textit{An OCBA-Based Method for Efficient Sample Collection in Reinforcement Learning}. IEEE Transactions on Automation Science and Engineering.
+
+\bibitem{huang202366f}
+Tao Huang, Kai Chen, Bin Li, et al. (2023). \textit{Demonstration-Guided Reinforcement Learning with Efficient Exploration for Task Automation of Surgical Robot}. IEEE International Conference on Robotics and Automation.
+
+\bibitem{jin2024035}
+Xinze Jin, Kuo Li, and Qing-Shan Jia (2024). \textit{Constrained reinforcement learning with statewise projection: a control barrier function approach}. Science China Information Sciences.
+
+\bibitem{ishfaq20235fo}
+Haque Ishfaq, Qingfeng Lan, Pan Xu, et al. (2023). \textit{Provable and Practical: Efficient Exploration in Reinforcement Learning via Langevin Monte Carlo}. International Conference on Learning Representations.
+
+\bibitem{guo2024sba}
+Siyuan Guo, Lixin Zou, Hechang Chen, et al. (2024). \textit{Sample Efficient Offline-to-Online Reinforcement Learning}. IEEE Transactions on Knowledge and Data Engineering.
+
+\bibitem{surina2025smk}
+Anja Surina, Amin Mansouri, Lars Quaedvlieg, et al. (2025). \textit{Algorithm Discovery With LLMs: Evolutionary Search Meets Reinforcement Learning}. arXiv.org.
+
+\bibitem{celik202575j}
+Onur Celik, Zechu Li, Denis Blessing, et al. (2025). \textit{DIME:Diffusion-Based Maximum Entropy Reinforcement Learning}. arXiv.org.
+
+\bibitem{hua2023omp}
+Hean Hua, and Yongchun Fang (2023). \textit{A Novel Reinforcement Learning-Based Robust Control Strategy for a Quadrotor}. IEEE transactions on industrial electronics (1982. Print).
+
+\bibitem{sukhija2024zz8}
+Bhavya Sukhija, Stelian Coros, Andreas Krause, et al. (2024). \textit{MaxInfoRL: Boosting exploration in reinforcement learning through information gain maximization}. International Conference on Learning Representations.
+
+\bibitem{hsu2024tqd}
+Hao-Lun Hsu, Weixin Wang, Miroslav Pajic, et al. (2024). \textit{Randomized Exploration in Cooperative Multi-Agent Reinforcement Learning}. Neural Information Processing Systems.
+
+\bibitem{wang20248rm}
+Ziyi Wang, Xinran Li, Luoyang Sun, et al. (2024). \textit{Learning State-Specific Action Masks for Reinforcement Learning}. Algorithms.
+
+\bibitem{ghamari2024bbm}
+S. Ghamari, Mojtaba Hajihosseini, D. Habibi, et al. (2024). \textit{Design of an Adaptive Robust PI Controller for DC/DC Boost Converter Using Reinforcement-Learning Technique and Snake Optimization Algorithm}. IEEE Access.
+
+\bibitem{zhang2024ppn}
+Zhengran Zhang, Qi Liu, Yanjie Li, et al. (2024). \textit{Safe Reinforcement Learning in Autonomous Driving With Epistemic Uncertainty Estimation}. IEEE transactions on intelligent transportation systems (Print).
+
+\bibitem{dai2024x3l}
+Zhenwen Dai, Federico Tomasi, and Sina Ghiassian (2024). \textit{In-context Exploration-Exploitation for Reinforcement Learning}. International Conference on Learning Representations.
+
+\bibitem{shuai2025fq3}
+Bin Shuai, Min Hua, Yanfei Li, et al. (2025). \textit{Optimal Energy Management of Plug-In Hybrid Electric Vehicles Through Ensemble Reinforcement Learning With Exploration-to-Exploitation Ratio Control}. IEEE Transactions on Intelligent Vehicles.
+
+\bibitem{stolz20240y2}
+Roland Stolz, Hanna Krasowski, Jakob Thumm, et al. (2024). \textit{Excluding the Irrelevant: Focusing Reinforcement Learning through Continuous Action Masking}. Neural Information Processing Systems.
+
+\bibitem{tappler2024nm1}
+Martin Tappler, Andrea Pferscher, B. Aichernig, et al. (2024). \textit{Learning and Repair of Deep Reinforcement Learning Policies from Fuzz-Testing Data}. International Conference on Software Engineering.
+
+\bibitem{rimon20243o6}
+Zohar Rimon, Tom Jurgenson, Orr Krupnik, et al. (2024). \textit{MAMBA: an Effective World Model Approach for Meta-Reinforcement Learning}. International Conference on Learning Representations.
+
+\bibitem{terven202599m}
+Juan R. Terven (2025). \textit{Deep Reinforcement Learning: A Chronological Overview and Methods}. Applied Informatics.
+
+\bibitem{hsiao2024wps}
+Hao-Hsiang Hsiao, Yi-Chen Lu, Pruek Vanna-iampikul, et al. (2024). \textit{FastTuner: Transferable Physical Design Parameter Optimization using Fast Reinforcement Learning}. ACM International Symposium on Physical Design.
+
+\bibitem{kakooee2024w9m}
+R. Kakooee, and B. Dillenburger (2024). \textit{Reimagining space layout design through deep reinforcement learning}. Journal of Computational Design and Engineering.
+
+\bibitem{rafailov2024wtw}
+Rafael Rafailov, K. Hatch, Anikait Singh, et al. (2024). \textit{D5RL: Diverse Datasets for Data-Driven Deep Reinforcement Learning}. RLJ.
+
+\bibitem{goldie2024cuf}
+A. D. Goldie, Chris Lu, Matthew Jackson, et al. (2024). \textit{Can Learned Optimization Make Reinforcement Learning Less Difficult?}. Neural Information Processing Systems.
+
+\bibitem{coelho2024oa6}
+Daniel Coelho, Miguel Oliveira, and Vitor Santos (2024). \textit{RLfOLD: Reinforcement Learning from Online Demonstrations in Urban Autonomous Driving}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{huang2024nh4}
+Yanjun Huang, Yuxiao Gu, Kang Yuan, et al. (2024). \textit{Human Knowledge Enhanced Reinforcement Learning for Mandatory Lane-Change of Autonomous Vehicles in Congested Traffic}. IEEE Transactions on Intelligent Vehicles.
+
+\bibitem{cho2023z4l}
+Daesol Cho, Seungjae Lee, and H. J. Kim (2023). \textit{Outcome-directed Reinforcement Learning by Uncertainty & Temporal Distance-Aware Curriculum Goal Generation}. International Conference on Learning Representations.
+
+\bibitem{shi20258tu}
+Yucheng Shi, Wenhao Yu, Zaitang Li, et al. (2025). \textit{MobileGUI-RL: Advancing Mobile GUI Agent through Reinforcement Learning in Online Environment}. arXiv.org.
+
+\bibitem{li2024ge1}
+Ge Li, Hongyi Zhou, Dominik Roth, et al. (2024). \textit{Open the Black Box: Step-based Policy Updates for Temporally-Correlated Episodic Reinforcement Learning}. International Conference on Learning Representations.
+
+\bibitem{ghasemi2024j43}
+Majid Ghasemi, Amir Hossein Moosavi, and Dariush Ebrahimi (2024). \textit{A Comprehensive Survey of Reinforcement Learning: From Algorithms to Practical Challenges}. Unpublished manuscript.
+
+\bibitem{liu2023729}
+Zhen-yu Liu, Ke Wang, Daxin Liu, et al. (2023). \textit{A Motion Planning Method for Visual Servoing Using Deep Reinforcement Learning in Autonomous Robotic Assembly}. IEEE/ASME transactions on mechatronics.
+
+\bibitem{shang202305k}
+Zhiwei Shang, Renxing Li, Chunhuang Zheng, et al. (2023). \textit{Relative Entropy Regularized Sample-Efficient Reinforcement Learning With Continuous Actions}. IEEE Transactions on Neural Networks and Learning Systems.
+
+\bibitem{liu2024xkk}
+Zeyang Liu, Lipeng Wan, Xinrui Yang, et al. (2024). \textit{Imagine, Initialize, and Explore: An Effective Exploration Method in Multi-Agent Reinforcement Learning}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{kantaros2024sgn}
+Y. Kantaros, and Jun Wang (2024). \textit{Sample-Efficient Reinforcement Learning With Temporal Logic Objectives: Leveraging the Task Specification to Guide Exploration}. IEEE Transactions on Automatic Control.
+
+\bibitem{li2024zix}
+Siqi Li, Jun Chen, Shanqi Liu, et al. (2024). \textit{MCMC: Multi-Constrained Model Compression via One-Stage Envelope Reinforcement Learning}. IEEE Transactions on Neural Networks and Learning Systems.
+
+\bibitem{ang2024t27}
+Dony Ang, Cyril Rakovski, and H. Atamian (2024). \textit{De Novo Drug Design Using Transformer-Based Machine Translation and Reinforcement Learning of an Adaptive Monte Carlo Tree Search}. Pharmaceuticals.
+
+\bibitem{kim2024qde}
+Jangsaeng Kim, Wonjun Shin, Jiyong Yim, et al. (2024). \textit{Toward Optimized In‐Memory Reinforcement Learning: Leveraging 1/f Noise of Synaptic Ferroelectric Field‐Effect‐Transistors for Efficient Exploration}. Advanced Intelligent Systems.
+
+\bibitem{ma2024jej}
+Chengzhong Ma, Deyu Yang, Tianyu Wu, et al. (2024). \textit{Improving Offline Reinforcement Learning With in-Sample Advantage Regularization for Robot Manipulation}. IEEE Transactions on Neural Networks and Learning Systems.
+
+\bibitem{ge20243g0}
+Zhihong Ge, Xingshuo Li, Fei Xu, et al. (2024). \textit{An Improved Distributed Maximum Power Point Tracking Technique in Photovoltaic Systems Based on Reinforcement Learning Algorithm}. IEEE Journal of Emerging and Selected Topics in Industrial Electronics.
+
+\bibitem{lu2024ush}
+Feiyu Lu, Mengyu Chen, Hsiang Hsu, et al. (2024). \textit{Adaptive 3D UI Placement in Mixed Reality Using Deep Reinforcement Learning}. CHI Extended Abstracts.
+
+\bibitem{yuan2023m1m}
+Jianyong Yuan, Peiyu Wang, Junjie Ye, et al. (2023). \textit{EasySO: Exploration-enhanced Reinforcement Learning for Logic Synthesis Sequence Optimization and a Comprehensive RL Environment}. 2023 IEEE/ACM International Conference on Computer Aided Design (ICCAD).
+
+\bibitem{zheng2023u9k}
+Bowen Zheng, and Ran Cheng (2023). \textit{Rethinking Population-assisted Off-policy Reinforcement Learning}. Annual Conference on Genetic and Evolutionary Computation.
+
+\bibitem{wang20241f3}
+Tianfu Wang, Qilin Fan, Chao Wang, et al. (2024). \textit{FlagVNE: A Flexible and Generalizable Reinforcement Learning Framework for Network Resource Allocation}. International Joint Conference on Artificial Intelligence.
+
+\bibitem{mahankali20248dx}
+Srinath Mahankali, Zhang-Wei Hong, Ayush Sekhari, et al. (2024). \textit{Random Latent Exploration for Deep Reinforcement Learning}. International Conference on Machine Learning.
+
+\bibitem{yoon2024lff}
+Youngsik Yoon, Gangbok Lee, Sungsoo Ahn, et al. (2024). \textit{Breadth-First Exploration on Adaptive Grid for Reinforcement Learning}. International Conference on Machine Learning.
+
+\bibitem{ishfaq20245to}
+Haque Ishfaq, Yixin Tan, Yu Yang, et al. (2024). \textit{More Efficient Randomized Exploration for Reinforcement Learning via Approximate Sampling}. RLJ.
+
+\bibitem{santi2024hct}
+Ric De Santi, Manish Prajapat, and Andreas Krause (2024). \textit{Global Reinforcement Learning: Beyond Linear and Convex Rewards via Submodular Semi-gradient Methods}. International Conference on Machine Learning.
+
+\bibitem{pham2024j80}
+Van-Hau Pham, Do Thi Thu Hien, Nguyen Phuc Chuong, et al. (2024). \textit{A Coverage-Guided Fuzzing Method for Automatic Software Vulnerability Detection Using Reinforcement Learning-Enabled Multi-Level Input Mutation}. IEEE Access.
+
+\bibitem{ding2023whs}
+Wei Ding, Siyang Jiang, Hsi-Wen Chen, et al. (2023). \textit{Incremental Reinforcement Learning with Dual-Adaptive ε-Greedy Exploration}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{malaiyappan20245bh}
+Jesu Narkarunai Arasu Malaiyappan, Sai Mani Krishna Sistla, and Jawaharbabu Jeyaraman (2024). \textit{Advancements in Reinforcement Learning Algorithms for Autonomous Systems}. International Journal of Innovative Science and Research Technology.
+
+\bibitem{gan2023o50}
+Xuemei Gan, Ying Zuo, Ansi Zhang, et al. (2023). \textit{Digital twin-enabled adaptive scheduling strategy based on deep reinforcement learning}. Science China Technological Sciences.
+
+\bibitem{zhao2023cay}
+Kai-Wen Zhao, Yi Ma, Jinyi Liu, et al. (2023). \textit{Ensemble-based Offline-to-Online Reinforcement Learning: From Pessimistic Learning to Optimistic Exploration}. arXiv.org.
+
+\bibitem{xu2023m9r}
+Kaidi Xu, Shenglong Zhou, and Geoffrey Ye Li (2023). \textit{Federated Reinforcement Learning for Resource Allocation in V2X Networks}. IEEE Vehicular Technology Conference.
+
+\bibitem{khlif2023zg3}
+Nesrine Khlif, Khraief-Hadded Nahla, and Belghith Safya (2023). \textit{Reinforcement learning with modified exploration strategy for mobile robot path planning}. Robotica (Cambridge. Print).
+
+\bibitem{sreedharan2023nae}
+S. Sreedharan, and Michael Katz (2023). \textit{Optimistic Exploration in Reinforcement Learning Using Symbolic Model Estimates}. Neural Information Processing Systems.
+
+\bibitem{guo20233sd}
+Siyuan Guo, Yanchao Sun, Jifeng Hu, et al. (2023). \textit{A Simple Unified Uncertainty-Guided Framework for Offline-to-Online Reinforcement Learning}. arXiv.org.
+
+\bibitem{zhang2023wqi}
+Xiao Zhang, Hai Zhang, Hongtu Zhou, et al. (2023). \textit{Safe Reinforcement Learning With Dead-Ends Avoidance and Recovery}. IEEE Robotics and Automation Letters.
+
+\bibitem{beikmohammadi2023v6w}
+Ali Beikmohammadi, and S. Magnússon (2023). \textit{TA-Explore: Teacher-Assisted Exploration for Facilitating Fast Reinforcement Learning}. Adaptive Agents and Multi-Agent Systems.
+
+\bibitem{yang2023n56}
+Qisong Yang, T. D. Simão, N. Jansen, et al. (2023). \textit{Reinforcement Learning by Guided Safe Exploration}. European Conference on Artificial Intelligence.
+
+\bibitem{alvarez2023v09}
+Jonatan Alvarez, Assia Belbachir, Faiza Belbachir, et al. (2023). \textit{Forest Fire Localization: From Reinforcement Learning Exploration to a Dynamic Drone Control}. Journal of Intelligent and Robotic Systems.
+
+\bibitem{li2023kgk}
+Tianyi Li, Gen-ke Yang, and Jian Chu (2023). \textit{Implicit Posteriori Parameter Distribution Optimization in Reinforcement Learning}. IEEE Transactions on Cybernetics.
+
+\bibitem{zi20238ug}
+Yuan Zi, Lei Fan, Xuqing Wu, et al. (2023). \textit{Active Gamma-Ray Log Pattern Localization With Distributionally Robust Reinforcement Learning}. IEEE Transactions on Geoscience and Remote Sensing.
+
+\bibitem{yang2023w3h}
+Junjun Yang, Kaige Tan, Lei Feng, et al. (2023). \textit{Reducing the Learning Time of Reinforcement Learning for the Supervisory Control of Discrete Event Systems}. IEEE Access.
+
+\bibitem{sun20219kr}
+Chuxiong Sun, Rui Wang, Qian Li, et al. (2021). \textit{Reward Space Noise for Exploration in Deep Reinforcement Learning}. International journal of pattern recognition and artificial intelligence.
+
+\bibitem{guo2022y6b}
+Zijing Guo, Chendie Yao, Yanghe Feng, et al. (2022). \textit{Survey of Reinforcement Learning based on Human Prior Knowledge}. Journal of Uncertain Systems.
+
+\bibitem{mazumder2022deb}
+Sahisnu Mazumder, Bing Liu, Shuai Wang, et al. (2022). \textit{Knowledge-Guided Exploration in Deep Reinforcement Learning}. arXiv.org.
+
+\bibitem{oh2022cei}
+Ji-Yun Oh, Joonkee Kim, and Se-Young Yun (2022). \textit{Risk Perspective Exploration in Distributional Reinforcement Learning}. arXiv.org.
+
+\bibitem{vidakovi2020q23}
+J. Vidaković, B. Jerbić, B. Šekoranja, et al. (2020). \textit{Accelerating Robot Trajectory Learning for Stochastic Tasks}. IEEE Access.
+
+\bibitem{sun2024kxq}
+Xianzhuo Sun, Zhao Xu, Jing Qiu, et al. (2024). \textit{Optimal Volt/Var Control for Unbalanced Distribution Networks With Human-in-the-Loop Deep Reinforcement Learning}. IEEE Transactions on Smart Grid.
+
+\bibitem{yu2024x53}
+Peipei Yu, Zhen-yu Wang, Hongcai Zhang, et al. (2024). \textit{Safe Reinforcement Learning for Power System Control: A Review}. arXiv.org.
+
+\bibitem{wang2024htz}
+Ming Wang, Jie Zhang, Peng Zhang, et al. (2024). \textit{Cooperative multi-agent reinforcement learning for multi-area integrated scheduling in wafer fabs}. International Journal of Production Research.
+
+\bibitem{ding20246hx}
+Yunlong Ding, Minchi Kuang, Heng Shi, et al. (2024). \textit{Multi-UAV Cooperative Target Assignment Method Based on Reinforcement Learning}. Drones.
+
+\bibitem{yang2024yh9}
+Jingwen Yang, Ping Wang, and Yongfeng Ju (2024). \textit{Variable Speed Limit Intelligent Decision-Making Control Strategy Based on Deep Reinforcement Learning under Emergencies}. Sustainability.
+
+\bibitem{afroosheh2024id4}
+Sajjad Afroosheh, Khodakhast Esapour, Reza Khorram‐Nia, et al. (2024). \textit{Reinforcement learning layout‐based optimal energy management in smart home: AI‐based approach}. IET Generation, Transmission &amp; Distribution.
+
+\bibitem{dong2025887}
+Yihong Dong, Xue Jiang, Yongding Tao, et al. (2025). \textit{RL-PLUS: Countering Capability Boundary Collapse of LLMs in Reinforcement Learning with Hybrid-policy Optimization}. arXiv.org.
+
+\bibitem{zhu2024sb0}
+Qingling Zhu, Xiaoqiang Wu, Qiuzhen Lin, et al. (2024). \textit{Two-Stage Evolutionary Reinforcement Learning for Enhancing Exploration and Exploitation}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{xiang2024qhz}
+Xuanchen Xiang, Ruisheng Diao, S. Bernadin, et al. (2024). \textit{An Intelligent Parameter Identification Method of DFIG Systems Using Hybrid Particle Swarm Optimization and Reinforcement Learning}. IEEE Access.
+
+\bibitem{qi2024hxq}
+Ji Qi, Haibo Gao, Huanli Su, et al. (2024). \textit{Reinforcement Learning and Sim-to-Real Transfer of Reorientation and Landing Control for Quadruped Robots on Asteroids}. IEEE transactions on industrial electronics (1982. Print).
+
+\bibitem{zhang2024wgo}
+Bolei Zhang, Fu Xiao, and Lifa Wu (2024). \textit{Offline Reinforcement Learning for Asynchronous Task Offloading in Mobile Edge Computing}. IEEE Transactions on Network and Service Management.
+
+\bibitem{sun2024edc}
+Siqing Sun, Huachao Dong, and Tianbo Li (2024). \textit{A modified evolutionary reinforcement learning for multi-agent region protection with fewer defenders}. Complex &amp; Intelligent Systems.
+
+\bibitem{dunsin2024e5w}
+Dipo Dunsin, Mohamed Chahine Ghanem, Karim Ouazzane, et al. (2024). \textit{Reinforcement Learning for an Efficient and Effective Malware Investigation during Cyber Incident Response}. arXiv.org.
+
+\bibitem{hu2024085}
+Haotian Hu, Yiqin Yang, Jianing Ye, et al. (2024). \textit{Bayesian Design Principles for Offline-to-Online Reinforcement Learning}. International Conference on Machine Learning.
+
+\bibitem{ji2024gkw}
+Chang-Hoon Ji, Dong-Hee Shin, Young-Han Son, et al. (2024). \textit{Sparse Graph Representation Learning Based on Reinforcement Learning for Personalized Mild Cognitive Impairment (MCI) Diagnosis}. IEEE journal of biomedical and health informatics.
+
+\bibitem{parisi2024u3o}
+Simone Parisi, Alireza Kazemipour, and Michael Bowling (2024). \textit{Beyond Optimism: Exploration With Partially Observable Rewards}. Neural Information Processing Systems.
+
+\bibitem{wang2024anu}
+Yiming Wang, Kaiyan Zhao, Furui Liu, et al. (2024). \textit{Rethinking Exploration in Reinforcement Learning with Effective Metric-Based Exploration Bonus}. Neural Information Processing Systems.
+
+\bibitem{wu2024mak}
+Fan Wu, Rui Zhang, Qi Yi, et al. (2024). \textit{OCEAN-MBRL: Offline Conservative Exploration for Model-Based Offline Reinforcement Learning}. AAAI Conference on Artificial Intelligence.
+
+\bibitem{zhao2024714}
+Dongfang Zhao, Huanshi Xu, and Zhang Xun (2024). \textit{Active Exploration Deep Reinforcement Learning for Continuous Action Space with Forward Prediction}. International Journal of Computational Intelligence Systems.
+
+\bibitem{hua2025fq5}
+Hean Hua, Yaonan Wang, Hang Zhong, et al. (2025). \textit{A Novel Guided Deep Reinforcement Learning Tracking Control Strategy for Multirotors}. IEEE Transactions on Automation Science and Engineering.
+
+\bibitem{dai2025h8g}
+Runpeng Dai, Linfeng Song, Haolin Liu, et al. (2025). \textit{CDE: Curiosity-Driven Exploration for Efficient Reinforcement Learning in Large Language Models}. Unpublished manuscript.
+
+\bibitem{chang2024u7x}
+Xin Chang, Yanbin Li, Guanjie Zhang, et al. (2024). \textit{An Improved Reinforcement Learning Method Based on Unsupervised Learning}. IEEE Access.
+
+\bibitem{janjua2024yhk}
+J. Janjua, Shagufta Kousar, Areeba Khan, et al. (2024). \textit{Enhancing Scalability in Reinforcement Learning for Open Spaces}. 2024 International Conference on Decision Aid Sciences and Applications (DASA).
+
+\bibitem{ledesma2024zzm}
+Jorge Val Ledesma, Rafał Wiśniewski, C. Kallesøe, et al. (2024). \textit{Water Age Control for Water Distribution Networks via Safe Reinforcement Learning}. IEEE Transactions on Control Systems Technology.
+
+\bibitem{wu20248f9}
+Mingkang Wu, Umer Siddique, Abhinav Sinha, et al. (2024). \textit{Offline Reinforcement Learning with Failure Under Sparse Reward Environments}. International Conference on Multimodal Interaction.
+
+\bibitem{honari202473t}
+Homayoun Honari, Amir M. Soufi Enayati, Mehran Ghafarian Tamizi, et al. (2024). \textit{Meta SAC-Lag: Towards Deployable Safe Reinforcement Learning via MetaGradient-based Hyperparameter Tuning}. IEEE/RJS International Conference on Intelligent RObots and Systems.
+
+\bibitem{shi2024g6o}
+Jiamin Shi, Tangyike Zhang, Ziqi Zong, et al. (2024). \textit{Task-Driven Autonomous Driving: Balanced Strategies Integrating Curriculum Reinforcement Learning and Residual Policy}. IEEE Robotics and Automation Letters.
+
+\bibitem{lu2025caz}
+Thinh Lu, Divyam Sobti, Deepak Talwar, et al. (2025). \textit{Reinforcement learning-based dynamic field exploration and reconstruction using multi-robot systems for environmental monitoring}. Frontiers Robotics AI.
+
+\bibitem{hou20248b2}
+Muhan Hou, Koen V. Hindriks, Guszti Eiben, et al. (2024). \textit{``Give Me an Example Like This'': Episodic Active Reinforcement Learning from Demonstrations}. International Conference on Human-Agent Interaction.
+
+\end{thebibliography}
+
+\end{document}

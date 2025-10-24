@@ -145,6 +145,10 @@ class ChatAgent:
         try:
             res = json.loads(response.text)
             res_text = res["choices"][0]["message"]["content"]
+            input_tokens=res["usage"]["prompt_tokens"]
+            output_tokens=res["usage"]["completion_tokens"]
+            print("INPUT TOKEN: ", input_tokens)
+            print("OUTPUT TOKEN: ", output_tokens)
             # 更新总开销
             # token monitor
             if self.token_monitor:
@@ -504,8 +508,8 @@ class ChatAgent:
             Generated text response
         """
         # Determine provider
-        if provider is None:
-            provider = LLM_PROVIDER
+        # if provider is None:
+        #     provider = LLM_PROVIDER
 
         # Determine model
         if model is None:
@@ -531,6 +535,7 @@ class ChatAgent:
                 model=model,
             )
         else:
+            print("using gpt\n ======================================================\n")
             return self.remote_chat(
                 text_content=text_content,
                 image_urls=image_urls,

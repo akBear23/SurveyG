@@ -471,7 +471,7 @@ def main():
         layer = attr.get('layer')
         if layer in layer_counts:
             layer_counts[layer] += 1
-    # print(f"Layer counts: {layer_counts}")
+    print(f"Layer counts: {layer_counts}")
     # # # --- Layer 1 seed direction summaries ---
     # seeds = get_layer_seeds(G, 1)  # Only layer 1 seeds with new_direction=1
     # all_text = []
@@ -525,18 +525,18 @@ def main():
     #     json.dump(layer_method_group_json, f, ensure_ascii=False, indent=2)
     # print(f"Layer method group summaries saved to {layer_summary_output_path}")
 
-    # community_summaries = {}
-    # ls = Leiden_summarizer(graph_path)
-    # communities = ls.leiden_algorithm()
-    # for i, community in enumerate(communities):
-    #     summary, papers = summarize_community(query, G, community)
-    #     community_summaries[f"community_{i}"] = {
-    #         "summary": summary,
-    #         "papers": papers
-    #     }
-    # with open(community_summary_output_path, "w", encoding="utf-8") as f:
-    #     json.dump(community_summaries, f, ensure_ascii=False, indent=2)
-    # print(f"Layer method group summaries saved to {community_summary_output_path}")
+    community_summaries = {}
+    ls = Leiden_summarizer(graph_path)
+    communities = ls.leiden_algorithm()
+    for i, community in enumerate(communities):
+        summary, papers = summarize_community(query, G, community)
+        community_summaries[f"community_{i}"] = {
+            "summary": summary,
+            "papers": papers
+        }
+    with open(community_summary_output_path, "w", encoding="utf-8") as f:
+        json.dump(community_summaries, f, ensure_ascii=False, indent=2)
+    print(f"Layer method group summaries saved to {community_summary_output_path}")
 
     # # Generate outline for the survey
     print('Generating survey outline...')

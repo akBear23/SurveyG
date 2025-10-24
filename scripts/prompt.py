@@ -139,6 +139,7 @@ GUIDELINES:
 """
 
 # Remember to add layer 1 community to PAPER_COMMUNITIES
+
         self.OUTLINE_PROMPT = """You are creating a comprehensive literature review outline for: "[QUERY]"
 
 # AVAILABLE RESEARCH SYNTHESIS
@@ -320,6 +321,7 @@ Outline to evaluate:
 """
 
 #Remember to drop <think> tags after generating subsections
+
         self.WRITE_INITIAL_SUBSECTION_PROMPT = """
 Write a comprehensive literature review subsection titled "[SUBSECTION_TITLE]" in LaTeX format.
 

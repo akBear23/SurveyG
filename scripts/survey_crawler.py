@@ -356,6 +356,8 @@ class SurveyOptimizedCrawler:
                 )
                 offset += len(papers)
                 papers.extend(query_papers)
+                if len(query_papers) == 0:
+                    break
         papers = self._deduplicate_papers(papers)
         # calculate score = citation_count * (1 / max(1, (2025 - year))) and take top 20% base on calculated score
         for paper in papers:
@@ -407,6 +409,8 @@ class SurveyOptimizedCrawler:
                 )
                 offset += len(papers)
                 papers.extend(query_papers)
+                if len(query_papers) == 0:
+                    break
             # query_papers = self._search_all_sources(
             #     query,
             #     year_range=(start_year, end_year),
