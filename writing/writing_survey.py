@@ -24,33 +24,54 @@ from pathlib import Path
 from scripts.prompt import PromptHelper
 
 class LiteratureReviewGenerator:
-    def __init__(self, query, api_key: str, ablation_study = ''):
+    def __init__(self, query, api_key: str, ablation_study = '', top_k=None):
         """
         Initialize Literature Review Generator with Gemini API key
         
         Args:
             api_key (str): Gemini API key
+            ablation_study (str): Optional ablation study suffix
+            top_k (int): Optional top K parameter for folder structure
         """
         self.prompt_helper = PromptHelper()
         genai.configure(api_key=api_key)
         self.query = query
         self.ablation_study = ablation_study
-        self.save_dir = f"paper_data/{self.query.replace(' ', '_').replace(':', '')}/literature_review_output{self.ablation_study}"
+        self.top_k = top_k
+        
+        # Determine folder structure
+        folder_suffix = f"_top{top_k}" if top_k is not None else ""
+        base_query_dir = query.replace(' ', '_').replace(':', '')
+        self.output_query_dir = f"{base_query_dir}{folder_suffix}"
+        self.base_query_dir = base_query_dir
+        
+        # Output directories (write to top_k folder)
+        self.save_dir = f"paper_data/{self.output_query_dir}/literature_review_output{self.ablation_study}"
         os.makedirs(self.save_dir, exist_ok=True)
+        
+        # Source directories (reuse from base folder)
+        base_dir = f"paper_data/{base_query_dir}"
+        self.keyword_dir = f"{base_dir}/keywords"
+        rag_db_path = f"{base_dir}/rag_database"
+        os.makedirs(rag_db_path, exist_ok=True)
+        
         self.model = genai.GenerativeModel('gemini-2.5-flash')
         self.advanced_model = genai.GenerativeModel('gemini-2.5-pro')
         self.papers_data = []
         self.citations_map = {}  # Map paper names to citation keys
-        rag_db_path = f"paper_data/{query.replace(' ', '_').replace(':', '')}/rag_database"
-        os.makedirs(f"paper_data/{query.replace(' ', '_').replace(':', '')}/rag_database/", exist_ok=True)
-        self.keyword_dir = f"paper_data/{query.replace(' ', '_').replace(':', '')}/keywords"
+        self.cited_papers_from_graph = set()  # Track papers cited from graph nodes
+        
         self.summarizer = PaperSummarizerRAG(query, api_key, rag_db_path)
         self.max_improvement_iterations = 3  # Maximum iterations for section improvement
-        self.layer_method_group_json = json.load(open(f"paper_data/{self.query.replace(' ', '_').replace(':', '')}/paths/layer_method_group_summary.json", "r", encoding="utf-8"))
-        self.develop_direction = json.load(open(f"paper_data/{self.query.replace(' ', '_').replace(':', '')}/paths/layer1_seed_taxonomy.json", "r", encoding="utf-8"))
-        self.community_summary = json.load(open(f"paper_data/{self.query.replace(' ', '_').replace(':', '')}/paths/communities_summary.json", "r", encoding="utf-8"))
-        self.graph_path = f"paper_data/{self.query.replace(' ', '_').replace(':', '')}/info/paper_citation_graph.json"
-        self.node_info_path = f"{self.keyword_dir}/processed_checkpoint.json"
+        
+        # Load from top_k output folder
+        output_paths_dir = f"paper_data/{self.output_query_dir}/paths"
+        self.layer_method_group_json = json.load(open(f"{output_paths_dir}/layer_method_group_summary.json", "r", encoding="utf-8"))
+        self.develop_direction = json.load(open(f"{output_paths_dir}/layer1_seed_taxonomy.json", "r", encoding="utf-8"))
+        self.community_summary = json.load(open(f"{output_paths_dir}/communities_summary.json", "r", encoding="utf-8"))
+        
+        self.graph_path = f"paper_data/{self.output_query_dir}/info/paper_citation_graph.json"
+        self.node_info_path = f"{self.keyword_dir}/processed_checkpoint.json"  # Reuse from base
         self.G, self.id2node_info = self.load_graph(self.graph_path, self.node_info_path)
         self.outline_path = f"{self.save_dir}/survey_outline{self.ablation_study}.json"
 
@@ -439,6 +460,8 @@ class LiteratureReviewGenerator:
                     if node in self.G.nodes and get_nodes_info:
                         node_data = self.G.nodes[node]
                         all_nodes.extend([node_data])
+                        # Track that this paper from the graph is being cited
+                        self.cited_papers_from_graph.add(node)
                         # title = node_data.get('title', '')
                         # abstract = node_data.get('abstract', '')
                         # year = node_data.get('year', '')
@@ -454,6 +477,8 @@ class LiteratureReviewGenerator:
                     if paper in self.G.nodes and get_nodes_info:
                         node_data = self.G.nodes[paper]
                         all_nodes.extend([node_data])
+                        # Track that this paper from the graph is being cited
+                        self.cited_papers_from_graph.add(paper)
                         # title = node_data.get('title', '')
                         # abstract = node_data.get('abstract', '')
                         # year = node_data.get('year', '')
@@ -472,6 +497,8 @@ class LiteratureReviewGenerator:
                     if node in self.G.nodes and get_nodes_info:
                         node_data = self.G.nodes[node]
                         all_nodes.extend([node_data])
+                        # Track that this paper from the graph is being cited
+                        self.cited_papers_from_graph.add(node)
                         # title = node_data.get('title', '')
                         # abstract = node_data.get('abstract', '')
                         # year = node_data.get('year', '')
@@ -525,9 +552,50 @@ class LiteratureReviewGenerator:
                     temperature=0.4,
                 )
             )
-            return self.parse_remove_think(response.text)
+            # print("DEBUG: PROMPT \n", subsection_prompt)
+            # print("DEBUG: Response: \n", response)
+            # Method 1: Try the quick accessor first
+            try:
+                if hasattr(response, 'text') and response.text:
+                    return self.parse_remove_think(response.text)
+            except ValueError as ve:
+                # This is the "response.text quick accessor requires valid Part" error
+                print(f"   Note: response.text accessor failed, extracting from candidates...")
+            
+            # Method 2: Extract from candidates structure
+            if not hasattr(response, 'candidates') or not response.candidates:
+                print(f"⚠️  Warning: No candidates in response for '{subsection_title}'")
+                return ""
+            
+            # Get first candidate
+            candidate = response.candidates[0]
+            
+            # Check finish reason
+            finish_reason = candidate.finish_reason
+            if finish_reason == 3:  # SAFETY
+                print(f"⚠️  Content filtered by safety for '{subsection_title}'")
+                return ""
+            elif finish_reason == 2:  # MAX_TOKENS
+                print(f"⚠️  Token limit reached for '{subsection_title}'")
+            
+            # Method 3: Manually extract text from parts
+            if hasattr(candidate, 'content') and candidate.content:
+                if hasattr(candidate.content, 'parts') and candidate.content.parts:
+                    extracted_text = ''
+                    for part in candidate.content.parts:
+                        if hasattr(part, 'text') and part.text:
+                            extracted_text += part.text
+                    
+                    if extracted_text:
+                        print(f"   ✓ Extracted {len(extracted_text)} chars from response")
+                        return self.parse_remove_think(extracted_text)
+            
+            print(f"❌ No valid text in response for '{subsection_title}'")
+            return ""
+            
         except Exception as e:
-            print(f"Error writing initial subsection: {e}")
+            print(f"❌ Error writing subsection: {e}")
+            print(f"   Type: {type(e).__name__}")
             return ""
     def evaluate_subsection_quality(self, subsection_title: str, subsection_content: str, 
                                  subsection_focus: str, outline: str, pre_subsection: str) -> Dict[str, any]:
@@ -840,59 +908,82 @@ class LiteratureReviewGenerator:
                 print(f"        ⏭️  Loading subsection '{subsection_title}' from checkpoint.")
                 with open(checkpoint_path, 'r', encoding='utf-8') as f:
                     current_subsection_content = f.read()
-
-                if current_subsection_content != '' and current_subsection_content[0] != "\\" and current_subsection_content != None:
+                
+                # Ensure we have valid content
+                if not current_subsection_content:
+                    print(f"        ⚠️  Checkpoint file is empty, regenerating...")
+                    current_subsection_content = ""
+                elif current_subsection_content and current_subsection_content[0] != "\\":
                     current_subsection_content = self.parse_remove_think(current_subsection_content)
                     with open(checkpoint_path, 'w', encoding='utf-8') as f:
                         f.write(current_subsection_content)
                 
-                if current_subsection_content.strip().startswith("\\section"):
-                    current_subsection_content = current_subsection_content.replace("\\section", "\\subsection")
-                
-                subsection_prefix = f"\\subsection"
-                if current_subsection_content.strip().startswith(subsection_prefix):
-                    # Find the end of the subsection line and label to remove it
-                    # This assumes the label immediately follows the subsection title
-                    # and we want to remove both if they are at the very beginning.
+                # Only proceed if we have valid content from checkpoint
+                if current_subsection_content and current_subsection_content.strip():
+                    if current_subsection_content.strip().startswith("\\section"):
+                        current_subsection_content = current_subsection_content.replace("\\section", "\\subsection")
                     
-                    # A more robust way would be to parse it, but for simple string manipulation:
-                    temp_content = current_subsection_content.strip()
-                    
-                    # Find the first newline after the potential subsection line
-                    first_newline_idx = temp_content.find('\n')
-                    
-                    if first_newline_idx != -1:
-                        # Check if the text before this newline contains the label as well
-                        # This is a bit simplistic and might need refinement depending on exact latex structure
-                        if "\\label" in temp_content[:first_newline_idx]:
-                            # If the label is on the same line as subsection or immediately after
-                            # find the end of the label line
-                            second_newline_idx = temp_content.find('\n', first_newline_idx + 1)
-                            if second_newline_idx != -1:
-                                current_subsection_content = temp_content[second_newline_idx + 1:]
-                            else:
-                                current_subsection_content = "" # Only the subsection and label were present
-                        else: # Only the subsection line
-                            current_subsection_content = temp_content[first_newline_idx + 1:]
-                    else: # No newline, meaning only the subsection was in the content
-                        current_subsection_content = ""
+                    subsection_prefix = f"\\subsection"
+                    if current_subsection_content.strip().startswith(subsection_prefix):
+                        # Find the end of the subsection line and label to remove it
+                        # This assumes the label immediately follows the subsection title
+                        # and we want to remove both if they are at the very beginning.
+                        
+                        # A more robust way would be to parse it, but for simple string manipulation:
+                        temp_content = current_subsection_content.strip()
+                        
+                        # Find the first newline after the potential subsection line
+                        first_newline_idx = temp_content.find('\n')
+                        
+                        if first_newline_idx != -1:
+                            # Check if the text before this newline contains the label as well
+                            # This is a bit simplistic and might need refinement depending on exact latex structure
+                            if "\\label" in temp_content[:first_newline_idx]:
+                                # If the label is on the same line as subsection or immediately after
+                                # find the end of the label line
+                                second_newline_idx = temp_content.find('\n', first_newline_idx + 1)
+                                if second_newline_idx != -1:
+                                    current_subsection_content = temp_content[second_newline_idx + 1:]
+                                else:
+                                    current_subsection_content = "" # Only the subsection and label were present
+                            else: # Only the subsection line
+                                current_subsection_content = temp_content[first_newline_idx + 1:]
+                        else: # No newline, meaning only the subsection was in the content
+                            current_subsection_content = ""
 
-                # Now, add the correct subsection line at the beginning
-                full_section_latex_content += f"\\subsection{{{subsection_title}}}\n\\label{{sec:{subsection_number.replace('.', '_')}_{subsection_title.lower().replace(' ', '_').replace('and', '_and_')}}}\n\n"
-                full_section_latex_content += current_subsection_content + '\n'
+                    # Now, add the correct subsection line at the beginning
+                    full_section_latex_content += f"\\subsection{{{subsection_title}}}\n\\label{{sec:{subsection_number.replace('.', '_')}_{subsection_title.lower().replace(' ', '_').replace('and', '_and_')}}}\n\n"
+                    full_section_latex_content += current_subsection_content + '\n'
+                    
+                    # Update pre_subsection_content for next iteration
+                    pre_subsection_content = current_subsection_content
 
-                continue
+                    continue
+                else:
+                    # Checkpoint was empty or invalid, regenerate
+                    print(f"        ⚠️  Invalid checkpoint content, will regenerate...")
+                    current_subsection_content = ""
             else:
                 print(f"        ✍️  Writing initial content for subsection '{subsection_title}'...")
                 current_subsection_content = self.write_initial_subsection(
                     subsection_title, subsection_focus, full_outline_text, subsection_proof_ids, 
                     pre_subsection_content, processed_papers
                 )
-                while current_subsection_content == '' or current_subsection_content == None:
+                # Retry up to 3 times if content is empty or None
+                retry_count = 0
+                max_retries = 3
+                while (not current_subsection_content or current_subsection_content == '') and retry_count < max_retries:
+                    retry_count += 1
+                    print(f"        ⚠️  Empty response, retry {retry_count}/{max_retries}...")
                     current_subsection_content = self.write_initial_subsection(
-                    subsection_title, subsection_focus, full_outline_text, subsection_proof_ids, 
-                    pre_subsection_content, processed_papers
-                )
+                        subsection_title, subsection_focus, full_outline_text, subsection_proof_ids, 
+                        pre_subsection_content, processed_papers
+                    )
+                
+                # If still empty after retries, skip this subsection
+                if not current_subsection_content or current_subsection_content == '':
+                    print(f"        ❌ Failed to generate content after {max_retries} retries, skipping subsection")
+                    current_subsection_content = f"% TODO: Content generation failed for subsection {subsection_title}\n"
                 
                 with open(checkpoint_path, 'w', encoding='utf-8') as f:
                     f.write(current_subsection_content)
@@ -928,16 +1019,35 @@ class LiteratureReviewGenerator:
                     subsection_title, old_subsection_content, subsection_focus, 
                     additional_papers, full_outline_text, evaluation, pre_subsection_content
                 )
-                while current_subsection_content == '' or current_subsection_content == None:
+                
+                # Retry up to 3 times if improvement returns empty/None
+                retry_count = 0
+                max_retries = 3
+                while (not current_subsection_content or current_subsection_content == '') and retry_count < max_retries:
+                    retry_count += 1
+                    print(f"         ⚠️  Empty improvement response, retry {retry_count}/{max_retries}...")
                     current_subsection_content = self.improve_subsection_with_additional_papers(
-                    subsection_title, old_subsection_content, subsection_focus, 
-                    additional_papers, full_outline_text, evaluation, pre_subsection_content
-                )
+                        subsection_title, old_subsection_content, subsection_focus, 
+                        additional_papers, full_outline_text, evaluation, pre_subsection_content
+                    )
+                
+                # If improvement failed, keep the old content
+                if not current_subsection_content or current_subsection_content == '':
+                    print(f"         ⚠️  Improvement failed, keeping original content")
+                    current_subsection_content = old_subsection_content
+                
                 with open(checkpoint_path, 'w', encoding='utf-8') as f:
                     f.write(current_subsection_content)
 
             # After refining, add the subsection content to the section's full content
             all_subsections_content_for_section[subsection_title] = current_subsection_content
+            
+            # Ensure content is not None before processing
+            if not current_subsection_content:
+                print(f"        ⚠️  Warning: Subsection '{subsection_title}' has no content, skipping")
+                pre_subsection_content = ""  # Don't use None content as context
+                continue
+            
             if current_subsection_content.strip().startswith("\\section"):
                 current_subsection_content = current_subsection_content.replace("\\section", "\\subsection")
             
@@ -1101,8 +1211,12 @@ class LiteratureReviewGenerator:
 
         # Step 4: Generate LaTeX document
         print("\n4. Generating LaTeX document...")
+        
+        # Collect all papers for bibliography (processed + graph-cited)
+        all_bibliography_papers = self.collect_all_papers_for_bibliography(all_processed_papers)
+        
         latex_document = self.generate_latex_document_with_sections(
-            sections_content, all_processed_papers, review_title
+            sections_content, all_bibliography_papers, review_title
         )
         
         # Compile final review
@@ -1287,6 +1401,44 @@ class LiteratureReviewGenerator:
         # Combine all parts
         complete_latex = latex_header + latex_content + bibliography + "\n\\end{document}"
         
+        # Extract valid citation keys from all_papers
+        valid_citation_keys = {paper['citation_key'] for paper in all_papers}
+        
+        # Step 1: Validate and fix LaTeX errors
+        print("\n5. Validating and fixing LaTeX errors...")
+        complete_latex = self.validate_and_fix_latex(complete_latex)
+        print("   ✅ LaTeX validation complete!")
+        
+        # Step 2: Validate and report citations
+        print("\n6. Validating citations in the final document...")
+        citation_report = self.validate_and_report_citations(complete_latex, valid_citation_keys)
+        
+        print(f"   📊 Citation Statistics:")
+        print(f"      Total citations: {citation_report['total_citations']}")
+        print(f"      Unique citations: {citation_report['unique_citations']}")
+        print(f"      Valid citations: {citation_report['valid_citations']}")
+        print(f"      Phantom citations: {citation_report['phantom_citations']}")
+        print(f"      Unused bibliography entries: {citation_report['unused_bib_entries']}")
+        
+        if citation_report['phantom_citations'] > 0:
+            print(f"\n   ⚠️  Found {citation_report['phantom_citations']} phantom citation(s):")
+            for phantom in citation_report['phantom_citation_list'][:10]:  # Show first 10
+                print(f"      - {phantom}")
+            if len(citation_report['phantom_citation_list']) > 10:
+                print(f"      ... and {len(citation_report['phantom_citation_list']) - 10} more")
+            
+            print(f"\n   🧹 Cleaning phantom citations from document...")
+            complete_latex = self.clean_phantom_citations_from_latex(complete_latex, valid_citation_keys)
+            print(f"   ✅ Phantom citations removed!")
+        else:
+            print(f"   ✅ No phantom citations found!")
+        
+        # Save citation report
+        report_path = os.path.join(self.save_dir, "citation_validation_report.json")
+        with open(report_path, 'w', encoding='utf-8') as f:
+            json.dump(citation_report, f, indent=2)
+        print(f"   📄 Citation report saved to: {report_path}")
+        
         return complete_latex
 
     #region format LaTeX content
@@ -1326,49 +1478,80 @@ class LiteratureReviewGenerator:
         bibliography += "\\begin{thebibliography}{" + str(len(processed_papers)) + "}\n\n"
         
         for paper in processed_papers:
-            metadata = paper['metadata']
-            citation_key = paper['citation_key']
-            # print("metadata: ", metadata)
-            # Extract metadata with fallbacks
-            title = metadata.get('title', 'Unknown Title').strip()
-            # authors = metadata.get('authors', 'Unknown Authors').strip()
-            authors = metadata.get('authors', 'Unknown Authors')
-            if isinstance(authors, list):
-                # If it's a list, join the authors
-                authors = ', '.join([str(author).strip() for author in authors if author])
-            elif isinstance(authors, str):
-                authors = authors.strip()
-            else:
-                authors = str(authors).strip()
-            year = metadata.get('published_date', 'Unknown Year').strip()
-            journal = metadata.get('venue', 'Unknown Venue').strip()
-            
-            # Clean up the data
-            if title == "Not available" or not title:
-                title = f"Research Paper ({paper['file_name']})"
-            if authors == "Not available" or not authors:
-                authors = "Unknown Authors"
-            if year == "Not available" or not year:
-                year = "n.d."
-            if journal == "Not available" or not journal:
-                journal = "Unpublished manuscript"
-            
-            # Format bibliography entry
-            bibliography += f"\\bibitem{{{citation_key}}}\n"
-            
-            # Format authors
-            if ',' in authors and len(authors.split(',')) > 1:
-                author_list = [author.strip() for author in authors.split(',')]
-                if len(author_list) > 3:
-                    formatted_authors = ', '.join(author_list[:3]) + ', et al.'
+            try:
+                metadata = paper.get('metadata', {})
+                citation_key = paper.get('citation_key', 'unknown')
+                
+                # Skip papers without citation keys
+                if not citation_key or citation_key == 'unknown':
+                    print(f"   ⚠️  Skipping paper without citation key: {paper.get('file_name', 'unknown')}")
+                    continue
+                
+                # Extract metadata with fallbacks
+                title = metadata.get('title', 'Unknown Title')
+                if isinstance(title, str):
+                    title = title.strip()
                 else:
-                    formatted_authors = ', '.join(author_list[:-1]) + ', and ' + author_list[-1]
-            else:
-                formatted_authors = authors
-            
-            bibliography += f"{formatted_authors} ({year}). "
-            bibliography += f"\\textit{{{title}}}. "
-            bibliography += f"{journal}.\n\n"
+                    title = str(title).strip() if title else 'Unknown Title'
+                    
+                authors = metadata.get('authors', 'Unknown Authors')
+                if isinstance(authors, list):
+                    # If it's a list, join the authors
+                    authors = ', '.join([str(author).strip() for author in authors if author])
+                elif isinstance(authors, str):
+                    authors = authors.strip()
+                else:
+                    authors = str(authors).strip() if authors else 'Unknown Authors'
+                    
+                year = metadata.get('published_date', 'Unknown Year')
+                if isinstance(year, str):
+                    year = year.strip()
+                else:
+                    year = str(year).strip() if year else 'n.d.'
+                    
+                journal = metadata.get('venue', 'Unknown Venue')
+                if isinstance(journal, str):
+                    journal = journal.strip()
+                else:
+                    journal = str(journal).strip() if journal else 'Unknown Venue'
+                
+                # Clean up the data
+                if title == "Not available" or not title or title == "Unknown Title":
+                    title = f"Research Paper ({paper.get('file_name', 'unknown')})"
+                if authors == "Not available" or not authors or authors == "Unknown Authors":
+                    authors = "Unknown Authors"
+                if year == "Not available" or not year or year == "Unknown Year":
+                    year = "n.d."
+                if journal == "Not available" or not journal or journal == "Unknown Venue":
+                    journal = "Unpublished manuscript"
+                
+                # Format bibliography entry
+                bibliography += f"\\bibitem{{{citation_key}}}\n"
+                
+                # Format authors
+                if ',' in authors and len(authors.split(',')) > 1:
+                    author_list = [author.strip() for author in authors.split(',')]
+                    if len(author_list) > 3:
+                        formatted_authors = ', '.join(author_list[:3]) + ', et al.'
+                    else:
+                        formatted_authors = ', '.join(author_list[:-1]) + ', and ' + author_list[-1]
+                else:
+                    formatted_authors = authors
+                
+                bibliography += f"{formatted_authors} ({year}). "
+                bibliography += f"\\textit{{{title}}}. "
+                bibliography += f"{journal}.\n\n"
+                
+            except Exception as e:
+                print(f"   ⚠️  Error processing paper for bibliography: {paper.get('file_name', 'unknown')} - {e}")
+                # Add a minimal entry for papers with errors
+                try:
+                    citation_key = paper.get('citation_key', 'unknown')
+                    if citation_key and citation_key != 'unknown':
+                        bibliography += f"\\bibitem{{{citation_key}}}\n"
+                        bibliography += f"Unknown Authors (n.d.). \\textit{{Research Paper}}. Unpublished manuscript.\n\n"
+                except:
+                    pass  # Skip entirely if we can't even get citation key
         
         bibliography += "\\end{thebibliography}\n"
         return bibliography
@@ -1381,10 +1564,15 @@ class LiteratureReviewGenerator:
         output_dir = self.save_dir
         os.makedirs(output_dir, exist_ok=True)
         
-        # Save LaTeX file
+        # Save LaTeX file with line wrapping to avoid TeX buf_size errors
         latex_file_path = os.path.join(output_dir, "literature_review.tex")
+        latex_content = review_data['latex_document']
+        
+        # Wrap long lines to prevent TeX buffer overflow
+        latex_content = self._wrap_long_lines(latex_content)
+        
         with open(latex_file_path, 'w', encoding='utf-8') as f:
-            f.write(review_data['latex_document'])
+            f.write(latex_content)
         
         # Save Markdown version
         markdown_content = f"# {review_data['title']}\n\n"
@@ -1424,35 +1612,387 @@ class LiteratureReviewGenerator:
         print("\nTo compile LaTeX: pdflatex literature_review.tex")
     #endregion
 
-# Example usage
-def process_papers_from_directory():
-    if len(sys.argv) < 2:
-        print("Usage: python writing/writing_survey.py \"your research query\"")
-        print("Example: python writing/writing_survey.py \"federated learning privacy\"")
-        return
-    query = sys.argv[1]
-    try: ablation_study = sys.argv[2]
-    except:
-        ablation_study = ''
-    load_dotenv(Path(".env"))
-    API_KEY = os.getenv("API_KEY") 
-    lit_review_gen = LiteratureReviewGenerator(query, API_KEY, ablation_study)
+    def collect_all_papers_for_bibliography(self, processed_papers: List[Dict]) -> List[Dict]:
+        """
+        Collect all papers that should be in the bibliography.
+        This includes both processed papers and papers cited from the graph.
+        
+        Args:
+            processed_papers: List of papers that were processed/summarized
+            
+        Returns:
+            List of all unique papers for the bibliography
+        """
+        # Start with all processed papers
+        all_papers = {paper['file_name']: paper for paper in processed_papers}
+        
+        # Add papers cited from graph nodes
+        for node_id in self.cited_papers_from_graph:
+            if node_id in self.id2node_info:
+                node_info = self.id2node_info[node_id]
+                # Create a paper dict compatible with the bibliography format
+                paper_dict = {
+                    'file_name': f"{node_id}.pdf",
+                    'citation_key': node_info.get('citation_key', node_id),
+                    'metadata': {
+                        'title': node_info.get('title', 'Unknown'),
+                        'authors': node_info.get('authors', 'Unknown'),
+                        'published_date': node_info.get('year', node_info.get('published_date', 'Unknown')),
+                        'venue': node_info.get('venue', 'Unknown')
+                    }
+                }
+                # Only add if not already in the list
+                if paper_dict['file_name'] not in all_papers:
+                    all_papers[paper_dict['file_name']] = paper_dict
+        
+        print(f"\n📚 Bibliography includes:")
+        print(f"   - {len(processed_papers)} processed papers")
+        print(f"   - {len(self.cited_papers_from_graph)} papers cited from graph")
+        print(f"   - {len(all_papers)} total unique papers")
+        
+        return list(all_papers.values())
     
-    # Get all PDF files from a directory
-    papers_directory = f"paper_data/{query.replace(' ', '_').replace(':', '')}"  
+    #region generate complete literature review
+
+    def validate_and_report_citations(self, content: str, valid_citation_keys: set) -> dict:
+        """
+        Validate citations in the document and generate a report.
+        
+        Args:
+            content: LaTeX document content
+            valid_citation_keys: Set of valid citation keys from bibliography
+            
+        Returns:
+            Dictionary with citation statistics
+        """
+        # Extract all citations from the document
+        all_citations = re.findall(r'\\cite\{([^}]+)\}', content)
+        
+        # Flatten citation keys (handle multiple citations like \cite{key1,key2})
+        all_citation_keys = []
+        for citation in all_citations:
+            keys = [k.strip() for k in citation.split(',')]
+            all_citation_keys.extend(keys)
+        
+        # Calculate statistics
+        total_citations = len(all_citation_keys)
+        unique_citations = len(set(all_citation_keys))
+        
+        # Find phantom citations (citations not in bibliography)
+        phantom_citations = [key for key in all_citation_keys if key not in valid_citation_keys]
+        phantom_citation_set = set(phantom_citations)
+        
+        # Find valid citations
+        valid_citations_count = sum(1 for key in all_citation_keys if key in valid_citation_keys)
+        
+        # Find unused bibliography entries
+        cited_keys = set(all_citation_keys) & valid_citation_keys
+        unused_bib_entries = valid_citation_keys - cited_keys
+        
+        return {
+            'total_citations': total_citations,
+            'unique_citations': unique_citations,
+            'valid_citations': valid_citations_count,
+            'phantom_citations': len(phantom_citation_set),
+            'phantom_citation_list': sorted(list(phantom_citation_set)),
+            'unused_bib_entries': len(unused_bib_entries),
+            'unused_bib_entry_list': sorted(list(unused_bib_entries)),
+            'citation_coverage': valid_citations_count / total_citations if total_citations > 0 else 0
+        }
+    
+    def clean_phantom_citations_from_latex(self, content: str, valid_citation_keys: set) -> str:
+        """
+        Remove phantom citations from the entire LaTeX document.
+        
+        Args:
+            content: LaTeX document content
+            valid_citation_keys: Set of valid citation keys from bibliography
+            
+        Returns:
+            Cleaned LaTeX content
+        """
+        return self.clean_phantom_citations(content, valid_citation_keys)
+    
+    def clean_phantom_citations(self, text: str, valid_citation_keys: set) -> str:
+        """
+        Remove citations that don't exist in the bibliography.
+        
+        Args:
+            text: The LaTeX text to clean
+            valid_citation_keys: Set of valid citation keys from bibliography
+            
+        Returns:
+            Cleaned text with phantom citations removed
+        """
+        # Pattern to match \cite{key1,key2,key3}
+        def replace_cite(match):
+            full_match = match.group(0)
+            cite_keys = match.group(1).split(',')
+            
+            # Filter out invalid keys
+            valid_keys = [key.strip() for key in cite_keys if key.strip() in valid_citation_keys]
+            
+            if not valid_keys:
+                # All keys were invalid, remove the entire citation
+                return ""
+            elif len(valid_keys) < len(cite_keys):
+                # Some keys were invalid, keep only valid ones
+                return f"\\cite{{{','.join(valid_keys)}}}"
+            else:
+                # All keys are valid
+                return full_match
+        
+        # Replace citations
+        cleaned_text = re.sub(r'\\cite\{([^}]+)\}', replace_cite, text)
+        
+        # change (\cite{}) to \cite{}
+        cleaned_text = re.sub(r'\(\\cite\{([^}]*)\}\)', r'\\cite{\1}', cleaned_text)
+        def merge_cites(match):
+            keys = re.findall(r'\\cite\{([^}]*)\}', match.group(0))
+            return r'\cite{' + ', '.join(keys) + '}'
+
+        # cleaned_text = re.sub(
+        #     r'\((?:\\cite\{[^}]*\})(?:\s*,\s*\\cite\{[^}]*\})+\)',
+        #     merge_cites,
+        #     cleaned_text
+        # )
+        
+        # # Clean up any double spaces or stray commas from removed citations
+        # cleaned_text = re.sub(r'\s+', ' ', cleaned_text)
+        # cleaned_text = re.sub(r',\s*,', ',', cleaned_text)
+        
+        return cleaned_text.strip()
+    
+    def validate_and_fix_latex(self, content: str) -> str:
+        """
+        Validate and fix common LaTeX errors in generated content.
+        
+        This function:
+        1. Ensures all environments are properly closed
+        2. Fixes malformed labels
+        3. Removes special characters from labels
+        4. Balances braces
+        
+        Args:
+            content: Raw LaTeX content
+            
+        Returns:
+            Fixed LaTeX content
+        """
+        # Track environment nesting
+        env_stack = []
+        lines = content.split('\n')
+        fixed_lines = []
+        
+        for line_num, line in enumerate(lines):
+            # Check for \begin{environment}
+            begin_match = re.findall(r'\\begin\{(\w+)\}', line)
+            for env in begin_match:
+                env_stack.append((env, line_num))
+            
+            # Check for \end{environment}
+            end_match = re.findall(r'\\end\{(\w+)\}', line)
+            for env in end_match:
+                if env_stack and env_stack[-1][0] == env:
+                    env_stack.pop()
+                else:
+                    # Mismatched or extra \end
+                    print(f"⚠️  Warning: Found \\end{{{env}}} without matching \\begin at line {line_num}")
+            
+            # Fix malformed labels - remove special characters
+            if '\\label{' in line:
+                # Extract and fix label
+                line = re.sub(
+                    r'\\label\{([^}]+)\}',
+                    lambda m: f"\\label{{{self._sanitize_label(m.group(1))}}}",
+                    line
+                )
+            
+            fixed_lines.append(line)
+        
+        # Close any unclosed environments
+        while env_stack:
+            env, line_num = env_stack.pop()
+            print(f"⚠️  Warning: Unclosed \\begin{{{env}}} from line {line_num}, adding \\end{{{env}}}")
+            fixed_lines.append(f"\\end{{{env}}}")
+        
+        fixed_content = '\n'.join(fixed_lines)
+        
+        # Balance braces
+        fixed_content = self._balance_braces(fixed_content)
+        
+        # Remove any \begingroup without \endgroup
+        fixed_content = self._balance_groups(fixed_content)
+        
+        return fixed_content
+    
+    def _sanitize_label(self, label: str) -> str:
+        """
+        Remove special characters from LaTeX labels.
+        
+        Args:
+            label: Original label
+            
+        Returns:
+            Sanitized label safe for LaTeX
+        """
+        # Replace spaces and special characters with underscores
+        sanitized = re.sub(r'[^a-zA-Z0-9_:-]', '_', label)
+        # Remove consecutive underscores
+        sanitized = re.sub(r'_+', '_', sanitized)
+        # Remove leading/trailing underscores
+        sanitized = sanitized.strip('_')
+        return sanitized
+    
+    def _balance_braces(self, content: str) -> str:
+        """
+        Ensure braces are balanced in LaTeX content.
+        
+        Args:
+            content: LaTeX content
+            
+        Returns:
+            Content with balanced braces
+        """
+        open_count = content.count('{')
+        close_count = content.count('}')
+        
+        if open_count > close_count:
+            # Add missing closing braces
+            diff = open_count - close_count
+            print(f"⚠️  Warning: Adding {diff} missing closing braces")
+            content += '}' * diff
+        elif close_count > open_count:
+            # Remove extra closing braces (more dangerous, log warning)
+            diff = close_count - open_count
+            print(f"⚠️  Warning: Found {diff} extra closing braces")
+            # Don't automatically remove - could break things
+        
+        return content
+    
+    def _balance_groups(self, content: str) -> str:
+        """
+        Balance \begingroup and \endgroup commands.
+        
+        Args:
+            content: LaTeX content
+            
+        Returns:
+            Content with balanced groups
+        """
+        begin_count = content.count('\\begingroup')
+        end_count = content.count('\\endgroup')
+        
+        if begin_count > end_count:
+            diff = begin_count - end_count
+            print(f"⚠️  Warning: Adding {diff} missing \\endgroup commands")
+            content += '\n\\endgroup\n' * diff
+        
+        return content
+    
+    def _wrap_long_lines(self, content: str, max_len: int = 10000) -> str:
+        """
+        Break extremely long single lines into shorter lines to avoid TeX buf_size limits.
+        Preserves LaTeX commands and structure while wrapping text.
+        
+        Args:
+            content: LaTeX content
+            max_len: Maximum line length (default 10000, well under TeX's 200k limit)
+            
+        Returns:
+            Content with wrapped lines
+        """
+        new_lines = []
+        for line in content.splitlines():
+            if len(line) <= max_len:
+                new_lines.append(line)
+            else:
+                # For very long lines, break at natural boundaries
+                # Preserve LaTeX commands by breaking at spaces
+                current_line = ""
+                words = line.split(' ')
+                
+                for word in words:
+                    # If adding this word would exceed max_len, start a new line
+                    if len(current_line) + len(word) + 1 > max_len:
+                        if current_line:
+                            new_lines.append(current_line)
+                            current_line = word
+                        else:
+                            # Single word longer than max_len, just add it
+                            new_lines.append(word)
+                    else:
+                        if current_line:
+                            current_line += ' ' + word
+                        else:
+                            current_line = word
+                
+                # Add remaining content
+                if current_line:
+                    new_lines.append(current_line)
+        
+        return '\n'.join(new_lines)
+
+def process_papers_from_directory():
+    """
+    Main function to process papers and generate literature review.
+    Usage: python writing/writing_survey.py "your research query" [ablation_study] [top_k]
+    """
+    if len(sys.argv) < 2:
+        print("Usage: python writing/writing_survey.py \"your research query\" [ablation_study] [top_k]")
+        print("Example: python writing/writing_survey.py \"federated learning privacy\"")
+        print("Example: python writing/writing_survey.py \"federated learning privacy\" \"_without_rag\" 20")
+        print("Optional ablation studies: _without_rag, _without_bfs, _without_community")
+        return
+    
+    query = sys.argv[1]
+    ablation_study = sys.argv[2] if len(sys.argv) >= 3 else ''
+    top_k = int(sys.argv[3]) if len(sys.argv) >= 4 else None
+    
+    # Load API key from environment
+    load_dotenv(Path(".env"))
+    API_KEY = os.getenv("API_KEY")
+    
+    if not API_KEY:
+        print("Error: API_KEY not found in .env file")
+        return
+    
+    print(f"Starting literature review generation for: {query}")
+    if ablation_study:
+        print(f"Ablation study: {ablation_study}")
+    if top_k is not None:
+        print(f"Using top_k: {top_k}")
+    
+    # Initialize the generator with top_k support
+    lit_review_gen = LiteratureReviewGenerator(query, API_KEY, ablation_study, top_k=top_k)
+    
+    # Determine folder structure
+    folder_suffix = f"_top{top_k}" if top_k is not None else ""
+    base_query_dir = query.replace(' ', '_').replace(':', '')
+    output_query_dir = f"{base_query_dir}{folder_suffix}"
+    
+    # Get papers directory (use top_k folder for outputs, but reuse base data)
+    papers_directory = f"paper_data/{output_query_dir}"
+    
+    print(f"{'='*60}")
+    print(f"Writing survey with top_k={top_k if top_k else 'auto'}")
+    print(f"Output directory: {papers_directory}")
+    print(f"{'='*60}")
  
     # Generate review with self-reflection
+    print(f"\nProcessing papers from: {papers_directory}")
     review_data = lit_review_gen.generate_complete_literature_review(
         papers_directory,
-        "A Comprehensive Literature Review with Self-Reflection"
+        f"A Comprehensive Literature Review: {query}"
     )
     
     # Save results
     if "error" not in review_data:
         lit_review_gen.save_literature_review(review_data)
-        print("\nLiterature review with self-reflection completed!")
+        print("\n✅ Literature review with self-reflection completed!")
+        print(f"📄 Output saved to: {lit_review_gen.save_dir}")
     else:
-        print(f"Error: {review_data['error']}")
+        print(f"❌ Error: {review_data['error']}")
 
 if __name__ == "__main__":
     process_papers_from_directory()
