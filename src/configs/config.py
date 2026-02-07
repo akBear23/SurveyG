@@ -10,17 +10,21 @@ from pathlib import Path
 # os.environ["HF_ENDPOINT"] = "https://hf-mirror.com" # Uncomment this line if you want to use a specific Hugging Face mirror
 # os.environ["HF_HOME"] = os.path.expanduser("~/hf_cache/")
 
+# Load from .env file
+load_dotenv(Path(".env"))
+
 # OpenAI Configuration
 REMOTE_URL = "https://api.openai.com/v1/chat/completions"
-# TOKEN = "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"
-TOKEN="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"
-# TOKEN = "tmp"
+TOKEN = os.getenv("OPENAI_API_KEY")
+if not TOKEN:
+    raise ValueError("OPENAI_API_KEY not found in environment variables")
 DEFAULT_CHATAGENT_MODEL = "gpt-4o-mini"
 # ADVANCED_CHATAGENT_MODEL = "gpt-4o"
 
 # Gemini Configuration
-load_dotenv(Path(".env"))
-GEMINI_API_KEY = os.getenv("API_KEY") 
+GEMINI_API_KEY = os.getenv("API_KEY")
+if not GEMINI_API_KEY:
+    raise ValueError("API_KEY (Gemini) not found in environment variables") 
 GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
 DEFAULT_GEMINI_MODEL = "gemini-2.5-flash"
 ADVANCED_GEMINI_MODEL = "gemini-2.5-pro"
@@ -58,7 +62,9 @@ DEFAULT_EMBED_LOCAL_MODEL = "DEFAULT_EMBED_LOCAL_MODEL"
 ## for embedding model
 DEFAULT_EMBED_ONLINE_MODEL = "BAAI/bge-base-en-v1.5"
 EMBED_REMOTE_URL = "https://api.siliconflow.cn/v1/embeddings"
-EMBED_TOKEN = "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"
+EMBED_TOKEN = os.getenv("EMBED_TOKEN")
+if not EMBED_TOKEN:
+    raise ValueError("EMBED_TOKEN not found in environment variables")
 SPLITTER_WINDOW_SIZE = 6
 SPLITTER_CHUNK_SIZE = 2048
 

@@ -34,7 +34,9 @@ from dotenv import load_dotenv, find_dotenv
 from pathlib import Path
 
 load_dotenv(Path(".env"))
-SEMANTIC_SCHOLAR_API_KEY = os.getenv("SEMANTIC_SCHOLAR_API_KEY") 
+SEMANTIC_SCHOLAR_API_KEY = os.getenv("SEMANTIC_SCHOLAR_API_KEY")
+if not SEMANTIC_SCHOLAR_API_KEY:
+    raise ValueError("SEMANTIC_SCHOLAR_API_KEY not found in environment variables")
 from dataclasses import dataclass
 from src.models.LLM.ChatAgent import ChatAgent
 
@@ -467,18 +469,17 @@ class SurveyOptimizedCrawler:
             'limit': limit,
             'offset': offset,
             'fields': 'paperId,title,authors,year,citationCount,abstract,url,venue,publicationDate,externalIds,references,citations'
-        }             
-        headers = {"x-api-key": 'l8YcOwyvxm7IWxaXJxAh87XhMqQQrQVg3XkPdKiF'}
+        }
         if year_range:
             params['year'] = f"{year_range[0]}-{year_range[1]}"
         
         try:
-            response = self.session.get(api_url, params=params, timeout=60,headers=headers)
+            response = self.session.get(api_url, params=params, timeout=60, headers=headers)
             while response.status_code == 429:
                 self._log("Rate limit exceeded")
                 # retry 
                 time.sleep(60)
-                response = self.session.get(api_url, params=params, timeout=60)
+                response = self.session.get(api_url, params=params, timeout=60, headers=headers)
                 self._log(response.status_code)
             if response.status_code == 200:
                 data = response.json()

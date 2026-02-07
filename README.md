@@ -12,9 +12,40 @@ RUN SCRIPTS FOR FULL PIPELINE:
 ./run.sh "A SURVEY ON ADVERSARIAL RECOMMENDER SYSTEMS" "adversarial attacks, recommender systems, adversarial ML" 500
 ```
 # 1. Setup environment
+
+## Install dependencies
 ```bash
 pip install -r requirements.txt
 ```
+
+## Configure API Keys
+This project requires several API keys to function. Create a `.env` file in the project root directory:
+
+```bash
+cp .env.example .env
+```
+
+Then edit the `.env` file and add your API keys:
+
+```bash
+# OpenAI API Key (required for LLM operations)
+# Get your API key from: https://platform.openai.com/api-keys
+OPENAI_API_KEY=your_actual_openai_key_here
+
+# Gemini API Key (alternative LLM provider)
+# Get your API key from: https://aistudio.google.com/app/apikey
+API_KEY=your_actual_gemini_key_here
+
+# Semantic Scholar API Key (required for paper crawling)
+# Get your API key from: https://www.semanticscholar.org/product/api
+SEMANTIC_SCHOLAR_API_KEY=your_actual_semantic_scholar_key_here
+
+# Embedding Token (HuggingFace or SiliconFlow)
+# Get your token from: https://huggingface.co/settings/tokens
+EMBED_TOKEN=your_actual_embed_token_here
+```
+
+**Important:** Never commit your `.env` file to version control. It's already included in `.gitignore`.
 # 2. Run survey_crawler.py to crawl papers from semantic scholar
 ```bash
 cd /media/aiserver/New Volume/HDD_linux/bear/SurveyG
