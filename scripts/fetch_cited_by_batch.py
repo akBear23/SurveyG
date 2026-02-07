@@ -7,7 +7,9 @@ from dotenv import load_dotenv, find_dotenv
 from pathlib import Path
 
 load_dotenv(Path(".env"))
-SEMANTIC_SCHOLAR_API_KEY = os.getenv("SEMANTIC_SCHOLAR_API_KEY") 
+SEMANTIC_SCHOLAR_API_KEY = os.getenv("SEMANTIC_SCHOLAR_API_KEY")
+if not SEMANTIC_SCHOLAR_API_KEY:
+    raise ValueError("SEMANTIC_SCHOLAR_API_KEY not found in environment variables")
 SEMANTIC_SCHOLAR_BATCH_URL = "https://api.semanticscholar.org/graph/v1/paper/batch"
 FIELDS = "paperId,title,authors,year,citationCount,abstract,url,venue,publicationDate,externalIds,openAccessPdf"
 PRESTIGIOUS_VENUES = ['nature', 'science', 'cell', 'neurips', 'icml', 'iclr', 'aaai', 'ijcai', 'acl', 'emnlp', 'cvf', 'cvpr']
