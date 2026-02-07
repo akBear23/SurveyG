@@ -474,12 +474,12 @@ class SurveyOptimizedCrawler:
             params['year'] = f"{year_range[0]}-{year_range[1]}"
         
         try:
-            response = self.session.get(api_url, params=params, timeout=60,headers=headers)
+            response = self.session.get(api_url, params=params, timeout=60, headers=headers)
             while response.status_code == 429:
                 self._log("Rate limit exceeded")
                 # retry 
                 time.sleep(60)
-                response = self.session.get(api_url, params=params, timeout=60)
+                response = self.session.get(api_url, params=params, timeout=60, headers=headers)
                 self._log(response.status_code)
             if response.status_code == 200:
                 data = response.json()
