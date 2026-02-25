@@ -51,21 +51,21 @@ EMBED_TOKEN=your_actual_embed_token_here
 cd /media/aiserver/New Volume/HDD_linux/bear/SurveyG
 python scripts/survey_crawler.py "your research topic query" number_of_paper_to_crawl
 ```
-# 6. Create survey graph
+# 3. Create survey graph
 ```bash
 python scripts/create_survey_graph.py "your research topic query"
 ```
 
-# 3. Fetch cited papers
+# 4. Fetch cited papers
 ```bash
 python scripts/fetch_cited_by_batch.py "your research topic query"
 ```
 
-# 4. Download papers, prepare metadata file 
+# 5. Download papers, prepare metadata file 
 ```bash
 python scripts/pdf_downloader.py "your research topic query"
 ```
-# 5. Summarize all papers, get summary, paper type for metadata 
+# 6. Summarize all papers, get summary, paper type for metadata 
 ```bash
 python writing/summarize.py "your research topic query"
 ```
