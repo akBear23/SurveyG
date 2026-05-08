@@ -22,7 +22,7 @@ else
 fi
 
 DIR_QUERY=$(echo "$ORIGINAL_QUERY" | tr ' ' '_' | tr -d ':')
-BASE_DIR="/media/aiserver/New Volume/HDD_linux/bear/SurveyG"
+BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 echo "=================================="
 echo "Top-K Ablation Study"

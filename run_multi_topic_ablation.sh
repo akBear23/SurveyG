@@ -6,15 +6,15 @@
 set -e  # Exit on error
 
 # Configuration
-BASE_DIR="/media/aiserver/New Volume/HDD_linux/bear/SurveyG"
-HF_REPO="AnKhanh/SurveyG"
+BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+HF_REPO="your-username/SurveyG"
 UPLOAD_DIR="$BASE_DIR/hf_upload_staging"
 
 # Topics to run
 TOPICS=(
-    # "Retrieval-Augmented_Generation_for_Large_Language_Models"
-    # "A_survey_on_Visual_Transformer"
-    "knowledge_graph_embedding"
+    "Retrieval-Augmented_Generation_for_Large_Language_Models"
+    "A_survey_on_Visual_Transformer"
+    # "knowledge_graph_embedding"
 )
 
 # Top-K values to test for each topic

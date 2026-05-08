@@ -33,7 +33,7 @@ TOPICS=(
 )
 
 # Hugging Face settings
-HF_REPO="AnKhanh/SurveyG"
+HF_REPO="your-username/SurveyG"
 HF_FOLDER="progressive_iteration_ablation"
 
 echo "================================================================================"

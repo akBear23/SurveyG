@@ -12,7 +12,7 @@ NUM_PAPERS="$3"
 
 # Convert query to directory-friendly format (replace spaces with underscores)
 DIR_QUERY=$(echo "$ORIGINAL_QUERY" | tr ' ' '_' | tr -d ':')
-BASE_DIR="/media/aiserver/New Volume/HDD_linux/bear/SurveyG"
+BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ABLATION_STUDY='_without_rag'
 echo "Starting survey generation for: '$ORIGINAL_QUERY'"
 echo "Using directory name: $DIR_QUERY"

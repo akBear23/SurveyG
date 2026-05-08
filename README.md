@@ -48,7 +48,7 @@ EMBED_TOKEN=your_actual_embed_token_here
 **Important:** Never commit your `.env` file to version control. It's already included in `.gitignore`.
 # 2. Run survey_crawler.py to crawl papers from semantic scholar
 ```bash
-cd /media/aiserver/New Volume/HDD_linux/bear/SurveyG
+cd /path/to/SurveyG
 python scripts/survey_crawler.py "your research topic query" number_of_paper_to_crawl
 ```
 # 3. Create survey graph
